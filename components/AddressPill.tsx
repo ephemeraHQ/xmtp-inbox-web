@@ -1,15 +1,15 @@
-import React from 'react'
-import { classNames } from '../helpers'
-import { useAppStore } from '../store/app'
-import Address from './Address'
+import React from 'react';
+import { classNames } from '../helpers';
+import { useAppStore } from '../store/app';
+import Address from './Address';
 
 type addressPillProps = {
-  address: string
-}
+  address: string;
+};
 
 const AddressPill = ({ address }: addressPillProps): JSX.Element => {
-  const walletAddress = useAppStore((state) => state.address)
-  const userIsSender = address === walletAddress
+  const walletAddress = useAppStore((state) => state.address);
+  const userIsSender = address === walletAddress;
   return (
     <Address
       className={classNames(
@@ -25,7 +25,7 @@ const AddressPill = ({ address }: addressPillProps): JSX.Element => {
       )}
       address={address}
     ></Address>
-  )
-}
+  );
+};
 
-export default AddressPill
+export default AddressPill;

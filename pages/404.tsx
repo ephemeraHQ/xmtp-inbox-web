@@ -1,7 +1,7 @@
-import type { NextPage } from 'next'
+import type { NextPage } from 'next';
 
 const CustomError: NextPage = () => {
-  return <div />
-}
+  return <div />;
+};
 
-export default CustomError
+export default CustomError;

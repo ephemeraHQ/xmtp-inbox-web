@@ -1,37 +1,28 @@
-import packageJson from '../package.json'
-import { classNames } from '../helpers'
+import packageJson from '../package.json';
+import { classNames } from '../helpers';
 import {
   LinkIcon,
   BookOpenIcon,
   UserGroupIcon,
   ChevronRightIcon,
-  ArrowSmRightIcon,
-} from '@heroicons/react/solid'
-import { useAppStore } from '../store/app'
+  ArrowSmRightIcon
+} from '@heroicons/react/solid';
+import { useAppStore } from '../store/app';
 
 type XmtpInfoRowProps = {
-  icon: JSX.Element
-  headingText: string
-  subHeadingText: string
-  onClick?: (() => void) | (() => Promise<void>)
-  disabled?: boolean
-}
+  icon: JSX.Element;
+  headingText: string;
+  subHeadingText: string;
+  onClick?: (() => void) | (() => Promise<void>);
+  disabled?: boolean;
+};
 
 type XmtpInfoPanelProps = {
-  onConnect?: () => Promise<void>
-}
+  onConnect?: () => Promise<void>;
+};
 
-const InfoRow = ({
-  icon,
-  headingText,
-  subHeadingText,
-  onClick,
-  disabled,
-}: XmtpInfoRowProps): JSX.Element => (
-  <a
-    onClick={disabled ? undefined : onClick}
-    className={disabled ? 'cursor-auto' : 'cursor-pointer'}
-  >
+const InfoRow = ({ icon, headingText, subHeadingText, onClick, disabled }: XmtpInfoRowProps): JSX.Element => (
+  <a onClick={disabled ? undefined : onClick} className={disabled ? 'cursor-auto' : 'cursor-pointer'}>
     <div
       className={classNames(
         disabled ? 'opacity-40' : '',
@@ -48,33 +39,33 @@ const InfoRow = ({
       </div>
     </div>
   </a>
-)
+);
 
 const XmtpInfoPanel = ({ onConnect }: XmtpInfoPanelProps): JSX.Element => {
-  const walletAddress = useAppStore((state) => state.address)
+  const walletAddress = useAppStore((state) => state.address);
   const InfoRows = [
     {
       icon: <LinkIcon />,
       headingText: 'Connect your wallet',
       subHeadingText: 'Verify your wallet to start using the XMTP protocol',
       onClick: onConnect,
-      disabled: !!walletAddress,
+      disabled: !!walletAddress
     },
     {
       icon: <BookOpenIcon />,
       headingText: 'Read the docs',
       subHeadingText:
         'Check out the documentation for our protocol and find out how to get up and running quickly',
-      onClick: () => window.open('https://docs.xmtp.org', '_blank'),
+      onClick: () => window.open('https://docs.xmtp.org', '_blank')
     },
     {
       icon: <UserGroupIcon />,
       headingText: 'Join our community',
       subHeadingText:
         'Talk about what you’re building or find out other projects that are building upon XMTP',
-      onClick: () => window.open('https://community.xmtp.org', '_blank'),
-    },
-  ]
+      onClick: () => window.open('https://community.xmtp.org', '_blank')
+    }
+  ];
 
   return (
     // The info panel is only shown in desktop layouts.
@@ -83,9 +74,7 @@ const XmtpInfoPanel = ({ onConnect }: XmtpInfoPanelProps): JSX.Element => {
         <div className="text-xl text-n-600 font-semibold mb-1">
           Welcome to the web3 communication protocol
         </div>
-        <div className="text-md text-n-300">
-          Get started by reading the docs or joining the community
-        </div>
+        <div className="text-md text-n-300">Get started by reading the docs or joining the community</div>
       </div>
       <div>
         {InfoRows.map((info, index) => {
@@ -98,7 +87,7 @@ const XmtpInfoPanel = ({ onConnect }: XmtpInfoPanelProps): JSX.Element => {
               onClick={info.onClick}
               disabled={info.disabled}
             />
-          )
+          );
         })}
       </div>
       <div className="flex justify-between items-center mt-4">
@@ -115,7 +104,7 @@ const XmtpInfoPanel = ({ onConnect }: XmtpInfoPanelProps): JSX.Element => {
         </a>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default XmtpInfoPanel
+export default XmtpInfoPanel;
