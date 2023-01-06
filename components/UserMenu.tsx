@@ -42,6 +42,7 @@ const NotConnected = ({ onConnect }: UserMenuProps): JSX.Element => {
 const UserMenu = ({ onConnect, onDisconnect }: UserMenuProps): JSX.Element => {
   const walletAddress = useAppStore((state) => state.address);
   const [showQrModal, setShowQrModal] = useState<boolean>(false);
+  const client = useAppStore((state) => state.client);
 
   const onClickCopy = () => {
     if (walletAddress) {
@@ -61,7 +62,7 @@ const UserMenu = ({ onConnect, onDisconnect }: UserMenuProps): JSX.Element => {
         tagStr() ? 'bg-p-600' : 'bg-n-500'
       } items-center justify-between rounded-lg max-h-16 min-h-[4rem] px-4 py-2 m-2 mt-0 drop-shadow-xl`}
     >
-      {walletAddress ? (
+      {walletAddress && client !== null ? (
         <Menu>
           {({ open }) => (
             <>
