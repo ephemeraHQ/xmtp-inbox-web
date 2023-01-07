@@ -34,7 +34,6 @@ const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 
   const handleConnect = useCallback(async () => {
     const isDemoEnv = isAppEnvDemo();
-    debugger;
     if (isDemoEnv) {
       await connectDemo();
     } else {
