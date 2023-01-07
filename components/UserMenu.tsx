@@ -54,7 +54,7 @@ const UserMenu = ({ onConnect, onDisconnect }: UserMenuProps): JSX.Element => {
     setShowQrModal(true);
   };
 
-  const userDmLink = `${window.location.origin}/${walletAddress}`;
+  const userDmLink = `${window.location.origin}/dm/${walletAddress}`;
 
   return (
     <div
