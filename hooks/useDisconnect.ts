@@ -1,24 +1,24 @@
-import { useRouter } from 'next/router'
-import { useCallback } from 'react'
-import { useAppStore } from '../store/app'
+import { useRouter } from 'next/router';
+import { useCallback } from 'react';
+import { useAppStore } from '../store/app';
 
 const useDisconnect = () => {
-  const router = useRouter()
-  const reset = useAppStore((state) => state.reset)
+  const router = useRouter();
+  const reset = useAppStore((state) => state.reset);
 
   const disconnect = useCallback(() => {
     Object.keys(localStorage).forEach((key) => {
       if (key.startsWith('xmtp')) {
-        localStorage.removeItem(key)
+        localStorage.removeItem(key);
       }
-    })
-    reset()
-    router.push('/')
-  }, [router])
+    });
+    reset();
+    router.push('/');
+  }, [router]);
 
   return {
-    disconnect,
-  }
-}
+    disconnect
+  };
+};
 
-export default useDisconnect
+export default useDisconnect;

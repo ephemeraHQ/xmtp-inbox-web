@@ -1,11 +1,11 @@
-import Layout from '../components/Layout'
+import Layout from '../components/Layout';
 
 type AppProps = {
-  children?: React.ReactNode
-}
+  children?: React.ReactNode;
+};
 
 function App({ children }: AppProps) {
-  return <Layout>{children}</Layout>
+  return <Layout>{children}</Layout>;
 }
 
-export default App
+export default App;

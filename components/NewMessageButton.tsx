@@ -1,12 +1,12 @@
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 
 const NewMessageButton = (): JSX.Element => {
-  const router = useRouter()
+  const router = useRouter();
 
   const onNewMessageButtonClick = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    router.push('/dm/')
-  }
+    router.push('/dm/');
+  };
 
   return (
     <button
@@ -15,7 +15,7 @@ const NewMessageButton = (): JSX.Element => {
     >
       + New Message
     </button>
-  )
-}
+  );
+};
 
-export default NewMessageButton
+export default NewMessageButton;
