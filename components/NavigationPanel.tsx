@@ -1,18 +1,19 @@
-import { LinkIcon, ExclamationCircleIcon} from '@heroicons/react/outline';
+import { LinkIcon, ExclamationCircleIcon } from '@heroicons/react/outline';
 import { ArrowSmRightIcon } from '@heroicons/react/solid';
 import { useAppStore } from '../store/app';
+import { useXmtpStore } from '../store/xmtp';
 import ConversationsList from './ConversationsList';
 import Loader from './Loader';
 
 type NavigationPanelProps = {
   onConnect: () => Promise<void>;
   isError: boolean;
-}
+};
 
 type ConnectButtonProps = {
   onConnect: () => Promise<void>;
   isError: boolean;
-}
+};
 
 const NavigationPanel = ({ onConnect, isError }: NavigationPanelProps): JSX.Element => {
   const walletAddress = useAppStore((state) => state.address);
@@ -24,28 +25,25 @@ const NavigationPanel = ({ onConnect, isError }: NavigationPanelProps): JSX.Elem
         <ConversationsPanel />
       ) : (
         <NoWalletConnectedMessage isError={isError}>
-          <ConnectButton onConnect={onConnect} isError={isError}/>
+          <ConnectButton onConnect={onConnect} isError={isError} />
         </NoWalletConnectedMessage>
       )}
     </div>
-  )
-}
+  );
+};
 
-
-const NoWalletConnectedMessage: React.FC<{ isError : boolean, children?: React.ReactNode }> = ({
-  isError, children,
+const NoWalletConnectedMessage: React.FC<{ isError: boolean; children?: React.ReactNode }> = ({
+  isError,
+  children
 }) => {
   return (
     <div className="flex flex-col flex-grow justify-center">
       <div className="flex flex-col items-center px-4 text-center">
-        {isError ? <ExclamationCircleIcon
-          className="h-8 w-8"
-          aria-hidden="true"
-        />
-        : <LinkIcon
-          className="h-8 w-8 mb-1 stroke-n-200 md:stroke-n-300"
-          aria-hidden="true"
-        />}
+        {isError ? (
+          <ExclamationCircleIcon className="h-8 w-8" aria-hidden="true" />
+        ) : (
+          <LinkIcon className="h-8 w-8 mb-1 stroke-n-200 md:stroke-n-300" aria-hidden="true" />
+        )}
         <p className="text-xl md:text-lg text-n-200 md:text-n-300 font-bold">
           {isError ? 'Error connecting' : 'No wallet connected'}
         </p>
@@ -55,8 +53,8 @@ const NoWalletConnectedMessage: React.FC<{ isError : boolean, children?: React.R
       </div>
       {children}
     </div>
-  )
-}
+  );
+};
 
 const ConnectButton = ({ onConnect, isError }: ConnectButtonProps): JSX.Element => {
   return (
@@ -69,33 +67,19 @@ const ConnectButton = ({ onConnect, isError }: ConnectButtonProps): JSX.Element 
         <ArrowSmRightIcon className="h-4" />
       </div>
     </button>
-  )
-}
+  );
+};
 
 const ConversationsPanel = (): JSX.Element => {
   const client = useAppStore((state) => state.client);
-  const loadingConversations = useAppStore(
-    (state) => state.loadingConversations
-  );
+  const loadingConversations = useXmtpStore((state) => state.loadingConversations);
 
   if (client === undefined) {
-    return (
-      <Loader
-        headingText="Awaiting signatures..."
-        subHeadingText="Use your wallet to sign"
-        isLoading
-      />
-    )
+    return <Loader headingText="Awaiting signatures..." subHeadingText="Use your wallet to sign" isLoading />;
   }
 
   if (loadingConversations) {
-    return (
-      <Loader
-        headingText="Loading conversations..."
-        subHeadingText="Please wait a moment"
-        isLoading
-      />
-    )
+    return <Loader headingText="Loading conversations..." subHeadingText="Please wait a moment" isLoading />;
   }
 
   return (

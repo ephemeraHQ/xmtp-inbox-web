@@ -2,22 +2,25 @@ import { Conversation, DecodedMessage, SortDirection, Stream } from '@xmtp/xmtp-
 import { useEffect, useState } from 'react';
 import { getConversationKey, shortAddress, truncate } from '../helpers';
 import { useAppStore } from '../store/app';
+import { useXmtpStore } from '../store/xmtp';
 import useEnsHooks from './useEnsHooks';
 
 let latestMsgId: string;
 
 export const useListConversations = () => {
-  const walletAddress = useAppStore((state) => state.address);
   const { lookupAddress } = useEnsHooks();
-  const convoMessages = useAppStore((state) => state.convoMessages);
+
+  const walletAddress = useAppStore((state) => state.address);
   const client = useAppStore((state) => state.client);
-  const conversations = useAppStore((state) => state.conversations);
-  const setConversations = useAppStore((state) => state.setConversations);
-  const addMessages = useAppStore((state) => state.addMessages);
-  const previewMessages = useAppStore((state) => state.previewMessages);
-  const setPreviewMessages = useAppStore((state) => state.setPreviewMessages);
-  const setPreviewMessage = useAppStore((state) => state.setPreviewMessage);
-  const setLoadingConversations = useAppStore((state) => state.setLoadingConversations);
+
+  const convoMessages = useXmtpStore((state) => state.convoMessages);
+  const conversations = useXmtpStore((state) => state.conversations);
+  const setConversations = useXmtpStore((state) => state.setConversations);
+  const addMessages = useXmtpStore((state) => state.addMessages);
+  const previewMessages = useXmtpStore((state) => state.previewMessages);
+  const setPreviewMessages = useXmtpStore((state) => state.setPreviewMessages);
+  const setPreviewMessage = useXmtpStore((state) => state.setPreviewMessage);
+  const setLoadingConversations = useXmtpStore((state) => state.setLoadingConversations);
   const [browserVisible, setBrowserVisible] = useState<boolean>(true);
 
   useEffect(() => {

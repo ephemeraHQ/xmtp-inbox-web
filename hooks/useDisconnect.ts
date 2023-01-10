@@ -1,10 +1,12 @@
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 import { useAppStore } from '../store/app';
+import { useXmtpStore } from '../store/xmtp';
 
 const useDisconnect = () => {
   const router = useRouter();
-  const reset = useAppStore((state) => state.reset);
+  const resetAppState = useAppStore((state) => state.resetAppState);
+  const resetXmtpState = useXmtpStore((state) => state.resetXmtpState);
 
   const disconnect = useCallback(() => {
     Object.keys(localStorage).forEach((key) => {
@@ -12,7 +14,8 @@ const useDisconnect = () => {
         localStorage.removeItem(key);
       }
     });
-    reset();
+    resetAppState();
+    resetXmtpState();
     router.push('/');
   }, [router]);
 
