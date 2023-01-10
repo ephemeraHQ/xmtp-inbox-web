@@ -14,20 +14,21 @@ import { ClipboardCopyIcon } from '@heroicons/react/outline';
 type UserMenuProps = {
   onConnect?: () => Promise<void>;
   onDisconnect?: () => Promise<void>;
+  isError: boolean;
 };
 
-const NotConnected = ({ onConnect }: UserMenuProps): JSX.Element => {
+const NotConnected = ({ onConnect, isError }: UserMenuProps): JSX.Element => {
   return (
     <>
       <div>
         <div className="flex items-center">
           <div className="bg-y-100 rounded-full h-2 w-2 mr-1"></div>
-          <p className="text-sm font-bold text-y-100">You are not connected.</p>
+          <p className="text-sm font-bold text-y-100">{isError ? 'Error connecting' : 'You are not connected.'}</p>
         </div>
 
         <a onClick={onConnect}>
           <p className="text-sm font-normal text-y-100 hover:text-y-200 ml-3 cursor-pointer">
-            Sign in with your wallet
+            {isError ? 'Try connecting again' : 'Sign in with your wallet'}
           </p>
         </a>
       </div>
@@ -39,7 +40,7 @@ const NotConnected = ({ onConnect }: UserMenuProps): JSX.Element => {
   );
 };
 
-const UserMenu = ({ onConnect, onDisconnect }: UserMenuProps): JSX.Element => {
+const UserMenu = ({ onConnect, onDisconnect, isError }: UserMenuProps): JSX.Element => {
   const walletAddress = useAppStore((state) => state.address);
   const [showQrModal, setShowQrModal] = useState<boolean>(false);
   const client = useAppStore((state) => state.client);
@@ -183,7 +184,7 @@ const UserMenu = ({ onConnect, onDisconnect }: UserMenuProps): JSX.Element => {
           )}
         </Menu>
       ) : (
-        <NotConnected onConnect={onConnect} />
+        <NotConnected onConnect={onConnect} isError={isError} />
       )}
       <Modal title="Share QR Code" size="md" show={showQrModal} onClose={() => setShowQrModal(false)}>
         <div className="flex justify-center p-5 flex-col items-center">
