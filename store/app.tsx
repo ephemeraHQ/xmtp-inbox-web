@@ -1,10 +1,13 @@
 import { Client } from '@xmtp/xmtp-js';
 import { ethers, Signer } from 'ethers';
 import create from 'zustand';
+import Web3Modal from 'web3modal';
 
 type ProviderType = ethers.providers.Web3Provider | ethers.providers.InfuraProvider | undefined;
 
 interface AppState {
+  web3Modal: Web3Modal | undefined;
+  setWeb3Modal: (web3Modal: Web3Modal | undefined) => void;
   signer: Signer | undefined;
   setSigner: (signer: Signer | undefined) => void;
   address: string | undefined;
@@ -17,6 +20,8 @@ interface AppState {
 }
 
 export const useAppStore = create<AppState>((set) => ({
+  web3Modal: undefined,
+  setWeb3Modal: (web3Modal: Web3Modal | undefined) => set(() => ({ web3Modal })),
   signer: undefined,
   setSigner: (signer: Signer | undefined) => set(() => ({ signer })),
   address: undefined,
@@ -28,6 +33,7 @@ export const useAppStore = create<AppState>((set) => ({
   resetAppState: () =>
     set(() => {
       return {
+        web3Modal: undefined,
         client: undefined,
         address: undefined,
         signer: undefined

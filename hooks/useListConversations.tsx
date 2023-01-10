@@ -83,7 +83,6 @@ export const useListConversations = () => {
     };
 
     const listConversations = async () => {
-      console.log('Listing conversations');
       setLoadingConversations(true);
       const newPreviewMessages = new Map(previewMessages);
       const convos = await client.conversations.list();

@@ -7,7 +7,8 @@ import useDisconnect from './useDisconnect';
 import providerOptions from '../helpers/providerOptions';
 
 const useWalletProvider = () => {
-  const [web3Modal, setWeb3Modal] = useState<Web3Modal>();
+  const web3Modal = useAppStore((state) => state.web3Modal);
+  const setWeb3Modal = useAppStore((state) => state.setWeb3Modal);
   const setAddress = useAppStore((state) => state.setAddress);
   const setSigner = useAppStore((state) => state.setSigner);
   const setProvider = useAppStore((state) => state.setProvider);
@@ -47,7 +48,7 @@ const useWalletProvider = () => {
   }, [handleAccountsChanged, web3Modal]);
 
   useEffect(() => {
-    setWeb3Modal(new Web3Modal({ cacheProvider: false, providerOptions }));
+    !web3Modal && setWeb3Modal(new Web3Modal({ cacheProvider: false, providerOptions }));
   }, []);
 
   useEffect(() => {
@@ -80,7 +81,7 @@ const useWalletProvider = () => {
 
   return {
     connect,
-    isError,
+    isError
   };
 };
 
