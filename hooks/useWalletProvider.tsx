@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import { ethers } from 'ethers';
-import Web3Modal, { IProviderOptions, providers } from 'web3modal';
-import WalletConnectProvider from '@walletconnect/web3-provider';
-import WalletLink from 'walletlink';
+import Web3Modal from 'web3modal';
 import { useAppStore } from '../store/app';
-import { isAppEnvDemo } from '../helpers';
+import { isAppEnvDemo, SILENTLY_FAILING_ERRORS } from '../helpers';
 import useDisconnect from './useDisconnect';
+import providerOptions from '../helpers/providerOptions';
 
 const useWalletProvider = () => {
   const [web3Modal, setWeb3Modal] = useState<Web3Modal>();
@@ -13,6 +12,7 @@ const useWalletProvider = () => {
   const setSigner = useAppStore((state) => state.setSigner);
   const setProvider = useAppStore((state) => state.setProvider);
   const { disconnect } = useDisconnect();
+  const [isError, setError] = useState(false);
 
   const handleAccountsChanged = useCallback(() => {
     disconnect();
@@ -36,50 +36,18 @@ const useWalletProvider = () => {
         setSigner(newSigner);
         setAddress(await newSigner.getAddress());
         return newSigner;
-      } catch (e) {
-        // TODO: better error handling/surfacing here.
-        // Note that web3Modal.connect throws an error when the user closes the
-        // modal, as "User closed modal"
-        console.log('error', e);
+      } catch (error) {
+        if (error instanceof Error) {
+          if (!SILENTLY_FAILING_ERRORS.includes(error.message)) {
+            setError(true);
+          }
+        }
       }
     }
   }, [handleAccountsChanged, web3Modal]);
 
   useEffect(() => {
-    const infuraId = process.env.NEXT_PUBLIC_INFURA_ID || 'b6058e03f2cd4108ac890d3876a56d0d';
-    const providerOptions: IProviderOptions = {
-      walletconnect: {
-        package: WalletConnectProvider,
-        options: {
-          infuraId
-        }
-      }
-    };
-    if (!window.ethereum || (window.ethereum && !window.ethereum.isCoinbaseWallet)) {
-      providerOptions.walletlink = {
-        package: WalletLink,
-        options: {
-          appName: 'Chat via XMTP',
-          infuraId
-          // darkMode: false,
-        }
-      };
-    }
-    if (!window.ethereum || !window.ethereum.isMetaMask) {
-      providerOptions['custom-metamask'] = {
-        display: {
-          logo: providers.METAMASK.logo,
-          name: 'Install MetaMask',
-          description: 'Connect using browser wallet'
-        },
-        package: {},
-        connector: async () => {
-          window.open('https://metamask.io');
-          // throw new Error("MetaMask not installed");
-        }
-      };
-    }
-    setWeb3Modal(new Web3Modal({ cacheProvider: true, providerOptions }));
+    setWeb3Modal(new Web3Modal({ cacheProvider: false, providerOptions }));
   }, []);
 
   useEffect(() => {
@@ -111,7 +79,8 @@ const useWalletProvider = () => {
   }, [web3Modal]);
 
   return {
-    connect
+    connect,
+    isError,
   };
 };
 

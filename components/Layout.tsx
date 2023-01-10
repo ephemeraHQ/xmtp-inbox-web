@@ -22,7 +22,7 @@ const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const { initClient } = useInitXmtpClient();
   useListConversations();
 
-  const { connect: connectWallet } = useWalletProvider();
+  const { connect: connectWallet, isError } = useWalletProvider();
 
   const { disconnect: disconnectWallet } = useDisconnect();
 
@@ -58,8 +58,12 @@ const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
                 </Link>
                 {walletAddress && client && <NewMessageButton />}
               </div>
-              <NavigationPanel onConnect={handleConnect} />
-              <UserMenu onConnect={handleConnect} onDisconnect={handleDisconnect} />
+              {<NavigationPanel onConnect={handleConnect} isError={isError}/>}
+              <UserMenu
+                onConnect={handleConnect}
+                onDisconnect={handleDisconnect}
+                isError={isError}
+              />
             </div>
           </aside>
         </NavigationView>
