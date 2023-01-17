@@ -31,7 +31,7 @@ export const useStreamAllMessages = () => {
     let messageStream: AsyncGenerator<DecodedMessage>;
 
     const streamAllMessages = async () => {
-      messageStream = await client.conversations.streamAllMessages();
+      messageStream = await client?.conversations?.streamAllMessages();
 
       for await (const message of messageStream) {
         const key = getConversationKey(message.conversation);
@@ -41,6 +41,8 @@ export const useStreamAllMessages = () => {
         if (numAdded > 0) {
           const newMessages = convoMessages.get(key) ?? [];
           newMessages.push(message);
+          // Below code is to remove duplicate messages from the
+          // newMessages array
           const uniqueMessages = [
             ...Array.from(new Map(newMessages.map((item) => [item['id'], item])).values())
           ];

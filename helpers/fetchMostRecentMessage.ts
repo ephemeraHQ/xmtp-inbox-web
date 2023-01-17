@@ -9,7 +9,7 @@ const fetchMostRecentMessage = async (
     limit: 1,
     direction: SortDirection.SORT_DIRECTION_DESCENDING
   });
-  if (newMessages.length <= 0) {
+  if (!newMessages.length) {
     return { key };
   }
   return { key, message: newMessages[0] };
