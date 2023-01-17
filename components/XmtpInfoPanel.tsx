@@ -15,27 +15,49 @@ type XmtpInfoRowProps = {
   subHeadingText: string;
   onClick?: (() => void) | (() => Promise<void>);
   disabled?: boolean;
+  dataTestPrefix?: string;
+  url?: string;
 };
 
 type XmtpInfoPanelProps = {
   onConnect?: () => Promise<void>;
 };
 
-const InfoRow = ({ icon, headingText, subHeadingText, onClick, disabled }: XmtpInfoRowProps): JSX.Element => (
-  <a onClick={disabled ? undefined : onClick} className={disabled ? 'cursor-auto' : 'cursor-pointer'}>
+const InfoRow = ({
+  icon,
+  headingText,
+  subHeadingText,
+  onClick,
+  disabled,
+  dataTestPrefix,
+  url
+}: XmtpInfoRowProps): JSX.Element => (
+  <a
+    onClick={disabled ? undefined : onClick}
+    href={url}
+    target="_blank"
+    className={disabled ? 'cursor-auto' : 'cursor-pointer'}
+    data-testid={`${dataTestPrefix}-section-link`}
+  >
     <div
       className={classNames(
         disabled ? 'opacity-40' : '',
         'flex py-4 border border-x-0 border-y-zinc-50 justify-between items-stretch text-left'
       )}
     >
-      <div className="h-10 w-10 bg-l-300 rounded-lg text-white p-2">{icon}</div>
+      <div className="h-10 w-10 bg-l-300 rounded-lg text-white p-2" data-testid={`${dataTestPrefix}-icon`}>
+        {icon}
+      </div>
       <div className="ml-3 flex-col justify-center text-md flex-1">
-        <div className="font-semibold text-n-600">{headingText}</div>
-        <div className="text-n-300">{subHeadingText}</div>
+        <div className="font-semibold text-n-600" data-testid={`${dataTestPrefix}-header`}>
+          {headingText}
+        </div>
+        <div className="text-n-300" data-testid={`${dataTestPrefix}-subheader`}>
+          {subHeadingText}
+        </div>
       </div>
       <div className="w-10 flex justify-end items-center pr-2">
-        <ChevronRightIcon className="h-5" />
+        <ChevronRightIcon className="h-5" data-testid={`${dataTestPrefix}-arrow`} />
       </div>
     </div>
   </a>
@@ -49,21 +71,24 @@ const XmtpInfoPanel = ({ onConnect }: XmtpInfoPanelProps): JSX.Element => {
       headingText: 'Connect your wallet',
       subHeadingText: 'Verify your wallet to start using the XMTP protocol',
       onClick: onConnect,
-      disabled: !!walletAddress
+      disabled: !!walletAddress,
+      dataTestPrefix: 'connect'
     },
     {
       icon: <BookOpenIcon />,
       headingText: 'Read the docs',
       subHeadingText:
         'Check out the documentation for our protocol and find out how to get up and running quickly',
-      onClick: () => window.open('https://docs.xmtp.org', '_blank')
+      url: 'https://docs.xmtp.org',
+      dataTestPrefix: 'docs'
     },
     {
       icon: <UserGroupIcon />,
       headingText: 'Join our community',
       subHeadingText:
         'Talk about what you’re building or find out other projects that are building upon XMTP',
-      onClick: () => window.open('https://community.xmtp.org', '_blank')
+      url: 'https://community.xmtp.org',
+      dataTestPrefix: 'community'
     }
   ];
 
@@ -71,10 +96,12 @@ const XmtpInfoPanel = ({ onConnect }: XmtpInfoPanelProps): JSX.Element => {
     // The info panel is only shown in desktop layouts.
     <div className="hidden md:block m-auto w-[464px]">
       <div className="pb-6">
-        <div className="text-xl text-n-600 font-semibold mb-1">
+        <div className="text-xl text-n-600 font-semibold mb-1" data-testid="get-started-header">
           Welcome to the web3 communication protocol
         </div>
-        <div className="text-md text-n-300">Get started by reading the docs or joining the community</div>
+        <div className="text-md text-n-300" data-testid="get-started-subheader">
+          Get started by reading the docs or joining the community
+        </div>
       </div>
       <div>
         {InfoRows.map((info, index) => {
@@ -86,12 +113,14 @@ const XmtpInfoPanel = ({ onConnect }: XmtpInfoPanelProps): JSX.Element => {
               subHeadingText={info.subHeadingText}
               onClick={info.onClick}
               disabled={info.disabled}
+              dataTestPrefix={info.dataTestPrefix}
+              url={info.url}
             />
           );
         })}
       </div>
       <div className="flex justify-between items-center mt-4">
-        <div className="text-n-600 text-sm">
+        <div className="text-n-600 text-sm" data-testid="xmtp-version">
           xmtp-js v{packageJson.dependencies['@xmtp/xmtp-js'].substring(1)}
         </div>
         <a
@@ -99,6 +128,7 @@ const XmtpInfoPanel = ({ onConnect }: XmtpInfoPanelProps): JSX.Element => {
           target="_blank"
           className="text-l-300 font-semibold text-md flex items-center"
           rel="noreferrer"
+          data-testid="help-cta"
         >
           I need help <ArrowSmRightIcon className="h-5 fill-l-300" />
         </a>

@@ -23,18 +23,27 @@ const NotConnected = ({ onConnect, isError }: UserMenuProps): JSX.Element => {
       <div>
         <div className="flex items-center">
           <div className="bg-y-100 rounded-full h-2 w-2 mr-1"></div>
-          <p className="text-sm font-bold text-y-100">{isError ? 'Error connecting' : 'You are not connected.'}</p>
+          <p className="text-sm font-bold text-y-100" data-testid="no-wallet-connected-footer-primary-text">
+            {isError ? 'Error connecting' : 'You are not connected.'}
+          </p>
         </div>
 
         <a onClick={onConnect}>
-          <p className="text-sm font-normal text-y-100 hover:text-y-200 ml-3 cursor-pointer">
+          <p
+            className="text-sm font-normal text-y-100 hover:text-y-200 ml-3 cursor-pointer"
+            data-testid="no-wallet-connected-footer-secondary-text"
+          >
             {isError ? 'Try connecting again' : 'Sign in with your wallet'}
           </p>
         </a>
       </div>
       <button className="max-w-xs flex items-center text-sm rounded focus:outline-none" onClick={onConnect}>
         <span className="sr-only">Connect</span>
-        <CogIcon className="h-6 w-6 md:h-5 md:w-5 fill-n-100 hover:fill-n-200" aria-hidden="true" />
+        <CogIcon
+          className="h-6 w-6 md:h-5 md:w-5 fill-n-100 hover:fill-n-200"
+          aria-hidden="true"
+          data-testid="settings-icon"
+        />
       </button>
     </>
   );
@@ -74,7 +83,12 @@ const UserMenu = ({ onConnect, onDisconnect, isError }: UserMenuProps): JSX.Elem
                     <div className="flex flex-col ml-3">
                       <div className="flex items-center">
                         <div className="bg-g-100 rounded h-2 w-2 mr-1"></div>
-                        <p className="text-sm font-bold text-g-100">Connected as:</p>
+                        <p
+                          className="text-sm font-bold text-g-100"
+                          data-testid="connected-footer-primary-text"
+                        >
+                          Connected as:
+                        </p>
                       </div>
                       <Address
                         address={walletAddress}
@@ -108,6 +122,7 @@ const UserMenu = ({ onConnect, onDisconnect, isError }: UserMenuProps): JSX.Elem
                         open ? 'fill-white' : '',
                         'h-6 w-6 md:h-5 md:w-5 fill-n-100 hover:fill-n-200'
                       )}
+                      data-testid="settings-icon"
                       aria-hidden="true"
                     />
                   </Menu.Button>
@@ -124,7 +139,10 @@ const UserMenu = ({ onConnect, onDisconnect, isError }: UserMenuProps): JSX.Elem
                   <Menu.Items className="origin-bottom-right absolute right-0 bottom-12 mb-4 w-40 rounded-md shadow-lg bg-white divide-y-2 divide-zinc-50 ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="px-1 py-1 ">
                       <Menu.Item>
-                        <span className="block rounded-md px-2 py-2 text-sm text-n-600 text-right font-normal">
+                        <span
+                          className="block rounded-md px-2 py-2 text-sm text-n-600 text-right font-normal"
+                          data-testid="xmtp-version"
+                        >
                           xmtp-js v{packageJson.dependencies['@xmtp/xmtp-js'].substring(1)}
                         </span>
                       </Menu.Item>
@@ -138,6 +156,7 @@ const UserMenu = ({ onConnect, onDisconnect, isError }: UserMenuProps): JSX.Elem
                               active ? 'bg-zinc-50' : '',
                               'block rounded-md px-2 py-2 text-sm text-n-600 text-right font-normal cursor-pointer'
                             )}
+                            data-testid="copy-address-cta"
                           >
                             Copy wallet address
                           </a>
@@ -171,6 +190,7 @@ const UserMenu = ({ onConnect, onDisconnect, isError }: UserMenuProps): JSX.Elem
                               active ? 'bg-zinc-50 cursor-pointer' : '',
                               'block rounded-md px-2 py-2 text-sm text-l-300 text-right font-semibold'
                             )}
+                            data-testid="disconnect-wallet-cta"
                           >
                             Disconnect wallet
                           </a>

@@ -54,16 +54,12 @@ const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
             <div className="flex flex-col flex-grow md:border-r md:border-gray-200 bg-white overflow-y-auto">
               <div className="max-h-16 min-h-[4rem] bg-p-600 flex items-center justify-between flex-shrink-0 px-4">
                 <Link href="/" passHref={true}>
-                  <img className="h-8 w-auto" src="/xmtp-icon.png" alt="XMTP" />
+                  <img className="h-8 w-auto" src="/xmtp-icon.png" alt="XMTP" data-testid="xmtp-logo" />
                 </Link>
                 {walletAddress && client && <NewMessageButton />}
               </div>
-              {<NavigationPanel onConnect={handleConnect} isError={isError}/>}
-              <UserMenu
-                onConnect={handleConnect}
-                onDisconnect={handleDisconnect}
-                isError={isError}
-              />
+              {<NavigationPanel onConnect={handleConnect} isError={isError} />}
+              <UserMenu onConnect={handleConnect} onDisconnect={handleDisconnect} isError={isError} />
             </div>
           </aside>
         </NavigationView>
