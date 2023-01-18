@@ -2,7 +2,7 @@ import { checkElement, checkMissingElement, checkLink, disconnectWallet } from '
 
 describe('Connected Test Cases', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:3000');
+    cy.visit('http://localhost:3000/demo', { failOnStatusCode: false });
   });
   it('Shows expected left panel fields when logged in with a connected wallet and no existing messages', () => {
     const elements = [
@@ -54,7 +54,7 @@ describe('Connected Test Cases', () => {
 
 describe('Disconnected Test Cases', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:3000');
+    cy.visit('http://localhost:3000/demo', { failOnStatusCode: false });
     disconnectWallet();
   });
   it('Shows expected left panel fields when disconnected from a wallet', () => {

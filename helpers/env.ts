@@ -10,7 +10,11 @@ export const getEnv = (): 'dev' | 'production' | 'local' => {
 };
 
 export const isAppEnvDemo = (): boolean => {
-  return process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'demo';
+  const { pathname } = window.location;
+  const demoEnv = 'demo';
+  // Keeping for backwards compatiblity
+  // Tracked in issue #21 to remove when no longer needed
+  return process.env.NEXT_PUBLIC_APP_ENVIRONMENT === demoEnv || pathname.startsWith(`/${demoEnv}`);
 };
 
 export const tagStr = (): string | null => {

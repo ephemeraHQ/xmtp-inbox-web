@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 import { useAppStore } from '../store/app';
+import { isAppEnvDemo } from '../helpers';
 
 const useDisconnect = () => {
   const router = useRouter();
@@ -13,7 +14,6 @@ const useDisconnect = () => {
       }
     });
     reset();
-    router.push('/');
   }, [router]);
 
   return {
