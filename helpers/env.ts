@@ -1,3 +1,5 @@
+import { ENVIRONMENT } from './constants';
+
 export const getEnv = (): 'dev' | 'production' | 'local' => {
   const envVar = process.env.NEXT_PUBLIC_XMTP_ENVIRONMENT;
   if (envVar === 'production') {
@@ -9,9 +11,7 @@ export const getEnv = (): 'dev' | 'production' | 'local' => {
   return 'dev';
 };
 
-export const isAppEnvDemo = (): boolean => {
-  return process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'demo';
-};
+export const isAppEnvDemo = (): boolean => localStorage.getItem(ENVIRONMENT.DEMO) === String(true);
 
 export const tagStr = (): string | null => {
   return getEnv() === 'production' ? null : getEnv().toLocaleUpperCase();
