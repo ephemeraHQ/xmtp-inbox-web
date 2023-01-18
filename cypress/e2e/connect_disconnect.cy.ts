@@ -1,8 +1,8 @@
-import { checkElement, checkMissingElement, checkLink, disconnectWallet } from '../test_utils';
+import { checkElement, checkMissingElement, checkLink, disconnectWallet, startDemoEnv } from '../test_utils';
 
 describe('Connected Test Cases', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:3000/demo', { failOnStatusCode: false });
+    startDemoEnv();
   });
   it('Shows expected left panel fields when logged in with a connected wallet and no existing messages', () => {
     const elements = [
@@ -54,7 +54,7 @@ describe('Connected Test Cases', () => {
 
 describe('Disconnected Test Cases', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:3000/demo', { failOnStatusCode: false });
+    startDemoEnv();
     disconnectWallet();
   });
   it('Shows expected left panel fields when disconnected from a wallet', () => {

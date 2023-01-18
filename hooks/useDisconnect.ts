@@ -13,6 +13,7 @@ const useDisconnect = () => {
       }
     });
     reset();
+    router.push('/');
   }, [router]);
 
   return {
