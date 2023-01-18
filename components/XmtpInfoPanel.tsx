@@ -36,6 +36,7 @@ const InfoRow = ({
     onClick={disabled ? undefined : onClick}
     href={url}
     target="_blank"
+    rel="noreferrer"
     className={disabled ? 'cursor-auto' : 'cursor-pointer'}
     data-testid={`${dataTestPrefix}-section-link`}
   >
