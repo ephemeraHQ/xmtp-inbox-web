@@ -11,7 +11,8 @@
     "cypress": "cypress open",
     "cypress:headless": "cypress run",
     "e2e": "start-server-and-test dev http://localhost:3000 cypress",
-    "e2e:headless": "start-server-and-test dev http://localhost:3000 cypress:headless"
+    "e2e:headless": "start-server-and-test dev http://localhost:3000 cypress:headless",
+    "test": "jest"
   },
   "author": "XMTP Labs <eng@xmtp.com>",
   "license": "MIT",
@@ -60,7 +61,8 @@
     "eslint-config-next": "13.0.5",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-cypress": "^2.12.1",
-    "jest": "^27.5.1",
+    "jest": "^29.3.1",
+    "jest-environment-jsdom": "^29.3.1",
     "jest-fail-on-console": "^2.4.2",
     "node-localstorage": "^2.2.1",
     "postcss": "^8.4.5",
