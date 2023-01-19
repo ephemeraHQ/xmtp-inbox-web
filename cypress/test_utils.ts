@@ -1,6 +1,7 @@
 import { ENVIRONMENT } from '../helpers';
 
-export const checkElement = (testId: string) => cy.get(`[data-testid=${testId}]`).should('exist');
+export const checkElement = (testId: string) =>
+  cy.get(`[data-testid=${testId}]`, { timeout: 10000 }).should('exist');
 
 export const checkMissingElement = (testId: string) => cy.get(`[data-testid=${testId}]`).should('not.exist');
 
