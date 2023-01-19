@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { checkIfPathIsEns, classNames } from '../helpers';
 import useEnsHooks from '../hooks/useEnsHooks';
 import { useAppStore } from '../store/app';
+import { useXmtpStore } from '../store/xmtp';
 
 type AddressInputProps = {
   recipientWalletAddress?: string;
@@ -21,12 +22,14 @@ const AddressInput = ({
   onInputChange
 }: AddressInputProps): JSX.Element => {
   const { lookupAddress } = useEnsHooks();
+
   const walletAddress = useAppStore((state) => state.address);
+  const client = useAppStore((state) => state.client);
+  const conversations = useXmtpStore((state) => state.conversations);
+  const setConversations = useXmtpStore((state) => state.setConversations);
+
   const inputElement = useRef(null);
   const [value, setValue] = useState<string>(recipientWalletAddress || '');
-  const conversations = useAppStore((state) => state.conversations);
-  const setConversations = useAppStore((state) => state.setConversations);
-  const client = useAppStore((state) => state.client);
 
   const focusInputElementRef = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

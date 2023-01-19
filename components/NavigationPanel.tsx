@@ -1,6 +1,7 @@
 import { LinkIcon, ExclamationCircleIcon } from '@heroicons/react/outline';
 import { ArrowSmRightIcon } from '@heroicons/react/solid';
 import { useAppStore } from '../store/app';
+import { useXmtpStore } from '../store/xmtp';
 import ConversationsList from './ConversationsList';
 import Loader from './Loader';
 
@@ -79,7 +80,7 @@ const ConnectButton = ({ onConnect, isError }: ConnectButtonProps): JSX.Element 
 
 const ConversationsPanel = (): JSX.Element => {
   const client = useAppStore((state) => state.client);
-  const loadingConversations = useAppStore((state) => state.loadingConversations);
+  const loadingConversations = useXmtpStore((state) => state.loadingConversations);
 
   if (client === undefined) {
     return <Loader headingText="Awaiting signatures..." subHeadingText="Use your wallet to sign" isLoading />;
