@@ -23,6 +23,7 @@ const Address = ({ address, className }: AddressProps): JSX.Element => {
     <span
       className={classNames(className || '', 'font-mono', loading ? 'animate-pulse' : '')}
       title={address}
+      data-testid="connected-footer-secondary-text"
     >
       {name || shortAddress(address)}
     </span>

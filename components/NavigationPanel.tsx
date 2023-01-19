@@ -42,12 +42,19 @@ const NoWalletConnectedMessage: React.FC<{ isError: boolean; children?: React.Re
         {isError ? (
           <ExclamationCircleIcon className="h-8 w-8" aria-hidden="true" />
         ) : (
-          <LinkIcon className="h-8 w-8 mb-1 stroke-n-200 md:stroke-n-300" aria-hidden="true" />
+          <LinkIcon
+            className="h-8 w-8 mb-1 stroke-n-200 md:stroke-n-300"
+            aria-hidden="true"
+            data-testid="no-wallet-connected-icon"
+          />
         )}
-        <p className="text-xl md:text-lg text-n-200 md:text-n-300 font-bold">
+        <p
+          className="text-xl md:text-lg text-n-200 md:text-n-300 font-bold"
+          data-testid="no-wallet-connected-header"
+        >
           {isError ? 'Error connecting' : 'No wallet connected'}
         </p>
-        <p className="text-lx md:text-md text-n-200 font-normal">
+        <p className="text-lx md:text-md text-n-200 font-normal" data-testid="no-wallet-connected-subheader">
           {isError ? 'Please try again' : 'Please connect a wallet to begin'}
         </p>
       </div>
@@ -59,6 +66,7 @@ const NoWalletConnectedMessage: React.FC<{ isError: boolean; children?: React.Re
 const ConnectButton = ({ onConnect, isError }: ConnectButtonProps): JSX.Element => {
   return (
     <button
+      data-testid="no-wallet-connected-cta"
       onClick={onConnect}
       className="rounded border border-l-300 mx-auto my-4 text-l-300 hover:text-white hover:bg-l-400 hover:border-l-400 hover:fill-white focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-n-100 focus-visible:outline-none active:bg-l-500 active:border-l-500 active:text-l-100 active:ring-0"
     >
