@@ -8,10 +8,9 @@
     "build": "next build && next export",
     "start": "next start",
     "lint": "next lint",
-    "cypress": "cypress open",
-    "cypress:headless": "cypress run",
-    "e2e": "start-server-and-test dev http://localhost:3000 cypress",
-    "e2e:headless": "start-server-and-test dev http://localhost:3000 cypress:headless",
+    "cypress": "cypress run",
+    "cypress:component": "cypress run --component",
+    "e2e:headless": "start-server-and-test dev http://localhost:3000 cypress",
     "test": "jest"
   },
   "author": "XMTP Labs <eng@xmtp.com>",

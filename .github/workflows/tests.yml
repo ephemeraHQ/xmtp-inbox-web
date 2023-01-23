@@ -1,4 +1,4 @@
-name: Unit Tests
+name: Unit and Component Tests
 
 on: [pull_request]
 
@@ -11,3 +11,4 @@ jobs:
         run: |
           npm install 
           npm test
+          npm run cypress:component
