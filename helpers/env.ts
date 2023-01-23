@@ -11,7 +11,13 @@ export const getEnv = (): 'dev' | 'production' | 'local' => {
   return 'dev';
 };
 
-export const isAppEnvDemo = (): boolean => localStorage.getItem(ENVIRONMENT.DEMO) === String(true);
+export const isAppEnvDemo = (): boolean => {
+  return (
+    window.location.hostname.includes(ENVIRONMENT.DEMO) ||
+    // Added for E2E testing
+    localStorage.getItem(ENVIRONMENT.DEMO) === String(true)
+  );
+};
 
 export const tagStr = (): string | null => {
   return getEnv() === 'production' ? null : getEnv().toLocaleUpperCase();
