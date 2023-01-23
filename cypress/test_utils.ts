@@ -17,3 +17,33 @@ export const startDemoEnv = () => {
   cy.visit('http://localhost:3000');
   localStorage.setItem(ENVIRONMENT.DEMO, String(true));
 };
+
+export const sendAndEnterMessage = (testUser: string, message: string, numberOfTimes = 1) => {
+  // Enters wallet address
+  checkElement('message-to-input').last().type(testUser).click();
+
+  // Sees expected fields
+  checkElement('message-beginning-text');
+  checkElement('message-input');
+  checkElement('message-input-submit');
+
+  for (let i = 0; i < numberOfTimes; i++) {
+    // Enters message
+    checkElement('message-input').last().type(message);
+    checkElement('message-input-submit').last().click();
+  }
+
+  // TODO: Remove
+  cy.reload();
+
+  // Confirms successful message
+  cy.get(`[data-testid=conversations-list-panel]`, { timeout: 10000 })
+    .last()
+    .children()
+    .should('have.length', 1);
+  cy.get(`[data-testid=message-tile-container]`, { timeout: 10000 })
+    .last()
+    .children()
+    .should('have.length', numberOfTimes || 1);
+  cy.get(`[data-testid=message-tile-text]`, { timeout: 10000 }).last().should('have.text', message);
+};

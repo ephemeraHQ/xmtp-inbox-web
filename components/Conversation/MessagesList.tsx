@@ -34,7 +34,10 @@ const MessageTile = ({ message }: MessageTileProps): JSX.Element => (
           {formatTime(message.sent)}
         </span>
       </div>
-      <span className="block text-md px-2 mt-2 text-black font-normal break-words">
+      <span
+        className="block text-md px-2 mt-2 text-black font-normal break-words"
+        data-testid={'message-tile-text'}
+      >
         {message.error ? `Error: ${message.error?.message}` : <Emoji text={message.content || ''} />}
       </span>
     </div>
@@ -59,7 +62,9 @@ const DateDivider = ({ date }: { date?: Date }): JSX.Element => (
 
 const ConversationBeginningNotice = (): JSX.Element => (
   <div className="flex align-items-center justify-center pb-4 mt-4">
-    <span className="text-gray-300 text-sm font-semibold">This is the beginning of the conversation</span>
+    <span className="text-gray-300 text-sm font-semibold" data-testid="message-beginning-text">
+      This is the beginning of the conversation
+    </span>
   </div>
 );
 
@@ -82,17 +87,19 @@ const MessagesList = ({ messages, fetchNextMessages, hasMore }: MessageListProps
       hasMore={hasMore}
       loader={<LoadingMore />}
     >
-      {messages?.map((msg: DecodedMessage, index: number) => {
-        const dateHasChanged = lastMessageDate ? !isOnSameDay(lastMessageDate, msg.sent) : false;
-        const messageDiv = (
-          <div key={`${msg.id}_${index}`}>
-            <MessageTile message={msg} />
-            {dateHasChanged ? <DateDivider date={lastMessageDate} /> : null}
-          </div>
-        );
-        lastMessageDate = msg.sent;
-        return messageDiv;
-      })}
+      <div data-testid="message-tile-container">
+        {messages?.map((msg: DecodedMessage, index: number) => {
+          const dateHasChanged = lastMessageDate ? !isOnSameDay(lastMessageDate, msg.sent) : false;
+          const messageDiv = (
+            <div key={`${msg.id}_${index}`}>
+              <MessageTile message={msg} />
+              {dateHasChanged ? <DateDivider date={lastMessageDate} /> : null}
+            </div>
+          );
+          lastMessageDate = msg.sent;
+          return messageDiv;
+        })}
+      </div>
     </InfiniteScroll>
   );
 };
