@@ -26,8 +26,6 @@ NEXT_PUBLIC_INFURA_ID={YOUR_INFURA_ID}
 
 If you do not have an Infura ID, you can follow [these instructions](https://blog.infura.io/getting-started-with-infura-28e41844cc89/) to get one.
 
-_This example comes preconfigured with an Infura ID provided for demonstration purposes. If you plan to fork or host it, you must use your own Infura ID as detailed above._
-
 ### Install the package
 
 ```bash
