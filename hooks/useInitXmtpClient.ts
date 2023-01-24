@@ -21,7 +21,7 @@ const useInitXmtpClient = (cacheOnly = false) => {
 
   const initClient = useCallback(
     async (wallet: Signer) => {
-      if (wallet && !client) {
+      if (wallet && !client && address) {
         try {
           setIsRequestPending(true);
           let keys = loadKeys(address);
@@ -49,14 +49,14 @@ const useInitXmtpClient = (cacheOnly = false) => {
         }
       }
     },
-    [client]
+    [client, address]
   );
 
   useEffect(() => {
     if (!isRequestPending) {
       signer ? initClient(signer) : disconnect();
     }
-  }, [signer, initClient]);
+  }, [signer, initClient, address]);
 
   return {
     initClient
