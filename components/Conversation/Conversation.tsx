@@ -5,13 +5,16 @@ import { useAppStore } from '../../store/app';
 import useGetMessages from '../../hooks/useGetMessages';
 import useSendMessage from '../../hooks/useSendMessage';
 import { getConversationKey } from '../../helpers';
+import { useXmtpStore } from '../../store/xmtp';
 
 type ConversationProps = {
   recipientWalletAddr: string;
 };
 
 const Conversation = ({ recipientWalletAddr }: ConversationProps): JSX.Element => {
-  const conversations = useAppStore((state) => state.conversations);
+  const conversations = useXmtpStore((state) => state.conversations);
+  const loadingConversations = useXmtpStore((state) => state.loadingConversations);
+
   const selectedConversation = conversations.get(recipientWalletAddr);
   const conversationKey = getConversationKey(selectedConversation);
 
@@ -20,8 +23,6 @@ const Conversation = ({ recipientWalletAddr }: ConversationProps): JSX.Element =
   const [endTime, setEndTime] = useState<Map<string, Date>>(new Map());
 
   const { convoMessages: messages, hasMore } = useGetMessages(conversationKey, endTime.get(conversationKey));
-
-  const loadingConversations = useAppStore((state) => state.loadingConversations);
 
   const fetchNextMessages = useCallback(() => {
     if (hasMore && Array.isArray(messages) && messages.length > 0 && conversationKey) {

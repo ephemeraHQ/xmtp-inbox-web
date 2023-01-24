@@ -83,15 +83,16 @@ const MessagesList = ({ messages, fetchNextMessages, hasMore }: MessageListProps
       className="flex flex-col-reverse overflow-y-auto pl-4"
       height={size[1] > 700 ? '87vh' : '83vh'}
       inverse
-      endMessage={<ConversationBeginningNotice />}
+      endMessage={!messages.length && <ConversationBeginningNotice />}
       hasMore={hasMore}
       loader={<LoadingMore />}
     >
-      <div data-testid="message-tile-container">
+      <div className="flex flex-col-reverse" data-testid="message-tile-container">
         {messages?.map((msg: DecodedMessage, index: number) => {
           const dateHasChanged = lastMessageDate ? !isOnSameDay(lastMessageDate, msg.sent) : false;
           const messageDiv = (
             <div key={`${msg.id}_${index}`}>
+              {index === messages.length - 1 ? <ConversationBeginningNotice /> : null}
               <MessageTile message={msg} />
               {dateHasChanged ? <DateDivider date={lastMessageDate} /> : null}
             </div>

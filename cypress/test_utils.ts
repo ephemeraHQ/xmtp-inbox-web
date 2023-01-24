@@ -33,9 +33,6 @@ export const sendAndEnterMessage = (testUser: string, message: string, numberOfT
     checkElement('message-input-submit').last().click();
   }
 
-  // TODO: Remove
-  cy.reload();
-
   // Confirms successful message
   cy.get(`[data-testid=conversations-list-panel]`, { timeout: 10000 })
     .last()
