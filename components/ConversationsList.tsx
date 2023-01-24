@@ -6,6 +6,7 @@ import { Conversation } from '@xmtp/xmtp-js';
 import { classNames, formatDate, getConversationKey } from '../helpers';
 import Avatar from './Avatar';
 import { useAppStore } from '../store/app';
+import { useXmtpStore } from '../store/xmtp';
 
 type ConversationTileProps = {
   conversation: Conversation;
@@ -14,8 +15,8 @@ type ConversationTileProps = {
 const ConversationTile = ({ conversation }: ConversationTileProps): JSX.Element | null => {
   const router = useRouter();
   const address = useAppStore((state) => state.address);
-  const previewMessages = useAppStore((state) => state.previewMessages);
-  const loadingConversations = useAppStore((state) => state.loadingConversations);
+  const previewMessages = useXmtpStore((state) => state.previewMessages);
+  const loadingConversations = useXmtpStore((state) => state.loadingConversations);
   const [recipentAddress, setRecipentAddress] = useState<string>();
 
   useEffect(() => {
@@ -107,8 +108,8 @@ const ConversationTile = ({ conversation }: ConversationTileProps): JSX.Element 
 };
 
 const ConversationsList = (): JSX.Element => {
-  const conversations = useAppStore((state) => state.conversations);
-  const previewMessages = useAppStore((state) => state.previewMessages);
+  const conversations = useXmtpStore((state) => state.conversations);
+  const previewMessages = useXmtpStore((state) => state.previewMessages);
 
   const orderByLatestMessage = (convoA: Conversation, convoB: Conversation): number => {
     const convoALastMessageDate = previewMessages.get(getConversationKey(convoA))?.sent || new Date();
