@@ -6,6 +6,7 @@ import { useXmtpStore } from '../store/xmtp';
 
 type AddressInputProps = {
   recipientWalletAddress?: string;
+  conversationId?: string;
   id?: string;
   name?: string;
   className?: string;
@@ -15,6 +16,7 @@ type AddressInputProps = {
 
 const AddressInput = ({
   recipientWalletAddress,
+  conversationId,
   id,
   name,
   className,
@@ -50,7 +52,9 @@ const AddressInput = ({
       }
       if (recipientWalletAddress && !checkIfPathIsEns(recipientWalletAddress)) {
         const name = await lookupAddress(recipientWalletAddress);
-        const conversation = await client?.conversations.newConversation(recipientWalletAddress);
+        const conversation = await client?.conversations.newConversation(recipientWalletAddress, {
+          conversationId
+        });
         if (conversation) {
           conversations.set(recipientWalletAddress, conversation);
           setConversations(new Map(conversations));
@@ -61,7 +65,7 @@ const AddressInput = ({
           setValue(recipientWalletAddress);
         }
       } else if (value.startsWith('0x') && value.length === 42) {
-        const conversation = await client?.conversations.newConversation(value);
+        const conversation = await client?.conversations.newConversation(value, { conversationId });
         if (conversation) {
           conversations.set(value, conversation);
           setConversations(new Map(conversations));
