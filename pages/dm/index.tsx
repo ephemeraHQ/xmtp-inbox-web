@@ -1,7 +1,7 @@
-import type { NextPage } from 'next'
+import type { NextPage } from 'next';
 
 const BlankConversation: NextPage = () => {
-  return <div />
-}
+  return <div />;
+};
 
-export default BlankConversation
+export default BlankConversation;

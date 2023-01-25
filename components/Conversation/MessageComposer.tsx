@@ -1,32 +1,31 @@
-import React, { useEffect, useState } from 'react'
-import { classNames } from '../../helpers'
-import messageComposerStyles from '../../styles/MessageComposer.module.css'
-import upArrowGreen from '../../public/up-arrow-green.svg'
-import upArrowGrey from '../../public/up-arrow-grey.svg'
-import { useRouter } from 'next/router'
-import Image from 'next/image'
+import React, { useEffect, useState } from 'react';
+import { classNames } from '../../helpers';
+import messageComposerStyles from '../../styles/MessageComposer.module.css';
+import upArrowGreen from '../../public/up-arrow-green.svg';
+import upArrowGrey from '../../public/up-arrow-grey.svg';
+import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 type MessageComposerProps = {
-  onSend: (msg: string) => Promise<void>
-}
+  onSend: (msg: string) => Promise<void>;
+};
 
 const MessageComposer = ({ onSend }: MessageComposerProps): JSX.Element => {
-  const [message, setMessage] = useState('')
-  const router = useRouter()
+  const [message, setMessage] = useState('');
+  const router = useRouter();
 
-  useEffect(() => setMessage(''), [router.query.recipientWalletAddr])
+  useEffect(() => setMessage(''), [router.query.recipientWalletAddr]);
 
-  const onMessageChange = (e: React.FormEvent<HTMLInputElement>) =>
-    setMessage(e.currentTarget.value)
+  const onMessageChange = (e: React.FormEvent<HTMLInputElement>) => setMessage(e.currentTarget.value);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+    e.preventDefault();
     if (!message) {
-      return
+      return;
     }
-    setMessage('')
-    await onSend(message)
-  }
+    setMessage('');
+    await onSend(message);
+  };
 
   return (
     <div className={classNames('bg-white', 'flex', 'items-center')}>
@@ -71,7 +70,7 @@ const MessageComposer = ({ onSend }: MessageComposerProps): JSX.Element => {
         </button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default MessageComposer
+export default MessageComposer;

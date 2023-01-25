@@ -1,8 +1,8 @@
-import { ChevronLeftIcon } from '@heroicons/react/outline'
+import { ChevronLeftIcon } from '@heroicons/react/outline';
 
 type BackArrowProps = {
-  onClick: () => void
-}
+  onClick: () => void;
+};
 
 const BackArrow = ({ onClick }: BackArrowProps): JSX.Element => (
   <button
@@ -13,6 +13,6 @@ const BackArrow = ({ onClick }: BackArrowProps): JSX.Element => (
     <span className="sr-only">Close message view</span>
     <ChevronLeftIcon className="h-5 w-5 stroke-n-600" aria-hidden="true" />
   </button>
-)
+);
 
-export default BackArrow
+export default BackArrow;

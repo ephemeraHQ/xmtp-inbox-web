@@ -1,112 +1,104 @@
-import { useState, useEffect, useCallback } from 'react'
-import { useRouter } from 'next/router'
-import AddressInput from '../AddressInput'
-import { checkIfPathIsEns, getAddressFromPath } from '../../helpers'
-import { useAppStore } from '../../store/app'
-import BackArrow from '../BackArrow'
-import useEnsHooks from '../../hooks/useEnsHooks'
+import { useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/router';
+import AddressInput from '../AddressInput';
+import { checkIfPathIsEns, getAddressFromPath } from '../../helpers';
+import { useAppStore } from '../../store/app';
+import BackArrow from '../BackArrow';
+import useEnsHooks from '../../hooks/useEnsHooks';
 
 const RecipientInputMode = {
   InvalidEntry: 0,
   ValidEntry: 1,
   FindingEntry: 2,
   Submitted: 3,
-  NotOnNetwork: 4,
-}
+  NotOnNetwork: 4
+};
 
 const RecipientControl = (): JSX.Element => {
-  const { lookupAddress, resolveName } = useEnsHooks()
-  const client = useAppStore((state) => state.client)
-  const router = useRouter()
-  const recipientWalletAddress = getAddressFromPath(router)
-  const [recipientInputMode, setRecipientInputMode] = useState(
-    RecipientInputMode.InvalidEntry
-  )
-  const [hasName, setHasName] = useState(false)
+  const { lookupAddress, resolveName } = useEnsHooks();
+  const client = useAppStore((state) => state.client);
+  const router = useRouter();
+  const recipientWalletAddress = getAddressFromPath(router);
+  const [recipientInputMode, setRecipientInputMode] = useState(RecipientInputMode.InvalidEntry);
+  const [hasName, setHasName] = useState(false);
 
   const checkIfOnNetwork = useCallback(
     async (address: string): Promise<boolean> => {
-      return client?.canMessage(address) || false
+      return client?.canMessage(address) || false;
     },
     [client]
-  )
+  );
 
   const onSubmit = async (address: string) => {
-    router.push(address ? `/dm/${address}` : '/dm/')
-  }
+    router.push(address ? `/dm/${address}` : '/dm/');
+  };
 
   const handleBackArrowClick = useCallback(() => {
-    router.push('/')
-  }, [router])
+    router.push('/');
+  }, [router]);
 
   const completeSubmit = async (address: string, input: HTMLInputElement) => {
     if (await checkIfOnNetwork(address)) {
-      onSubmit(address)
-      input.blur()
-      setRecipientInputMode(RecipientInputMode.Submitted)
+      onSubmit(address);
+      input.blur();
+      setRecipientInputMode(RecipientInputMode.Submitted);
     } else {
-      setRecipientInputMode(RecipientInputMode.NotOnNetwork)
+      setRecipientInputMode(RecipientInputMode.NotOnNetwork);
     }
-  }
+  };
 
   useEffect(() => {
     const handleAddressLookup = async (address: string) => {
-      const name = await lookupAddress(address)
-      setHasName(!!name)
-    }
+      const name = await lookupAddress(address);
+      setHasName(!!name);
+    };
     if (recipientWalletAddress && !checkIfPathIsEns(recipientWalletAddress)) {
-      setRecipientInputMode(RecipientInputMode.Submitted)
-      handleAddressLookup(recipientWalletAddress)
+      setRecipientInputMode(RecipientInputMode.Submitted);
+      handleAddressLookup(recipientWalletAddress);
     } else {
-      setRecipientInputMode(RecipientInputMode.InvalidEntry)
+      setRecipientInputMode(RecipientInputMode.InvalidEntry);
     }
-  }, [lookupAddress, recipientWalletAddress])
+  }, [lookupAddress, recipientWalletAddress]);
 
   const handleSubmit = useCallback(
     async (e: React.SyntheticEvent, value?: string) => {
-      e.preventDefault()
+      e.preventDefault();
       const data = e.target as typeof e.target & {
-        recipient: { value: string }
-      }
-      const input = e.target as HTMLInputElement
-      const recipientValue = value || data.recipient.value
+        recipient: { value: string };
+      };
+      const input = e.target as HTMLInputElement;
+      const recipientValue = value || data.recipient.value;
       if (recipientValue.endsWith('eth')) {
-        setRecipientInputMode(RecipientInputMode.FindingEntry)
-        const address = await resolveName(recipientValue)
+        setRecipientInputMode(RecipientInputMode.FindingEntry);
+        const address = await resolveName(recipientValue);
         if (address) {
-          await completeSubmit(address, input)
+          await completeSubmit(address, input);
         } else {
-          setRecipientInputMode(RecipientInputMode.InvalidEntry)
+          setRecipientInputMode(RecipientInputMode.InvalidEntry);
         }
-      } else if (
-        recipientValue.startsWith('0x') &&
-        recipientValue.length === 42
-      ) {
-        await completeSubmit(recipientValue, input)
+      } else if (recipientValue.startsWith('0x') && recipientValue.length === 42) {
+        await completeSubmit(recipientValue, input);
       }
     },
     [resolveName]
-  )
+  );
 
   const handleInputChange = useCallback(
     async (e: React.SyntheticEvent) => {
       const data = e.target as typeof e.target & {
-        value: string
-      }
+        value: string;
+      };
       if (router.pathname !== '/dm') {
-        router.push('/dm')
+        router.push('/dm');
       }
-      if (
-        data.value.endsWith('.eth') ||
-        (data.value.startsWith('0x') && data.value.length === 42)
-      ) {
-        handleSubmit(e, data.value)
+      if (data.value.endsWith('.eth') || (data.value.startsWith('0x') && data.value.length === 42)) {
+        handleSubmit(e, data.value);
       } else {
-        setRecipientInputMode(RecipientInputMode.InvalidEntry)
+        setRecipientInputMode(RecipientInputMode.InvalidEntry);
       }
     },
     [handleSubmit, router]
-  )
+  );
 
   return (
     <>
@@ -114,17 +106,15 @@ const RecipientControl = (): JSX.Element => {
         <BackArrow onClick={handleBackArrowClick} />
       </div>
       <div className="flex-1 flex-col shrink justify-center flex bg-zinc-50 md:border-b md:border-gray-200 md:px-4 md:pb-[2px]">
-        <form
-          className="w-full flex pl-2 md:pl-0 h-8 pt-1"
-          action="#"
-          method="GET"
-          onSubmit={handleSubmit}
-        >
+        <form className="w-full flex pl-2 md:pl-0 h-8 pt-1" action="#" method="GET" onSubmit={handleSubmit}>
           <label htmlFor="recipient-field" className="sr-only">
             Recipient
           </label>
           <div className="relative w-full text-n-300 focus-within:text-n-600">
-            <div className="absolute top-1 left-0 flex items-center pointer-events-none text-md md:text-sm font-medium md:font-semibold">
+            <div
+              className="absolute top-1 left-0 flex items-center pointer-events-none text-md md:text-sm font-medium md:font-semibold"
+              data-testid="message-to-key"
+            >
               To:
             </div>
             <AddressInput
@@ -143,19 +133,19 @@ const RecipientControl = (): JSX.Element => {
             {hasName ? recipientWalletAddress : <br />}
           </div>
         ) : (
-          <div className="text-sm md:text-xs text-n-300 ml-[29px] pl-2 md:pl-0 pb-1 md:pb-[3px]">
-            {recipientInputMode === RecipientInputMode.NotOnNetwork &&
-              'Recipient is not on the XMTP network'}
-            {recipientInputMode === RecipientInputMode.FindingEntry &&
-              'Finding ENS domain...'}
-            {recipientInputMode === RecipientInputMode.InvalidEntry &&
-              'Please enter a valid wallet address'}
+          <div
+            className="text-sm md:text-xs text-n-300 ml-[29px] pl-2 md:pl-0 pb-1 md:pb-[3px]"
+            data-testid="message-to-subtext"
+          >
+            {recipientInputMode === RecipientInputMode.NotOnNetwork && 'Recipient is not on the XMTP network'}
+            {recipientInputMode === RecipientInputMode.FindingEntry && 'Finding ENS domain...'}
+            {recipientInputMode === RecipientInputMode.InvalidEntry && 'Please enter a valid wallet address'}
             {recipientInputMode === RecipientInputMode.ValidEntry && <br />}
           </div>
         )}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default RecipientControl
+export default RecipientControl;
