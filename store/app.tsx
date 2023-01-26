@@ -33,7 +33,6 @@ export const useAppStore = create<AppState>((set) => ({
   resetAppState: () =>
     set(() => {
       return {
-        web3Modal: undefined,
         client: undefined,
         address: undefined,
         signer: undefined
