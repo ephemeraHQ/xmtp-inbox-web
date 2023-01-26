@@ -18,16 +18,18 @@ export const startDemoEnv = () => {
   localStorage.setItem(ENVIRONMENT.DEMO, String(true));
 };
 
-export const sendAndEnterMessage = (testUser: string, message: string, numberOfTimes = 1) => {
-  // Enters wallet address
+const enterWalletAddress = (testUser: string) => {
   checkElement('message-to-input').last().type(testUser).click();
+}
 
-  // Sees expected fields
+const checkExpectedPreMessageFields = () => {
   cy.wait(1000);
   checkElement('message-beginning-text');
   checkElement('message-input');
   checkElement('message-input-submit');
+}
 
+const sendMessages = (numberOfTimes: number, message: string, testUser: string) => {
   for (let i = 0; i < numberOfTimes; i++) {
     // Enters message
     checkElement('message-input').last().type(message);
@@ -48,11 +50,41 @@ export const sendAndEnterMessage = (testUser: string, message: string, numberOfT
   //   .last()
   //   .children()
   //   .should('have.length', 1);
+}
 
+const checkMessageOutput = (numberOfTimes: number, message: string) => {
   cy.get(`[data-testid=message-tile-container]`, { timeout: 10000 })
     .last()
     .children()
     .should('have.length', numberOfTimes || 1);
 
   cy.get(`[data-testid=message-tile-text]`, { timeout: 10000 }).last().should('have.text', message);
+}
+
+const checkMostRecentMessageOutput =(numberOfTimes: number, differentMessage: string) => {
+  cy.get(`[data-testid=message-tile-container]`, { timeout: 10000 })
+  .last()
+  .children()
+  .should('have.length', numberOfTimes + 1 || 2);
+
+cy.get(`[data-testid=message-tile-container]`, { timeout: 10000 })
+  .last()
+  .children()
+  .first()
+  .should('contain.text', differentMessage);
+}
+
+export const sendAndEnterMessage = (testUser: string, message: string, numberOfTimes = 1, checkDifferentMessages = false) => {
+  enterWalletAddress(testUser)
+  checkExpectedPreMessageFields()
+  sendMessages(numberOfTimes, message, testUser)
+  if (checkDifferentMessages) {
+    const differentMessage = 'differentMessage'
+    // Send additional different message, check that different message was returned in correct order
+    sendMessages(1, differentMessage, testUser)
+    checkMostRecentMessageOutput(numberOfTimes, differentMessage)
+  } else {
+    checkMessageOutput(numberOfTimes, message)
+
+  }
 };
