@@ -28,7 +28,8 @@ const ConversationTile = ({ conversation }: ConversationTileProps): JSX.Element 
   }, [router.query.recipientWalletAddr]);
 
   useEffect(() => {
-    if (!recipentAddress && window.location.pathname.includes('/dm')) {
+    const addressInPathname = window.location.pathname.includes('/dm') && window.location.pathname !== '/dm';
+    if (!recipentAddress && addressInPathname) {
       router.push(window.location.pathname);
       setRecipentAddress(window.location.pathname.replace('/dm/', ''));
     }
