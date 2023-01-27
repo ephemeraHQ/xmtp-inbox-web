@@ -91,7 +91,7 @@ const ConversationsPanel = (): JSX.Element => {
   }
 
   return (
-    <nav className="flex-1 pb-4">
+    <nav className="flex-1 pb-4" data-testid="conversations-list-panel">
       <ConversationsList />
     </nav>
   );

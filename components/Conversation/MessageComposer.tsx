@@ -60,8 +60,9 @@ const MessageComposer = ({ onSend }: MessageComposerProps): JSX.Element => {
           value={message}
           onChange={onMessageChange}
           required
+          data-testid="message-input"
         />
-        <button type="submit" className={messageComposerStyles.arrow}>
+        <button type="submit" className={messageComposerStyles.arrow} data-testid="message-input-submit">
           {!message ? (
             <Image src={upArrowGrey} alt="send" height={32} width={32} />
           ) : (
