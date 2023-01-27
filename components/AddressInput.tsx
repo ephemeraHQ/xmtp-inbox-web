@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { checkIfPathIsEns, classNames } from '../helpers';
+import { checkIfPathIsEns, classNames, getConversationKey } from '../helpers';
 import useEnsHooks from '../hooks/useEnsHooks';
 import { useAppStore } from '../store/app';
 import { useXmtpStore } from '../store/xmtp';
 
 type AddressInputProps = {
   recipientWalletAddress?: string;
+  conversationId?: string;
   id?: string;
   name?: string;
   className?: string;
@@ -15,6 +16,7 @@ type AddressInputProps = {
 
 const AddressInput = ({
   recipientWalletAddress,
+  conversationId,
   id,
   name,
   className,
@@ -50,9 +52,14 @@ const AddressInput = ({
       }
       if (recipientWalletAddress && !checkIfPathIsEns(recipientWalletAddress)) {
         const name = await lookupAddress(recipientWalletAddress);
-        const conversation = await client?.conversations.newConversation(recipientWalletAddress);
+        const conversation = conversationId
+          ? await client?.conversations.newConversation(recipientWalletAddress, {
+              conversationId,
+              metadata: {}
+            })
+          : await client?.conversations.newConversation(recipientWalletAddress);
         if (conversation) {
-          conversations.set(recipientWalletAddress, conversation);
+          conversations.set(getConversationKey(conversation), conversation);
           setConversations(new Map(conversations));
         }
         if (name) {
@@ -61,9 +68,14 @@ const AddressInput = ({
           setValue(recipientWalletAddress);
         }
       } else if (value.startsWith('0x') && value.length === 42) {
-        const conversation = await client?.conversations.newConversation(value);
+        const conversation = conversationId
+          ? await client?.conversations.newConversation(value, {
+              conversationId,
+              metadata: {}
+            })
+          : await client?.conversations.newConversation(value);
         if (conversation) {
-          conversations.set(value, conversation);
+          conversations.set(getConversationKey(conversation), conversation);
           setConversations(new Map(conversations));
         }
         const name = await lookupAddress(value);

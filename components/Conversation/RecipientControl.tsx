@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import AddressInput from '../AddressInput';
-import { checkIfPathIsEns, getAddressFromPath } from '../../helpers';
+import { checkIfPathIsEns, getAddressFromPath, getConversationIdFromPath } from '../../helpers';
 import { useAppStore } from '../../store/app';
 import BackArrow from '../BackArrow';
 import useEnsHooks from '../../hooks/useEnsHooks';
@@ -19,6 +19,7 @@ const RecipientControl = (): JSX.Element => {
   const client = useAppStore((state) => state.client);
   const router = useRouter();
   const recipientWalletAddress = getAddressFromPath(router);
+  const conversationId = getConversationIdFromPath(router);
   const [recipientInputMode, setRecipientInputMode] = useState(RecipientInputMode.InvalidEntry);
   const [hasName, setHasName] = useState(false);
 
@@ -119,6 +120,7 @@ const RecipientControl = (): JSX.Element => {
             </div>
             <AddressInput
               recipientWalletAddress={recipientWalletAddress}
+              conversationId={conversationId}
               id="recipient-field"
               className="block w-[95%] pl-7 pr-3 pt-[3px] md:pt-[2px] md:pt-[1px] bg-transparent caret-n-600 text-n-600 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-0 focus:border-transparent text-lg font-mono"
               name="recipient"

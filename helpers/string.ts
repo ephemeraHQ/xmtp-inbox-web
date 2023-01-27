@@ -46,3 +46,9 @@ export const getAddressFromPath = (router: NextRouter): string => {
     ? router.query.recipientWalletAddr[0]
     : (router.query.recipientWalletAddr as string);
 };
+
+export const getConversationIdFromPath = (router: NextRouter): string | undefined => {
+  return Array.isArray(router.query.recipientWalletAddr) && router.query.recipientWalletAddr.length > 1
+    ? router.query.recipientWalletAddr.slice(1).join('/')
+    : undefined;
+};
