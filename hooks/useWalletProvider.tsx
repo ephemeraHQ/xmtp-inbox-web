@@ -48,7 +48,7 @@ const useWalletProvider = () => {
   }, [handleAccountsChanged, web3Modal]);
 
   useEffect(() => {
-    !web3Modal && setWeb3Modal(new Web3Modal({ cacheProvider: false, providerOptions }));
+    !web3Modal && setWeb3Modal(new Web3Modal({ cacheProvider: true, providerOptions }));
   }, []);
 
   useEffect(() => {
