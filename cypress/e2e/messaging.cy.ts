@@ -1,9 +1,4 @@
-import {
-  startDemoEnv,
-  sendAndEnterMessage,
-  checkElement,
-  checkMissingElement
-} from '../test_utils';
+import { startDemoEnv, sendAndEnterMessage, checkElement, checkMissingElement } from '../test_utils';
 
 describe('Messaging Test Cases', () => {
   beforeEach(() => {
