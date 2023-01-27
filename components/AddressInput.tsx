@@ -50,11 +50,15 @@ const AddressInput = ({
       if (!lookupAddress) {
         return;
       }
+      console.log({ conversationId });
       if (recipientWalletAddress && !checkIfPathIsEns(recipientWalletAddress)) {
         const name = await lookupAddress(recipientWalletAddress);
-        const conversation = await client?.conversations.newConversation(recipientWalletAddress, {
-          conversationId
-        });
+        const conversation = conversationId
+          ? await client?.conversations.newConversation(recipientWalletAddress, {
+              conversationId,
+              metadata: {}
+            })
+          : await client?.conversations.newConversation(recipientWalletAddress);
         if (conversation) {
           conversations.set(recipientWalletAddress, conversation);
           setConversations(new Map(conversations));
@@ -65,7 +69,12 @@ const AddressInput = ({
           setValue(recipientWalletAddress);
         }
       } else if (value.startsWith('0x') && value.length === 42) {
-        const conversation = await client?.conversations.newConversation(value, { conversationId });
+        const conversation = conversationId
+          ? await client?.conversations.newConversation(value, {
+              conversationId,
+              metadata: {}
+            })
+          : await client?.conversations.newConversation(value);
         if (conversation) {
           conversations.set(value, conversation);
           setConversations(new Map(conversations));
