@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { checkIfPathIsEns, classNames } from '../helpers';
+import { checkIfPathIsEns, classNames, getConversationKey } from '../helpers';
 import useEnsHooks from '../hooks/useEnsHooks';
 import { useAppStore } from '../store/app';
 import { useXmtpStore } from '../store/xmtp';
@@ -50,7 +50,6 @@ const AddressInput = ({
       if (!lookupAddress) {
         return;
       }
-      console.log({ conversationId });
       if (recipientWalletAddress && !checkIfPathIsEns(recipientWalletAddress)) {
         const name = await lookupAddress(recipientWalletAddress);
         const conversation = conversationId
@@ -60,7 +59,7 @@ const AddressInput = ({
             })
           : await client?.conversations.newConversation(recipientWalletAddress);
         if (conversation) {
-          conversations.set(recipientWalletAddress, conversation);
+          conversations.set(getConversationKey(conversation), conversation);
           setConversations(new Map(conversations));
         }
         if (name) {
@@ -76,7 +75,7 @@ const AddressInput = ({
             })
           : await client?.conversations.newConversation(value);
         if (conversation) {
-          conversations.set(value, conversation);
+          conversations.set(getConversationKey(conversation), conversation);
           setConversations(new Map(conversations));
         }
         const name = await lookupAddress(value);
