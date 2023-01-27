@@ -128,6 +128,7 @@ const AddressInput = ({
         autoCorrect="off"
         autoCapitalize="off"
         spellCheck="false"
+        data-testid="message-to-input"
       />
     </div>
   );
