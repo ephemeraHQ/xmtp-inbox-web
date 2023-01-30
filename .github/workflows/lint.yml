@@ -1,0 +1,14 @@
+name: Lint Checks
+
+on: [pull_request]
+
+jobs:
+  eslint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run Lint
+        run: |
+          npm install 
+          npm run lint
+          npm run eslint

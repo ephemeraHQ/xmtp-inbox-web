@@ -3,7 +3,7 @@ name: Unit and Component Tests
 on: [pull_request]
 
 jobs:
-  Jest:
+  jest-and-cypress-components:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
