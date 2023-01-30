@@ -2,7 +2,8 @@ import { getEnv } from './env';
 
 const ENCODING = 'binary';
 
-export const buildLocalStorageKey = (walletAddress: string) => `xmtp:${getEnv()}:keys:${walletAddress}`;
+export const buildLocalStorageKey = (walletAddress: string) =>
+  walletAddress ? `xmtp:${getEnv()}:keys:${walletAddress}` : '';
 
 export const loadKeys = (walletAddress: string): Uint8Array | null => {
   const val = localStorage.getItem(buildLocalStorageKey(walletAddress));

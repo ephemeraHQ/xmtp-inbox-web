@@ -1,9 +1,9 @@
 import { Conversation } from '@xmtp/xmtp-js';
 import { NextRouter } from 'next/router';
 
-export const truncate = (str: string | undefined, length: number): string | undefined => {
+export const truncate = (str: string | undefined, length: number): string => {
   if (!str) {
-    return str;
+    return '';
   }
   if (str.length > length) {
     return `${str.substring(0, length - 3)}...`;
@@ -27,7 +27,7 @@ export const checkPath = () => {
 };
 
 export const checkIfPathIsEns = (address: string): boolean => {
-  return address.includes('eth');
+  return address.endsWith('.eth');
 };
 
 export const shortAddress = (addr: string): string =>

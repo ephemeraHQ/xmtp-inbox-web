@@ -1,4 +1,5 @@
 import { getAppVersion } from '../appVersion';
+import { expect } from '@jest/globals';
 
 jest.mock('../../package.json', () => ({
   name: 'testName',

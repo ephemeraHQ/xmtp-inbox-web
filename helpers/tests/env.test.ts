@@ -1,5 +1,6 @@
 import { getEnv, isAppEnvDemo, tagStr } from '../env';
 import { ENVIRONMENT } from '../constants';
+import { expect } from '@jest/globals';
 
 describe('getEnv', () => {
   const OLD_ENV = process.env;
@@ -40,6 +41,10 @@ describe('isAppEnvDemo', () => {
   });
   it('returns false if local storage has a key of demo with unexpected value', () => {
     window.localStorage.setItem(ENVIRONMENT.DEMO, String(false));
+    expect(isAppEnvDemo()).toBe(false);
+  });
+  it('returns false if hostname does not include demo when empty local storage', () => {
+    window.localStorage.clear();
     expect(isAppEnvDemo()).toBe(false);
   });
 });
