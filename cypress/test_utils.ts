@@ -62,20 +62,25 @@ const checkMessageOutput = (numberOfTimes: number, message: string) => {
   cy.get(`[data-testid=message-tile-text]`, { timeout: 10000 }).last().should('have.text', message);
 };
 
-const checkMostRecentMessageOutput =(numberOfTimes: number, differentMessage: string) => {
+const checkMostRecentMessageOutput = (numberOfTimes: number, differentMessage: string) => {
   cy.get(`[data-testid=message-tile-container]`, { timeout: 10000 })
-  .last()
-  .children()
-  .should('have.length', numberOfTimes + 1 || 2);
+    .last()
+    .children()
+    .should('have.length', numberOfTimes + 1 || 2);
 
-cy.get(`[data-testid=message-tile-container]`, { timeout: 10000 })
-  .last()
-  .children()
-  .first()
-  .should('contain.text', differentMessage);
+  cy.get(`[data-testid=message-tile-container]`, { timeout: 10000 })
+    .last()
+    .children()
+    .first()
+    .should('contain.text', differentMessage);
 };
 
-export const sendAndEnterMessage = (testUser: string, message: string, numberOfTimes = 1, checkDifferentMessages = false) => {
+export const sendAndEnterMessage = (
+  testUser: string,
+  message: string,
+  numberOfTimes = 1,
+  checkDifferentMessages = false
+) => {
   enterWalletAddress(testUser);
   checkExpectedPreMessageFields();
   sendMessages(numberOfTimes, message, testUser);
@@ -86,6 +91,5 @@ export const sendAndEnterMessage = (testUser: string, message: string, numberOfT
     checkMostRecentMessageOutput(numberOfTimes, differentMessage);
   } else {
     checkMessageOutput(numberOfTimes, message);
-
   }
 };

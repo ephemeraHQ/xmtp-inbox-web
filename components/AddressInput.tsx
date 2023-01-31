@@ -34,7 +34,6 @@ const AddressInput = ({
   const [value, setValue] = useState<string>(recipientWalletAddress || '');
 
   const focusInputElementRef = () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (inputElement.current as any)?.focus();
   };
 
