@@ -7,7 +7,7 @@ import { useXmtpStore } from '../store/xmtp';
 
 const useInitXmtpClient = (cacheOnly = false) => {
   const signer = useAppStore((state) => state.signer);
-  const address = useAppStore((state) => state.address) ?? '';
+  const address = useAppStore((state) => state.address);
   const client = useAppStore((state) => state.client);
   const setClient = useAppStore((state) => state.setClient);
   const resetAppState = useAppStore((state) => state.resetAppState);
@@ -18,7 +18,7 @@ const useInitXmtpClient = (cacheOnly = false) => {
     resetAppState();
     resetXmtpState();
     if (signer) {
-      wipeKeys(address);
+      wipeKeys(address ?? '');
     }
   };
 
@@ -52,7 +52,7 @@ const useInitXmtpClient = (cacheOnly = false) => {
         }
       }
     },
-    [client, address]
+    [client, signer, address]
   );
 
   useEffect(() => {

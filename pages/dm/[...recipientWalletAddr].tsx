@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { Conversation } from '../../components/Conversation';
-import useEnsHooks from '../../hooks/useEnsHooks';
+import { useEnsAddress } from 'wagmi';
 
 const ConversationPage: NextPage = () => {
   const router = useRouter();
-  const { resolveName } = useEnsHooks();
   const [recipientWalletAddr, setRecipientWalletAddr] = useState<string>();
+  const { data: address } = useEnsAddress({
+    name: recipientWalletAddr
+  });
 
   useEffect(() => {
     const routeAddress =
@@ -19,13 +21,12 @@ const ConversationPage: NextPage = () => {
 
   useEffect(() => {
     const checkIfEns = async () => {
-      if (recipientWalletAddr?.includes('.eth')) {
-        const address = await resolveName(recipientWalletAddr);
+      if (recipientWalletAddr?.includes('.eth') && address) {
         router.push(`/dm/${address}`);
       }
     };
     checkIfEns();
-  }, [recipientWalletAddr, window.location.pathname]);
+  }, [recipientWalletAddr, window.location.pathname, address]);
 
   return <Conversation recipientWalletAddr={recipientWalletAddr ?? ''} />;
 };

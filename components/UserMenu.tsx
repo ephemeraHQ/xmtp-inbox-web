@@ -37,14 +37,6 @@ const NotConnected = ({ onConnect, isError }: UserMenuProps): JSX.Element => {
           </p>
         </a>
       </div>
-      <button className="max-w-xs flex items-center text-sm rounded focus:outline-none" onClick={onConnect}>
-        <span className="sr-only">Connect</span>
-        <CogIcon
-          className="h-6 w-6 md:h-5 md:w-5 fill-n-100 hover:fill-n-200"
-          aria-hidden="true"
-          data-testid="settings-icon"
-        />
-      </button>
     </>
   );
 };

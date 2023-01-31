@@ -1,10 +1,10 @@
 import React from 'react';
 import { classNames } from '../helpers';
 import { useAppStore } from '../store/app';
-import Address from './Address';
+import Address, { address } from './Address';
 
 type addressPillProps = {
-  address: string;
+  address: address;
 };
 
 const AddressPill = ({ address }: addressPillProps): JSX.Element => {

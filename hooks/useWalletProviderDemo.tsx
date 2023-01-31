@@ -1,16 +1,16 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ethers, Wallet } from 'ethers';
-import { useAppStore } from '../store/app';
+import { ProviderType, useAppStore } from '../store/app';
 import { isAppEnvDemo } from '../helpers';
+import { address } from '../components/Address';
 
 function getInfuraId() {
-  return process.env.NEXT_PUBLIC_INFURA_ID || 'c518355f44bd45709cf0d42567d7bdb4';
+  return process.env.NEXT_PUBLIC_INFURA_ID;
 }
 
 const useWalletProviderDemo = () => {
   const address = useAppStore((state) => state.address);
-  const provider = useAppStore((state) => state.provider);
-  const setProvider = useAppStore((state) => state.setProvider);
+  const [provider, setProvider] = useState<ProviderType>();
   const setAddress = useAppStore((state) => state.setAddress);
   const setSigner = useAppStore((state) => state.setSigner);
 
@@ -21,7 +21,7 @@ const useWalletProviderDemo = () => {
         if (!address) {
           const newSigner = Wallet.createRandom();
           setSigner(newSigner);
-          setAddress(newSigner.address);
+          setAddress(newSigner.address as address);
           return newSigner;
         }
       } catch (e) {

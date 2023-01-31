@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { checkIfPathIsEns, classNames, getConversationKey } from '../helpers';
-import useEnsHooks from '../hooks/useEnsHooks';
 import { useAppStore } from '../store/app';
 import { useXmtpStore } from '../store/xmtp';
+import { useEnsName } from 'wagmi';
+import { address } from './Address';
 
 type AddressInputProps = {
-  recipientWalletAddress?: string;
+  recipientWalletAddress?: address;
   conversationId?: string;
   id?: string;
   name?: string;
@@ -18,13 +19,11 @@ const AddressInput = ({
   recipientWalletAddress,
   conversationId,
   id,
-  name,
   className,
   placeholder,
   onInputChange
 }: AddressInputProps): JSX.Element => {
-  const { lookupAddress } = useEnsHooks();
-
+  const { data: name } = useEnsName({ address: recipientWalletAddress });
   const walletAddress = useAppStore((state) => state.address);
   const client = useAppStore((state) => state.client);
   const conversations = useXmtpStore((state) => state.conversations);
@@ -46,11 +45,8 @@ const AddressInput = ({
 
   useEffect(() => {
     const setLookupValue = async () => {
-      if (!lookupAddress) {
-        return;
-      }
       if (recipientWalletAddress && !checkIfPathIsEns(recipientWalletAddress)) {
-        const name = await lookupAddress(recipientWalletAddress);
+        // const name = await lookupAddress(recipientWalletAddress);
         const conversation = conversationId
           ? await client?.conversations.newConversation(recipientWalletAddress, {
               conversationId,
@@ -77,14 +73,14 @@ const AddressInput = ({
           conversations.set(getConversationKey(conversation), conversation);
           setConversations(new Map(conversations));
         }
-        const name = await lookupAddress(value);
+        // const name = await lookupAddress(value);
         if (name) {
           setValue(name);
         }
       }
     };
     setLookupValue();
-  }, [value, recipientWalletAddress, lookupAddress]);
+  }, [value, recipientWalletAddress, name]);
 
   const userIsSender = recipientWalletAddress === walletAddress;
 
@@ -124,7 +120,7 @@ const AddressInput = ({
       {recipientWalletAddress && value && <span className={recipientPillInputStyle}>{value}</span>}
       <input
         id={id}
-        name={name}
+        name="recipient"
         className={classNames(
           className || '',
           'absolute top-0 left-0',

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ChatIcon } from '@heroicons/react/outline';
-import Address from './Address';
+import Address, { address } from './Address';
 import { useRouter } from 'next/router';
 import { Conversation } from '@xmtp/xmtp-js';
 import { classNames, formatDate, getConversationKey } from '../helpers';
@@ -77,7 +77,7 @@ const ConversationTile = ({ conversation }: ConversationTileProps): JSX.Element 
         isSelected ? 'bg-bt-200' : null
       )}
     >
-      <Avatar peerAddress={conversation.peerAddress} />
+      <Avatar peerAddress={conversation.peerAddress as address} />
       <div className="py-4 sm:text-left text w-full">
         {conversationDomain && (
           <div className="text-sm rounded-2xl text-white bg-black w-max px-2 font-bold">
@@ -86,7 +86,7 @@ const ConversationTile = ({ conversation }: ConversationTileProps): JSX.Element 
         )}
         <div className="grid-cols-2 grid">
           <Address
-            address={conversation.peerAddress}
+            address={conversation.peerAddress as address}
             className="text-black text-lg md:text-md font-bold place-self-start"
           />
           <span

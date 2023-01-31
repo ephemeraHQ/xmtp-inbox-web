@@ -1,5 +1,6 @@
 import { Conversation } from '@xmtp/xmtp-js';
 import { NextRouter } from 'next/router';
+import { address } from '../components/Address';
 
 export const truncate = (str: string | undefined, length: number): string => {
   if (!str) {
@@ -41,10 +42,10 @@ export const getConversationKey = (conversation?: Conversation): string => {
     : conversation?.peerAddress ?? '';
 };
 
-export const getAddressFromPath = (router: NextRouter): string => {
+export const getAddressFromPath = (router: NextRouter): address => {
   return Array.isArray(router.query.recipientWalletAddr)
-    ? router.query.recipientWalletAddr[0]
-    : (router.query.recipientWalletAddr as string);
+    ? (router.query.recipientWalletAddr[0] as address)
+    : (router.query.recipientWalletAddr as address);
 };
 
 export const getConversationIdFromPath = (router: NextRouter): string | undefined => {

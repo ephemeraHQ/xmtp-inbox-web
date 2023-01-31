@@ -1,24 +1,17 @@
-import { useEffect, useState } from 'react';
 import Blockies from 'react-blockies';
-import useEnsHooks from '../hooks/useEnsHooks';
+import { useEnsAvatar } from 'wagmi';
+import { address } from './Address';
 
 type AvatarProps = {
-  peerAddress: string;
+  peerAddress: address;
 };
 
 const Avatar = ({ peerAddress }: AvatarProps) => {
-  const [avatarUrl, setAvatarUrl] = useState<string>();
-  const { getAvatarUrl, loading } = useEnsHooks();
+  const { data: avatarUrl, isLoading } = useEnsAvatar({
+    address: peerAddress
+  });
 
-  useEffect(() => {
-    const getUrl = async () => {
-      const newAvatarUrl = await getAvatarUrl(peerAddress);
-      setAvatarUrl(newAvatarUrl);
-    };
-    getUrl();
-  }, [getAvatarUrl, peerAddress]);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="animate-pulse flex">
         <div className="rounded-full bg-gray-200 h-10 w-10" />

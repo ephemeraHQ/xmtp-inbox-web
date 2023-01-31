@@ -1,21 +1,16 @@
 import { LinkIcon, ExclamationCircleIcon } from '@heroicons/react/outline';
-import { ArrowSmRightIcon } from '@heroicons/react/solid';
 import { useAppStore } from '../store/app';
 import { useXmtpStore } from '../store/xmtp';
 import ConversationsList from './ConversationsList';
 import Loader from './Loader';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 type NavigationPanelProps = {
-  onConnect: () => Promise<void>;
+  handleConnect: () => void;
   isError: boolean;
 };
 
-type ConnectButtonProps = {
-  onConnect: () => Promise<void>;
-  isError: boolean;
-};
-
-const NavigationPanel = ({ onConnect, isError }: NavigationPanelProps): JSX.Element => {
+const NavigationPanel = ({ isError, handleConnect }: NavigationPanelProps): JSX.Element => {
   const walletAddress = useAppStore((state) => state.address);
   const client = useAppStore((state) => state.client);
 
@@ -24,9 +19,15 @@ const NavigationPanel = ({ onConnect, isError }: NavigationPanelProps): JSX.Elem
       {walletAddress && client !== null ? (
         <ConversationsPanel />
       ) : (
-        <NoWalletConnectedMessage isError={isError}>
-          <ConnectButton onConnect={onConnect} isError={isError} />
-        </NoWalletConnectedMessage>
+        <>
+          {walletAddress ? (
+            <button onClick={handleConnect}>Connect To Xmtp</button>
+          ) : (
+            <NoWalletConnectedMessage isError={isError}>
+              <ConnectButton />
+            </NoWalletConnectedMessage>
+          )}
+        </>
       )}
     </div>
   );
@@ -58,23 +59,8 @@ const NoWalletConnectedMessage: React.FC<{ isError: boolean; children?: React.Re
           {isError ? 'Please try again' : 'Please connect a wallet to begin'}
         </p>
       </div>
-      {children}
+      <div className="mt-2 flex justify-center items-center">{children}</div>
     </div>
-  );
-};
-
-const ConnectButton = ({ onConnect, isError }: ConnectButtonProps): JSX.Element => {
-  return (
-    <button
-      data-testid="no-wallet-connected-cta"
-      onClick={onConnect}
-      className="rounded border border-l-300 mx-auto my-4 text-l-300 hover:text-white hover:bg-l-400 hover:border-l-400 hover:fill-white focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-n-100 focus-visible:outline-none active:bg-l-500 active:border-l-500 active:text-l-100 active:ring-0"
-    >
-      <div className="flex items-center justify-center text-xs font-semibold px-4 py-1">
-        {isError ? 'Connect again' : 'Connect your wallet'}
-        <ArrowSmRightIcon className="h-4" />
-      </div>
-    </button>
   );
 };
 

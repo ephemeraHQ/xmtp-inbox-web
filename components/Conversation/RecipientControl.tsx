@@ -4,7 +4,9 @@ import AddressInput from '../AddressInput';
 import { checkIfPathIsEns, getAddressFromPath, getConversationIdFromPath } from '../../helpers';
 import { useAppStore } from '../../store/app';
 import BackArrow from '../BackArrow';
-import useEnsHooks from '../../hooks/useEnsHooks';
+import { address } from '../Address';
+import { useEnsName } from 'wagmi';
+import { fetchEnsAddress } from '@wagmi/core';
 
 const RecipientInputMode = {
   InvalidEntry: 0,
@@ -15,13 +17,12 @@ const RecipientInputMode = {
 };
 
 const RecipientControl = (): JSX.Element => {
-  const { lookupAddress, resolveName } = useEnsHooks();
   const client = useAppStore((state) => state.client);
   const router = useRouter();
   const recipientWalletAddress = getAddressFromPath(router);
   const conversationId = getConversationIdFromPath(router);
   const [recipientInputMode, setRecipientInputMode] = useState(RecipientInputMode.InvalidEntry);
-  const [hasName, setHasName] = useState(false);
+  const { isError } = useEnsName({ address: recipientWalletAddress });
 
   const checkIfOnNetwork = useCallback(
     async (address: string): Promise<boolean> => {
@@ -49,40 +50,32 @@ const RecipientControl = (): JSX.Element => {
   };
 
   useEffect(() => {
-    const handleAddressLookup = async (address: string) => {
-      const name = await lookupAddress(address);
-      setHasName(!!name);
-    };
     if (recipientWalletAddress && !checkIfPathIsEns(recipientWalletAddress)) {
       setRecipientInputMode(RecipientInputMode.Submitted);
-      handleAddressLookup(recipientWalletAddress);
     } else {
       setRecipientInputMode(RecipientInputMode.InvalidEntry);
     }
-  }, [lookupAddress, recipientWalletAddress]);
+  }, [recipientWalletAddress]);
 
-  const handleSubmit = useCallback(
-    async (e: React.SyntheticEvent, value?: string) => {
-      e.preventDefault();
-      const data = e.target as typeof e.target & {
-        recipient: { value: string };
-      };
-      const input = e.target as HTMLInputElement;
-      const recipientValue = value || data.recipient.value;
-      if (recipientValue.endsWith('eth')) {
-        setRecipientInputMode(RecipientInputMode.FindingEntry);
-        const address = await resolveName(recipientValue);
-        if (address) {
-          await completeSubmit(address, input);
-        } else {
-          setRecipientInputMode(RecipientInputMode.InvalidEntry);
-        }
-      } else if (recipientValue.startsWith('0x') && recipientValue.length === 42) {
-        await completeSubmit(recipientValue, input);
+  const handleSubmit = useCallback(async (e: React.SyntheticEvent, value?: string) => {
+    e.preventDefault();
+    const data = e.target as typeof e.target & {
+      recipient: { value: string };
+    };
+    const input = e.target as HTMLInputElement;
+    const recipientValue = value || data.recipient.value;
+    if (recipientValue.endsWith('eth')) {
+      setRecipientInputMode(RecipientInputMode.FindingEntry);
+      const address = await fetchEnsAddress({ name: recipientValue });
+      if (address) {
+        await completeSubmit(address, input);
+      } else {
+        setRecipientInputMode(RecipientInputMode.InvalidEntry);
       }
-    },
-    [resolveName]
-  );
+    } else if (recipientValue.startsWith('0x') && recipientValue.length === 42) {
+      await completeSubmit(recipientValue, input);
+    }
+  }, []);
 
   const handleInputChange = useCallback(
     async (e: React.SyntheticEvent) => {
@@ -119,11 +112,10 @@ const RecipientControl = (): JSX.Element => {
               To:
             </div>
             <AddressInput
-              recipientWalletAddress={recipientWalletAddress}
+              recipientWalletAddress={recipientWalletAddress as address}
               conversationId={conversationId}
               id="recipient-field"
               className="block w-[95%] pl-7 pr-3 pt-[3px] md:pt-[2px] md:pt-[1px] bg-transparent caret-n-600 text-n-600 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-0 focus:border-transparent text-lg font-mono"
-              name="recipient"
               onInputChange={handleInputChange}
             />
             <button type="submit" className="hidden" />
@@ -132,7 +124,7 @@ const RecipientControl = (): JSX.Element => {
 
         {recipientInputMode === RecipientInputMode.Submitted ? (
           <div className="text-md text-n-300 text-sm font-mono ml-10 md:ml-8 pb-1 md:pb-[1px]">
-            {hasName ? recipientWalletAddress : <br />}
+            {isError ? recipientWalletAddress : <br />}
           </div>
         ) : (
           <div

@@ -6,6 +6,7 @@ import { formatTime } from '../../helpers';
 import AddressPill from '../AddressPill';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import useWindowSize from '../../hooks/useWindowSize';
+import { address } from '../Address';
 
 export type MessageListProps = {
   messages: DecodedMessage[];
@@ -26,10 +27,10 @@ const formatDate = (d?: Date) =>
 
 const MessageTile = ({ message }: MessageTileProps): JSX.Element => (
   <div className="flex items-start mx-auto mb-4">
-    <Avatar peerAddress={message.senderAddress as string} />
+    <Avatar peerAddress={message.senderAddress as address} />
     <div className="ml-2 max-w-[95%]">
       <div>
-        <AddressPill address={message.senderAddress as string} />
+        <AddressPill address={message.senderAddress as address} />
         <span className="text-sm font-normal place-self-end text-n-300 text-md uppercase">
           {formatTime(message.sent)}
         </span>

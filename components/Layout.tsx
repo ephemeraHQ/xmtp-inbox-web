@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import { useConnect } from 'wagmi';
 import { NavigationView, ConversationView } from './Views';
 import { RecipientControl } from './Conversation';
 import NewMessageButton from './NewMessageButton';
@@ -21,8 +22,9 @@ const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const signer = useAppStore((state) => state.signer);
   const { initClient } = useInitXmtpClient();
   useListConversations();
+  useWalletProvider();
 
-  const { connect: connectWallet, isError } = useWalletProvider();
+  const { connect: connectWallet, error } = useConnect();
 
   const { disconnect: disconnectWallet } = useDisconnect();
 
@@ -58,8 +60,12 @@ const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
                 </Link>
                 {walletAddress && client && <NewMessageButton />}
               </div>
-              {<NavigationPanel onConnect={handleConnect} isError={isError} />}
-              <UserMenu onConnect={handleConnect} onDisconnect={handleDisconnect} isError={isError} />
+              {<NavigationPanel handleConnect={handleConnect} isError={error ? true : false} />}
+              <UserMenu
+                onConnect={handleConnect}
+                onDisconnect={handleDisconnect}
+                isError={error ? true : false}
+              />
             </div>
           </aside>
         </NavigationView>
