@@ -1,16 +1,16 @@
 import { DecodedMessage } from '@xmtp/xmtp-js';
 import { useEffect, useState } from 'react';
 import { getConversationKey, shortAddress, truncate } from '../helpers';
-import { useAppStore } from '../store/app';
 import { useXmtpStore } from '../store/xmtp';
 import { fetchEnsName } from '@wagmi/core';
+import { useAccount } from 'wagmi';
 
 let latestMsgId: string;
 
 export const useStreamAllMessages = () => {
-  const walletAddress = useAppStore((state) => state.address);
+  const { address: walletAddress } = useAccount();
 
-  const client = useAppStore((state) => state.client);
+  const client = useXmtpStore((state) => state.client);
 
   const convoMessages = useXmtpStore((state) => state.convoMessages);
   const addMessages = useXmtpStore((state) => state.addMessages);

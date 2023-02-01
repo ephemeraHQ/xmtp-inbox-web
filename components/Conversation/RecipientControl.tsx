@@ -2,11 +2,11 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import AddressInput from '../AddressInput';
 import { checkIfPathIsEns, getAddressFromPath, getConversationIdFromPath } from '../../helpers';
-import { useAppStore } from '../../store/app';
 import BackArrow from '../BackArrow';
 import { address } from '../Address';
 import { useEnsName } from 'wagmi';
 import { fetchEnsAddress } from '@wagmi/core';
+import { useXmtpStore } from '../../store/xmtp';
 
 const RecipientInputMode = {
   InvalidEntry: 0,
@@ -17,7 +17,7 @@ const RecipientInputMode = {
 };
 
 const RecipientControl = (): JSX.Element => {
-  const client = useAppStore((state) => state.client);
+  const client = useXmtpStore((state) => state.client);
   const router = useRouter();
   const recipientWalletAddress = getAddressFromPath(router);
   const conversationId = getConversationIdFromPath(router);

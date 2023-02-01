@@ -5,8 +5,8 @@ import { useRouter } from 'next/router';
 import { Conversation } from '@xmtp/xmtp-js';
 import { classNames, formatDate, getConversationKey } from '../helpers';
 import Avatar from './Avatar';
-import { useAppStore } from '../store/app';
 import { useXmtpStore } from '../store/xmtp';
+import { useAccount } from 'wagmi';
 
 type ConversationTileProps = {
   conversation: Conversation;
@@ -14,7 +14,7 @@ type ConversationTileProps = {
 
 const ConversationTile = ({ conversation }: ConversationTileProps): JSX.Element | null => {
   const router = useRouter();
-  const address = useAppStore((state) => state.address);
+  const { address } = useAccount();
   const previewMessages = useXmtpStore((state) => state.previewMessages);
   const loadingConversations = useXmtpStore((state) => state.loadingConversations);
   const [recipentAddress, setRecipentAddress] = useState<string>();

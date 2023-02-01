@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Conversation, DecodedMessage } from '@xmtp/xmtp-js';
+import { Conversation, DecodedMessage, Client } from '@xmtp/xmtp-js';
 import create from 'zustand';
 import getUniqueMessages from '../helpers/getUniqueMessages';
 
@@ -13,6 +13,8 @@ interface XmtpState {
   setPreviewMessage: (key: string, message: DecodedMessage) => void;
   setPreviewMessages: (previewMessages: Map<string, DecodedMessage>) => void;
   addMessages: (key: string, newMessages: DecodedMessage[]) => number;
+  client: Client | undefined | null;
+  setClient: (client: Client | undefined | null) => void;
   resetXmtpState: () => void;
 }
 
@@ -46,9 +48,12 @@ export const useXmtpStore = create<XmtpState>((set) => ({
     });
     return numAdded;
   },
+  client: undefined,
+  setClient: (client: Client | undefined | null) => set(() => ({ client })),
   resetXmtpState: () =>
     set(() => {
       return {
+        client: undefined,
         conversations: new Map(),
         convoMessages: new Map(),
         previewMessages: new Map()

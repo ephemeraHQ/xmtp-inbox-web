@@ -7,13 +7,14 @@ import { configureChains, createClient, WagmiConfig } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 import { infuraProvider } from 'wagmi/providers/infura';
 import { publicProvider } from 'wagmi/providers/public';
+import React from 'react';
 
 const AppWithoutSSR = dynamic(() => import('../components/App'), {
   ssr: false
 });
 
 function AppWrapper({ Component, pageProps }: AppProps) {
-  const { chains, provider } = configureChains(
+  const { chains, provider, webSocketProvider } = configureChains(
     [mainnet],
     [infuraProvider({ apiKey: process.env.NEXT_PUBLIC_INFURA_ID ?? '' }), publicProvider()]
   );
@@ -26,15 +27,18 @@ function AppWrapper({ Component, pageProps }: AppProps) {
   const wagmiClient = createClient({
     autoConnect: true,
     connectors,
-    provider
+    provider,
+    webSocketProvider
   });
 
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
-        <AppWithoutSSR>
-          <Component {...pageProps} />
-        </AppWithoutSSR>
+        <React.StrictMode>
+          <AppWithoutSSR>
+            <Component {...pageProps} />
+          </AppWithoutSSR>
+        </React.StrictMode>
       </RainbowKitProvider>
     </WagmiConfig>
   );

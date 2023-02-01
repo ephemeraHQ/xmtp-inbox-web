@@ -7,7 +7,7 @@ import {
   ChevronRightIcon,
   ArrowSmRightIcon
 } from '@heroicons/react/solid';
-import { useAppStore } from '../store/app';
+import { useAccount } from 'wagmi';
 
 type XmtpInfoRowProps = {
   icon: JSX.Element;
@@ -17,10 +17,6 @@ type XmtpInfoRowProps = {
   disabled?: boolean;
   dataTestPrefix?: string;
   url?: string;
-};
-
-type XmtpInfoPanelProps = {
-  onConnect?: () => Promise<void>;
 };
 
 const InfoRow = ({
@@ -64,14 +60,13 @@ const InfoRow = ({
   </a>
 );
 
-const XmtpInfoPanel = ({ onConnect }: XmtpInfoPanelProps): JSX.Element => {
-  const walletAddress = useAppStore((state) => state.address);
+const XmtpInfoPanel = (): JSX.Element => {
+  const { address: walletAddress } = useAccount();
   const InfoRows = [
     {
       icon: <LinkIcon />,
       headingText: 'Connect your wallet',
       subHeadingText: 'Verify your wallet to start using the XMTP protocol',
-      onClick: onConnect,
       disabled: !!walletAddress,
       dataTestPrefix: 'connect'
     },
@@ -112,7 +107,6 @@ const XmtpInfoPanel = ({ onConnect }: XmtpInfoPanelProps): JSX.Element => {
               icon={info.icon}
               headingText={info.headingText}
               subHeadingText={info.subHeadingText}
-              onClick={info.onClick}
               disabled={info.disabled}
               dataTestPrefix={info.dataTestPrefix}
               url={info.url}

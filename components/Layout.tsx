@@ -1,48 +1,49 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { useConnect } from 'wagmi';
+import { useAccount, useConnect, useSigner } from 'wagmi';
 import { NavigationView, ConversationView } from './Views';
 import { RecipientControl } from './Conversation';
 import NewMessageButton from './NewMessageButton';
 import NavigationPanel from './NavigationPanel';
 import XmtpInfoPanel from './XmtpInfoPanel';
 import UserMenu from './UserMenu';
-import React, { useCallback } from 'react';
-import { useAppStore } from '../store/app';
-import useInitXmtpClient from '../hooks/useInitXmtpClient';
+import React, { useCallback, useEffect } from 'react';
 import useListConversations from '../hooks/useListConversations';
-import useWalletProvider from '../hooks/useWalletProvider';
-import useWalletProviderDemo from '../hooks/useWalletProviderDemo';
 import { isAppEnvDemo } from '../helpers';
 import useDisconnect from '../hooks/useDisconnect';
+import { useXmtpStore } from '../store/xmtp';
+import { Wallet } from 'ethers';
+import { MockConnector } from '@wagmi/core/connectors/mock';
+import { watchAccount } from '@wagmi/core';
+import useInitXmtpClient from '../hooks/useInitXmtpClient';
 
 const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
-  const client = useAppStore((state) => state.client);
-  const walletAddress = useAppStore((state) => state.address);
-  const signer = useAppStore((state) => state.signer);
-  const { initClient } = useInitXmtpClient();
-  useListConversations();
-  useWalletProvider();
+  const client = useXmtpStore((state) => state.client);
+  const { address: walletAddress } = useAccount();
+  const resetXmtpState = useXmtpStore((state) => state.resetXmtpState);
+  useInitXmtpClient();
 
   const { connect: connectWallet, error } = useConnect();
 
   const { disconnect: disconnectWallet } = useDisconnect();
 
-  const { connect: connectDemo } = useWalletProviderDemo();
+  useListConversations();
 
   const handleDisconnect = useCallback(async () => {
     await disconnectWallet();
   }, [disconnectWallet]);
 
-  const handleConnect = useCallback(async () => {
+  useEffect(() => {
     const isDemoEnv = isAppEnvDemo();
     if (isDemoEnv) {
-      await connectDemo();
-    } else {
-      await connectWallet();
+      const wallet = Wallet.createRandom();
+      const connector = new MockConnector({ options: { signer: wallet } });
+      connectWallet({ connector });
     }
-    signer && (await initClient(signer));
-  }, [connectWallet, initClient, connectDemo, signer]);
+    watchAccount(() => {
+      resetXmtpState();
+    });
+  }, []);
 
   return (
     <>
@@ -60,12 +61,8 @@ const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
                 </Link>
                 {walletAddress && client && <NewMessageButton />}
               </div>
-              {<NavigationPanel handleConnect={handleConnect} isError={error ? true : false} />}
-              <UserMenu
-                onConnect={handleConnect}
-                onDisconnect={handleDisconnect}
-                isError={error ? true : false}
-              />
+              {<NavigationPanel isError={error ? true : false} />}
+              <UserMenu onDisconnect={handleDisconnect} isError={error ? true : false} />
             </div>
           </aside>
         </NavigationView>
@@ -78,7 +75,7 @@ const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
               {children}
             </>
           ) : (
-            <XmtpInfoPanel onConnect={handleConnect} />
+            <XmtpInfoPanel />
           )}
         </ConversationView>
       </div>

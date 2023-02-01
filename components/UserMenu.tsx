@@ -5,19 +5,19 @@ import { classNames, tagStr } from '../helpers';
 import Address from './Address';
 import { Tooltip } from './Tooltip/Tooltip';
 import packageJson from '../package.json';
-import { useAppStore } from '../store/app';
 import Avatar from './Avatar';
 import QRCode from 'react-qr-code';
 import { Modal } from './Modal';
 import { ClipboardCopyIcon } from '@heroicons/react/outline';
+import { useXmtpStore } from '../store/xmtp';
+import { useAccount } from 'wagmi';
 
 type UserMenuProps = {
-  onConnect?: () => Promise<void>;
   onDisconnect?: () => Promise<void>;
   isError: boolean;
 };
 
-const NotConnected = ({ onConnect, isError }: UserMenuProps): JSX.Element => {
+const NotConnected = ({ isError }: UserMenuProps): JSX.Element => {
   return (
     <>
       <div>
@@ -27,24 +27,21 @@ const NotConnected = ({ onConnect, isError }: UserMenuProps): JSX.Element => {
             {isError ? 'Error connecting' : 'You are not connected.'}
           </p>
         </div>
-
-        <a onClick={onConnect}>
-          <p
-            className="text-sm font-normal text-y-100 hover:text-y-200 ml-3 cursor-pointer"
-            data-testid="no-wallet-connected-footer-secondary-text"
-          >
-            {isError ? 'Try connecting again' : 'Sign in with your wallet'}
-          </p>
-        </a>
+        <p
+          className="text-sm font-normal text-y-100 hover:text-y-200 ml-3 cursor-pointer"
+          data-testid="no-wallet-connected-footer-secondary-text"
+        >
+          {isError ? 'Try connecting again' : 'Sign in with your wallet'}
+        </p>
       </div>
     </>
   );
 };
 
-const UserMenu = ({ onConnect, onDisconnect, isError }: UserMenuProps): JSX.Element => {
-  const walletAddress = useAppStore((state) => state.address);
+const UserMenu = ({ onDisconnect, isError }: UserMenuProps): JSX.Element => {
+  const { address: walletAddress } = useAccount();
   const [showQrModal, setShowQrModal] = useState<boolean>(false);
-  const client = useAppStore((state) => state.client);
+  const client = useXmtpStore((state) => state.client);
 
   const onClickCopy = () => {
     if (walletAddress) {
@@ -196,7 +193,7 @@ const UserMenu = ({ onConnect, onDisconnect, isError }: UserMenuProps): JSX.Elem
           )}
         </Menu>
       ) : (
-        <NotConnected onConnect={onConnect} isError={isError} />
+        <NotConnected isError={isError} />
       )}
       <Modal title="Share QR Code" size="md" show={showQrModal} onClose={() => setShowQrModal(false)}>
         <div className="flex justify-center p-5 flex-col items-center">

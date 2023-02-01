@@ -1,30 +1,29 @@
 import { LinkIcon, ExclamationCircleIcon } from '@heroicons/react/outline';
-import { useAppStore } from '../store/app';
 import { useXmtpStore } from '../store/xmtp';
 import ConversationsList from './ConversationsList';
 import Loader from './Loader';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { useAccount } from 'wagmi';
 
 type NavigationPanelProps = {
-  handleConnect: () => void;
   isError: boolean;
 };
 
-const NavigationPanel = ({ isError, handleConnect }: NavigationPanelProps): JSX.Element => {
-  const walletAddress = useAppStore((state) => state.address);
-  const client = useAppStore((state) => state.client);
+const NavigationPanel = ({ isError }: NavigationPanelProps): JSX.Element => {
+  const { address } = useAccount();
+  const client = useXmtpStore((state) => state.client);
 
   return (
     <div className="flex-grow flex flex-col h-[calc(100vh-8rem)] overflow-y-auto">
-      {walletAddress && client !== null ? (
+      {address && client !== null ? (
         <ConversationsPanel />
       ) : (
         <>
-          {walletAddress ? (
-            <button onClick={handleConnect}>Connect To Xmtp</button>
+          {address ? (
+            <button onClick={() => {}}>Connect To Xmtp</button>
           ) : (
             <NoWalletConnectedMessage isError={isError}>
-              <ConnectButton />
+              <ConnectButton showBalance={false} />
             </NoWalletConnectedMessage>
           )}
         </>
@@ -65,7 +64,7 @@ const NoWalletConnectedMessage: React.FC<{ isError: boolean; children?: React.Re
 };
 
 const ConversationsPanel = (): JSX.Element => {
-  const client = useAppStore((state) => state.client);
+  const client = useXmtpStore((state) => state.client);
   const loadingConversations = useXmtpStore((state) => state.loadingConversations);
 
   if (client === undefined) {

@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { checkIfPathIsEns, classNames, getConversationKey } from '../helpers';
-import { useAppStore } from '../store/app';
 import { useXmtpStore } from '../store/xmtp';
-import { useEnsName } from 'wagmi';
+import { useAccount, useEnsName } from 'wagmi';
 import { address } from './Address';
 
 type AddressInputProps = {
@@ -24,8 +23,8 @@ const AddressInput = ({
   onInputChange
 }: AddressInputProps): JSX.Element => {
   const { data: name } = useEnsName({ address: recipientWalletAddress });
-  const walletAddress = useAppStore((state) => state.address);
-  const client = useAppStore((state) => state.client);
+  const { address: walletAddress } = useAccount();
+  const client = useXmtpStore((state) => state.client);
   const conversations = useXmtpStore((state) => state.conversations);
   const setConversations = useXmtpStore((state) => state.setConversations);
 
