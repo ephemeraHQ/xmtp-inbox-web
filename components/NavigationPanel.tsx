@@ -2,9 +2,8 @@ import { LinkIcon, ExclamationCircleIcon } from '@heroicons/react/outline';
 import { useXmtpStore } from '../store/xmtp';
 import ConversationsList from './ConversationsList';
 import Loader from './Loader';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { useAccount, useSigner } from 'wagmi';
-import useModalOrDemo from '../hooks/useModalOrDemo';
+import { ConnectButton, useConnectModal } from '@rainbow-me/rainbowkit';
+import { useAccount } from 'wagmi';
 
 type NavigationPanelProps = {
   isError: boolean;
@@ -13,7 +12,7 @@ type NavigationPanelProps = {
 const NavigationPanel = ({ isError }: NavigationPanelProps): JSX.Element => {
   const { address } = useAccount();
   const client = useXmtpStore((state) => state.client);
-  const { handleConnect } = useModalOrDemo();
+  const { openConnectModal: handleConnect } = useConnectModal();
 
   return (
     <div className="flex-grow flex flex-col h-[calc(100vh-8rem)] overflow-y-auto">
@@ -41,7 +40,7 @@ const NavigationPanel = ({ isError }: NavigationPanelProps): JSX.Element => {
                             <button
                               type="button"
                               // Matching classes of built-in button, while allowing custom click-handler
-                              class="iekbcc0 iekbcc9 ju367v73 ju367v7o ju367v9c ju367vn ju367vec ju367vex ju367v11 ju367v1c ju367v2b ju367v8o _12cbo8i3 ju367v8m _12cbo8i4 _12cbo8i6"
+                              className="iekbcc0 iekbcc9 ju367v73 ju367v7o ju367v9c ju367vn ju367vec ju367vex ju367v11 ju367v1c ju367v2b ju367v8o _12cbo8i3 ju367v8m _12cbo8i4 _12cbo8i6"
                               onClick={handleConnect}
                               data-testid="no-wallet-connected-cta"
                             >

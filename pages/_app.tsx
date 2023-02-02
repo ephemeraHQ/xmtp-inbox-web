@@ -7,13 +7,22 @@ import { configureChains, createClient, WagmiConfig } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 import { infuraProvider } from 'wagmi/providers/infura';
 import { publicProvider } from 'wagmi/providers/public';
-import React from 'react';
+import { MockConnector } from '@wagmi/core/connectors/mock';
+import { providers, Wallet } from 'ethers/lib';
+import React, { useEffect, useState } from 'react';
+import { isAppEnvDemo } from '../helpers';
 
 const AppWithoutSSR = dynamic(() => import('../components/App'), {
   ssr: false
 });
 
+const createWallet = (() => Wallet.createRandom())();
+
 function AppWrapper({ Component, pageProps }: AppProps) {
+  const [isDemo, setIsDemo] = useState(false);
+
+  const mockConnector = new MockConnector({ options: { signer: createWallet } });
+
   const { chains, provider, webSocketProvider } = configureChains(
     [mainnet],
     [infuraProvider({ apiKey: process.env.NEXT_PUBLIC_INFURA_ID ?? '' }), publicProvider()]
@@ -26,10 +35,14 @@ function AppWrapper({ Component, pageProps }: AppProps) {
 
   const wagmiClient = createClient({
     autoConnect: true,
-    connectors,
+    connectors: isDemo ? [mockConnector] : connectors,
     provider,
     webSocketProvider
   });
+
+  useEffect(() => {
+    setIsDemo(isAppEnvDemo());
+  }, []);
 
   return (
     <WagmiConfig client={wagmiClient}>

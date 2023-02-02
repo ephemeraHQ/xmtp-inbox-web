@@ -11,14 +11,14 @@ import { Modal } from './Modal';
 import { ClipboardCopyIcon } from '@heroicons/react/outline';
 import { useXmtpStore } from '../store/xmtp';
 import { useAccount, useDisconnect } from 'wagmi';
-import useModalOrDemo from '../hooks/useModalOrDemo';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 
 type UserMenuProps = {
   isError: boolean;
 };
 
 const NotConnected = ({ isError }: UserMenuProps): JSX.Element => {
-  const { handleConnect } = useModalOrDemo();
+  const { openConnectModal: handleConnect } = useConnectModal();
   return (
     <>
       <div>

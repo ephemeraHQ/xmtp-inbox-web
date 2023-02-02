@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { useAccount, useConnect, useDisconnect } from 'wagmi';
+import { useAccount, useConnect } from 'wagmi';
+import { watchAccount } from '@wagmi/core';
 import { NavigationView, ConversationView } from './Views';
 import { RecipientControl } from './Conversation';
 import NewMessageButton from './NewMessageButton';
@@ -11,22 +12,18 @@ import React, { useEffect } from 'react';
 import useListConversations from '../hooks/useListConversations';
 import { useXmtpStore } from '../store/xmtp';
 import useInitXmtpClient from '../hooks/useInitXmtpClient';
-import { isAppEnvDemo } from '../helpers';
-import useModalOrDemo from '../hooks/useModalOrDemo';
 
 const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const client = useXmtpStore((state) => state.client);
+  const resetXmtpState = useXmtpStore((state) => state.resetXmtpState);
   const { address: walletAddress } = useAccount();
-  const { handleConnect } = useModalOrDemo();
   useInitXmtpClient();
 
   const { error } = useConnect();
   useListConversations();
+
   useEffect(() => {
-    const demoEnv = isAppEnvDemo();
-    if (demoEnv) {
-      handleConnect();
-    }
+    watchAccount(() => resetXmtpState());
   }, []);
 
   return (

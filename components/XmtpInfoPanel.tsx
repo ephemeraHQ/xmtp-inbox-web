@@ -8,7 +8,7 @@ import {
   ArrowSmRightIcon
 } from '@heroicons/react/solid';
 import { useAccount } from 'wagmi';
-import useModalOrDemo from '../hooks/useModalOrDemo';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 
 type XmtpInfoRowProps = {
   icon: JSX.Element;
@@ -63,7 +63,7 @@ const InfoRow = ({
 
 const XmtpInfoPanel = (): JSX.Element => {
   const { address: walletAddress } = useAccount();
-  const { handleConnect } = useModalOrDemo();
+  const { openConnectModal: handleConnect } = useConnectModal();
 
   const InfoRows = [
     {
