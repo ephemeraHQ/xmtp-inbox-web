@@ -1,48 +1,29 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { useAccount, useConnect, useSigner } from 'wagmi';
+import { useAccount, useConnect } from 'wagmi';
+import { watchAccount } from '@wagmi/core';
 import { NavigationView, ConversationView } from './Views';
 import { RecipientControl } from './Conversation';
 import NewMessageButton from './NewMessageButton';
 import NavigationPanel from './NavigationPanel';
 import XmtpInfoPanel from './XmtpInfoPanel';
 import UserMenu from './UserMenu';
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import useListConversations from '../hooks/useListConversations';
-import { isAppEnvDemo } from '../helpers';
-import useDisconnect from '../hooks/useDisconnect';
 import { useXmtpStore } from '../store/xmtp';
-import { Wallet } from 'ethers';
-import { MockConnector } from '@wagmi/core/connectors/mock';
-import { watchAccount } from '@wagmi/core';
 import useInitXmtpClient from '../hooks/useInitXmtpClient';
 
 const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const client = useXmtpStore((state) => state.client);
-  const { address: walletAddress } = useAccount();
   const resetXmtpState = useXmtpStore((state) => state.resetXmtpState);
+  const { address: walletAddress } = useAccount();
   useInitXmtpClient();
 
-  const { connect: connectWallet, error } = useConnect();
-
-  const { disconnect: disconnectWallet } = useDisconnect();
-
+  const { error } = useConnect();
   useListConversations();
 
-  const handleDisconnect = useCallback(async () => {
-    await disconnectWallet();
-  }, [disconnectWallet]);
-
   useEffect(() => {
-    const isDemoEnv = isAppEnvDemo();
-    if (isDemoEnv) {
-      const wallet = Wallet.createRandom();
-      const connector = new MockConnector({ options: { signer: wallet } });
-      connectWallet({ connector });
-    }
-    watchAccount(() => {
-      resetXmtpState();
-    });
+    watchAccount(() => resetXmtpState());
   }, []);
 
   return (
@@ -61,8 +42,8 @@ const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
                 </Link>
                 {walletAddress && client && <NewMessageButton />}
               </div>
-              {<NavigationPanel isError={error ? true : false} />}
-              <UserMenu onDisconnect={handleDisconnect} isError={error ? true : false} />
+              {<NavigationPanel isError={!!error} />}
+              <UserMenu isError={!!error} />
             </div>
           </aside>
         </NavigationView>

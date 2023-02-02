@@ -1,7 +1,7 @@
 import { Menu, Transition } from '@headlessui/react';
 import { CogIcon } from '@heroicons/react/solid';
 import { Fragment, useState } from 'react';
-import { classNames, tagStr } from '../helpers';
+import { classNames, tagStr, wipeKeys } from '../helpers';
 import Address from './Address';
 import { Tooltip } from './Tooltip/Tooltip';
 import packageJson from '../package.json';
@@ -10,14 +10,16 @@ import QRCode from 'react-qr-code';
 import { Modal } from './Modal';
 import { ClipboardCopyIcon } from '@heroicons/react/outline';
 import { useXmtpStore } from '../store/xmtp';
-import { useAccount } from 'wagmi';
+import { useAccount, useDisconnect } from 'wagmi';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 
 type UserMenuProps = {
-  onDisconnect?: () => Promise<void>;
   isError: boolean;
 };
 
 const NotConnected = ({ isError }: UserMenuProps): JSX.Element => {
+  const { openConnectModal: handleConnect } = useConnectModal();
+
   return (
     <>
       <div>
@@ -27,21 +29,35 @@ const NotConnected = ({ isError }: UserMenuProps): JSX.Element => {
             {isError ? 'Error connecting' : 'You are not connected.'}
           </p>
         </div>
-        <p
+        <button
+          onClick={handleConnect}
           className="text-sm font-normal text-y-100 hover:text-y-200 ml-3 cursor-pointer"
           data-testid="no-wallet-connected-footer-secondary-text"
         >
           {isError ? 'Try connecting again' : 'Sign in with your wallet'}
-        </p>
+        </button>
       </div>
+      <button
+        className="max-w-xs flex items-center text-sm rounded focus:outline-none"
+        onClick={handleConnect}
+      >
+        <span className="sr-only">Connect</span>
+        <CogIcon
+          className="h-6 w-6 md:h-5 md:w-5 fill-n-100 hover:fill-n-200"
+          aria-hidden="true"
+          data-testid="settings-icon"
+        />
+      </button>
     </>
   );
 };
 
-const UserMenu = ({ onDisconnect, isError }: UserMenuProps): JSX.Element => {
+const UserMenu = ({ isError }: UserMenuProps): JSX.Element => {
   const { address: walletAddress } = useAccount();
   const [showQrModal, setShowQrModal] = useState<boolean>(false);
   const client = useXmtpStore((state) => state.client);
+  const resetXmtpState = useXmtpStore((state) => state.resetXmtpState);
+  const { disconnect: disconnectWagmi, reset: resetWagmi } = useDisconnect();
 
   const onClickCopy = () => {
     if (walletAddress) {
@@ -174,7 +190,12 @@ const UserMenu = ({ onDisconnect, isError }: UserMenuProps): JSX.Element => {
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            onClick={onDisconnect}
+                            onClick={() => {
+                              wipeKeys(walletAddress);
+                              disconnectWagmi();
+                              resetWagmi();
+                              resetXmtpState();
+                            }}
                             className={classNames(
                               active ? 'bg-zinc-50 cursor-pointer' : '',
                               'block rounded-md px-2 py-2 text-sm text-l-300 text-right font-semibold'

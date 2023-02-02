@@ -1,8 +1,9 @@
 import React from 'react';
+import { address } from '../Address';
 import Avatar from '../Avatar';
 
 const props = {
-  peerAddress: '123 Peer Test'
+  peerAddress: '0x321312321' as address
 };
 
 describe('<Avatar />', () => {

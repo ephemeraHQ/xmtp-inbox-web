@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { MessagesList, MessageComposer } from './';
 import Loader from '../../components/Loader';
-import { useAppStore } from '../../store/app';
 import useGetMessages from '../../hooks/useGetMessages';
 import useSendMessage from '../../hooks/useSendMessage';
 import { getConversationKey } from '../../helpers';

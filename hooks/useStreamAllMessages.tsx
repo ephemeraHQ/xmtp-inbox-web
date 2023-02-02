@@ -4,6 +4,7 @@ import { getConversationKey, shortAddress, truncate } from '../helpers';
 import { useXmtpStore } from '../store/xmtp';
 import { fetchEnsName } from '@wagmi/core';
 import { useAccount } from 'wagmi';
+import { address } from '../components/Address';
 
 let latestMsgId: string;
 
@@ -53,7 +54,7 @@ export const useStreamAllMessages = () => {
             !browserVisible
           ) {
             const name = await fetchEnsName({
-              address: '0xA0Cf798816D4b9b9866b5330EEa46a18382f251e'
+              address: message.senderAddress as address
             });
             new Notification('XMTP', {
               body: `${name || shortAddress(message.senderAddress ?? '')}\n${truncate(message.content, 75)}`

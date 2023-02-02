@@ -3,6 +3,8 @@ import { checkElement, checkMissingElement, checkLink, disconnectWallet, startDe
 describe('Connected Test Cases', () => {
   beforeEach(() => {
     startDemoEnv();
+    // In connected flow, empty message should render before any tests run
+    checkElement('empty-message-header');
   });
   it('Shows expected left panel fields when logged in with a connected wallet and no existing messages', () => {
     const elements = [
@@ -55,6 +57,7 @@ describe('Connected Test Cases', () => {
 describe('Disconnected Test Cases', () => {
   beforeEach(() => {
     startDemoEnv();
+    checkElement('empty-message-header');
     disconnectWallet();
   });
   it('Shows expected left panel fields when disconnected from a wallet', () => {

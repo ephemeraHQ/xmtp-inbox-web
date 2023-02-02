@@ -1,8 +1,8 @@
 import React from 'react';
-import Address from '../Address';
+import Address, { address } from '../Address';
 
 const props = {
-  address: '123 Test'
+  address: '0x12321321' as address
 };
 
 describe('<Address />', () => {

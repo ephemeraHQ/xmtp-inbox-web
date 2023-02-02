@@ -2,7 +2,7 @@ import { Client } from '@xmtp/xmtp-js';
 import { Signer } from 'ethers';
 import { useCallback, useEffect, useState } from 'react';
 import { useAccount, useSigner } from 'wagmi';
-import { getAppVersion, getEnv, loadKeys, storeKeys, wipeKeys } from '../helpers';
+import { getAppVersion, getEnv, loadKeys, storeKeys } from '../helpers';
 import { useXmtpStore } from '../store/xmtp';
 
 const useInitXmtpClient = (cacheOnly = false) => {
@@ -10,15 +10,7 @@ const useInitXmtpClient = (cacheOnly = false) => {
   const { address, isConnected } = useAccount();
   const client = useXmtpStore((state) => state.client);
   const setClient = useXmtpStore((state) => state.setClient);
-  const resetXmtpState = useXmtpStore((state) => state.resetXmtpState);
   const [isRequestPending, setIsRequestPending] = useState(false);
-
-  const disconnect = () => {
-    resetXmtpState();
-    if (signer) {
-      wipeKeys(address ?? '');
-    }
-  };
 
   const initClient = useCallback(
     async (wallet: Signer) => {
@@ -55,7 +47,7 @@ const useInitXmtpClient = (cacheOnly = false) => {
 
   useEffect(() => {
     if (!isRequestPending) {
-      signer ? initClient(signer) : disconnect();
+      signer && isConnected && initClient(signer);
     }
   }, [signer, initClient, address, isConnected]);
 
