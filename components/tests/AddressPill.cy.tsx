@@ -1,8 +1,9 @@
 import React from 'react';
+import { address } from '../Address';
 import AddressPill from '../AddressPill';
 
 const props = {
-  address: '123 Test'
+  address: '0x1232131' as address
 };
 
 describe('<AddressPill />', () => {
