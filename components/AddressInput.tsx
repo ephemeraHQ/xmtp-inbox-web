@@ -45,7 +45,6 @@ const AddressInput = ({
   useEffect(() => {
     const setLookupValue = async () => {
       if (recipientWalletAddress && !checkIfPathIsEns(recipientWalletAddress)) {
-        // const name = await lookupAddress(recipientWalletAddress);
         const conversation = conversationId
           ? await client?.conversations.newConversation(recipientWalletAddress, {
               conversationId,
@@ -72,7 +71,6 @@ const AddressInput = ({
           conversations.set(getConversationKey(conversation), conversation);
           setConversations(new Map(conversations));
         }
-        // const name = await lookupAddress(value);
         if (name) {
           setValue(name);
         }
