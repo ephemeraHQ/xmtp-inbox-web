@@ -39,8 +39,7 @@ const NavigationPanel = ({ isError }: NavigationPanelProps): JSX.Element => {
                           return (
                             <button
                               type="button"
-                              // Matching classes of built-in button, while allowing custom click-handler
-                              className="iekbcc0 iekbcc9 ju367v73 ju367v7o ju367v9c ju367vn ju367vec ju367vex ju367v11 ju367v1c ju367v2b ju367v8o _12cbo8i3 ju367v8m _12cbo8i4 _12cbo8i6"
+                              className="bg-p-600 px-4 rounded-lg h-[40px] text-white font-bold"
                               onClick={handleConnect}
                               data-testid="no-wallet-connected-cta"
                             >
