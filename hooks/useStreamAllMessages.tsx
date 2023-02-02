@@ -4,6 +4,7 @@ import { getConversationKey, shortAddress, truncate } from '../helpers';
 import { useXmtpStore } from '../store/xmtp';
 import { fetchEnsName } from '@wagmi/core';
 import { useAccount } from 'wagmi';
+import { address } from '../components/Address';
 
 let latestMsgId: string;
 
@@ -52,14 +53,12 @@ export const useStreamAllMessages = () => {
             message.senderAddress !== walletAddress &&
             !browserVisible
           ) {
-            if (walletAddress) {
-              const name = await fetchEnsName({
-                address: walletAddress
-              });
-              new Notification('XMTP', {
-                body: `${name || shortAddress(message.senderAddress ?? '')}\n${truncate(message.content, 75)}`
-              });
-            }
+            const name = await fetchEnsName({
+              address: message.senderAddress as address
+            });
+            new Notification('XMTP', {
+              body: `${name || shortAddress(message.senderAddress ?? '')}\n${truncate(message.content, 75)}`
+            });
 
             latestMsgId = message.id;
           }

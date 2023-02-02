@@ -15,9 +15,7 @@ const useInitXmtpClient = (cacheOnly = false) => {
 
   const disconnect = () => {
     resetXmtpState();
-    if (signer) {
-      wipeKeys(address ?? '');
-    }
+    wipeKeys(address ?? '');
   };
 
   const initClient = useCallback(
