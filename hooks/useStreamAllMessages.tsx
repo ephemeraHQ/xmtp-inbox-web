@@ -52,12 +52,14 @@ export const useStreamAllMessages = () => {
             message.senderAddress !== walletAddress &&
             !browserVisible
           ) {
-            const name = await fetchEnsName({
-              address: '0xA0Cf798816D4b9b9866b5330EEa46a18382f251e'
-            });
-            new Notification('XMTP', {
-              body: `${name || shortAddress(message.senderAddress ?? '')}\n${truncate(message.content, 75)}`
-            });
+            if (walletAddress) {
+              const name = await fetchEnsName({
+                address: walletAddress
+              });
+              new Notification('XMTP', {
+                body: `${name || shortAddress(message.senderAddress ?? '')}\n${truncate(message.content, 75)}`
+              });
+            }
 
             latestMsgId = message.id;
           }
