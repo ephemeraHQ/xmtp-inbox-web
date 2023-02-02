@@ -8,6 +8,7 @@ import {
   ArrowSmRightIcon
 } from '@heroicons/react/solid';
 import { useAccount } from 'wagmi';
+import useModalOrDemo from '../hooks/useModalOrDemo';
 
 type XmtpInfoRowProps = {
   icon: JSX.Element;
@@ -62,13 +63,16 @@ const InfoRow = ({
 
 const XmtpInfoPanel = (): JSX.Element => {
   const { address: walletAddress } = useAccount();
+  const { handleConnect } = useModalOrDemo();
+
   const InfoRows = [
     {
       icon: <LinkIcon />,
       headingText: 'Connect your wallet',
       subHeadingText: 'Verify your wallet to start using the XMTP protocol',
       disabled: !!walletAddress,
-      dataTestPrefix: 'connect'
+      dataTestPrefix: 'connect',
+      onClick: handleConnect
     },
     {
       icon: <BookOpenIcon />,
@@ -110,6 +114,7 @@ const XmtpInfoPanel = (): JSX.Element => {
               disabled={info.disabled}
               dataTestPrefix={info.dataTestPrefix}
               url={info.url}
+              onClick={info.onClick}
             />
           );
         })}
