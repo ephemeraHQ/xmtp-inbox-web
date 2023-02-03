@@ -28,7 +28,6 @@ describe('Messaging Test Cases', () => {
   it('Shows correct view when editing address', () => {
     sendAndEnterMessage(testUserWithXmtpAccount, shortMessage, 1);
     checkElement('message-to-input').last().click().type('{backspace}');
-    checkElement('message-to-input').last().click().type('{backspace}');
 
     checkMissingElement('message-input');
 

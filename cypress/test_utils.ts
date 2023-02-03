@@ -43,6 +43,7 @@ const sendMessages = (numberOfTimes: number, message: string, testUser: string) 
   cy.wait(2000);
   checkElement('xmtp-logo').last().click();
   cy.wait(2000);
+  checkElement('message-to-input').last().clear();
   checkElement('message-to-input').last().type(testUser).click();
   cy.wait(2000);
 

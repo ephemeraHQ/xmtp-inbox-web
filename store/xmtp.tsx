@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { Conversation, DecodedMessage, Client } from '@xmtp/xmtp-js';
 import create from 'zustand';
+import { address } from '../components/Address';
 import getUniqueMessages from '../helpers/getUniqueMessages';
 
 interface XmtpState {
@@ -16,6 +17,8 @@ interface XmtpState {
   client: Client | undefined | null;
   setClient: (client: Client | undefined | null) => void;
   resetXmtpState: () => void;
+  recipientWalletAddress: string | address;
+  setRecipientWalletAddress: (address: string) => void;
 }
 
 export const useXmtpStore = create<XmtpState>((set) => ({
@@ -56,7 +59,10 @@ export const useXmtpStore = create<XmtpState>((set) => ({
         client: undefined,
         conversations: new Map(),
         convoMessages: new Map(),
-        previewMessages: new Map()
+        previewMessages: new Map(),
+        recipientWalletAddress: ''
       };
-    })
+    }),
+  recipientWalletAddress: '',
+  setRecipientWalletAddress: (address) => set(() => ({ recipientWalletAddress: address }))
 }));
