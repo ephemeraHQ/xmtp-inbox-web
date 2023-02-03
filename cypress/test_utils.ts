@@ -99,3 +99,12 @@ export const sendAndEnterMessage = (
     checkMessageOutput(numberOfTimes, message);
   }
 };
+
+export const connectDisconnectFlow = (cta: string) => {
+  checkMissingElement('empty-message-header');
+  cy.get(`[data-testid=${cta}]`).click();
+  checkElement('empty-message-header');
+  cy.get(`[data-testid="settings-icon"]`).click();
+  cy.get(`[data-testid="disconnect-wallet-cta"]`).click();
+  checkElement('no-wallet-connected-header');
+};
