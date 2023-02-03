@@ -11,7 +11,8 @@ const useWalletAddress = (address?: address | string) => {
 
   // Get full address when only have ENS
   const { data: ensAddress, isLoading: ensAddressLoading } = useEnsAddress({
-    name: addressToUse
+    name: addressToUse,
+    enabled: isEns
   });
 
   // Get ENS if exists from full address
