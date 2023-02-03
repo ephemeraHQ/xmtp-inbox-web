@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useEnsAddress, useEnsName } from 'wagmi';
 import { address } from '../components/Address';
 import { isEnsAddress, isValidRecipientAddressFormat } from '../helpers';

@@ -42,9 +42,3 @@ export const getConversationKey = (conversation?: Conversation): string => {
     ? `${conversation?.peerAddress}/${conversation?.context?.conversationId}`
     : conversation?.peerAddress ?? '';
 };
-
-export const getConversationIdFromAddress = (
-  address: string | Array<string> | undefined | null
-): string | undefined => {
-  return Array.isArray(address) && address.length > 1 ? address.slice(1).join('/') : undefined;
-};

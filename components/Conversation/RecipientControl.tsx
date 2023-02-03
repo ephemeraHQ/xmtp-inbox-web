@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
 import AddressInput from '../AddressInput';
-import { getConversationIdFromAddress } from '../../helpers';
 import { useXmtpStore } from '../../store/xmtp';
 import Conversation from './Conversation';
 import BackArrow from '../BackArrow';
