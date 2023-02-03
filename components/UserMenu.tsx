@@ -187,8 +187,8 @@ const UserMenu = ({ isError }: UserMenuProps): JSX.Element => {
                       </Menu.Item>
                     </div>
                     <div className="px-1 py-1 ">
-                      <Menu.Item disabled={isAppEnvDemo()}>
-                        {({ active, disabled }) => (
+                      <Menu.Item>
+                        {({ active }) => (
                           <a
                             onClick={() => {
                               disconnectWagmi();
@@ -196,7 +196,6 @@ const UserMenu = ({ isError }: UserMenuProps): JSX.Element => {
                               resetXmtpState();
                             }}
                             className={classNames(
-                              disabled ? 'bg-gray-100' : '',
                               active ? 'bg-zinc-50 cursor-pointer' : '',
                               'block rounded-md px-2 py-2 text-sm text-l-300 text-right font-semibold'
                             )}
