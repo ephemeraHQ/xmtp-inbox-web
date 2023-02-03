@@ -2,8 +2,9 @@ import { LinkIcon, ExclamationCircleIcon } from '@heroicons/react/outline';
 import { useXmtpStore } from '../store/xmtp';
 import ConversationsList from './ConversationsList';
 import Loader from './Loader';
-import { ConnectButton, useConnectModal } from '@rainbow-me/rainbowkit';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi';
+import useHandleConnect from '../hooks/useHandleConnect';
 
 type NavigationPanelProps = {
   isError: boolean;
@@ -12,7 +13,7 @@ type NavigationPanelProps = {
 const NavigationPanel = ({ isError }: NavigationPanelProps): JSX.Element => {
   const { address } = useAccount();
   const client = useXmtpStore((state) => state.client);
-  const { openConnectModal: handleConnect } = useConnectModal();
+  const { handleConnect } = useHandleConnect();
 
   return (
     <div className="flex-grow flex flex-col h-[calc(100vh-8rem)] overflow-y-auto">

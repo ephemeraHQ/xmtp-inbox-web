@@ -6,6 +6,7 @@ describe('Connected Test Cases', () => {
     // In connected flow, empty message should render before any tests run
     checkElement('empty-message-header');
   });
+
   it('Shows expected left panel fields when logged in with a connected wallet and no existing messages', () => {
     const elements = [
       'xmtp-logo',
@@ -21,10 +22,12 @@ describe('Connected Test Cases', () => {
 
     elements.forEach((element) => checkElement(element));
   });
+
   it('Shows expected right panel fields when logged in with a connected wallet and no existing messages', () => {
     checkElement('message-to-key');
     checkElement('message-to-subtext');
   });
+
   it('Shows expected fields when clicking on settings icon while connected', () => {
     cy.get(`[data-testid="settings-icon"]`).click();
 
@@ -34,6 +37,7 @@ describe('Connected Test Cases', () => {
     cy.get(`[data-testid="disconnect-wallet-cta"]`).click();
     checkElement('no-wallet-connected-header');
   });
+
   it('Connects to wallet from 4 different entry points', () => {
     disconnectWallet();
     const entryPoints = [
