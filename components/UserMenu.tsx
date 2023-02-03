@@ -1,7 +1,7 @@
 import { Menu, Transition } from '@headlessui/react';
 import { CogIcon } from '@heroicons/react/solid';
 import { Fragment, useState } from 'react';
-import { classNames, tagStr, wipeKeys } from '../helpers';
+import { classNames, tagStr } from '../helpers';
 import Address from './Address';
 import { Tooltip } from './Tooltip/Tooltip';
 import packageJson from '../package.json';
@@ -191,7 +191,6 @@ const UserMenu = ({ isError }: UserMenuProps): JSX.Element => {
                         {({ active }) => (
                           <a
                             onClick={() => {
-                              wipeKeys(walletAddress);
                               disconnectWagmi();
                               resetWagmi();
                               resetXmtpState();

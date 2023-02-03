@@ -1,26 +1,15 @@
 //@ts-nocheck
 import {
-  checkIfPathIsEns,
-  checkPath,
+  isEnsAddress,
   formatDate,
   formatTime,
-  getAddressFromPath,
-  getConversationIdFromPath,
+  getConversationIdFromAddress,
   getConversationKey,
   shortAddress,
-  truncate
+  truncate,
+  isValidRecipientAddressFormat
 } from '../string';
 import { expect } from '@jest/globals';
-
-const updatePathName = (pathname: string) => {
-  global.window = Object.create(window);
-  Object.defineProperty(window, 'location', {
-    value: {
-      pathname
-    },
-    writable: true
-  });
-};
 
 describe('truncate', () => {
   it('should return the original string if its length is less than the length param', () => {
@@ -68,19 +57,19 @@ describe('formatTime', () => {
   });
 });
 
-describe('checkIfPathIsEns', () => {
+describe('isEnsAddress', () => {
   it('should return true if address ends with .eth', () => {
-    expect(checkIfPathIsEns('test.eth')).toBe(true);
+    expect(isEnsAddress('test.eth')).toBe(true);
   });
   it('should return false if address does not include eth', () => {
-    expect(checkIfPathIsEns('01201209483434')).toBe(false);
+    expect(isEnsAddress('01201209483434')).toBe(false);
   });
   it('should return false if address includes but does not end with .eth', () => {
-    expect(checkIfPathIsEns('test.noteth')).toBe(false);
-    expect(checkIfPathIsEns('eth.test')).toBe(false);
+    expect(isEnsAddress('test.noteth')).toBe(false);
+    expect(isEnsAddress('eth.test')).toBe(false);
   });
   it('should return false if invalid address', () => {
-    expect(checkIfPathIsEns('')).toBe(false);
+    expect(isEnsAddress('')).toBe(false);
   });
 
   describe('shortAddress', () => {
@@ -106,69 +95,26 @@ describe('checkIfPathIsEns', () => {
   });
 });
 
-describe('getAddressFromPath', () => {
-  it('should send back first wallet address if array sent in query', () => {
-    const router = {
-      query: {
-        recipientWalletAddr: ['123test', '456test']
-      }
-    };
-    expect(getAddressFromPath(router)).toBe('123test');
-  });
-  it('should send back wallet address if string sent in query', () => {
-    const router = {
-      query: {
-        recipientWalletAddr: '123testString'
-      }
-    };
-    expect(getAddressFromPath(router)).toBe('123testString');
-  });
-  it('should send back undefined if no wallet address in path', () => {
-    const router = {
-      query: {}
-    };
-    expect(getAddressFromPath(router)).toBe(undefined);
-  });
-});
-
-describe('getConversationIdFromPath', () => {
+describe('getConversationIdFromAddress', () => {
   it('should return undefined if no recipient wallet address', () => {
-    const router = {
-      query: {}
-    };
-    expect(getConversationIdFromPath(router)).toBe(undefined);
+    const address = undefined;
+    expect(getConversationIdFromAddress(address)).toBe(undefined);
   });
   it('should return undefined if recipient wallet address is a string', () => {
-    const router = {
-      query: {
-        recipientWalletAddr: '123test'
-      }
-    };
-    expect(getConversationIdFromPath(router)).toBe(undefined);
+    const address = '123test';
+    expect(getConversationIdFromAddress(address)).toBe(undefined);
   });
   it('should return undefined if recipient wallet address is an empty array', () => {
-    const router = {
-      query: {
-        recipientWalletAddr: []
-      }
-    };
-    expect(getConversationIdFromPath(router)).toBe(undefined);
+    const address = [];
+    expect(getConversationIdFromAddress(address)).toBe(undefined);
   });
   it('should return undefined if recipient wallet address is an array with 1 item', () => {
-    const router = {
-      query: {
-        recipientWalletAddr: ['123test']
-      }
-    };
-    expect(getConversationIdFromPath(router)).toBe(undefined);
+    const address = ['123test'];
+    expect(getConversationIdFromAddress(address)).toBe(undefined);
   });
   it('should return properly formatted string if recipient wallet address is an array of multiple items', () => {
-    const router = {
-      query: {
-        recipientWalletAddr: ['123test', '456test', '789test', 'abctest']
-      }
-    };
-    expect(getConversationIdFromPath(router)).toBe('456test/789test/abctest');
+    const address = ['123test', '456test', '789test', 'abctest'];
+    expect(getConversationIdFromAddress(address)).toBe('456test/789test/abctest');
   });
 });
 
@@ -192,19 +138,17 @@ describe('getConversationKey', () => {
   });
 });
 
-describe('checkPath', () => {
-  it('should return true if pathname includes a wallet address', () => {
-    updatePathName('/dm/0x123456');
-    expect(checkPath()).toBe(true);
+describe('isValidRecipientAddressFormat', () => {
+  it('should return true if address ends with .eth', () => {
+    expect(isValidRecipientAddressFormat('test.eth')).toBe(true);
   });
-  it('should return false if pathname is at root or /dm', () => {
-    updatePathName('/');
-    expect(checkPath()).toBe(false);
-    updatePathName('/dm');
-    expect(checkPath()).toBe(false);
+  it('should return true if address starts with 0x and is the right length', () => {
+    expect(isValidRecipientAddressFormat('0x1234567890123456789012345678901234567890')).toBe(true);
   });
-  it('should return true if pathname is not at root or dm', () => {
-    updatePathName('/random-path');
-    expect(checkPath()).toBe(true);
+  it('should return false if address starts with 0x and is not the right length', () => {
+    expect(isValidRecipientAddressFormat('0xwrongLength')).toBe(false);
+  });
+  it('should return false if invalid address', () => {
+    expect(isValidRecipientAddressFormat('')).toBe(false);
   });
 });

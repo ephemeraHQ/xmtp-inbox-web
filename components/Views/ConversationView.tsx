@@ -1,18 +1,16 @@
 import { Transition } from '@headlessui/react';
 import { Fragment } from 'react';
-import { useRouter } from 'next/router';
+import useWalletAddress from '../../hooks/useWalletAddress';
 
 type ConversationViewProps = {
   children?: React.ReactNode;
 };
 
 const ConversationView = ({ children }: ConversationViewProps): JSX.Element => {
-  const router = useRouter();
-  const show = router.pathname !== '/';
-
+  const { isValid } = useWalletAddress();
   return (
     <>
-      <Transition.Root show={show} as={Fragment}>
+      <Transition.Root show={!!isValid} as={Fragment}>
         <div className="md:hidden inset-0 flex flex-col h-screen bg-white ">
           <Transition.Child
             as={Fragment}

@@ -8,7 +8,7 @@ import { mainnet } from 'wagmi/chains';
 import { infuraProvider } from 'wagmi/providers/infura';
 import { publicProvider } from 'wagmi/providers/public';
 import { MockConnector } from '@wagmi/core/connectors/mock';
-import { providers, Wallet } from 'ethers/lib';
+import { Wallet } from 'ethers/lib';
 import React, { useEffect, useState } from 'react';
 import { isAppEnvDemo } from '../helpers';
 

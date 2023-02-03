@@ -5,16 +5,15 @@ import useGetMessages from '../../hooks/useGetMessages';
 import useSendMessage from '../../hooks/useSendMessage';
 import { getConversationKey } from '../../helpers';
 import { useXmtpStore } from '../../store/xmtp';
+import useWalletAddress from '../../hooks/useWalletAddress';
 
-type ConversationProps = {
-  recipientWalletAddr: string;
-};
-
-const Conversation = ({ recipientWalletAddr }: ConversationProps): JSX.Element => {
+const Conversation = (): JSX.Element => {
   const conversations = useXmtpStore((state) => state.conversations);
   const loadingConversations = useXmtpStore((state) => state.loadingConversations);
+  const recipientWalletAddress = useXmtpStore((state) => state.recipientWalletAddress);
+  const { ensAddress } = useWalletAddress();
 
-  const selectedConversation = conversations.get(recipientWalletAddr);
+  const selectedConversation = conversations.get(ensAddress || recipientWalletAddress);
   const conversationKey = getConversationKey(selectedConversation);
 
   const { sendMessage } = useSendMessage(selectedConversation);

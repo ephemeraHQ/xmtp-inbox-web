@@ -1,6 +1,4 @@
 import { Conversation } from '@xmtp/xmtp-js';
-import { NextRouter } from 'next/router';
-import { address } from '../components/Address';
 
 export const truncate = (str: string | undefined, length: number): string => {
   if (!str) {
@@ -23,11 +21,14 @@ export const formatTime = (d: Date | undefined): string =>
       })
     : '';
 
-export const checkPath = () => {
-  return window.location.pathname !== '/' && window.location.pathname !== '/dm';
+export const isValidRecipientAddressFormat = (recipientWalletAddress: string) => {
+  return (
+    recipientWalletAddress?.endsWith('.eth') ||
+    (recipientWalletAddress?.startsWith('0x') && recipientWalletAddress?.length === 42)
+  );
 };
 
-export const checkIfPathIsEns = (address: string): boolean => {
+export const isEnsAddress = (address: string): boolean => {
   return address.endsWith('.eth');
 };
 
@@ -42,14 +43,8 @@ export const getConversationKey = (conversation?: Conversation): string => {
     : conversation?.peerAddress ?? '';
 };
 
-export const getAddressFromPath = (router: NextRouter): address => {
-  return Array.isArray(router.query.recipientWalletAddr)
-    ? (router.query.recipientWalletAddr[0] as address)
-    : (router.query.recipientWalletAddr as address);
-};
-
-export const getConversationIdFromPath = (router: NextRouter): string | undefined => {
-  return Array.isArray(router.query.recipientWalletAddr) && router.query.recipientWalletAddr.length > 1
-    ? router.query.recipientWalletAddr.slice(1).join('/')
-    : undefined;
+export const getConversationIdFromAddress = (
+  address: string | Array<string> | undefined | null
+): string | undefined => {
+  return Array.isArray(address) && address.length > 1 ? address.slice(1).join('/') : undefined;
 };

@@ -7,7 +7,7 @@ type AvatarProps = {
 };
 
 const Avatar = ({ peerAddress }: AvatarProps) => {
-  const { data: avatarUrl, isLoading } = useEnsAvatar({
+  const { data, isLoading } = useEnsAvatar({
     address: peerAddress
   });
 
@@ -19,11 +19,11 @@ const Avatar = ({ peerAddress }: AvatarProps) => {
     );
   }
 
-  if (avatarUrl) {
+  if (data) {
     return (
       <div>
         <div className="w-10 h-10 rounded-full border border-n-80" />
-        <img className="w-10 h-10 rounded-full z-10 -mt-10" src={avatarUrl} alt={peerAddress} />
+        <img className="w-10 h-10 rounded-full z-10 -mt-10" src={data} alt={peerAddress} />
       </div>
     );
   }

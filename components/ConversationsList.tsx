@@ -1,39 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { ChatIcon } from '@heroicons/react/outline';
 import Address, { address } from './Address';
-import { useRouter } from 'next/router';
 import { Conversation } from '@xmtp/xmtp-js';
 import { classNames, formatDate, getConversationKey } from '../helpers';
 import Avatar from './Avatar';
 import { useXmtpStore } from '../store/xmtp';
 import { useAccount } from 'wagmi';
+import useWalletAddress from '../hooks/useWalletAddress';
 
 type ConversationTileProps = {
   conversation: Conversation;
 };
 
 const ConversationTile = ({ conversation }: ConversationTileProps): JSX.Element | null => {
-  const router = useRouter();
   const { address } = useAccount();
   const previewMessages = useXmtpStore((state) => state.previewMessages);
   const loadingConversations = useXmtpStore((state) => state.loadingConversations);
-  const [recipentAddress, setRecipentAddress] = useState<string>();
-
-  useEffect(() => {
-    const routeAddress =
-      (Array.isArray(router.query.recipientWalletAddr)
-        ? router.query.recipientWalletAddr.join('/')
-        : router.query.recipientWalletAddr) ?? '';
-    setRecipentAddress(routeAddress);
-  }, [router.query.recipientWalletAddr]);
-
-  useEffect(() => {
-    const addressInPathname = window.location.pathname.includes('/dm') && window.location.pathname !== '/dm';
-    if (!recipentAddress && addressInPathname) {
-      router.push(window.location.pathname);
-      setRecipentAddress(window.location.pathname.replace('/dm/', ''));
-    }
-  }, [recipentAddress, window.location.pathname]);
+  const recipientWalletAddress = useXmtpStore((state) => state.recipientWalletAddress);
+  const setRecipientWalletAddress = useXmtpStore((state) => state.setRecipientWalletAddress);
+  const { ensName } = useWalletAddress(getConversationKey(conversation));
 
   if (!previewMessages.get(getConversationKey(conversation))) {
     return null;
@@ -43,19 +28,20 @@ const ConversationTile = ({ conversation }: ConversationTileProps): JSX.Element 
 
   const conversationDomain = conversation.context?.conversationId.split('/')[0] ?? '';
 
-  const isSelected = recipentAddress === getConversationKey(conversation);
+  const isSelected = recipientWalletAddress === getConversationKey(conversation);
 
   if (!latestMessage) {
     return null;
   }
 
-  const onClick = (path: string) => {
-    router.push(path);
+  const onClick = () => {
+    const convoKey = getConversationKey(conversation);
+    setRecipientWalletAddress(ensName || convoKey);
   };
 
   return (
     <div
-      onClick={() => onClick(`/dm/${getConversationKey(conversation)}`)}
+      onClick={onClick}
       className={classNames(
         'h-20',
         'py-2',
