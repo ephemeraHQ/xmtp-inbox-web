@@ -1,7 +1,7 @@
 import { Menu, Transition } from '@headlessui/react';
 import { CogIcon } from '@heroicons/react/solid';
 import { Fragment, useState } from 'react';
-import { classNames, tagStr } from '../helpers';
+import { classNames, isAppEnvDemo, tagStr } from '../helpers';
 import Address from './Address';
 import { Tooltip } from './Tooltip/Tooltip';
 import packageJson from '../package.json';
@@ -187,8 +187,8 @@ const UserMenu = ({ isError }: UserMenuProps): JSX.Element => {
                       </Menu.Item>
                     </div>
                     <div className="px-1 py-1 ">
-                      <Menu.Item>
-                        {({ active }) => (
+                      <Menu.Item disabled={isAppEnvDemo()}>
+                        {({ active, disabled }) => (
                           <a
                             onClick={() => {
                               disconnectWagmi();
@@ -196,6 +196,7 @@ const UserMenu = ({ isError }: UserMenuProps): JSX.Element => {
                               resetXmtpState();
                             }}
                             className={classNames(
+                              disabled ? 'bg-gray-100' : '',
                               active ? 'bg-zinc-50 cursor-pointer' : '',
                               'block rounded-md px-2 py-2 text-sm text-l-300 text-right font-semibold'
                             )}

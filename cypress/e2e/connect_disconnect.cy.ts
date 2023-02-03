@@ -26,7 +26,7 @@ describe('Connected Test Cases', () => {
     checkElement('message-to-subtext');
   });
   it('Shows expected fields when clicking on settings icon while connected', () => {
-    cy.get(`[data-testid="settings-icon"]`).last().click();
+    cy.get(`[data-testid="settings-icon"]`).click();
 
     const elements = ['xmtp-version', 'copy-address-cta', 'disconnect-wallet-cta'];
     elements.forEach((element) => checkElement(element));
@@ -45,9 +45,9 @@ describe('Connected Test Cases', () => {
 
     entryPoints.forEach((cta) => {
       checkMissingElement('empty-message-header');
-      cy.get(`[data-testid=${cta}]`).last().click();
+      cy.get(`[data-testid=${cta}]`).click();
       checkElement('empty-message-header');
-      cy.get(`[data-testid="settings-icon"]`).last().click();
+      cy.get(`[data-testid="settings-icon"]`).click();
       cy.get(`[data-testid="disconnect-wallet-cta"]`).click();
       checkElement('no-wallet-connected-header');
     });

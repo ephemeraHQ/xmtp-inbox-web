@@ -15,6 +15,7 @@ describe('Messaging Test Cases', () => {
   it('Can send a new message to user in XMTP network', () => {
     sendAndEnterMessage(testUserWithXmtpAccount, shortMessage, 1);
   });
+
   it('Can send a long message to user in XMTP network', () => {
     sendAndEnterMessage(testUserWithXmtpAccount, longMessage, 1);
   });
@@ -22,23 +23,25 @@ describe('Messaging Test Cases', () => {
   it('Can send multiple messages to user in XMTP network', () => {
     sendAndEnterMessage(testUserWithXmtpAccount, shortMessage, 6);
   });
+
   it('Displays messages in the correct order', () => {
     sendAndEnterMessage(testUserWithXmtpAccount, shortMessage, 6, true);
   });
+
   it('Shows correct view when editing address', () => {
     sendAndEnterMessage(testUserWithXmtpAccount, shortMessage, 1);
-    checkElement('message-to-input').last().click().type('{backspace}');
-
+    checkElement('message-to-input').click().type('{backspace}');
     checkMissingElement('message-input');
-
-    checkElement('message-to-input').last().type('1');
+    checkElement('message-to-input').type('1');
     checkElement('message-input');
   });
+
   it('Renders error message when sending message to existing user outside of XMTP network', () => {
-    checkElement('message-to-input').last().type('invalidUser').click();
-    cy.get(`[data-testid=message-to-subtext]`, { timeout: 10000 })
-      .last()
-      .should('have.text', 'Please enter a valid wallet address');
+    checkElement('message-to-input').type('invalidUser').click();
+    cy.get(`[data-testid=message-to-subtext]`, { timeout: 10000 }).should(
+      'have.text',
+      'Please enter a valid wallet address'
+    );
     checkMissingElement('message-input');
   });
 });
