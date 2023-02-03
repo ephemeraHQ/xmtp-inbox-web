@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useEnsAddress, useEnsName } from 'wagmi';
 import { address } from '../components/Address';
 import { isEnsAddress, isValidRecipientAddressFormat } from '../helpers';
@@ -6,11 +7,11 @@ import { useXmtpStore } from '../store/xmtp';
 const useWalletAddress = (address?: address | string) => {
   const recipientWalletAddress = useXmtpStore((state) => state.recipientWalletAddress);
   const addressToUse = address || recipientWalletAddress;
+  const isEns = isEnsAddress(addressToUse);
 
   // Get full address when only have ENS
   const { data: ensAddress, isLoading: ensAddressLoading } = useEnsAddress({
-    name: addressToUse,
-    enabled: isEnsAddress(addressToUse)
+    name: addressToUse
   });
 
   // Get ENS if exists from full address
@@ -21,7 +22,7 @@ const useWalletAddress = (address?: address | string) => {
 
   return {
     isValid: isValidRecipientAddressFormat(addressToUse),
-    isEns: isEnsAddress(addressToUse),
+    isEns,
     ensAddress,
     ensName,
     isLoading: ensAddressLoading || ensNameLoading

@@ -1,35 +1,9 @@
-import { Transition } from '@headlessui/react';
-import { Fragment } from 'react';
-import useWalletAddress from '../../hooks/useWalletAddress';
-
 type ConversationViewProps = {
   children?: React.ReactNode;
 };
 
 const ConversationView = ({ children }: ConversationViewProps): JSX.Element => {
-  const { isValid } = useWalletAddress();
-  return (
-    <>
-      <Transition.Root show={!!isValid} as={Fragment}>
-        <div className="md:hidden inset-0 flex flex-col h-screen bg-white ">
-          <Transition.Child
-            as={Fragment}
-            enter="transition ease-in-out duration-300 transform"
-            enterFrom="translate-x-full"
-            enterTo="translate-x-0"
-            leave="transition ease-in-out duration-300 transform"
-            leaveFrom="translate-x-0"
-            leaveTo="translate-x-full"
-          >
-            <div className="md:hidden relative flex-1 flex flex-col w-full">{children}</div>
-          </Transition.Child>
-        </div>
-      </Transition.Root>
-
-      {/* Always show in desktop layout */}
-      <div className="hidden md:bg-white md:pl-84 md:flex md:flex-col md:flex-1 md:h-screen">{children}</div>
-    </>
-  );
+  return <div className="bg-white md:pl-84 flex flex-col flex-1 h-screen">{children}</div>;
 };
 
 export default ConversationView;

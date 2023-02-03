@@ -16,27 +16,29 @@ const ConversationTile = ({ conversation }: ConversationTileProps): JSX.Element 
   const { address } = useAccount();
   const previewMessages = useXmtpStore((state) => state.previewMessages);
   const loadingConversations = useXmtpStore((state) => state.loadingConversations);
-  const recipientWalletAddress = useXmtpStore((state) => state.recipientWalletAddress);
   const setRecipientWalletAddress = useXmtpStore((state) => state.setRecipientWalletAddress);
-  const { ensName } = useWalletAddress(getConversationKey(conversation));
+  const conversationId = useXmtpStore((state) => state.conversationId);
+  const setConversationId = useXmtpStore((state) => state.setConversationId);
 
-  if (!previewMessages.get(getConversationKey(conversation))) {
+  const conversationKey = getConversationKey(conversation);
+
+  if (!previewMessages.get(conversationKey)) {
     return null;
   }
 
-  const latestMessage = previewMessages.get(getConversationKey(conversation));
+  const latestMessage = previewMessages.get(conversationKey);
 
   const conversationDomain = conversation.context?.conversationId.split('/')[0] ?? '';
 
-  const isSelected = recipientWalletAddress === getConversationKey(conversation);
+  const isSelected = conversationId === conversationKey;
 
   if (!latestMessage) {
     return null;
   }
 
   const onClick = () => {
-    const convoKey = getConversationKey(conversation);
-    setRecipientWalletAddress(ensName || convoKey);
+    setRecipientWalletAddress(conversation.peerAddress);
+    setConversationId(conversationKey);
   };
 
   return (
