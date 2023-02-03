@@ -53,9 +53,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 By default, the app code in this repo is set to send and receive messages using the XMTP `dev` network environment. Use the `NEXT_PUBLIC_XMTP_ENVIRONMENT` variable to change the network the app uses. Other available network environments include `production` and `local`.
 
-XMTP may occasionally delete messages and keys from the `dev` network, and will provide advance notice in the XMTP Discord community ([request access](https://xmtp.typeform.com/to/yojTJarb?utm_source=docs_home)). The `production` network is configured to store messages indefinitely.
+XMTP may occasionally delete messages and keys from the `dev` network, and will provide advance notice in the [XMTP Discord community](https://discord.gg/xmtp). The `production` network is configured to store messages indefinitely.
 
-XMTP Labs hosts deployments of the XMTP Inbox chat app for you to try out:
+XMTP Labs hosts the following deployments of the XMTP Inbox chat app:
 
 - https://dev.xmtp.chat/ on the `dev` network
 - https://xmtp.chat/ on the `production` network
@@ -76,8 +76,31 @@ To use the app's chat functionality, the connected wallet must provide two signa
 The app uses the `xmtp-js` [Conversations](https://github.com/xmtp/xmtp-js#conversations) abstraction to list the available conversations for a connected wallet and to listen for or create new conversations. For each conversation, the app gets existing messages and listens for or creates new messages. Conversations and messages are kept in a lightweight store and made available through `XmtpProvider`.
 
 
+### Tests
+
+Tests will be run with any pull request. To run tests locally, you may use the following commands:
+
+Unit tests:
+
+```bash
+npm run test
+```
+
+End-to-end Cypress tests:
+
+```bash
+npm run e2e:headless
+```
+
+Component tests:
+
+```bash
+npm run cypress:component
+```
+
+
 ### Considerations
 
 You can't yet send a message to a wallet address that hasn't used XMTP. The app displays an error when it looks up an address that doesn't have an identity broadcast on the XMTP network.
 
-Research is underway to address this limitation and allow messages to be created and stored for future delivery, even if the recipient hasn't used XMTP yet.
+This limitation will soon be resolved by improvements to the `xmtp-js` library that will allow messages to be created and stored for future delivery, even if the recipient hasn't used XMTP yet.

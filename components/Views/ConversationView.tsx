@@ -1,14 +1,14 @@
-import { Transition } from '@headlessui/react'
-import { Fragment } from 'react'
-import { useRouter } from 'next/router'
+import { Transition } from '@headlessui/react';
+import { Fragment } from 'react';
+import { useRouter } from 'next/router';
 
 type ConversationViewProps = {
-  children?: React.ReactNode
-}
+  children?: React.ReactNode;
+};
 
 const ConversationView = ({ children }: ConversationViewProps): JSX.Element => {
-  const router = useRouter()
-  const show = router.pathname !== '/'
+  const router = useRouter();
+  const show = router.pathname !== '/';
 
   return (
     <>
@@ -23,19 +23,15 @@ const ConversationView = ({ children }: ConversationViewProps): JSX.Element => {
             leaveFrom="translate-x-0"
             leaveTo="translate-x-full"
           >
-            <div className="md:hidden relative flex-1 flex flex-col w-full">
-              {children}
-            </div>
+            <div className="md:hidden relative flex-1 flex flex-col w-full">{children}</div>
           </Transition.Child>
         </div>
       </Transition.Root>
 
       {/* Always show in desktop layout */}
-      <div className="hidden md:bg-white md:pl-84 md:flex md:flex-col md:flex-1 md:h-screen">
-        {children}
-      </div>
+      <div className="hidden md:bg-white md:pl-84 md:flex md:flex-col md:flex-1 md:h-screen">{children}</div>
     </>
-  )
-}
+  );
+};
 
-export default ConversationView
+export default ConversationView;

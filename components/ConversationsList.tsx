@@ -1,60 +1,57 @@
-import React, { useEffect, useState } from 'react'
-import { ChatIcon } from '@heroicons/react/outline'
-import Address from './Address'
-import { useRouter } from 'next/router'
-import { Conversation } from '@xmtp/xmtp-js'
-import { classNames, formatDate, getConversationKey } from '../helpers'
-import Avatar from './Avatar'
-import { useAppStore } from '../store/app'
+import React, { useEffect, useState } from 'react';
+import { ChatIcon } from '@heroicons/react/outline';
+import Address from './Address';
+import { useRouter } from 'next/router';
+import { Conversation } from '@xmtp/xmtp-js';
+import { classNames, formatDate, getConversationKey } from '../helpers';
+import Avatar from './Avatar';
+import { useAppStore } from '../store/app';
+import { useXmtpStore } from '../store/xmtp';
 
 type ConversationTileProps = {
-  conversation: Conversation
-}
+  conversation: Conversation;
+};
 
-const ConversationTile = ({
-  conversation,
-}: ConversationTileProps): JSX.Element | null => {
-  const router = useRouter()
-  const address = useAppStore((state) => state.address)
-  const previewMessages = useAppStore((state) => state.previewMessages)
-  const loadingConversations = useAppStore(
-    (state) => state.loadingConversations
-  )
-  const [recipentAddress, setRecipentAddress] = useState<string>()
+const ConversationTile = ({ conversation }: ConversationTileProps): JSX.Element | null => {
+  const router = useRouter();
+  const address = useAppStore((state) => state.address);
+  const previewMessages = useXmtpStore((state) => state.previewMessages);
+  const loadingConversations = useXmtpStore((state) => state.loadingConversations);
+  const [recipentAddress, setRecipentAddress] = useState<string>();
 
   useEffect(() => {
     const routeAddress =
       (Array.isArray(router.query.recipientWalletAddr)
         ? router.query.recipientWalletAddr.join('/')
-        : router.query.recipientWalletAddr) ?? ''
-    setRecipentAddress(routeAddress)
-  }, [router.query.recipientWalletAddr])
+        : router.query.recipientWalletAddr) ?? '';
+    setRecipentAddress(routeAddress);
+  }, [router.query.recipientWalletAddr]);
 
   useEffect(() => {
-    if (!recipentAddress && window.location.pathname.includes('/dm')) {
-      router.push(window.location.pathname)
-      setRecipentAddress(window.location.pathname.replace('/dm/', ''))
+    const addressInPathname = window.location.pathname.includes('/dm') && window.location.pathname !== '/dm';
+    if (!recipentAddress && addressInPathname) {
+      router.push(window.location.pathname);
+      setRecipentAddress(window.location.pathname.replace('/dm/', ''));
     }
-  }, [recipentAddress, window.location.pathname])
+  }, [recipentAddress, window.location.pathname]);
 
   if (!previewMessages.get(getConversationKey(conversation))) {
-    return null
+    return null;
   }
 
-  const latestMessage = previewMessages.get(getConversationKey(conversation))
+  const latestMessage = previewMessages.get(getConversationKey(conversation));
 
-  const conversationDomain =
-    conversation.context?.conversationId.split('/')[0] ?? ''
+  const conversationDomain = conversation.context?.conversationId.split('/')[0] ?? '';
 
-  const isSelected = recipentAddress === getConversationKey(conversation)
+  const isSelected = recipentAddress === getConversationKey(conversation);
 
   if (!latestMessage) {
-    return null
+    return null;
   }
 
   const onClick = (path: string) => {
-    router.push(path)
-  }
+    router.push(path);
+  };
 
   return (
     <div
@@ -103,31 +100,25 @@ const ConversationTile = ({
           </span>
         </div>
         <span className="text-sm text-gray-500 line-clamp-1 break-all">
-          {address === latestMessage?.senderAddress && 'You: '}{' '}
-          {latestMessage?.content}
+          {address === latestMessage?.senderAddress && 'You: '} {latestMessage?.content}
         </span>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const ConversationsList = (): JSX.Element => {
-  const conversations = useAppStore((state) => state.conversations)
-  const previewMessages = useAppStore((state) => state.previewMessages)
+  const conversations = useXmtpStore((state) => state.conversations);
+  const previewMessages = useXmtpStore((state) => state.previewMessages);
 
-  const orderByLatestMessage = (
-    convoA: Conversation,
-    convoB: Conversation
-  ): number => {
-    const convoALastMessageDate =
-      previewMessages.get(getConversationKey(convoA))?.sent || new Date()
-    const convoBLastMessageDate =
-      previewMessages.get(getConversationKey(convoB))?.sent || new Date()
-    return convoALastMessageDate < convoBLastMessageDate ? 1 : -1
-  }
+  const orderByLatestMessage = (convoA: Conversation, convoB: Conversation): number => {
+    const convoALastMessageDate = previewMessages.get(getConversationKey(convoA))?.sent || new Date();
+    const convoBLastMessageDate = previewMessages.get(getConversationKey(convoB))?.sent || new Date();
+    return convoALastMessageDate < convoBLastMessageDate ? 1 : -1;
+  };
 
   if (!conversations || conversations.size == 0) {
-    return <NoConversationsMessage />
+    return <NoConversationsMessage />;
   }
 
   return (
@@ -137,16 +128,11 @@ const ConversationsList = (): JSX.Element => {
         Array.from(conversations.values())
           .sort(orderByLatestMessage)
           .map((convo) => {
-            return (
-              <ConversationTile
-                key={getConversationKey(convo)}
-                conversation={convo}
-              />
-            )
+            return <ConversationTile key={getConversationKey(convo)} conversation={convo} />;
           })}
     </>
-  )
-}
+  );
+};
 
 const NoConversationsMessage = (): JSX.Element => {
   return (
@@ -155,16 +141,20 @@ const NoConversationsMessage = (): JSX.Element => {
         <ChatIcon
           className="h-8 w-8 mb-1 stroke-n-200 md:stroke-n-300"
           aria-hidden="true"
+          data-testid="empty-message-icon"
         />
-        <p className="text-xl md:text-lg text-n-200 md:text-n-300 font-bold">
+        <p
+          className="text-xl md:text-lg text-n-200 md:text-n-300 font-bold"
+          data-testid="empty-message-header"
+        >
           Your message list is empty
         </p>
-        <p className="text-lx md:text-md text-n-200 font-normal">
+        <p className="text-lx md:text-md text-n-200 font-normal" data-testid="empty-message-subheader">
           There are no messages for this address
         </p>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default React.memo(ConversationsList)
+export default React.memo(ConversationsList);
