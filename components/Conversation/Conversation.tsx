@@ -4,19 +4,28 @@ import Loader from '../../components/Loader';
 import useGetMessages from '../../hooks/useGetMessages';
 import useSendMessage from '../../hooks/useSendMessage';
 import { useXmtpStore } from '../../store/xmtp';
+import useWalletAddress from '../../hooks/useWalletAddress';
+import { isEnsAddress } from '../../helpers';
 
 const Conversation = (): JSX.Element => {
   const conversations = useXmtpStore((state) => state.conversations);
   const loadingConversations = useXmtpStore((state) => state.loadingConversations);
-  const conversationId = useXmtpStore((state) => state.conversationId) ?? '';
 
-  const selectedConversation = conversations.get(conversationId);
+  // Since conversationId can be set to an ENS name, we reset it below for those cases to pull from the ENS address
+  // Resolves bug where entering an existing conversation with ENS name in "new message" doesn't retrieve conversations
+  const { ensAddress } = useWalletAddress();
+  const storeConversationId = useXmtpStore((state) => state.conversationId) ?? '';
+  const conversationId = isEnsAddress(storeConversationId) ? ensAddress : storeConversationId;
+  const selectedConversation = conversations.get(conversationId as string);
 
   const { sendMessage } = useSendMessage(selectedConversation);
 
   const [endTime, setEndTime] = useState<Map<string, Date>>(new Map());
 
-  const { convoMessages: messages, hasMore } = useGetMessages(conversationId, endTime.get(conversationId));
+  const { convoMessages: messages, hasMore } = useGetMessages(
+    conversationId as string,
+    endTime.get(conversationId as string)
+  );
 
   const fetchNextMessages = useCallback(() => {
     if (hasMore && Array.isArray(messages) && messages.length > 0 && conversationId) {

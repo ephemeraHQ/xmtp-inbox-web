@@ -1,4 +1,10 @@
-import { checkElement, checkMissingElement, checkLink, disconnectWallet, startDemoEnv } from '../test_utils';
+import {
+  checkElement,
+  checkLink,
+  disconnectWallet,
+  startDemoEnv,
+  connectDisconnectFlow
+} from '../test_utils';
 
 describe('Connected Test Cases', () => {
   beforeEach(() => {
@@ -38,23 +44,21 @@ describe('Connected Test Cases', () => {
     checkElement('no-wallet-connected-header');
   });
 
-  it('Connects to wallet from 4 different entry points', () => {
+  it('Can reconnect to wallet from connect button', () => {
     disconnectWallet();
-    const entryPoints = [
-      'no-wallet-connected-cta',
-      'settings-icon',
-      'connect-section-link',
-      'no-wallet-connected-footer-secondary-text'
-    ];
-
-    entryPoints.forEach((cta) => {
-      checkMissingElement('empty-message-header');
-      cy.get(`[data-testid=${cta}]`).click();
-      checkElement('empty-message-header');
-      cy.get(`[data-testid="settings-icon"]`).click();
-      cy.get(`[data-testid="disconnect-wallet-cta"]`).click();
-      checkElement('no-wallet-connected-header');
-    });
+    connectDisconnectFlow('no-wallet-connected-cta');
+  });
+  it('Can reconnect to wallet from sign in with wallet text', () => {
+    disconnectWallet();
+    connectDisconnectFlow('no-wallet-connected-footer-secondary-text');
+  });
+  it('Can reconnect to wallet from settings icon', () => {
+    disconnectWallet();
+    connectDisconnectFlow('settings-icon');
+  });
+  it('Can reconnect to wallet from connect section link', () => {
+    disconnectWallet();
+    connectDisconnectFlow('connect-section-link');
   });
 });
 

@@ -113,8 +113,7 @@ const RecipientControl = (): JSX.Element => {
 
         {recipientInputMode === RecipientInputMode.Submitted ? (
           <div className="text-md text-n-300 text-sm font-mono ml-10 md:ml-8 pb-1 md:pb-[1px]">
-            {/* Fix below the useWalletAddress hook does not always return things correctly */}
-            {isEns && recipientWalletAddress}
+            {ensName ? ensAddress : null}
           </div>
         ) : (
           <div

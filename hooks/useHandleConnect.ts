@@ -9,14 +9,14 @@ const useHandleConnect = () => {
 
   const { connect: connectWallet } = useConnect();
 
-  const handlleConnectDemo = () => {
+  const handleConnectDemo = () => {
     const createWallet = (() => Wallet.createRandom())();
     const mockConnector = new MockConnector({ options: { signer: createWallet } });
     connectWallet({ connector: mockConnector });
   };
 
   return {
-    handleConnect: isAppEnvDemo() ? handlleConnectDemo : openConnectModal
+    handleConnect: isAppEnvDemo() ? handleConnectDemo : openConnectModal
   };
 };
 

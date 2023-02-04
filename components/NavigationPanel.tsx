@@ -21,40 +21,36 @@ const NavigationPanel = ({ isError }: NavigationPanelProps): JSX.Element => {
         <ConversationsPanel />
       ) : (
         <>
-          {address ? (
-            <button onClick={() => {}}>Connect To Xmtp</button>
-          ) : (
-            <NoWalletConnectedMessage isError={isError}>
-              <ConnectButton.Custom>
-                {({ account, chain, mounted }) => {
-                  const ready = mounted;
-                  const connected = ready && account && chain;
-                  return (
-                    <div
-                      {...(!ready && {
-                        'aria-hidden': true
-                      })}
-                    >
-                      {(() => {
-                        if (!connected) {
-                          return (
-                            <button
-                              type="button"
-                              className="bg-p-600 px-4 rounded-lg h-[40px] text-white font-bold"
-                              onClick={handleConnect}
-                              data-testid="no-wallet-connected-cta"
-                            >
-                              Connect Wallet
-                            </button>
-                          );
-                        }
-                      })()}
-                    </div>
-                  );
-                }}
-              </ConnectButton.Custom>
-            </NoWalletConnectedMessage>
-          )}
+          <NoWalletConnectedMessage isError={isError}>
+            <ConnectButton.Custom>
+              {({ account, chain, mounted }) => {
+                const ready = mounted;
+                const connected = ready && account && chain;
+                return (
+                  <div
+                    {...(!ready && {
+                      'aria-hidden': true
+                    })}
+                  >
+                    {(() => {
+                      if (!connected) {
+                        return (
+                          <button
+                            type="button"
+                            className="bg-p-600 px-4 rounded-lg h-[40px] text-white font-bold"
+                            onClick={handleConnect}
+                            data-testid="no-wallet-connected-cta"
+                          >
+                            Connect Wallet
+                          </button>
+                        );
+                      }
+                    })()}
+                  </div>
+                );
+              }}
+            </ConnectButton.Custom>
+          </NoWalletConnectedMessage>
         </>
       )}
     </div>

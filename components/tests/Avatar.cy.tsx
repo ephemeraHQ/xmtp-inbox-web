@@ -1,4 +1,6 @@
 import React from 'react';
+import { WagmiConfig } from 'wagmi';
+import { mockClient } from '../../cypress/mock_wagmi_client';
 import { address } from '../Address';
 import Avatar from '../Avatar';
 
@@ -9,6 +11,10 @@ const props = {
 describe('<Avatar />', () => {
   it('renders', () => {
     // see: https://on.cypress.io/mounting-react
-    cy.mount(<Avatar {...props} />);
+    cy.mount(
+      <WagmiConfig client={mockClient}>
+        <Avatar {...props} />
+      </WagmiConfig>
+    );
   });
 });
