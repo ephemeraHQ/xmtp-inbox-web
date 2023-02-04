@@ -36,8 +36,6 @@ const sendMessages = (
   testUser: string,
   differentMessageText: boolean
 ) => {
-  console.log(differentMessageText);
-
   for (let i = 0; i < numberOfTimes; i++) {
     // Enters message
     checkElement('message-input').type(message);
