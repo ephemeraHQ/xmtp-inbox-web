@@ -5,7 +5,6 @@ import { useAccount } from 'wagmi';
 import useWalletAddress from '../hooks/useWalletAddress';
 
 type AddressInputProps = {
-  conversationId?: string;
   id?: string;
   name?: string;
   className?: string;
@@ -13,13 +12,8 @@ type AddressInputProps = {
   onInputChange?: (e: React.SyntheticEvent) => void;
 };
 
-const AddressInput = ({
-  conversationId,
-  id,
-  className,
-  placeholder,
-  onInputChange
-}: AddressInputProps): JSX.Element => {
+const AddressInput = ({ id, className, placeholder, onInputChange }: AddressInputProps): JSX.Element => {
+  const conversationId = useXmtpStore((state) => state.conversationId);
   const recipientWalletAddress = useXmtpStore((state) => state.recipientWalletAddress);
   const setRecipientWalletAddress = useXmtpStore((state) => state.setRecipientWalletAddress);
   const { isValid, isEns, ensAddress, ensName } = useWalletAddress();
@@ -45,27 +39,31 @@ const AddressInput = ({
   useEffect(() => {
     const setLookupValue = async () => {
       if (isValid && isEns && ensAddress) {
-        const conversation = conversationId
-          ? await client?.conversations?.newConversation(ensAddress, {
-              conversationId,
-              metadata: {}
-            })
-          : await client?.conversations?.newConversation(ensAddress);
+        const conversation =
+          conversationId && conversationId !== ensAddress
+            ? await client?.conversations?.newConversation(ensAddress, {
+                conversationId,
+                metadata: {}
+              })
+            : await client?.conversations?.newConversation(ensAddress);
 
         if (conversation) {
           conversations.set(getConversationKey(conversation), conversation);
           setConversations(new Map(conversations));
+          setRecipientWalletAddress(conversation.peerAddress);
         }
       } else if (isValid && !isEns) {
-        const conversation = conversationId
-          ? await client?.conversations?.newConversation(recipientWalletAddress, {
-              conversationId,
-              metadata: {}
-            })
-          : await client?.conversations?.newConversation(recipientWalletAddress);
+        const conversation =
+          conversationId && conversationId !== recipientWalletAddress
+            ? await client?.conversations?.newConversation(recipientWalletAddress, {
+                conversationId,
+                metadata: {}
+              })
+            : await client?.conversations?.newConversation(recipientWalletAddress);
         if (conversation) {
           conversations.set(getConversationKey(conversation), conversation);
           setConversations(new Map(conversations));
+          setRecipientWalletAddress(conversation.peerAddress);
         }
       }
     };
@@ -96,7 +94,8 @@ const AddressInput = ({
 
   return (
     <div className="relative mb-5">
-      {isValid && <span className={recipientPillInputStyle}>{recipientWalletAddress}</span>}
+      {isValid && <span className={recipientPillInputStyle}>{ensName ?? recipientWalletAddress}</span>}
+      <br />
       <input
         id={id}
         name="recipient"
@@ -108,7 +107,7 @@ const AddressInput = ({
         )}
         placeholder={placeholder}
         onChange={onInputChange}
-        value={recipientWalletAddress}
+        value={ensName ?? recipientWalletAddress}
         ref={inputElement}
         autoComplete="off"
         autoCorrect="off"

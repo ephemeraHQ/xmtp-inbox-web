@@ -12,11 +12,15 @@ import React, { useEffect } from 'react';
 import useListConversations from '../hooks/useListConversations';
 import { useXmtpStore } from '../store/xmtp';
 import useInitXmtpClient from '../hooks/useInitXmtpClient';
+import useWindowSize from '../hooks/useWindowSize';
 
 const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const client = useXmtpStore((state) => state.client);
   const resetXmtpState = useXmtpStore((state) => state.resetXmtpState);
+  const recipientWalletAddress = useXmtpStore((state) => state.recipientWalletAddress);
   const { address: walletAddress } = useAccount();
+  const isNewMsg = useXmtpStore((state) => state.isNewMsg);
+  const size = useWindowSize();
   useInitXmtpClient();
 
   const { error } = useConnect();
@@ -33,32 +37,64 @@ const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
       </Head>
       <div>
-        <NavigationView>
-          <aside className="flex w-full md:w-84 flex-col flex-grow fixed inset-y-0">
-            <div className="flex flex-col flex-grow md:border-r md:border-gray-200 bg-white overflow-y-auto">
-              <div className="max-h-16 min-h-[4rem] bg-p-600 flex items-center justify-between flex-shrink-0 px-4">
-                <Link href="/" passHref={true}>
-                  <img className="h-8 w-auto" src="/xmtp-icon.png" alt="XMTP" data-testid="xmtp-logo" />
-                </Link>
-                {walletAddress && client && <NewMessageButton />}
+        {size[0] > 600 ? (
+          <>
+            <NavigationView>
+              <aside className="flex w-full md:w-84 flex-col flex-grow fixed inset-y-0">
+                <div className="flex flex-col flex-grow md:border-r md:border-gray-200 bg-white overflow-y-auto">
+                  <div className="max-h-16 min-h-[4rem] bg-p-600 flex items-center justify-between flex-shrink-0 px-4">
+                    <Link href="/" passHref={true}>
+                      <img className="h-8 w-auto" src="/xmtp-icon.png" alt="XMTP" data-testid="xmtp-logo" />
+                    </Link>
+                    {walletAddress && client && <NewMessageButton />}
+                  </div>
+                  {<NavigationPanel isError={!!error} />}
+                  <UserMenu isError={!!error} />
+                </div>
+              </aside>
+            </NavigationView>
+            <ConversationView>
+              {walletAddress && client ? (
+                <>
+                  <div className="flex bg-zinc-50 border-b border-gray-200 md:bg-white md:border-0 max-h-16 min-h-[4rem]">
+                    <RecipientControl />
+                  </div>
+                  {children}
+                </>
+              ) : (
+                <XmtpInfoPanel />
+              )}
+            </ConversationView>
+          </>
+        ) : isNewMsg || recipientWalletAddress ? (
+          <ConversationView>
+            {walletAddress && client ? (
+              <>
+                <div className="flex bg-zinc-50 border-b border-gray-200 md:bg-white md:border-0 max-h-16 min-h-[4rem]">
+                  <RecipientControl />
+                </div>
+                {children}
+              </>
+            ) : (
+              <XmtpInfoPanel />
+            )}
+          </ConversationView>
+        ) : (
+          <NavigationView>
+            <aside className="flex w-full md:w-84 flex-col flex-grow fixed inset-y-0">
+              <div className="flex flex-col flex-grow md:border-r md:border-gray-200 bg-white overflow-y-auto">
+                <div className="max-h-16 min-h-[4rem] bg-p-600 flex items-center justify-between flex-shrink-0 px-4">
+                  <Link href="/" passHref={true}>
+                    <img className="h-8 w-auto" src="/xmtp-icon.png" alt="XMTP" data-testid="xmtp-logo" />
+                  </Link>
+                  {walletAddress && client && <NewMessageButton />}
+                </div>
+                {<NavigationPanel isError={!!error} />}
+                <UserMenu isError={!!error} />
               </div>
-              {<NavigationPanel isError={!!error} />}
-              <UserMenu isError={!!error} />
-            </div>
-          </aside>
-        </NavigationView>
-        <ConversationView>
-          {walletAddress && client ? (
-            <>
-              <div className="flex bg-zinc-50 border-b border-gray-200 md:bg-white md:border-0 max-h-16 min-h-[4rem]">
-                <RecipientControl />
-              </div>
-              {children}
-            </>
-          ) : (
-            <XmtpInfoPanel />
-          )}
-        </ConversationView>
+            </aside>
+          </NavigationView>
+        )}
       </div>
     </>
   );

@@ -28,7 +28,7 @@ const formatDate = (d?: Date) =>
 const MessageTile = ({ message }: MessageTileProps): JSX.Element => (
   <div className="flex items-start mx-auto mb-4">
     <Avatar peerAddress={message.senderAddress as address} />
-    <div className="ml-2 max-w-[95%]">
+    <div className="ml-2 max-w-[90%]">
       <div>
         <AddressPill address={message.senderAddress as address} />
         <span className="text-sm font-normal place-self-end text-n-300 text-md uppercase">

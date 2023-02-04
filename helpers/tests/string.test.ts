@@ -3,7 +3,6 @@ import {
   isEnsAddress,
   formatDate,
   formatTime,
-  getConversationIdFromAddress,
   getConversationKey,
   shortAddress,
   truncate,
@@ -92,29 +91,6 @@ describe('isEnsAddress', () => {
     it('should handle empty string inputs by returning an empty string', () => {
       expect(shortAddress('')).toBe('');
     });
-  });
-});
-
-describe('getConversationIdFromAddress', () => {
-  it('should return undefined if no recipient wallet address', () => {
-    const address = undefined;
-    expect(getConversationIdFromAddress(address)).toBe(undefined);
-  });
-  it('should return undefined if recipient wallet address is a string', () => {
-    const address = '123test';
-    expect(getConversationIdFromAddress(address)).toBe(undefined);
-  });
-  it('should return undefined if recipient wallet address is an empty array', () => {
-    const address = [];
-    expect(getConversationIdFromAddress(address)).toBe(undefined);
-  });
-  it('should return undefined if recipient wallet address is an array with 1 item', () => {
-    const address = ['123test'];
-    expect(getConversationIdFromAddress(address)).toBe(undefined);
-  });
-  it('should return properly formatted string if recipient wallet address is an array of multiple items', () => {
-    const address = ['123test', '456test', '789test', 'abctest'];
-    expect(getConversationIdFromAddress(address)).toBe('456test/789test/abctest');
   });
 });
 

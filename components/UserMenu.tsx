@@ -1,7 +1,7 @@
 import { Menu, Transition } from '@headlessui/react';
 import { CogIcon } from '@heroicons/react/solid';
 import { Fragment, useState } from 'react';
-import { classNames, tagStr } from '../helpers';
+import { classNames, isAppEnvDemo, tagStr } from '../helpers';
 import Address from './Address';
 import { Tooltip } from './Tooltip/Tooltip';
 import packageJson from '../package.json';
@@ -11,14 +11,14 @@ import { Modal } from './Modal';
 import { ClipboardCopyIcon } from '@heroicons/react/outline';
 import { useXmtpStore } from '../store/xmtp';
 import { useAccount, useDisconnect } from 'wagmi';
-import { useConnectModal } from '@rainbow-me/rainbowkit';
+import useHandleConnect from '../hooks/useHandleConnect';
 
 type UserMenuProps = {
   isError: boolean;
 };
 
 const NotConnected = ({ isError }: UserMenuProps): JSX.Element => {
-  const { openConnectModal: handleConnect } = useConnectModal();
+  const { handleConnect } = useHandleConnect();
 
   return (
     <>

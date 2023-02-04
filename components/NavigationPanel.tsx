@@ -2,8 +2,9 @@ import { LinkIcon, ExclamationCircleIcon } from '@heroicons/react/outline';
 import { useXmtpStore } from '../store/xmtp';
 import ConversationsList from './ConversationsList';
 import Loader from './Loader';
-import { ConnectButton, useConnectModal } from '@rainbow-me/rainbowkit';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi';
+import useHandleConnect from '../hooks/useHandleConnect';
 
 type NavigationPanelProps = {
   isError: boolean;
@@ -12,7 +13,7 @@ type NavigationPanelProps = {
 const NavigationPanel = ({ isError }: NavigationPanelProps): JSX.Element => {
   const { address } = useAccount();
   const client = useXmtpStore((state) => state.client);
-  const { openConnectModal: handleConnect } = useConnectModal();
+  const { handleConnect } = useHandleConnect();
 
   return (
     <div className="flex-grow flex flex-col h-[calc(100vh-8rem)] overflow-y-auto">
@@ -20,40 +21,36 @@ const NavigationPanel = ({ isError }: NavigationPanelProps): JSX.Element => {
         <ConversationsPanel />
       ) : (
         <>
-          {address ? (
-            <button onClick={() => {}}>Connect To Xmtp</button>
-          ) : (
-            <NoWalletConnectedMessage isError={isError}>
-              <ConnectButton.Custom>
-                {({ account, chain, mounted }) => {
-                  const ready = mounted;
-                  const connected = ready && account && chain;
-                  return (
-                    <div
-                      {...(!ready && {
-                        'aria-hidden': true
-                      })}
-                    >
-                      {(() => {
-                        if (!connected) {
-                          return (
-                            <button
-                              type="button"
-                              className="bg-p-600 px-4 rounded-lg h-[40px] text-white font-bold"
-                              onClick={handleConnect}
-                              data-testid="no-wallet-connected-cta"
-                            >
-                              Connect Wallet
-                            </button>
-                          );
-                        }
-                      })()}
-                    </div>
-                  );
-                }}
-              </ConnectButton.Custom>
-            </NoWalletConnectedMessage>
-          )}
+          <NoWalletConnectedMessage isError={isError}>
+            <ConnectButton.Custom>
+              {({ account, chain, mounted }) => {
+                const ready = mounted;
+                const connected = ready && account && chain;
+                return (
+                  <div
+                    {...(!ready && {
+                      'aria-hidden': true
+                    })}
+                  >
+                    {(() => {
+                      if (!connected) {
+                        return (
+                          <button
+                            type="button"
+                            className="bg-p-600 px-4 rounded-lg h-[40px] text-white font-bold"
+                            onClick={handleConnect}
+                            data-testid="no-wallet-connected-cta"
+                          >
+                            Connect Wallet
+                          </button>
+                        );
+                      }
+                    })()}
+                  </div>
+                );
+              }}
+            </ConnectButton.Custom>
+          </NoWalletConnectedMessage>
         </>
       )}
     </div>

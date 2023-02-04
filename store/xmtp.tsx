@@ -16,9 +16,13 @@ interface XmtpState {
   addMessages: (key: string, newMessages: DecodedMessage[]) => number;
   client: Client | undefined | null;
   setClient: (client: Client | undefined | null) => void;
-  resetXmtpState: () => void;
   recipientWalletAddress: string | address;
   setRecipientWalletAddress: (address: string) => void;
+  conversationId?: string;
+  setConversationId: (conversationId?: string) => void;
+  isNewMsg: boolean;
+  setIsNewMsg: (isNewMsg: boolean) => void;
+  resetXmtpState: () => void;
 }
 
 export const useXmtpStore = create<XmtpState>((set) => ({
@@ -53,6 +57,12 @@ export const useXmtpStore = create<XmtpState>((set) => ({
   },
   client: undefined,
   setClient: (client: Client | undefined | null) => set(() => ({ client })),
+  recipientWalletAddress: '',
+  setRecipientWalletAddress: (address) => set(() => ({ recipientWalletAddress: address })),
+  conversationId: '',
+  setConversationId: (conversationId) => set(() => ({ conversationId })),
+  isNewMsg: false,
+  setIsNewMsg: (isNewMsg) => set(() => ({ isNewMsg })),
   resetXmtpState: () =>
     set(() => {
       return {
@@ -60,9 +70,9 @@ export const useXmtpStore = create<XmtpState>((set) => ({
         conversations: new Map(),
         convoMessages: new Map(),
         previewMessages: new Map(),
-        recipientWalletAddress: ''
+        recipientWalletAddress: '',
+        isNewMsg: false,
+        conversationId: undefined
       };
-    }),
-  recipientWalletAddress: '',
-  setRecipientWalletAddress: (address) => set(() => ({ recipientWalletAddress: address }))
+    })
 }));
