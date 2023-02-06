@@ -35,9 +35,7 @@ export const useListConversations = () => {
       }
       setLoadingConversations(true);
       const newPreviewMessages = new Map(previewMessages);
-      const startTime = new Date();
       const convos = await client.conversations.list();
-      console.log(`listConversations took ${new Date().getTime() - startTime.getTime()}ms`);
       const previews = await Promise.all(convos.map(fetchMostRecentMessage));
 
       for (const preview of previews) {
