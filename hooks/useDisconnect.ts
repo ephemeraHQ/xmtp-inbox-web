@@ -10,6 +10,7 @@ const useDisconnect = () => {
 
   const disconnect = useCallback(() => {
     Object.keys(localStorage).forEach((key) => {
+      // This will clear the conversation cache + the private keys
       if (key.startsWith('xmtp')) {
         localStorage.removeItem(key);
       }

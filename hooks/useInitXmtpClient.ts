@@ -3,6 +3,7 @@ import { Signer } from 'ethers';
 import { useCallback, useEffect, useState } from 'react';
 import { getAppVersion, getEnv, loadKeys, storeKeys, wipeKeys } from '../helpers';
 import { useAppStore } from '../store/app';
+import { useConversationCache } from '../store/conversationCache';
 import { useXmtpStore } from '../store/xmtp';
 
 const useInitXmtpClient = (cacheOnly = false) => {
@@ -13,6 +14,7 @@ const useInitXmtpClient = (cacheOnly = false) => {
   const resetAppState = useAppStore((state) => state.resetAppState);
   const resetXmtpState = useXmtpStore((state) => state.resetXmtpState);
   const [isRequestPending, setIsRequestPending] = useState(false);
+  const conversationExports = useConversationCache((state) => state.conversations[address]);
 
   const disconnect = () => {
     resetAppState();
@@ -43,6 +45,10 @@ const useInitXmtpClient = (cacheOnly = false) => {
             appVersion: getAppVersion(),
             privateKeyOverride: keys
           });
+          if (conversationExports && conversationExports.length) {
+            // Preload the client with conversations from the cache
+            await xmtp.conversations.import(conversationExports);
+          }
           setClient(xmtp);
           setIsRequestPending(false);
         } catch (e) {
