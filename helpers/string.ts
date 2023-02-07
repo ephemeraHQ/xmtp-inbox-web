@@ -28,6 +28,10 @@ export const isValidRecipientAddressFormat = (recipientWalletAddress: string) =>
   );
 };
 
+export const isValidLongWalletAddress = (recipientWalletAddress: string) => {
+  return recipientWalletAddress?.startsWith('0x') && recipientWalletAddress?.length === 42;
+};
+
 export const isEnsAddress = (address: string): boolean => {
   return address.endsWith('.eth');
 };

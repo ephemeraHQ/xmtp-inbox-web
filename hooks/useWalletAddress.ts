@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useEnsAddress, useEnsName } from 'wagmi';
 import { address } from '../components/Address';
-import { isEnsAddress, isValidRecipientAddressFormat } from '../helpers';
+import { isEnsAddress, isValidLongWalletAddress, isValidRecipientAddressFormat } from '../helpers';
 import { useXmtpStore } from '../store/xmtp';
 
 const useWalletAddress = (address?: address | string) => {
   const recipientWalletAddress = useXmtpStore((state) => state.recipientWalletAddress);
+  const conversationId = useXmtpStore((state) => state.conversationId);
   const setConversationId = useXmtpStore((state) => state.setConversationId);
   const [addressToUse, setAddressToUse] = useState(address || recipientWalletAddress);
   const isEns = isEnsAddress(addressToUse);
@@ -19,7 +20,7 @@ const useWalletAddress = (address?: address | string) => {
   // Get ENS if exists from full address
   const { data: ensName, isLoading: ensNameLoading } = useEnsName({
     address: addressToUse as address,
-    enabled: addressToUse?.startsWith('0x') && addressToUse.length === 42
+    enabled: isValidLongWalletAddress(addressToUse)
   });
 
   useEffect(() => {
@@ -27,9 +28,12 @@ const useWalletAddress = (address?: address | string) => {
   }, [recipientWalletAddress, address]);
 
   useEffect(() => {
+    const conversationIdArray = conversationId?.split('/') ?? [];
     if (isEns && ensAddress && !ensAddressLoading) {
       setConversationId(ensAddress);
-    } else if (!isEns && recipientWalletAddress) {
+      // conversationIdArray.length < 2 this check is to see if the conversation
+      // is from another app apart from xmtp.chat
+    } else if (isValidLongWalletAddress(recipientWalletAddress) && conversationIdArray.length < 2) {
       setConversationId(recipientWalletAddress);
     }
   }, [isEns, ensAddress, ensAddressLoading, recipientWalletAddress]);
@@ -37,7 +41,7 @@ const useWalletAddress = (address?: address | string) => {
   return {
     isValid: isValidRecipientAddressFormat(addressToUse),
     isEns,
-    ensAddress: ensAddress,
+    ensAddress,
     ensName,
     isLoading: ensAddressLoading || ensNameLoading
   };
