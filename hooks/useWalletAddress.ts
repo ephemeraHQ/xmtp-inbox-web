@@ -29,8 +29,10 @@ const useWalletAddress = (address?: address | string) => {
   useEffect(() => {
     if (isEns && ensAddress && !ensAddressLoading) {
       setConversationId(ensAddress);
+    } else if (!isEns && recipientWalletAddress) {
+      setConversationId(recipientWalletAddress);
     }
-  }, [isEns, ensAddress, ensAddressLoading]);
+  }, [isEns, ensAddress, ensAddressLoading, recipientWalletAddress]);
 
   return {
     isValid: isValidRecipientAddressFormat(addressToUse),
