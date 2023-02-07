@@ -40,7 +40,7 @@
     "react-infinite-scroll-component": "^6.1.0",
     "react-qr-code": "^2.0.11",
     "wagmi": "^0.9.6",
-    "zustand": "^4.1.4"
+    "zustand": "^4.3.2"
   },
   "overrides": {
     "autoprefixer": "10.4.5"

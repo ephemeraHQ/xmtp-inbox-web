@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { Conversation, DecodedMessage, Client } from '@xmtp/xmtp-js';
-import create from 'zustand';
+import { create } from 'zustand';
 import { address } from '../components/Address';
 import getUniqueMessages from '../helpers/getUniqueMessages';
 

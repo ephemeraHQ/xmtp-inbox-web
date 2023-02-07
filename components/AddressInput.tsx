@@ -52,7 +52,7 @@ const AddressInput = ({ id, className, placeholder, onInputChange }: AddressInpu
           setConversations(new Map(conversations));
           setRecipientWalletAddress(conversation.peerAddress);
         }
-      } else if (isValid && !isEns) {
+      } else if (isValid && !isEns && recipientWalletAddress) {
         const conversation =
           conversationId && conversationId !== recipientWalletAddress
             ? await client?.conversations?.newConversation(recipientWalletAddress, {

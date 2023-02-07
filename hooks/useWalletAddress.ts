@@ -6,7 +6,9 @@ import { useXmtpStore } from '../store/xmtp';
 
 const useWalletAddress = (address?: address | string) => {
   const recipientWalletAddress = useXmtpStore((state) => state.recipientWalletAddress);
+  const setConversationId = useXmtpStore((state) => state.setConversationId);
   const [addressToUse, setAddressToUse] = useState(address || recipientWalletAddress);
+  const isEns = isEnsAddress(addressToUse);
 
   // Get full address when only have ENS
   const { data: ensAddress, isLoading: ensAddressLoading } = useEnsAddress({
@@ -24,10 +26,16 @@ const useWalletAddress = (address?: address | string) => {
     setAddressToUse(address || recipientWalletAddress);
   }, [recipientWalletAddress, address]);
 
+  useEffect(() => {
+    if (isEns && ensAddress && !ensAddressLoading) {
+      setConversationId(ensAddress);
+    }
+  }, [isEns, ensAddress, ensAddressLoading]);
+
   return {
     isValid: isValidRecipientAddressFormat(addressToUse),
-    isEns: isEnsAddress(addressToUse),
-    ensAddress,
+    isEns,
+    ensAddress: ensAddress,
     ensName,
     isLoading: ensAddressLoading || ensNameLoading
   };

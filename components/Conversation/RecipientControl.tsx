@@ -19,7 +19,6 @@ const RecipientControl = (): JSX.Element => {
   const isNewMsg = useXmtpStore((state) => state.isNewMsg) || '';
   const recipientWalletAddress = useXmtpStore((state) => state.recipientWalletAddress) || '';
   const setRecipientWalletAddress = useXmtpStore((state) => state.setRecipientWalletAddress);
-  const setConversationId = useXmtpStore((state) => state.setConversationId);
   const setIsNewMsg = useXmtpStore((state) => state.setIsNewMsg);
   const size = useWindowSize();
   const [recipientOnNetwork, setRecipientOnNetwork] = useState(false);
@@ -88,7 +87,12 @@ const RecipientControl = (): JSX.Element => {
         </div>
       )}
       <div className="flex-1 flex-col justify-center flex bg-zinc-50 md:border-b md:border-gray-200 md:px-4 md:pb-[2px] max-h-16 min-h-[4rem]">
-        <form className="w-full flex pl-2 md:pl-0 h-8 pt-1" action="#" method="GET">
+        <form
+          className="w-full flex pl-2 md:pl-0 h-8 pt-1"
+          onSubmit={(e) => e.preventDefault()}
+          action="#"
+          method="GET"
+        >
           <label htmlFor="recipient-field" className="sr-only">
             Recipient
           </label>
@@ -104,7 +108,6 @@ const RecipientControl = (): JSX.Element => {
               className="block w-[90%] pl-7 pr-3 pt-[3px] md:pt-[2px] md:pt-[1px] bg-transparent caret-n-600 text-n-600 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-0 focus:border-transparent text-lg font-mono"
               onInputChange={(e) => {
                 setRecipientWalletAddress((e.target as HTMLInputElement).value);
-                setConversationId((e.target as HTMLInputElement).value);
               }}
             />
             <button type="submit" className="hidden" />
@@ -113,7 +116,7 @@ const RecipientControl = (): JSX.Element => {
 
         {recipientInputMode === RecipientInputMode.Submitted ? (
           <div className="text-md text-n-300 text-sm font-mono ml-10 md:ml-8 pb-1 md:pb-[1px]">
-            {ensName ? ensAddress : null}
+            {ensName ? ensAddress ?? recipientWalletAddress : null}
           </div>
         ) : (
           <div
