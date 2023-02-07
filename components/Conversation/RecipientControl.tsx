@@ -130,7 +130,7 @@ const RecipientControl = (): JSX.Element => {
           </div>
         )}
       </div>
-      {(isNewMsg || recipientOnNetwork) && <Conversation />}
+      {(isNewMsg || recipientOnNetwork) && isValid && <Conversation />}
     </div>
   );
 };
