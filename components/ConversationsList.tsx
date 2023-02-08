@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ChatIcon } from '@heroicons/react/outline';
 import Address, { address } from './Address';
 import { Conversation } from '@xmtp/xmtp-js';
-import { classNames, formatDate, getConversationKey } from '../helpers';
+import { classNames, formatDate, getConversationKey, isEnsAddress } from '../helpers';
 import Avatar from './Avatar';
 import { useXmtpStore } from '../store/xmtp';
 import { useAccount } from 'wagmi';
-import useWalletAddress from '../hooks/useWalletAddress';
+import { useRouter } from 'next/router';
+import { fetchEnsAddress } from '@wagmi/core';
 
 type ConversationTileProps = {
   conversation: Conversation;
@@ -19,6 +20,7 @@ const ConversationTile = ({ conversation }: ConversationTileProps): JSX.Element 
   const setRecipientWalletAddress = useXmtpStore((state) => state.setRecipientWalletAddress);
   const conversationId = useXmtpStore((state) => state.conversationId);
   const setConversationId = useXmtpStore((state) => state.setConversationId);
+  const router = useRouter();
 
   const conversationKey = getConversationKey(conversation);
 
@@ -40,6 +42,27 @@ const ConversationTile = ({ conversation }: ConversationTileProps): JSX.Element 
     setRecipientWalletAddress(conversation.peerAddress);
     setConversationId(conversationKey);
   };
+
+  useEffect(() => {
+    const resolveRouting = async () => {
+      const path = window?.location?.pathname ?? '';
+      if (path.includes('/dm')) {
+        let convoKey = path.substring(4, path.length);
+        if (isEnsAddress(convoKey)) {
+          const address = await fetchEnsAddress({
+            name: convoKey
+          });
+          convoKey = address ?? '';
+        }
+        if (convoKey !== '' && convoKey === conversationKey) {
+          setRecipientWalletAddress(conversation.peerAddress);
+          setConversationId(conversationKey);
+          router.push('/');
+        }
+      }
+    };
+    resolveRouting();
+  }, [window?.location?.pathname]);
 
   return (
     <div
