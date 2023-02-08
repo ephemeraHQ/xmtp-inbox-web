@@ -24,25 +24,6 @@ const ConversationTile = ({ conversation }: ConversationTileProps): JSX.Element 
 
   const conversationKey = getConversationKey(conversation);
 
-  if (!previewMessages.get(conversationKey)) {
-    return null;
-  }
-
-  const latestMessage = previewMessages.get(conversationKey);
-
-  const conversationDomain = conversation.context?.conversationId.split('/')[0] ?? '';
-
-  const isSelected = conversationId === conversationKey;
-
-  if (!latestMessage) {
-    return null;
-  }
-
-  const onClick = () => {
-    setRecipientWalletAddress(conversation.peerAddress);
-    setConversationId(conversationKey);
-  };
-
   useEffect(() => {
     const resolveRouting = async () => {
       const path = window?.location?.pathname ?? '';
@@ -63,6 +44,25 @@ const ConversationTile = ({ conversation }: ConversationTileProps): JSX.Element 
     };
     resolveRouting();
   }, [window?.location?.pathname]);
+
+  if (!previewMessages.get(conversationKey)) {
+    return null;
+  }
+
+  const latestMessage = previewMessages.get(conversationKey);
+
+  const conversationDomain = conversation.context?.conversationId.split('/')[0] ?? '';
+
+  const isSelected = conversationId === conversationKey;
+
+  if (!latestMessage) {
+    return null;
+  }
+
+  const onClick = () => {
+    setRecipientWalletAddress(conversation.peerAddress);
+    setConversationId(conversationKey);
+  };
 
   return (
     <div
