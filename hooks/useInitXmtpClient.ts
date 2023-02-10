@@ -12,42 +12,39 @@ const useInitXmtpClient = (cacheOnly = false) => {
   const setClient = useXmtpStore((state) => state.setClient);
   const [isRequestPending, setIsRequestPending] = useState(false);
 
-  const initClient = useCallback(
-    async (wallet: Signer) => {
-      if (wallet && !client && address) {
-        try {
-          setIsRequestPending(true);
-          let keys = loadKeys(address);
-          if (!keys) {
-            if (cacheOnly) {
-              return;
-            }
-            keys = await Client.getKeys(wallet, {
-              env: getEnv(),
-              appVersion: getAppVersion()
-            });
-            storeKeys(address, keys);
+  const initClient = useCallback(async () => {
+    if (signer && !client && address) {
+      try {
+        setIsRequestPending(true);
+        let keys = loadKeys(address);
+        if (!keys) {
+          if (cacheOnly) {
+            return;
           }
-          const xmtp = await Client.create(null, {
+          keys = await Client.getKeys(signer, {
             env: getEnv(),
-            appVersion: getAppVersion(),
-            privateKeyOverride: keys
+            appVersion: getAppVersion()
           });
-          setClient(xmtp);
-          setIsRequestPending(false);
-        } catch (e) {
-          console.error(e);
-          setClient(null);
-          setIsRequestPending(false);
+          storeKeys(address, keys);
         }
+        const xmtp = await Client.create(null, {
+          env: getEnv(),
+          appVersion: getAppVersion(),
+          privateKeyOverride: keys
+        });
+        setClient(xmtp);
+        setIsRequestPending(false);
+      } catch (e) {
+        console.error(e);
+        setClient(null);
+        setIsRequestPending(false);
       }
-    },
-    [client, signer, address]
-  );
+    }
+  }, [client, signer, address]);
 
   useEffect(() => {
     if (!isRequestPending) {
-      signer && isConnected && initClient(signer);
+      signer && isConnected && initClient();
     }
   }, [signer, initClient, address, isConnected]);
 
