@@ -8,7 +8,7 @@ import NewMessageButton from './NewMessageButton';
 import NavigationPanel from './NavigationPanel';
 import XmtpInfoPanel from './XmtpInfoPanel';
 import UserMenu from './UserMenu';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import useListConversations from '../hooks/useListConversations';
 import { useXmtpStore } from '../store/xmtp';
 import useInitXmtpClient from '../hooks/useInitXmtpClient';
@@ -19,7 +19,7 @@ const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const resetXmtpState = useXmtpStore((state) => state.resetXmtpState);
   const recipientWalletAddress = useXmtpStore((state) => state.recipientWalletAddress);
   const { address: walletAddress } = useAccount();
-  const isNewMsg = useXmtpStore((state) => state.isNewMsg);
+  const [showMessageView, setShowMessageView] = useState(walletAddress && client);
   const size = useWindowSize();
   useInitXmtpClient();
 
@@ -46,10 +46,10 @@ const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
                     <Link href="/" passHref={true}>
                       <img className="h-8 w-auto" src="/xmtp-icon.png" alt="XMTP" data-testid="xmtp-logo" />
                     </Link>
-                    {walletAddress && client && <NewMessageButton />}
+                    {walletAddress && client && <NewMessageButton setShowMessageView={setShowMessageView} />}
                   </div>
                   {<NavigationPanel isError={!!error} />}
-                  <UserMenu isError={!!error} />
+                  <UserMenu isError={!!error} setShowMessageView={setShowMessageView} />
                 </div>
               </aside>
             </NavigationView>
@@ -57,7 +57,7 @@ const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
               {walletAddress && client ? (
                 <>
                   <div className="flex bg-zinc-50 border-b border-gray-200 md:bg-white md:border-0 max-h-16 min-h-[4rem]">
-                    <RecipientControl />
+                    <RecipientControl setShowMessageView={setShowMessageView} />
                   </div>
                   {children}
                 </>
@@ -66,12 +66,12 @@ const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
               )}
             </ConversationView>
           </>
-        ) : isNewMsg || recipientWalletAddress ? (
+        ) : showMessageView || recipientWalletAddress ? (
           <ConversationView>
             {walletAddress && client ? (
               <>
                 <div className="flex bg-zinc-50 border-b border-gray-200 md:bg-white md:border-0 max-h-16 min-h-[4rem]">
-                  <RecipientControl />
+                  <RecipientControl setShowMessageView={setShowMessageView} />
                 </div>
                 {children}
               </>
@@ -87,10 +87,10 @@ const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
                   <Link href="/" passHref={true}>
                     <img className="h-8 w-auto" src="/xmtp-icon.png" alt="XMTP" data-testid="xmtp-logo" />
                   </Link>
-                  {walletAddress && client && <NewMessageButton />}
+                  {walletAddress && client && <NewMessageButton setShowMessageView={setShowMessageView} />}
                 </div>
                 {<NavigationPanel isError={!!error} />}
-                <UserMenu isError={!!error} />
+                <UserMenu isError={!!error} setShowMessageView={setShowMessageView} />
               </div>
             </aside>
           </NavigationView>

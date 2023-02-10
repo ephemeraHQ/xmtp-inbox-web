@@ -10,9 +10,16 @@ type AddressInputProps = {
   className?: string;
   placeholder?: string;
   onInputChange?: (e: React.SyntheticEvent) => void;
+  isOnXmtpNetwork?: boolean;
 };
 
-const AddressInput = ({ id, className, placeholder, onInputChange }: AddressInputProps): JSX.Element => {
+const AddressInput = ({
+  id,
+  className,
+  placeholder,
+  onInputChange,
+  isOnXmtpNetwork = false
+}: AddressInputProps): JSX.Element => {
   const conversationId = useXmtpStore((state) => state.conversationId);
   const recipientWalletAddress = useXmtpStore((state) => state.recipientWalletAddress);
   const setRecipientWalletAddress = useXmtpStore((state) => state.setRecipientWalletAddress);
@@ -67,8 +74,10 @@ const AddressInput = ({ id, className, placeholder, onInputChange }: AddressInpu
         }
       }
     };
-    setLookupValue();
-  }, [isValid, ensAddress, ensName]);
+    if (isOnXmtpNetwork) {
+      setLookupValue();
+    }
+  }, [isValid, ensAddress, ensName, isOnXmtpNetwork]);
 
   const userIsSender = recipientWalletAddress === walletAddress;
 

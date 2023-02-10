@@ -20,8 +20,6 @@ interface XmtpState {
   setRecipientWalletAddress: (address: string) => void;
   conversationId?: string;
   setConversationId: (conversationId?: string) => void;
-  isNewMsg: boolean;
-  setIsNewMsg: (isNewMsg: boolean) => void;
   resetXmtpState: () => void;
 }
 
@@ -61,8 +59,6 @@ export const useXmtpStore = create<XmtpState>((set) => ({
   setRecipientWalletAddress: (address) => set(() => ({ recipientWalletAddress: address })),
   conversationId: '',
   setConversationId: (conversationId) => set(() => ({ conversationId })),
-  isNewMsg: false,
-  setIsNewMsg: (isNewMsg) => set(() => ({ isNewMsg })),
   resetXmtpState: () =>
     set(() => {
       return {
@@ -71,7 +67,6 @@ export const useXmtpStore = create<XmtpState>((set) => ({
         convoMessages: new Map(),
         previewMessages: new Map(),
         recipientWalletAddress: '',
-        isNewMsg: false,
         conversationId: undefined
       };
     })

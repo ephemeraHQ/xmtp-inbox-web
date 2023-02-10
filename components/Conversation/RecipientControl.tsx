@@ -1,44 +1,48 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import AddressInput from '../AddressInput';
 import { useXmtpStore } from '../../store/xmtp';
 import Conversation from './Conversation';
 import BackArrow from '../BackArrow';
 import useWalletAddress from '../../hooks/useWalletAddress';
 import useWindowSize from '../../hooks/useWindowSize';
+import { isValidLongWalletAddress } from '../../helpers';
 
 const RecipientInputMode = {
   InvalidEntry: 0,
-  ValidEntry: 1,
-  FindingEntry: 2,
-  Submitted: 3,
-  NotOnNetwork: 4
+  FindingEntry: 1,
+  Submitted: 2,
+  NotOnNetwork: 3,
+  OnNetwork: 4
 };
 
-const RecipientControl = (): JSX.Element => {
+type RecipientControlProps = {
+  setShowMessageView: Function;
+};
+
+const RecipientControl = ({ setShowMessageView }: RecipientControlProps): JSX.Element => {
   const client = useXmtpStore((state) => state.client);
-  const isNewMsg = useXmtpStore((state) => state.isNewMsg) || '';
   const recipientWalletAddress = useXmtpStore((state) => state.recipientWalletAddress) || '';
   const setRecipientWalletAddress = useXmtpStore((state) => state.setRecipientWalletAddress);
-  const setIsNewMsg = useXmtpStore((state) => state.setIsNewMsg);
   const size = useWindowSize();
-  const [recipientOnNetwork, setRecipientOnNetwork] = useState(false);
   const { isValid, isEns, ensName, ensAddress, isLoading } = useWalletAddress();
-
   const [recipientInputMode, setRecipientInputMode] = useState(RecipientInputMode.InvalidEntry);
 
-  const checkIfOnNetwork = useCallback(
-    async (address: string): Promise<boolean> => {
-      return client?.canMessage(address) || false;
-    },
-    [client]
-  );
+  const checkIfOnNetwork = async (address: string) => {
+    setRecipientInputMode(RecipientInputMode.Submitted);
 
-  const completeSubmit = async (address: string) => {
-    if (await checkIfOnNetwork(address)) {
-      setRecipientOnNetwork(true);
-      setRecipientInputMode(RecipientInputMode.Submitted);
-    } else {
-      setRecipientInputMode(RecipientInputMode.NotOnNetwork);
+    let canMessage;
+    if (client) {
+      try {
+        canMessage = await client.canMessage(address);
+        if (!canMessage) {
+          setRecipientInputMode(RecipientInputMode.NotOnNetwork);
+        } else {
+          setRecipientInputMode(RecipientInputMode.OnNetwork);
+        }
+      } catch (e) {
+        setRecipientInputMode(RecipientInputMode.NotOnNetwork);
+      }
+      return canMessage;
     }
   };
 
@@ -48,12 +52,12 @@ const RecipientControl = (): JSX.Element => {
     if (isEns) {
       setRecipientInputMode(RecipientInputMode.FindingEntry);
       if (ensAddress) {
-        await completeSubmit(ensAddress);
+        checkIfOnNetwork(ensAddress);
       } else {
         setRecipientInputMode(RecipientInputMode.InvalidEntry);
       }
-    } else if (recipientWalletAddress?.startsWith('0x') && recipientWalletAddress?.length === 42) {
-      await completeSubmit(recipientWalletAddress);
+    } else if (isValidLongWalletAddress(recipientWalletAddress)) {
+      checkIfOnNetwork(recipientWalletAddress);
     }
   };
 
@@ -66,13 +70,12 @@ const RecipientControl = (): JSX.Element => {
   }, [recipientWalletAddress]);
 
   useEffect(() => {
-    setRecipientOnNetwork(false);
     if (isValid) {
       handleSubmit();
     } else {
       setRecipientInputMode(RecipientInputMode.InvalidEntry);
     }
-  }, [isValid, ensName]);
+  }, [isValid, ensName, ensAddress]);
 
   return (
     <div className="flex-col flex-1">
@@ -80,7 +83,7 @@ const RecipientControl = (): JSX.Element => {
         <div className="flex items-center ml-3 w-4">
           <BackArrow
             onClick={() => {
-              setIsNewMsg(false);
+              setShowMessageView(false);
               setRecipientWalletAddress('');
             }}
           />
@@ -109,12 +112,14 @@ const RecipientControl = (): JSX.Element => {
               onInputChange={(e) => {
                 setRecipientWalletAddress((e.target as HTMLInputElement).value);
               }}
+              isOnXmtpNetwork={recipientInputMode === RecipientInputMode.OnNetwork}
             />
             <button type="submit" className="hidden" />
           </div>
         </form>
 
-        {recipientInputMode === RecipientInputMode.Submitted ? (
+        {recipientInputMode === RecipientInputMode.Submitted ||
+        recipientInputMode === RecipientInputMode.OnNetwork ? (
           <div className="text-md text-n-300 text-sm font-mono ml-10 md:ml-8 pb-1 md:pb-[1px]">
             {ensName ? ensAddress ?? recipientWalletAddress : null}
           </div>
@@ -126,11 +131,10 @@ const RecipientControl = (): JSX.Element => {
             {recipientInputMode === RecipientInputMode.NotOnNetwork && 'Recipient is not on the XMTP network'}
             {recipientInputMode === RecipientInputMode.FindingEntry && 'Finding ENS domain...'}
             {recipientInputMode === RecipientInputMode.InvalidEntry && 'Please enter a valid wallet address'}
-            {recipientInputMode === RecipientInputMode.ValidEntry && <br />}
           </div>
         )}
       </div>
-      {(isNewMsg || recipientOnNetwork) && isValid && <Conversation />}
+      {recipientInputMode === RecipientInputMode.OnNetwork && <Conversation />}
     </div>
   );
 };
