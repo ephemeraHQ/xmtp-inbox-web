@@ -1,7 +1,7 @@
 import { Menu, Transition } from '@headlessui/react';
 import { CogIcon } from '@heroicons/react/solid';
 import { Fragment, useState } from 'react';
-import { classNames, isAppEnvDemo, tagStr } from '../helpers';
+import { classNames, tagStr } from '../helpers';
 import Address from './Address';
 import { Tooltip } from './Tooltip/Tooltip';
 import packageJson from '../package.json';
@@ -15,6 +15,7 @@ import useHandleConnect from '../hooks/useHandleConnect';
 
 type UserMenuProps = {
   isError: boolean;
+  setShowMessageView?: Function;
 };
 
 const NotConnected = ({ isError }: UserMenuProps): JSX.Element => {
@@ -52,7 +53,7 @@ const NotConnected = ({ isError }: UserMenuProps): JSX.Element => {
   );
 };
 
-const UserMenu = ({ isError }: UserMenuProps): JSX.Element => {
+const UserMenu = ({ isError, setShowMessageView }: UserMenuProps): JSX.Element => {
   const { address: walletAddress } = useAccount();
   const [showQrModal, setShowQrModal] = useState<boolean>(false);
   const client = useXmtpStore((state) => state.client);
@@ -194,6 +195,7 @@ const UserMenu = ({ isError }: UserMenuProps): JSX.Element => {
                               disconnectWagmi();
                               resetWagmi();
                               resetXmtpState();
+                              setShowMessageView?.(false);
                             }}
                             className={classNames(
                               active ? 'bg-zinc-50 cursor-pointer' : '',

@@ -36,7 +36,7 @@ const useWalletAddress = (address?: address | string) => {
     } else if (isValidLongWalletAddress(recipientWalletAddress) && conversationIdArray.length < 2) {
       setConversationId(recipientWalletAddress);
     }
-  }, [isEns, ensAddress, ensAddressLoading, recipientWalletAddress]);
+  }, [isEns, ensAddress, ensAddressLoading, recipientWalletAddress, conversationId]);
 
   return {
     isValid: isValidRecipientAddressFormat(addressToUse),

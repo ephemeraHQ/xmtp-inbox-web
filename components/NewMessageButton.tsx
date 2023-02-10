@@ -1,14 +1,17 @@
 import { useXmtpStore } from '../store/xmtp';
 
-const NewMessageButton = (): JSX.Element => {
+type NewMessageButtonProps = {
+  setShowMessageView: Function;
+};
+
+const NewMessageButton = ({ setShowMessageView }: NewMessageButtonProps): JSX.Element => {
   const setConversationId = useXmtpStore((state) => state.setConversationId);
   const setRecipientWalletAddress = useXmtpStore((state) => state.setRecipientWalletAddress);
-  const setIsNewMsg = useXmtpStore((state) => state.setIsNewMsg);
 
   const onClick = () => {
     setRecipientWalletAddress('');
     setConversationId();
-    setIsNewMsg(true);
+    setShowMessageView(true);
   };
 
   return (
