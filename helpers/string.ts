@@ -15,11 +15,14 @@ export const formatDate = (d: Date | undefined): string => (d ? d.toLocaleDateSt
 
 export const formatTime = (d: Date | undefined): string =>
   d
-    ? d.toLocaleTimeString(undefined, {
-        hour12: true,
-        hour: 'numeric',
-        minute: '2-digit'
-      })
+    ? d
+        .toLocaleTimeString(undefined, {
+          hour12: true,
+          hour: 'numeric',
+          minute: '2-digit'
+        })
+        // ICU 72.1 may use different unicode space characters
+        .replace(/\u202f|\u2009/g, ' ')
     : '';
 
 export const checkPath = () => {
