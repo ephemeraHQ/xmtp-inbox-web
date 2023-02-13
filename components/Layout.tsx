@@ -21,7 +21,6 @@ const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const { address: walletAddress } = useAccount();
   const [showMessageView, setShowMessageView] = useState(walletAddress && client);
   const size = useWindowSize();
-  useInitXmtpClient();
 
   const { error } = useConnect();
   useListConversations();
