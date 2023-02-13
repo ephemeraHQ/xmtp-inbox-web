@@ -1,32 +1,72 @@
 import { LinkIcon, ExclamationCircleIcon } from '@heroicons/react/outline';
-import { ArrowSmRightIcon } from '@heroicons/react/solid';
-import { useAppStore } from '../store/app';
 import { useXmtpStore } from '../store/xmtp';
 import ConversationsList from './ConversationsList';
 import Loader from './Loader';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { useAccount } from 'wagmi';
+import useHandleConnect from '../hooks/useHandleConnect';
+import useInitXmtpClient from '../hooks/useInitXmtpClient';
 
 type NavigationPanelProps = {
-  onConnect: () => Promise<void>;
   isError: boolean;
 };
 
-type ConnectButtonProps = {
-  onConnect: () => Promise<void>;
-  isError: boolean;
-};
-
-const NavigationPanel = ({ onConnect, isError }: NavigationPanelProps): JSX.Element => {
-  const walletAddress = useAppStore((state) => state.address);
-  const client = useAppStore((state) => state.client);
+const NavigationPanel = ({ isError }: NavigationPanelProps): JSX.Element => {
+  const { address } = useAccount();
+  const client = useXmtpStore((state) => state.client);
+  const { handleConnect } = useHandleConnect();
+  const { initClient } = useInitXmtpClient();
 
   return (
     <div className="flex-grow flex flex-col h-[calc(100vh-8rem)] overflow-y-auto">
-      {walletAddress && client !== null ? (
+      {address && client !== null ? (
         <ConversationsPanel />
       ) : (
-        <NoWalletConnectedMessage isError={isError}>
-          <ConnectButton onConnect={onConnect} isError={isError} />
-        </NoWalletConnectedMessage>
+        <>
+          {!address ? (
+            <NoWalletConnectedMessage isError={isError}>
+              <ConnectButton.Custom>
+                {({ account, chain, mounted }) => {
+                  const ready = mounted;
+                  const connected = ready && account && chain;
+                  return (
+                    <div
+                      {...(!ready && {
+                        'aria-hidden': true
+                      })}
+                    >
+                      {(() => {
+                        if (!connected) {
+                          return (
+                            <button
+                              type="button"
+                              className="bg-p-600 px-4 rounded-lg h-[40px] text-white font-bold"
+                              onClick={handleConnect}
+                              data-testid="no-wallet-connected-cta"
+                            >
+                              Connect Wallet
+                            </button>
+                          );
+                        }
+                      })()}
+                    </div>
+                  );
+                }}
+              </ConnectButton.Custom>
+            </NoWalletConnectedMessage>
+          ) : (
+            <NoXMTPConnectedMessage>
+              <button
+                type="button"
+                className="bg-p-600 px-4 rounded-lg h-[40px] text-white font-bold cursor-pointer"
+                onClick={initClient}
+                data-testid="no-wallet-connected-cta"
+              >
+                Connect XMTP
+              </button>
+            </NoXMTPConnectedMessage>
+          )}
+        </>
       )}
     </div>
   );
@@ -58,28 +98,44 @@ const NoWalletConnectedMessage: React.FC<{ isError: boolean; children?: React.Re
           {isError ? 'Please try again' : 'Please connect a wallet to begin'}
         </p>
       </div>
-      {children}
+      <div className="mt-2 flex justify-center items-center">{children}</div>
     </div>
   );
 };
 
-const ConnectButton = ({ onConnect, isError }: ConnectButtonProps): JSX.Element => {
+const NoXMTPConnectedMessage: React.FC<{ isError?: boolean; children?: React.ReactNode }> = ({
+  isError,
+  children
+}) => {
   return (
-    <button
-      data-testid="no-wallet-connected-cta"
-      onClick={onConnect}
-      className="rounded border border-l-300 mx-auto my-4 text-l-300 hover:text-white hover:bg-l-400 hover:border-l-400 hover:fill-white focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-n-100 focus-visible:outline-none active:bg-l-500 active:border-l-500 active:text-l-100 active:ring-0"
-    >
-      <div className="flex items-center justify-center text-xs font-semibold px-4 py-1">
-        {isError ? 'Connect again' : 'Connect your wallet'}
-        <ArrowSmRightIcon className="h-4" />
+    <div className="flex flex-col flex-grow justify-center">
+      <div className="flex flex-col items-center px-4 text-center">
+        {isError ? (
+          <ExclamationCircleIcon className="h-8 w-8" aria-hidden="true" />
+        ) : (
+          <LinkIcon
+            className="h-8 w-8 mb-1 stroke-n-200 md:stroke-n-300"
+            aria-hidden="true"
+            data-testid="no-wallet-connected-icon"
+          />
+        )}
+        <p
+          className="text-xl md:text-lg text-n-200 md:text-n-300 font-bold"
+          data-testid="no-wallet-connected-header"
+        >
+          {isError ? 'Error connecting' : 'XMTP client not connected'}
+        </p>
+        <p className="text-lx md:text-md text-n-200 font-normal" data-testid="no-wallet-connected-subheader">
+          {isError ? 'Please try again' : 'Please connect to XMTP'}
+        </p>
       </div>
-    </button>
+      <div className="mt-2 flex justify-center items-center">{children}</div>
+    </div>
   );
 };
 
 const ConversationsPanel = (): JSX.Element => {
-  const client = useAppStore((state) => state.client);
+  const client = useXmtpStore((state) => state.client);
   const loadingConversations = useXmtpStore((state) => state.loadingConversations);
 
   if (client === undefined) {

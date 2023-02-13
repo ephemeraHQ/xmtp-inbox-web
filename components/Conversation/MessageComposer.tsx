@@ -3,8 +3,8 @@ import { classNames } from '../../helpers';
 import messageComposerStyles from '../../styles/MessageComposer.module.css';
 import upArrowGreen from '../../public/up-arrow-green.svg';
 import upArrowGrey from '../../public/up-arrow-grey.svg';
-import { useRouter } from 'next/router';
 import Image from 'next/image';
+import { useXmtpStore } from '../../store/xmtp';
 
 type MessageComposerProps = {
   onSend: (msg: string) => Promise<void>;
@@ -12,9 +12,9 @@ type MessageComposerProps = {
 
 const MessageComposer = ({ onSend }: MessageComposerProps): JSX.Element => {
   const [message, setMessage] = useState('');
-  const router = useRouter();
+  const recipientWalletAddress = useXmtpStore((state) => state.recipientWalletAddress);
 
-  useEffect(() => setMessage(''), [router.query.recipientWalletAddr]);
+  useEffect(() => setMessage(''), [recipientWalletAddress]);
 
   const onMessageChange = (e: React.FormEvent<HTMLInputElement>) => setMessage(e.currentTarget.value);
 

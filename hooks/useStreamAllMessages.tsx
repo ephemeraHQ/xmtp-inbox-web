@@ -1,17 +1,17 @@
 import { DecodedMessage } from '@xmtp/xmtp-js';
 import { useEffect, useState } from 'react';
 import { getConversationKey, shortAddress, truncate } from '../helpers';
-import { useAppStore } from '../store/app';
 import { useXmtpStore } from '../store/xmtp';
-import useEnsHooks from './useEnsHooks';
+import { fetchEnsName } from '@wagmi/core';
+import { useAccount } from 'wagmi';
+import { address } from '../components/Address';
 
 let latestMsgId: string;
 
 export const useStreamAllMessages = () => {
-  const { lookupAddress } = useEnsHooks();
+  const { address: walletAddress } = useAccount();
 
-  const walletAddress = useAppStore((state) => state.address);
-  const client = useAppStore((state) => state.client);
+  const client = useXmtpStore((state) => state.client);
 
   const convoMessages = useXmtpStore((state) => state.convoMessages);
   const addMessages = useXmtpStore((state) => state.addMessages);
@@ -53,7 +53,9 @@ export const useStreamAllMessages = () => {
             message.senderAddress !== walletAddress &&
             !browserVisible
           ) {
-            const name = await lookupAddress(message.senderAddress ?? '');
+            const name = await fetchEnsName({
+              address: message.senderAddress as address
+            });
             new Notification('XMTP', {
               body: `${name || shortAddress(message.senderAddress ?? '')}\n${truncate(message.content, 75)}`
             });

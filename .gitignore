@@ -1,5 +1,62 @@
-node_modules
-.next
+# Mac OS
+.DS_Store
+.DS_Store?
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
 
-build/
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# IDE
+nbproject
+.~lock.*
+.buildpath
+.idea
+.project
+.settings
+composer.lock
+*.sublime-workspace
+*.swp
+*.swo
+.projectile
+.vscode
+.history
+*.vsix
+*.tmproj
+*.tmproject
+tmtags
+
+# Node
+node_modules
+npm-debug.log*
+logs
+*.log
+coverage
+*.lcov
+*.tsbuildinfo
+.npm
+.eslintcache
+
+# Next.js
+.next
 out/
+build/
+
+# Environment
+.env*
