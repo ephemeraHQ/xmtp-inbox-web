@@ -4,7 +4,7 @@ import { useSigner } from 'wagmi';
 import { getAppVersion, getEnv, loadKeys, storeKeys } from '../helpers';
 import { useXmtpStore } from '../store/xmtp';
 
-const useInitXmtpClient = (cacheOnly = false) => {
+const useInitXmtpClient = () => {
   const { data: signer } = useSigner();
   const client = useXmtpStore((state) => state.client);
   const setClient = useXmtpStore((state) => state.setClient);
@@ -17,9 +17,6 @@ const useInitXmtpClient = (cacheOnly = false) => {
         setIsRequestPending(true);
         let keys = loadKeys(address);
         if (!keys) {
-          if (cacheOnly) {
-            return;
-          }
           keys = await Client.getKeys(signer, {
             env: getEnv(),
             appVersion: getAppVersion()
