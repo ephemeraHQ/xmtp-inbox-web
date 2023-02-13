@@ -23,8 +23,8 @@ const NavigationPanel = ({ isError }: NavigationPanelProps): JSX.Element => {
         <ConversationsPanel />
       ) : (
         <>
-          <NoWalletConnectedMessage isError={isError}>
-            {!address ? (
+          {!address ? (
+            <NoWalletConnectedMessage isError={isError}>
               <ConnectButton.Custom>
                 {({ account, chain, mounted }) => {
                   const ready = mounted;
@@ -53,7 +53,9 @@ const NavigationPanel = ({ isError }: NavigationPanelProps): JSX.Element => {
                   );
                 }}
               </ConnectButton.Custom>
-            ) : (
+            </NoWalletConnectedMessage>
+          ) : (
+            <NoXMTPConnectedMessage>
               <button
                 type="button"
                 className="bg-p-600 px-4 rounded-lg h-[40px] text-white font-bold cursor-pointer"
@@ -62,8 +64,8 @@ const NavigationPanel = ({ isError }: NavigationPanelProps): JSX.Element => {
               >
                 Connect XMTP
               </button>
-            )}
-          </NoWalletConnectedMessage>
+            </NoXMTPConnectedMessage>
+          )}
         </>
       )}
     </div>
@@ -94,6 +96,37 @@ const NoWalletConnectedMessage: React.FC<{ isError: boolean; children?: React.Re
         </p>
         <p className="text-lx md:text-md text-n-200 font-normal" data-testid="no-wallet-connected-subheader">
           {isError ? 'Please try again' : 'Please connect a wallet to begin'}
+        </p>
+      </div>
+      <div className="mt-2 flex justify-center items-center">{children}</div>
+    </div>
+  );
+};
+
+const NoXMTPConnectedMessage: React.FC<{ isError?: boolean; children?: React.ReactNode }> = ({
+  isError,
+  children
+}) => {
+  return (
+    <div className="flex flex-col flex-grow justify-center">
+      <div className="flex flex-col items-center px-4 text-center">
+        {isError ? (
+          <ExclamationCircleIcon className="h-8 w-8" aria-hidden="true" />
+        ) : (
+          <LinkIcon
+            className="h-8 w-8 mb-1 stroke-n-200 md:stroke-n-300"
+            aria-hidden="true"
+            data-testid="no-wallet-connected-icon"
+          />
+        )}
+        <p
+          className="text-xl md:text-lg text-n-200 md:text-n-300 font-bold"
+          data-testid="no-wallet-connected-header"
+        >
+          {isError ? 'Error connecting' : 'XMTP client not connected'}
+        </p>
+        <p className="text-lx md:text-md text-n-200 font-normal" data-testid="no-wallet-connected-subheader">
+          {isError ? 'Please try again' : 'Please connect to XMTP'}
         </p>
       </div>
       <div className="mt-2 flex justify-center items-center">{children}</div>

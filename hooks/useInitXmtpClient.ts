@@ -6,7 +6,6 @@ import { useXmtpStore } from '../store/xmtp';
 
 const useInitXmtpClient = (cacheOnly = false) => {
   const { data: signer } = useSigner();
-  // const { address, isConnected } = useAccount();
   const client = useXmtpStore((state) => state.client);
   const setClient = useXmtpStore((state) => state.setClient);
   const [isRequestPending, setIsRequestPending] = useState(false);

@@ -1,7 +1,7 @@
 import { Menu, Transition } from '@headlessui/react';
 import { CogIcon } from '@heroicons/react/solid';
 import { Fragment, useState } from 'react';
-import { classNames, tagStr } from '../helpers';
+import { classNames, tagStr, wipeKeys } from '../helpers';
 import Address from './Address';
 import { Tooltip } from './Tooltip/Tooltip';
 import packageJson from '../package.json';
@@ -78,7 +78,7 @@ const UserMenu = ({ isError, setShowMessageView }: UserMenuProps): JSX.Element =
         tagStr() ? 'bg-p-600' : 'bg-n-500'
       } items-center justify-between rounded-lg max-h-16 min-h-[4rem] px-4 py-2 m-2 mt-0 drop-shadow-xl`}
     >
-      {walletAddress && client !== null ? (
+      {walletAddress ? (
         <Menu>
           {({ open }) => (
             <>
@@ -192,6 +192,7 @@ const UserMenu = ({ isError, setShowMessageView }: UserMenuProps): JSX.Element =
                         {({ active }) => (
                           <a
                             onClick={() => {
+                              wipeKeys(walletAddress);
                               disconnectWagmi();
                               resetWagmi();
                               resetXmtpState();
