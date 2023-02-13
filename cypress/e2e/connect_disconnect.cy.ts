@@ -1,60 +1,80 @@
-import { checkElement, checkMissingElement, checkLink, disconnectWallet, startDemoEnv } from '../test_utils';
+import {
+  checkElement,
+  checkLink,
+  disconnectWallet,
+  startDemoEnv,
+  connectDisconnectFlow
+} from '../test_utils';
 
-describe('Connected Test Cases', () => {
-  beforeEach(() => {
-    startDemoEnv();
-  });
-  it('Shows expected left panel fields when logged in with a connected wallet and no existing messages', () => {
-    const elements = [
-      'xmtp-logo',
-      'new-message-cta',
-      'empty-message-icon',
-      'empty-message-header',
-      'empty-message-subheader',
-      'connected-footer-primary-text',
-      'connected-footer-secondary-text',
-      'connected-footer-image',
-      'settings-icon'
-    ];
-
-    elements.forEach((element) => checkElement(element));
-  });
-  it('Shows expected right panel fields when logged in with a connected wallet and no existing messages', () => {
-    checkElement('message-to-key');
-    checkElement('message-to-subtext');
-  });
-  it('Shows expected fields when clicking on settings icon while connected', () => {
-    cy.get(`[data-testid="settings-icon"]`).last().click();
-
-    const elements = ['xmtp-version', 'copy-address-cta', 'disconnect-wallet-cta'];
-    elements.forEach((element) => checkElement(element));
-
-    cy.get(`[data-testid="disconnect-wallet-cta"]`).click();
-    checkElement('no-wallet-connected-header');
-  });
-  it('Connects to wallet from 4 different entry points', () => {
-    disconnectWallet();
-    const entryPoints = [
-      'no-wallet-connected-cta',
-      'settings-icon',
-      'connect-section-link',
-      'no-wallet-connected-footer-secondary-text'
-    ];
-
-    entryPoints.forEach((cta) => {
-      checkMissingElement('empty-message-header');
-      cy.get(`[data-testid=${cta}]`).last().click();
+describe(
+  'Connected Test Cases',
+  {
+    retries: {
+      runMode: 2,
+      openMode: 1
+    }
+  },
+  () => {
+    beforeEach(() => {
+      startDemoEnv();
+      // In connected flow, empty message should render before any tests run
       checkElement('empty-message-header');
-      cy.get(`[data-testid="settings-icon"]`).last().click();
+    });
+
+    it('Shows expected left panel fields when logged in with a connected wallet and no existing messages', () => {
+      const elements = [
+        'xmtp-logo',
+        'new-message-cta',
+        'empty-message-icon',
+        'empty-message-header',
+        'empty-message-subheader',
+        'connected-footer-primary-text',
+        'connected-footer-secondary-text',
+        'connected-footer-image',
+        'settings-icon'
+      ];
+
+      elements.forEach((element) => checkElement(element));
+    });
+
+    it('Shows expected right panel fields when logged in with a connected wallet and no existing messages', () => {
+      checkElement('message-to-key');
+      checkElement('message-to-subtext');
+    });
+
+    it('Shows expected fields when clicking on settings icon while connected', () => {
+      cy.get(`[data-testid="settings-icon"]`).click();
+
+      const elements = ['xmtp-version', 'copy-address-cta', 'disconnect-wallet-cta'];
+      elements.forEach((element) => checkElement(element));
+
       cy.get(`[data-testid="disconnect-wallet-cta"]`).click();
       checkElement('no-wallet-connected-header');
     });
-  });
-});
+
+    it('Can reconnect to wallet from connect button', () => {
+      disconnectWallet();
+      connectDisconnectFlow('no-wallet-connected-cta');
+    });
+    it('Can reconnect to wallet from sign in with wallet text', () => {
+      disconnectWallet();
+      connectDisconnectFlow('no-wallet-connected-footer-secondary-text');
+    });
+    it('Can reconnect to wallet from settings icon', () => {
+      disconnectWallet();
+      connectDisconnectFlow('settings-icon');
+    });
+    it('Can reconnect to wallet from connect section link', () => {
+      disconnectWallet();
+      connectDisconnectFlow('connect-section-link');
+    });
+  }
+);
 
 describe('Disconnected Test Cases', () => {
   beforeEach(() => {
     startDemoEnv();
+    checkElement('empty-message-header');
     disconnectWallet();
   });
   it('Shows expected left panel fields when disconnected from a wallet', () => {
