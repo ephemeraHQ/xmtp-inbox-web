@@ -1,61 +1,49 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { ChatIcon } from '@heroicons/react/outline';
-import Address from './Address';
-import { useRouter } from 'next/router';
+import Address, { address } from './Address';
 import { Conversation } from '@xmtp/xmtp-js';
 import { classNames, formatDate, getConversationKey } from '../helpers';
 import Avatar from './Avatar';
-import { useAppStore } from '../store/app';
 import { useXmtpStore } from '../store/xmtp';
+import { useAccount } from 'wagmi';
+import useWalletAddress from '../hooks/useWalletAddress';
 
 type ConversationTileProps = {
   conversation: Conversation;
 };
 
 const ConversationTile = ({ conversation }: ConversationTileProps): JSX.Element | null => {
-  const router = useRouter();
-  const address = useAppStore((state) => state.address);
+  const { address } = useAccount();
   const previewMessages = useXmtpStore((state) => state.previewMessages);
   const loadingConversations = useXmtpStore((state) => state.loadingConversations);
-  const [recipentAddress, setRecipentAddress] = useState<string>();
+  const setRecipientWalletAddress = useXmtpStore((state) => state.setRecipientWalletAddress);
+  const conversationId = useXmtpStore((state) => state.conversationId);
+  const setConversationId = useXmtpStore((state) => state.setConversationId);
 
-  useEffect(() => {
-    const routeAddress =
-      (Array.isArray(router.query.recipientWalletAddr)
-        ? router.query.recipientWalletAddr.join('/')
-        : router.query.recipientWalletAddr) ?? '';
-    setRecipentAddress(routeAddress);
-  }, [router.query.recipientWalletAddr]);
+  const conversationKey = getConversationKey(conversation);
 
-  useEffect(() => {
-    const addressInPathname = window.location.pathname.includes('/dm') && window.location.pathname !== '/dm';
-    if (!recipentAddress && addressInPathname) {
-      router.push(window.location.pathname);
-      setRecipentAddress(window.location.pathname.replace('/dm/', ''));
-    }
-  }, [recipentAddress, window.location.pathname]);
-
-  if (!previewMessages.get(getConversationKey(conversation))) {
+  if (!previewMessages.get(conversationKey)) {
     return null;
   }
 
-  const latestMessage = previewMessages.get(getConversationKey(conversation));
+  const latestMessage = previewMessages.get(conversationKey);
 
   const conversationDomain = conversation.context?.conversationId.split('/')[0] ?? '';
 
-  const isSelected = recipentAddress === getConversationKey(conversation);
+  const isSelected = conversationId === conversationKey;
 
   if (!latestMessage) {
     return null;
   }
 
-  const onClick = (path: string) => {
-    router.push(path);
+  const onClick = () => {
+    setRecipientWalletAddress(conversation.peerAddress);
+    setConversationId(conversationKey);
   };
 
   return (
     <div
-      onClick={() => onClick(`/dm/${getConversationKey(conversation)}`)}
+      onClick={onClick}
       className={classNames(
         'h-20',
         'py-2',
@@ -77,7 +65,7 @@ const ConversationTile = ({ conversation }: ConversationTileProps): JSX.Element 
         isSelected ? 'bg-bt-200' : null
       )}
     >
-      <Avatar peerAddress={conversation.peerAddress} />
+      <Avatar peerAddress={conversation.peerAddress as address} />
       <div className="py-4 sm:text-left text w-full">
         {conversationDomain && (
           <div className="text-sm rounded-2xl text-white bg-black w-max px-2 font-bold">
@@ -86,7 +74,7 @@ const ConversationTile = ({ conversation }: ConversationTileProps): JSX.Element 
         )}
         <div className="grid-cols-2 grid">
           <Address
-            address={conversation.peerAddress}
+            address={conversation.peerAddress as address}
             className="text-black text-lg md:text-md font-bold place-self-start"
           />
           <span

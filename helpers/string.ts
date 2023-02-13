@@ -1,5 +1,4 @@
 import { Conversation } from '@xmtp/xmtp-js';
-import { NextRouter } from 'next/router';
 
 export const truncate = (str: string | undefined, length: number): string => {
   if (!str) {
@@ -15,18 +14,28 @@ export const formatDate = (d: Date | undefined): string => (d ? d.toLocaleDateSt
 
 export const formatTime = (d: Date | undefined): string =>
   d
-    ? d.toLocaleTimeString(undefined, {
-        hour12: true,
-        hour: 'numeric',
-        minute: '2-digit'
-      })
+    ? d
+        .toLocaleTimeString(undefined, {
+          hour12: true,
+          hour: 'numeric',
+          minute: '2-digit'
+        })
+        // ICU 72.1 may use different unicode space characters
+        .replace(/\u202f|\u2009/g, ' ')
     : '';
 
-export const checkPath = () => {
-  return window.location.pathname !== '/' && window.location.pathname !== '/dm';
+export const isValidRecipientAddressFormat = (recipientWalletAddress: string) => {
+  return (
+    recipientWalletAddress?.endsWith('.eth') ||
+    (recipientWalletAddress?.startsWith('0x') && recipientWalletAddress?.length === 42)
+  );
 };
 
-export const checkIfPathIsEns = (address: string): boolean => {
+export const isValidLongWalletAddress = (recipientWalletAddress: string) => {
+  return recipientWalletAddress?.startsWith('0x') && recipientWalletAddress?.length === 42;
+};
+
+export const isEnsAddress = (address: string): boolean => {
   return address.endsWith('.eth');
 };
 
@@ -39,16 +48,4 @@ export const getConversationKey = (conversation?: Conversation): string => {
   return conversation?.context?.conversationId
     ? `${conversation?.peerAddress}/${conversation?.context?.conversationId}`
     : conversation?.peerAddress ?? '';
-};
-
-export const getAddressFromPath = (router: NextRouter): string => {
-  return Array.isArray(router.query.recipientWalletAddr)
-    ? router.query.recipientWalletAddr[0]
-    : (router.query.recipientWalletAddr as string);
-};
-
-export const getConversationIdFromPath = (router: NextRouter): string | undefined => {
-  return Array.isArray(router.query.recipientWalletAddr) && router.query.recipientWalletAddr.length > 1
-    ? router.query.recipientWalletAddr.slice(1).join('/')
-    : undefined;
 };

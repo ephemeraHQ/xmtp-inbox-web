@@ -1,39 +1,42 @@
 import React, { useCallback, useState } from 'react';
 import { MessagesList, MessageComposer } from './';
 import Loader from '../../components/Loader';
-import { useAppStore } from '../../store/app';
 import useGetMessages from '../../hooks/useGetMessages';
 import useSendMessage from '../../hooks/useSendMessage';
-import { getConversationKey } from '../../helpers';
 import { useXmtpStore } from '../../store/xmtp';
+import useWalletAddress from '../../hooks/useWalletAddress';
+import { isEnsAddress } from '../../helpers';
 
-type ConversationProps = {
-  recipientWalletAddr: string;
-};
-
-const Conversation = ({ recipientWalletAddr }: ConversationProps): JSX.Element => {
+const Conversation = (): JSX.Element => {
   const conversations = useXmtpStore((state) => state.conversations);
   const loadingConversations = useXmtpStore((state) => state.loadingConversations);
 
-  const selectedConversation = conversations.get(recipientWalletAddr);
-  const conversationKey = getConversationKey(selectedConversation);
+  // Since conversationId can be set to an ENS name, we reset it below for those cases to pull from the ENS address
+  // Resolves bug where entering an existing conversation with ENS name in "new message" doesn't retrieve conversations
+  const { ensAddress } = useWalletAddress();
+  const storeConversationId = useXmtpStore((state) => state.conversationId) ?? '';
+  const conversationId = isEnsAddress(storeConversationId) ? ensAddress : storeConversationId;
+  const selectedConversation = conversations.get(conversationId as string);
 
   const { sendMessage } = useSendMessage(selectedConversation);
 
   const [endTime, setEndTime] = useState<Map<string, Date>>(new Map());
 
-  const { convoMessages: messages, hasMore } = useGetMessages(conversationKey, endTime.get(conversationKey));
+  const { convoMessages: messages, hasMore } = useGetMessages(
+    conversationId as string,
+    endTime.get(conversationId as string)
+  );
 
   const fetchNextMessages = useCallback(() => {
-    if (hasMore && Array.isArray(messages) && messages.length > 0 && conversationKey) {
+    if (hasMore && Array.isArray(messages) && messages.length > 0 && conversationId) {
       const lastMsgDate = messages[messages.length - 1].sent;
-      const currentEndTime = endTime.get(conversationKey);
+      const currentEndTime = endTime.get(conversationId);
       if (!currentEndTime || lastMsgDate <= currentEndTime) {
-        endTime.set(conversationKey, lastMsgDate);
+        endTime.set(conversationId, lastMsgDate);
         setEndTime(new Map(endTime));
       }
     }
-  }, [conversationKey, hasMore, messages, endTime]);
+  }, [conversationId, hasMore, messages, endTime]);
 
   const hasMessages = Number(messages?.length ?? 0) > 0;
 

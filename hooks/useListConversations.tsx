@@ -1,14 +1,14 @@
 import { Conversation, Stream } from '@xmtp/xmtp-js';
 import { useEffect } from 'react';
+import { useAccount } from 'wagmi';
 import { getConversationKey } from '../helpers';
 import fetchMostRecentMessage from '../helpers/fetchMostRecentMessage';
-import { useAppStore } from '../store/app';
 import { useXmtpStore } from '../store/xmtp';
 import useStreamAllMessages from './useStreamAllMessages';
 
 export const useListConversations = () => {
-  const walletAddress = useAppStore((state) => state.address);
-  const client = useAppStore((state) => state.client);
+  const { address: walletAddress } = useAccount();
+  const client = useXmtpStore((state) => state.client);
 
   const conversations = useXmtpStore((state) => state.conversations);
   const setConversations = useXmtpStore((state) => state.setConversations);

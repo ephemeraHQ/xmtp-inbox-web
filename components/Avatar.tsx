@@ -1,24 +1,17 @@
-import { useEffect, useState } from 'react';
 import Blockies from 'react-blockies';
-import useEnsHooks from '../hooks/useEnsHooks';
+import { useEnsAvatar } from 'wagmi';
+import { address } from './Address';
 
 type AvatarProps = {
-  peerAddress: string;
+  peerAddress: address;
 };
 
 const Avatar = ({ peerAddress }: AvatarProps) => {
-  const [avatarUrl, setAvatarUrl] = useState<string>();
-  const { getAvatarUrl, loading } = useEnsHooks();
+  const { data, isLoading } = useEnsAvatar({
+    address: peerAddress
+  });
 
-  useEffect(() => {
-    const getUrl = async () => {
-      const newAvatarUrl = await getAvatarUrl(peerAddress);
-      setAvatarUrl(newAvatarUrl);
-    };
-    getUrl();
-  }, [getAvatarUrl, peerAddress]);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="animate-pulse flex">
         <div className="rounded-full bg-gray-200 h-10 w-10" />
@@ -26,11 +19,11 @@ const Avatar = ({ peerAddress }: AvatarProps) => {
     );
   }
 
-  if (avatarUrl) {
+  if (data) {
     return (
       <div>
         <div className="w-10 h-10 rounded-full border border-n-80" />
-        <img className="w-10 h-10 rounded-full z-10 -mt-10" src={avatarUrl} alt={peerAddress} />
+        <img className="w-10 h-10 rounded-full z-10 -mt-10" src={data} alt={peerAddress} />
       </div>
     );
   }
