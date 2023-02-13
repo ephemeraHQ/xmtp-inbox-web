@@ -1,20 +1,20 @@
 import { Client } from '@xmtp/xmtp-js';
-import { Signer } from 'ethers';
-import { useCallback, useEffect, useState } from 'react';
-import { useAccount, useSigner } from 'wagmi';
+import { useEffect, useState } from 'react';
+import { useSigner } from 'wagmi';
 import { getAppVersion, getEnv, loadKeys, storeKeys } from '../helpers';
 import { useXmtpStore } from '../store/xmtp';
 
 const useInitXmtpClient = (cacheOnly = false) => {
   const { data: signer } = useSigner();
-  const { address, isConnected } = useAccount();
+  // const { address, isConnected } = useAccount();
   const client = useXmtpStore((state) => state.client);
   const setClient = useXmtpStore((state) => state.setClient);
   const [isRequestPending, setIsRequestPending] = useState(false);
 
-  const initClient = useCallback(async () => {
-    if (signer && !client && address) {
+  const initClient = async () => {
+    if (signer && !client) {
       try {
+        const address = await signer.getAddress();
         setIsRequestPending(true);
         let keys = loadKeys(address);
         if (!keys) {
@@ -40,13 +40,13 @@ const useInitXmtpClient = (cacheOnly = false) => {
         setIsRequestPending(false);
       }
     }
-  }, [client, signer, address]);
+  };
 
   useEffect(() => {
     if (!isRequestPending) {
-      signer && isConnected && initClient();
+      signer && initClient();
     }
-  }, [signer, initClient, address, isConnected]);
+  }, [signer]);
 
   return {
     initClient
