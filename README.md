@@ -63,12 +63,16 @@ XMTP Labs hosts the following deployments of the XMTP Inbox chat app:
 
 ### Wallet connections
 
-The app uses [`Web3Modal`](https://github.com/Web3Modal/web3modal) to inject a Metamask, Coinbase Wallet, or WalletConnect provider through [`ethers`](https://docs.ethers.io/v5/). Methods for connecting and disconnecting are included in `WalletProvider` alongside the provider, signer, wallet address, and ENS utilities.
+The app uses [RainbowKit](https://www.rainbowkit.com/) to enable users to connect a Coinbase Wallet, MetaMask, Rainbow, or WalletConnect-compatible wallet app.
 
-To use the app's chat functionality, the connected wallet must provide two signatures:
+The app uses [wagmi](https://wagmi.sh/) to supply an [ethers Signer](https://docs.ethers.org/v5/api/signer/). The XMTP message API client needs this Signer to enable the user's blockchain account to sign messages that create and enable their XMTP identity.
 
-1. A one-time signature that is used to generate the wallet's private XMTP identity
+Specifically, to use the app's chat functionality the user must provide two signatures using their connected blockchain account:
+
+1. A one-time signature that is used to generate the account's private XMTP identity
 2. A signature that is used on app start-up to initialize the XMTP message API client with that identity
+
+Methods for connecting and disconnecting are included in `WalletProvider` alongside the provider, signer, wallet address, and ENS utilities.
 
 
 ### Chat conversations
