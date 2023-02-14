@@ -79,45 +79,46 @@ const RecipientControl = ({ setShowMessageView }: RecipientControlProps): JSX.El
 
   return (
     <div className="flex-col flex-1">
-      {size[0] < 600 && (
-        <div className="flex items-center ml-3 w-4">
-          <BackArrow
-            onClick={() => {
-              setShowMessageView(false);
-              setRecipientWalletAddress('');
-            }}
-          />
-        </div>
-      )}
       <div className="flex-1 flex-col justify-center flex bg-zinc-50 md:border-b md:border-gray-200 md:px-4 md:pb-[2px] max-h-16 min-h-[4rem]">
-        <form
-          className="w-full flex pl-2 md:pl-0 h-8 pt-1"
-          onSubmit={(e) => e.preventDefault()}
-          action="#"
-          method="GET"
-        >
-          <label htmlFor="recipient-field" className="sr-only">
-            Recipient
-          </label>
-          <div className="relative w-full text-n-300 focus-within:text-n-600">
-            <div
-              className="absolute top-1 left-0 flex items-center pointer-events-none text-md md:text-sm font-medium md:font-semibold"
-              data-testid="message-to-key"
-            >
-              To:
+        <div className="flex items-center">
+          {size[0] < 600 && (
+            <div className="flex items-center mx-2 w-3 mt-1">
+              <BackArrow
+                onClick={() => {
+                  setShowMessageView(false);
+                  setRecipientWalletAddress('');
+                }}
+              />
             </div>
-            <AddressInput
-              id="recipient-field"
-              className="block w-[90%] pl-7 pr-3 pt-[3px] md:pt-[2px] md:pt-[1px] bg-transparent caret-n-600 text-n-600 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-0 focus:border-transparent text-lg font-mono"
-              onInputChange={(e) => {
-                setRecipientWalletAddress((e.target as HTMLInputElement).value);
-              }}
-              isOnXmtpNetwork={recipientInputMode === RecipientInputMode.OnNetwork}
-            />
-            <button type="submit" className="hidden" />
-          </div>
-        </form>
-
+          )}
+          <form
+            className="w-full flex pl-2 md:pl-0 h-8 pt-1"
+            onSubmit={(e) => e.preventDefault()}
+            action="#"
+            method="GET"
+          >
+            <label htmlFor="recipient-field" className="sr-only">
+              Recipient
+            </label>
+            <div className="relative w-full text-n-300 focus-within:text-n-600">
+              <div
+                className="absolute top-1 left-0 flex items-center pointer-events-none text-md md:text-sm font-medium md:font-semibold"
+                data-testid="message-to-key"
+              >
+                To:
+              </div>
+              <AddressInput
+                id="recipient-field"
+                className="block w-[90%] pl-7 pr-3 pt-[3px] md:pt-[2px] md:pt-[1px] bg-transparent caret-n-600 text-n-600 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-0 focus:border-transparent text-lg font-mono"
+                onInputChange={(e) => {
+                  setRecipientWalletAddress((e.target as HTMLInputElement).value);
+                }}
+                isOnXmtpNetwork={recipientInputMode === RecipientInputMode.OnNetwork}
+              />
+              <button type="submit" className="hidden" />
+            </div>
+          </form>
+        </div>
         {recipientInputMode === RecipientInputMode.Submitted ||
         recipientInputMode === RecipientInputMode.OnNetwork ? (
           <div className="text-md text-n-300 text-sm font-mono ml-10 md:ml-8 pb-1 md:pb-[1px]">
