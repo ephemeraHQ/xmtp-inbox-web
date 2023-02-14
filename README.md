@@ -8,7 +8,7 @@
 
 **XMTP Inbox demonstrates core and advanced capabilities of the XMTP client SDK, aiming to showcase effective and innovative ways of building with XMTP.**
 
-This app is built with React, [Next.js](https://nextjs.org/), and the [XMTP client SDK for JavaScript](https://github.com/xmtp/xmtp-js) (`xmtp-js`).
+The XMTP Inbox app is built with React, [Next.js](https://nextjs.org/), and the [XMTP client SDK for JavaScript](https://github.com/xmtp/xmtp-js) (`xmtp-js`).
 
 This app is maintained by [XMTP Labs](https://xmtplabs.com) and distributed under [MIT License](./LICENSE) for learning about and developing apps built with XMTP (Extensible Message Transport Protocol), the open protocol and network for secure web3 messaging.
 
@@ -22,13 +22,15 @@ This app has not undergone a formal security audit.
 
 ### Configure Infura
 
-Add your Infura ID to `.env.local` in the project's root.
+The XMTP Inbox app uses Infura to enable wallet apps to connect to the Ethereum blockchain.
+
+Add your Infura API key to `.env.local` in root of `xmtp-inbox-web`.
 
 ```
-NEXT_PUBLIC_INFURA_ID={YOUR_INFURA_ID}
+NEXT_PUBLIC_INFURA_ID={YOUR_INFURA_API_KEY}
 ```
 
-If you don't have an Infura ID, see [Getting Started with Infura](https://blog.infura.io/getting-started-with-infura-28e41844cc89/) to learn how to create one.
+To learn how to create an Infura API key, see [Getting started](https://docs.infura.io/infura/getting-started) in the Infura docs.
 
 
 ### Install the package
@@ -63,21 +65,21 @@ XMTP Labs hosts the following deployments of the XMTP Inbox chat app:
 
 ### Wallet connections
 
-The app uses [RainbowKit](https://www.rainbowkit.com/) to enable users to connect a Coinbase Wallet, MetaMask, Rainbow, or WalletConnect-compatible wallet app.
+The XMTP Inbox app uses [RainbowKit](https://www.rainbowkit.com/) to enable users to connect a Coinbase Wallet, MetaMask, Rainbow, or WalletConnect-compatible wallet app.
 
-The app uses [wagmi](https://wagmi.sh/) to supply an [ethers Signer](https://docs.ethers.org/v5/api/signer/). The XMTP message API client needs this Signer to enable the user's blockchain account to sign messages that create and enable their XMTP identity.
+This app also uses [wagmi](https://wagmi.sh/) to supply an [ethers Signer](https://docs.ethers.org/v5/api/signer/). The XMTP message API client needs this Signer to enable the user's blockchain account to sign messages that create and enable their XMTP identity. This XMTP identity is what enables a user to send and receive messages.
 
-Specifically, to use the app's chat functionality the user must provide two signatures using their connected blockchain account:
+Specifically, the user must provide two signatures using their connected blockchain account:
 
 1. A one-time signature that is used to generate the account's private XMTP identity
-2. A signature that is used on app start-up to initialize the XMTP message API client with that identity
+2. A signature that is used on app start-up to enable, or initialize, the XMTP message API client with that identity
 
 Methods for connecting and disconnecting are included in `WalletProvider` alongside the provider, signer, wallet address, and ENS utilities.
 
 
 ### Chat conversations
 
-The app uses the `xmtp-js` [Conversations](https://github.com/xmtp/xmtp-js#conversations) abstraction to list the available conversations for a connected wallet and to listen for or create new conversations. For each conversation, the app gets existing messages and listens for or creates new messages. Conversations and messages are kept in a lightweight store and made available through `XmtpProvider`.
+The XMTP Inbox app uses the `xmtp-js` [Conversations](https://github.com/xmtp/xmtp-js#conversations) abstraction to list the available conversations for a connected wallet and to listen for or create new conversations. For each conversation, the app gets existing messages and listens for or creates new messages. Conversations and messages are kept in a lightweight store and made available through `XmtpProvider`.
 
 
 ### Tests
@@ -105,6 +107,4 @@ npm run cypress:component
 
 ### Considerations
 
-You can't yet send a message to a wallet address that hasn't used XMTP. The app displays an error when it looks up an address that doesn't have an identity broadcast on the XMTP network.
-
-This limitation will soon be resolved by improvements to the `xmtp-js` library that will allow messages to be created and stored for future delivery, even if the recipient hasn't used XMTP yet.
+You can't use an app built with XMTP to send a message to a blockchain account address that hasn't used XMTP. This app displays an error when it looks up an address that doesn't have an identity already registered on the XMTP network. Have questions or ideas about pre-registration messaging? Post to the [XMTP discussion forum](https://github.com/orgs/xmtp/discussions).
