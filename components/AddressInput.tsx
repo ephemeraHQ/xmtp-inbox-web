@@ -77,7 +77,7 @@ const AddressInput = ({
     if (isOnXmtpNetwork) {
       setLookupValue();
     }
-  }, [isValid, ensAddress, ensName, isOnXmtpNetwork]);
+  }, [isValid, ensAddress, ensName, isOnXmtpNetwork, conversationId, recipientWalletAddress]);
 
   const userIsSender = recipientWalletAddress === walletAddress;
 

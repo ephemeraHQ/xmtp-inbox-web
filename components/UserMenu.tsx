@@ -56,7 +56,6 @@ const NotConnected = ({ isError }: UserMenuProps): JSX.Element => {
 const UserMenu = ({ isError, setShowMessageView }: UserMenuProps): JSX.Element => {
   const { address: walletAddress } = useAccount();
   const [showQrModal, setShowQrModal] = useState<boolean>(false);
-  const client = useXmtpStore((state) => state.client);
   const resetXmtpState = useXmtpStore((state) => state.resetXmtpState);
   const { disconnect: disconnectWagmi, reset: resetWagmi } = useDisconnect();
 

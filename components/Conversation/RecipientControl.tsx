@@ -75,7 +75,7 @@ const RecipientControl = ({ setShowMessageView }: RecipientControlProps): JSX.El
     } else {
       setRecipientInputMode(RecipientInputMode.InvalidEntry);
     }
-  }, [isValid, ensName, ensAddress]);
+  }, [isValid, ensName, ensAddress, recipientWalletAddress]);
 
   return (
     <div className="flex-col flex-1">
