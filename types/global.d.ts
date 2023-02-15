@@ -1,20 +1,20 @@
-declare module '*.svg' {
+declare module "*.svg" {
   const content: any;
   export default content;
 }
 
-declare module '*.png' {
+declare module "*.png" {
   const content: any;
   export default content;
 }
 
-declare module '*.jpeg' {
+declare module "*.jpeg" {
   const content: any;
   export default content;
 }
 
-declare module 'react-blockies' {
-  import React from 'react';
+declare module "react-blockies" {
+  import React from "react";
   interface BlockiesProps {
     seed: string;
     size?: number;

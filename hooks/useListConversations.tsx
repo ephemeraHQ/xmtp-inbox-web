@@ -1,10 +1,10 @@
-import { Conversation, Stream } from '@xmtp/xmtp-js';
-import { useEffect } from 'react';
-import { useAccount } from 'wagmi';
-import { getConversationKey } from '../helpers';
-import fetchMostRecentMessage from '../helpers/fetchMostRecentMessage';
-import { useXmtpStore } from '../store/xmtp';
-import useStreamAllMessages from './useStreamAllMessages';
+import { Conversation, Stream } from "@xmtp/xmtp-js";
+import { useEffect } from "react";
+import { useAccount } from "wagmi";
+import { getConversationKey } from "../helpers";
+import fetchMostRecentMessage from "../helpers/fetchMostRecentMessage";
+import { useXmtpStore } from "../store/xmtp";
+import useStreamAllMessages from "./useStreamAllMessages";
 
 export const useListConversations = () => {
   const { address: walletAddress } = useAccount();
@@ -15,7 +15,9 @@ export const useListConversations = () => {
   const previewMessages = useXmtpStore((state) => state.previewMessages);
   const setPreviewMessages = useXmtpStore((state) => state.setPreviewMessages);
   const setPreviewMessage = useXmtpStore((state) => state.setPreviewMessage);
-  const setLoadingConversations = useXmtpStore((state) => state.setLoadingConversations);
+  const setLoadingConversations = useXmtpStore(
+    (state) => state.setLoadingConversations,
+  );
 
   useStreamAllMessages();
 
@@ -46,10 +48,10 @@ export const useListConversations = () => {
             conversations.set(getConversationKey(convo), convo);
             setConversations(new Map(conversations));
           }
-        })
+        }),
       ).then(() => {
         setLoadingConversations(false);
-        if (Notification.permission === 'default') {
+        if (Notification.permission === "default") {
           Notification.requestPermission();
         }
       });

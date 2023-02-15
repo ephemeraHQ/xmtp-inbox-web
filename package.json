@@ -8,8 +8,10 @@
     "build": "next build && next export",
     "start": "next start",
     "lint": "next lint",
-    "eslint": "eslint .",
+    "eslint": "eslint --ignore-path .gitignore .",
     "cypress": "cypress run",
+    "fmt:check": "prettier -c --ignore-path .gitignore .",
+    "fmt:fix": "prettier -w --ignore-path .gitignore .",
     "cypress:component": "cypress run --component",
     "e2e:headless": "start-server-and-test dev http://localhost:3000 cypress",
     "test": "jest"

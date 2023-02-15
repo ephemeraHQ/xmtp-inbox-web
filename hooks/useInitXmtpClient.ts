@@ -1,8 +1,8 @@
-import { Client } from '@xmtp/xmtp-js';
-import { useEffect, useState } from 'react';
-import { useSigner } from 'wagmi';
-import { getAppVersion, getEnv, loadKeys, storeKeys } from '../helpers';
-import { useXmtpStore } from '../store/xmtp';
+import { Client } from "@xmtp/xmtp-js";
+import { useEffect, useState } from "react";
+import { useSigner } from "wagmi";
+import { getAppVersion, getEnv, loadKeys, storeKeys } from "../helpers";
+import { useXmtpStore } from "../store/xmtp";
 
 const useInitXmtpClient = () => {
   const { data: signer } = useSigner();
@@ -19,14 +19,14 @@ const useInitXmtpClient = () => {
         if (!keys) {
           keys = await Client.getKeys(signer, {
             env: getEnv(),
-            appVersion: getAppVersion()
+            appVersion: getAppVersion(),
           });
           storeKeys(address, keys);
         }
         const xmtp = await Client.create(null, {
           env: getEnv(),
           appVersion: getAppVersion(),
-          privateKeyOverride: keys
+          privateKeyOverride: keys,
         });
         setClient(xmtp);
         setIsRequestPending(false);
@@ -45,7 +45,7 @@ const useInitXmtpClient = () => {
   }, [signer]);
 
   return {
-    initClient
+    initClient,
   };
 };
 

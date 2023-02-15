@@ -1,4 +1,4 @@
-import loaderStyles from '../styles/Loader.module.css';
+import loaderStyles from "../styles/Loader.module.css";
 
 type LoaderProps = {
   isLoading: boolean;
@@ -17,7 +17,7 @@ export const Spinner = ({ isLoading }: LoaderProps): JSX.Element | null => {
 
   // This feels janky af, but I'm gonna run with it rather than import some bloated library just to make a spinner.
   return (
-    <div className={loaderStyles['lds-roller']}>
+    <div className={loaderStyles["lds-roller"]}>
       <div></div>
       <div></div>
       <div></div>
@@ -30,14 +30,22 @@ export const Spinner = ({ isLoading }: LoaderProps): JSX.Element | null => {
   );
 };
 
-export const Loader = ({ headingText, subHeadingText, isLoading }: StyledLoaderProps): JSX.Element => (
+export const Loader = ({
+  headingText,
+  subHeadingText,
+  isLoading,
+}: StyledLoaderProps): JSX.Element => (
   <div className="grid place-items-center h-full mt-2">
     <div className="columns-1 text-center">
       <Spinner isLoading={isLoading} />
       {headingText && (
-        <div className="text-xl md:text-lg text-n-200 md:text-n-300 font-bold">{headingText}</div>
+        <div className="text-xl md:text-lg text-n-200 md:text-n-300 font-bold">
+          {headingText}
+        </div>
       )}
-      <div className="text-lx md:text-md text-n-200 font-normal">{subHeadingText}</div>
+      <div className="text-lx md:text-md text-n-200 font-normal">
+        {subHeadingText}
+      </div>
     </div>
   </div>
 );
