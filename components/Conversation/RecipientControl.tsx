@@ -34,7 +34,6 @@ const RecipientControl = ({ setShowMessageView }: RecipientControlProps): JSX.El
 
   const checkIfOnNetwork = async (address: string) => {
     setRecipientInputMode(RecipientInputMode.Submitted);
-
     let canMessage;
     if (client) {
       try {
@@ -47,7 +46,6 @@ const RecipientControl = ({ setShowMessageView }: RecipientControlProps): JSX.El
       } catch (e) {
         setRecipientInputMode(RecipientInputMode.NotOnNetwork);
       }
-      return canMessage;
     }
   };
 
@@ -67,20 +65,13 @@ const RecipientControl = ({ setShowMessageView }: RecipientControlProps): JSX.El
   };
 
   useEffect(() => {
-    if (isValid && !isEns) {
+    if (isValid) {
+      handleSubmit();
       setRecipientInputMode(RecipientInputMode.Submitted);
     } else {
       !isLoading && setRecipientInputMode(RecipientInputMode.InvalidEntry);
     }
-  }, [recipientWalletAddress]);
-
-  useEffect(() => {
-    if (isValid) {
-      handleSubmit();
-    } else {
-      setRecipientInputMode(RecipientInputMode.InvalidEntry);
-    }
-  }, [isValid, ensName, ensAddress, recipientWalletAddress]);
+  }, [isValid, recipientWalletAddress]);
 
   useEffect(() => {
     const setLookupValue = async () => {
