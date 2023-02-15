@@ -1,12 +1,12 @@
-import React from 'react';
-import BackArrow from '../BackArrow';
+import React from "react";
+import BackArrow from "../BackArrow";
 
 const props = {
-  onClick: () => {}
+  onClick: () => {},
 };
 
-describe('<BackArrow />', () => {
-  it('renders', () => {
+describe("<BackArrow />", () => {
+  it("renders", () => {
     // see: https://on.cypress.io/mounting-react
     cy.mount(<BackArrow {...props} />);
   });
