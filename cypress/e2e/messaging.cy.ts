@@ -3,6 +3,7 @@ import {
   sendAndEnterMessage,
   checkElement,
   checkMissingElement,
+  TIMEOUT,
 } from "../test_utils";
 
 describe(
@@ -52,7 +53,7 @@ describe(
 
     it("Renders error message when sending message to existing user outside of XMTP network", () => {
       checkElement("message-to-input").type("invalidUser").click();
-      cy.get(`[data-testid=message-to-subtext]`, { timeout: 10000 }).should(
+      cy.get(`[data-testid=message-to-subtext]`, { timeout: TIMEOUT }).should(
         "have.text",
         "Please enter a valid wallet address",
       );

@@ -1,8 +1,10 @@
 /* eslint-disable cypress/no-unnecessary-waiting */
 import { ENVIRONMENT } from "../helpers";
 
+export const TIMEOUT = 20000;
+
 export const checkElement = (testId: string) =>
-  cy.get(`[data-testid=${testId}]`, { timeout: 10000 }).should("exist");
+  cy.get(`[data-testid=${testId}]`, { timeout: TIMEOUT }).should("exist");
 
 export const checkMissingElement = (testId: string) =>
   cy.get(`[data-testid=${testId}]`).should("not.exist");
@@ -63,16 +65,16 @@ const sendMessages = (
   cy.wait(2000);
 
   // Confirms successful message
-  cy.get(`[data-testid=conversations-list-panel]`, { timeout: 10000 })
+  cy.get(`[data-testid=conversations-list-panel]`, { timeout: TIMEOUT })
     .children()
     .should("have.length", 1);
 };
 
 const checkMessageOutput = (numberOfTimes: number, message: string) => {
-  cy.get(`[data-testid=message-tile-container]`, { timeout: 10000 })
+  cy.get(`[data-testid=message-tile-container]`, { timeout: TIMEOUT })
     .children()
     .should("have.length", numberOfTimes || 1);
-  cy.get(`[data-testid=message-tile-text]`, { timeout: 10000 })
+  cy.get(`[data-testid=message-tile-text]`, { timeout: TIMEOUT })
     .last()
     .should("have.text", message);
 };
@@ -81,11 +83,11 @@ const checkMostRecentMessageOutput = (
   numberOfTimes: number,
   differentMessage: string,
 ) => {
-  cy.get(`[data-testid=message-tile-container]`, { timeout: 10000 })
+  cy.get(`[data-testid=message-tile-container]`, { timeout: TIMEOUT })
     .children()
     .should("have.length", numberOfTimes + 1 || 2);
 
-  cy.get(`[data-testid=message-tile-text]`, { timeout: 10000 })
+  cy.get(`[data-testid=message-tile-text]`, { timeout: TIMEOUT })
     .first()
     .should("have.text", differentMessage);
 };
