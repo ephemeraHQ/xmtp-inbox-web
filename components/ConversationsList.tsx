@@ -6,7 +6,6 @@ import { classNames, formatDate, getConversationKey } from '../helpers';
 import Avatar from './Avatar';
 import { useXmtpStore } from '../store/xmtp';
 import { useAccount } from 'wagmi';
-import useWalletAddress from '../hooks/useWalletAddress';
 
 type ConversationTileProps = {
   conversation: Conversation;

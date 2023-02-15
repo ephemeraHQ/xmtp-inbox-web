@@ -5,7 +5,8 @@ import Conversation from './Conversation';
 import BackArrow from '../BackArrow';
 import useWalletAddress from '../../hooks/useWalletAddress';
 import useWindowSize from '../../hooks/useWindowSize';
-import { isValidLongWalletAddress } from '../../helpers';
+import { isValidLongWalletAddress, getConversationKey, recipientPillInputStyle } from '../../helpers';
+import { useAccount } from 'wagmi';
 
 const RecipientInputMode = {
   InvalidEntry: 0,
@@ -22,10 +23,14 @@ type RecipientControlProps = {
 const RecipientControl = ({ setShowMessageView }: RecipientControlProps): JSX.Element => {
   const client = useXmtpStore((state) => state.client);
   const recipientWalletAddress = useXmtpStore((state) => state.recipientWalletAddress) || '';
+  const conversationId = useXmtpStore((state) => state.conversationId);
   const setRecipientWalletAddress = useXmtpStore((state) => state.setRecipientWalletAddress);
   const size = useWindowSize();
   const { isValid, isEns, ensName, ensAddress, isLoading } = useWalletAddress();
   const [recipientInputMode, setRecipientInputMode] = useState(RecipientInputMode.InvalidEntry);
+  const conversations = useXmtpStore((state) => state.conversations);
+  const setConversations = useXmtpStore((state) => state.setConversations);
+  const { address: walletAddress } = useAccount();
 
   const checkIfOnNetwork = async (address: string) => {
     setRecipientInputMode(RecipientInputMode.Submitted);
@@ -75,7 +80,45 @@ const RecipientControl = ({ setShowMessageView }: RecipientControlProps): JSX.El
     } else {
       setRecipientInputMode(RecipientInputMode.InvalidEntry);
     }
-  }, [isValid, ensName, ensAddress]);
+  }, [isValid, ensName, ensAddress, recipientWalletAddress]);
+
+  useEffect(() => {
+    const setLookupValue = async () => {
+      if (isValid && isEns && ensAddress) {
+        const conversation =
+          conversationId && conversationId !== ensAddress
+            ? await client?.conversations?.newConversation(ensAddress, {
+                conversationId,
+                metadata: {}
+              })
+            : await client?.conversations?.newConversation(ensAddress);
+
+        if (conversation) {
+          conversations.set(getConversationKey(conversation), conversation);
+          setConversations(new Map(conversations));
+          setRecipientWalletAddress(conversation.peerAddress);
+        }
+      } else if (isValid && !isEns && recipientWalletAddress) {
+        const conversation =
+          conversationId && conversationId !== recipientWalletAddress
+            ? await client?.conversations?.newConversation(recipientWalletAddress, {
+                conversationId,
+                metadata: {}
+              })
+            : await client?.conversations?.newConversation(recipientWalletAddress);
+        if (conversation) {
+          conversations.set(getConversationKey(conversation), conversation);
+          setConversations(new Map(conversations));
+          setRecipientWalletAddress(conversation.peerAddress);
+        }
+      }
+    };
+    if (recipientInputMode === RecipientInputMode.OnNetwork) {
+      setLookupValue();
+    }
+  }, [isValid, recipientInputMode, recipientWalletAddress, conversationId]);
+
+  const userIsSender = recipientWalletAddress === walletAddress;
 
   return (
     <div className="flex-col flex-1">
@@ -107,14 +150,24 @@ const RecipientControl = ({ setShowMessageView }: RecipientControlProps): JSX.El
               >
                 To:
               </div>
-              <AddressInput
-                id="recipient-field"
-                className="block w-[90%] pl-7 pr-3 pt-[3px] md:pt-[2px] md:pt-[1px] bg-transparent caret-n-600 text-n-600 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-0 focus:border-transparent text-lg font-mono"
-                onInputChange={(e) => {
-                  setRecipientWalletAddress((e.target as HTMLInputElement).value);
-                }}
-                isOnXmtpNetwork={recipientInputMode === RecipientInputMode.OnNetwork}
-              />
+              <div className="relative mb-5">
+                {isValid && (
+                  <span className={recipientPillInputStyle(userIsSender)}>
+                    {ensName ?? recipientWalletAddress}
+                  </span>
+                )}
+                <br />
+                <AddressInput
+                  id="recipient-field"
+                  className="block w-[90%] pl-7 pr-3 pt-[3px] md:pt-[2px] md:pt-[1px] bg-transparent caret-n-600 text-n-600 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-0 focus:border-transparent text-lg font-mono"
+                  onInputChange={(e) => {
+                    setRecipientWalletAddress((e.target as HTMLInputElement).value);
+                  }}
+                  userIsSender={userIsSender}
+                  value={ensName ?? recipientWalletAddress}
+                  isValid={isValid}
+                />
+              </div>
               <button type="submit" className="hidden" />
             </div>
           </form>
