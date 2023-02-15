@@ -1,4 +1,4 @@
-import { defineConfig } from 'cypress';
+import { defineConfig } from "cypress";
 
 export default defineConfig({
   e2e: {
@@ -6,14 +6,14 @@ export default defineConfig({
       config.screenshotOnRunFailure = false;
       config.video = false;
       return config;
-    }
+    },
   },
 
   component: {
     video: false,
     devServer: {
-      framework: 'next',
-      bundler: 'webpack'
-    }
-  }
+      framework: "next",
+      bundler: "webpack",
+    },
+  },
 });

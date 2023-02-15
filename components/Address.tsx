@@ -1,7 +1,7 @@
-import { classNames, shortAddress } from '../helpers';
-import { useEnsName } from 'wagmi';
-import useValidWalletAddress from '../hooks/useWalletAddress';
-import useWalletAddress from '../hooks/useWalletAddress';
+import { classNames, shortAddress } from "../helpers";
+import { useEnsName } from "wagmi";
+import useValidWalletAddress from "../hooks/useWalletAddress";
+import useWalletAddress from "../hooks/useWalletAddress";
 
 export type address = `0x${string}`;
 
@@ -15,10 +15,13 @@ const Address = ({ address, className }: AddressProps): JSX.Element => {
 
   return (
     <span
-      className={classNames(className || '', 'font-mono', isLoading ? 'animate-pulse' : '')}
+      className={classNames(
+        className || "",
+        "font-mono",
+        isLoading ? "animate-pulse" : "",
+      )}
       title={address}
-      data-testid="connected-footer-secondary-text"
-    >
+      data-testid="connected-footer-secondary-text">
       {ensName || shortAddress(address)}
     </span>
   );
