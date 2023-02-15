@@ -19,9 +19,7 @@ This app has not undergone a formal security audit.
 > **Note**  
 > You might also be interested in the [XMTP Quickstart React chat app](https://github.com/xmtp/xmtp-quickstart-react), which provides lighter weight code than the XMTP Inbox app. You can use the Quickstart app to learn to build a basic messaging app.
 
-
 ## Get started
-
 
 ### Configure Infura
 
@@ -34,7 +32,6 @@ NEXT_PUBLIC_INFURA_ID={YOUR_INFURA_API_KEY}
 ```
 
 To learn how to create an Infura API key, see [Getting started](https://docs.infura.io/infura/getting-started) in the Infura docs.
-
 
 ### Install the package
 
@@ -50,9 +47,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the app.
 
-
 ## Functionality
-
 
 ### Network environment
 
@@ -64,7 +59,6 @@ XMTP Labs hosts the following deployments of the XMTP Inbox chat app:
 
 - https://dev.xmtp.chat/ on the `dev` network
 - https://xmtp.chat/ on the `production` network
-
 
 ### Wallet connections
 
@@ -79,11 +73,9 @@ Specifically, the user must provide two signatures using their connected blockch
 
 Methods for connecting and disconnecting are included in `WalletProvider` alongside the provider, signer, wallet address, and ENS utilities.
 
-
 ### Chat conversations
 
 The XMTP Inbox app uses the `xmtp-js` [Conversations](https://github.com/xmtp/xmtp-js#conversations) abstraction to list the available conversations for a connected wallet and to listen for or create new conversations. For each conversation, the app gets existing messages and listens for or creates new messages. Conversations and messages are kept in a lightweight store and made available through `XmtpProvider`.
-
 
 ### Tests
 
@@ -106,7 +98,6 @@ Component tests:
 ```bash
 npm run cypress:component
 ```
-
 
 ### Considerations
 
