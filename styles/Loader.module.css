@@ -9,7 +9,7 @@
   transform-origin: 20px 20px;
 }
 .lds-roller div:after {
-  content: ' ';
+  content: " ";
   display: block;
   position: absolute;
   width: 6px;
