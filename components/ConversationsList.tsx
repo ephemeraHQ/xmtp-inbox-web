@@ -79,7 +79,7 @@ const ConversationTile = ({ conversation }: ConversationTileProps): JSX.Element 
           />
           <span
             className={classNames(
-              'text-lg md:text-sm font-normal place-self-end',
+              'text-sm font-normal place-self-end',
               isSelected ? 'text-n-500' : 'text-n-300',
               loadingConversations ? 'animate-pulse' : ''
             )}
