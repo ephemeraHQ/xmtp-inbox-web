@@ -1,4 +1,4 @@
-export const recipientDom = (recipientMode: number) => {
+export const getRecipientInputSubtext = (recipientMode: number) => {
   switch (recipientMode) {
     case 0:
       return "Please enter a valid wallet address";

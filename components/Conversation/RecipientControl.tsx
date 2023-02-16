@@ -12,7 +12,7 @@ import {
   isValidLongWalletAddress,
 } from "../../helpers";
 import { useAccount } from "wagmi";
-import { recipientDom } from "../../helpers";
+import { getRecipientInputSubtext } from "../../helpers";
 
 type RecipientControlProps = {
   setShowMessageView: Function;
@@ -140,7 +140,7 @@ const RecipientControl = ({
           <div
             className="text-sm md:text-xs text-n-300 ml-[29px] pl-2 md:pl-0 pb-1 md:pb-[3px]"
             data-testid="message-to-subtext">
-            {recipientDom(recipientInputMode)}
+            {getRecipientInputSubtext(recipientInputMode)}
           </div>
         )}
       </div>
