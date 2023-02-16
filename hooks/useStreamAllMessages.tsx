@@ -1,10 +1,10 @@
-import { DecodedMessage } from '@xmtp/xmtp-js';
-import { useEffect, useState } from 'react';
-import { getConversationKey, shortAddress, truncate } from '../helpers';
-import { useXmtpStore } from '../store/xmtp';
-import { fetchEnsName } from '@wagmi/core';
-import { useAccount } from 'wagmi';
-import { address } from '../components/Address';
+import { DecodedMessage } from "@xmtp/xmtp-js";
+import { useEffect, useState } from "react";
+import { getConversationKey, shortAddress, truncate } from "../helpers";
+import { useXmtpStore } from "../store/xmtp";
+import { fetchEnsName } from "@wagmi/core";
+import { useAccount } from "wagmi";
+import { address } from "../components/Address";
 
 let latestMsgId: string;
 
@@ -19,8 +19,8 @@ export const useStreamAllMessages = () => {
   const [browserVisible, setBrowserVisible] = useState<boolean>(true);
 
   useEffect(() => {
-    window.addEventListener('focus', () => setBrowserVisible(true));
-    window.addEventListener('blur', () => setBrowserVisible(false));
+    window.addEventListener("focus", () => setBrowserVisible(true));
+    window.addEventListener("blur", () => setBrowserVisible(false));
   }, []);
 
   useEffect(() => {
@@ -44,20 +44,24 @@ export const useStreamAllMessages = () => {
           // Below code is to remove duplicate messages from the
           // newMessages array
           const uniqueMessages = [
-            ...Array.from(new Map(newMessages.map((item) => [item['id'], item])).values())
+            ...Array.from(
+              new Map(newMessages.map((item) => [item["id"], item])).values(),
+            ),
           ];
           convoMessages.set(key, uniqueMessages);
           if (
             latestMsgId !== message.id &&
-            Notification.permission === 'granted' &&
+            Notification.permission === "granted" &&
             message.senderAddress !== walletAddress &&
             !browserVisible
           ) {
             const name = await fetchEnsName({
-              address: message.senderAddress as address
+              address: message.senderAddress as address,
             });
-            new Notification('XMTP', {
-              body: `${name || shortAddress(message.senderAddress ?? '')}\n${truncate(message.content, 75)}`
+            new Notification("XMTP", {
+              body: `${
+                name || shortAddress(message.senderAddress ?? "")
+              }\n${truncate(message.content, 75)}`,
             });
 
             latestMsgId = message.id;

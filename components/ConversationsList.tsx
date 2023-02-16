@@ -7,15 +7,22 @@ import Avatar from './Avatar';
 import { useXmtpStore } from '../store/xmtp';
 import { useAccount } from 'wagmi';
 
+
 type ConversationTileProps = {
   conversation: Conversation;
 };
 
-const ConversationTile = ({ conversation }: ConversationTileProps): JSX.Element | null => {
+const ConversationTile = ({
+  conversation,
+}: ConversationTileProps): JSX.Element | null => {
   const { address } = useAccount();
   const previewMessages = useXmtpStore((state) => state.previewMessages);
-  const loadingConversations = useXmtpStore((state) => state.loadingConversations);
-  const setRecipientWalletAddress = useXmtpStore((state) => state.setRecipientWalletAddress);
+  const loadingConversations = useXmtpStore(
+    (state) => state.loadingConversations,
+  );
+  const setRecipientWalletAddress = useXmtpStore(
+    (state) => state.setRecipientWalletAddress,
+  );
   const conversationId = useXmtpStore((state) => state.conversationId);
   const setConversationId = useXmtpStore((state) => state.setConversationId);
 
@@ -27,7 +34,8 @@ const ConversationTile = ({ conversation }: ConversationTileProps): JSX.Element 
 
   const latestMessage = previewMessages.get(conversationKey);
 
-  const conversationDomain = conversation.context?.conversationId.split('/')[0] ?? '';
+  const conversationDomain =
+    conversation.context?.conversationId.split("/")[0] ?? "";
 
   const isSelected = conversationId === conversationKey;
 
@@ -44,26 +52,25 @@ const ConversationTile = ({ conversation }: ConversationTileProps): JSX.Element 
     <div
       onClick={onClick}
       className={classNames(
-        'h-20',
-        'py-2',
-        'px-4',
-        'md:max-w-sm',
-        'mx-auto',
-        'bg-white',
-        'space-y-2',
-        'py-2',
-        'flex',
-        'items-center',
-        'space-y-0',
-        'space-x-4',
-        'border-b-2',
-        'border-gray-100',
-        'hover:bg-bt-100',
-        'cursor-pointer',
-        loadingConversations ? 'opacity-80' : 'opacity-100',
-        isSelected ? 'bg-bt-200' : null
-      )}
-    >
+        "h-20",
+        "py-2",
+        "px-4",
+        "md:max-w-sm",
+        "mx-auto",
+        "bg-white",
+        "space-y-2",
+        "py-2",
+        "flex",
+        "items-center",
+        "space-y-0",
+        "space-x-4",
+        "border-b-2",
+        "border-gray-100",
+        "hover:bg-bt-100",
+        "cursor-pointer",
+        loadingConversations ? "opacity-80" : "opacity-100",
+        isSelected ? "bg-bt-200" : null,
+      )}>
       <Avatar peerAddress={conversation.peerAddress as address} />
       <div className="py-4 sm:text-left text w-full">
         {conversationDomain && (
@@ -78,16 +85,16 @@ const ConversationTile = ({ conversation }: ConversationTileProps): JSX.Element 
           />
           <span
             className={classNames(
-              'text-sm font-normal place-self-end',
-              isSelected ? 'text-n-500' : 'text-n-300',
-              loadingConversations ? 'animate-pulse' : ''
-            )}
-          >
+              "text-sm font-normal place-self-end",
+              isSelected ? "text-n-500" : "text-n-300",
+              loadingConversations ? "animate-pulse" : "",
+            )}>
             {formatDate(latestMessage?.sent)}
           </span>
         </div>
         <span className="text-sm text-gray-500 line-clamp-1 break-all">
-          {address === latestMessage?.senderAddress && 'You: '} {latestMessage?.content}
+          {address === latestMessage?.senderAddress && "You: "}{" "}
+          {latestMessage?.content}
         </span>
       </div>
     </div>
@@ -98,9 +105,14 @@ const ConversationsList = (): JSX.Element => {
   const conversations = useXmtpStore((state) => state.conversations);
   const previewMessages = useXmtpStore((state) => state.previewMessages);
 
-  const orderByLatestMessage = (convoA: Conversation, convoB: Conversation): number => {
-    const convoALastMessageDate = previewMessages.get(getConversationKey(convoA))?.sent || new Date();
-    const convoBLastMessageDate = previewMessages.get(getConversationKey(convoB))?.sent || new Date();
+  const orderByLatestMessage = (
+    convoA: Conversation,
+    convoB: Conversation,
+  ): number => {
+    const convoALastMessageDate =
+      previewMessages.get(getConversationKey(convoA))?.sent || new Date();
+    const convoBLastMessageDate =
+      previewMessages.get(getConversationKey(convoB))?.sent || new Date();
     return convoALastMessageDate < convoBLastMessageDate ? 1 : -1;
   };
 
@@ -115,7 +127,12 @@ const ConversationsList = (): JSX.Element => {
         Array.from(conversations.values())
           .sort(orderByLatestMessage)
           .map((convo) => {
-            return <ConversationTile key={getConversationKey(convo)} conversation={convo} />;
+            return (
+              <ConversationTile
+                key={getConversationKey(convo)}
+                conversation={convo}
+              />
+            );
           })}
     </>
   );
@@ -132,11 +149,12 @@ const NoConversationsMessage = (): JSX.Element => {
         />
         <p
           className="text-xl md:text-lg text-n-200 md:text-n-300 font-bold"
-          data-testid="empty-message-header"
-        >
+          data-testid="empty-message-header">
           Your message list is empty
         </p>
-        <p className="text-lx md:text-md text-n-200 font-normal" data-testid="empty-message-subheader">
+        <p
+          className="text-lx md:text-md text-n-200 font-normal"
+          data-testid="empty-message-subheader">
           There are no messages for this address
         </p>
       </div>
