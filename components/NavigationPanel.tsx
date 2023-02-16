@@ -1,11 +1,11 @@
-import { LinkIcon, ExclamationCircleIcon } from '@heroicons/react/outline';
-import { useXmtpStore } from '../store/xmtp';
-import ConversationsList from './ConversationsList';
-import Loader from './Loader';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { useAccount } from 'wagmi';
-import useHandleConnect from '../hooks/useHandleConnect';
-import useInitXmtpClient from '../hooks/useInitXmtpClient';
+import { LinkIcon, ExclamationCircleIcon } from "@heroicons/react/outline";
+import { useXmtpStore } from "../store/xmtp";
+import ConversationsList from "./ConversationsList";
+import Loader from "./Loader";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useAccount } from "wagmi";
+import useHandleConnect from "../hooks/useHandleConnect";
+import useInitXmtpClient from "../hooks/useInitXmtpClient";
 
 type NavigationPanelProps = {
   isError: boolean;
@@ -32,9 +32,8 @@ const NavigationPanel = ({ isError }: NavigationPanelProps): JSX.Element => {
                   return (
                     <div
                       {...(!ready && {
-                        'aria-hidden': true
-                      })}
-                    >
+                        "aria-hidden": true,
+                      })}>
                       {(() => {
                         if (!connected) {
                           return (
@@ -42,8 +41,7 @@ const NavigationPanel = ({ isError }: NavigationPanelProps): JSX.Element => {
                               type="button"
                               className="bg-p-600 px-4 rounded-lg h-[40px] text-white font-bold"
                               onClick={handleConnect}
-                              data-testid="no-wallet-connected-cta"
-                            >
+                              data-testid="no-wallet-connected-cta">
                               Connect Wallet
                             </button>
                           );
@@ -60,8 +58,7 @@ const NavigationPanel = ({ isError }: NavigationPanelProps): JSX.Element => {
                 type="button"
                 className="bg-p-600 px-4 rounded-lg h-[40px] text-white font-bold cursor-pointer"
                 onClick={initClient}
-                data-testid="no-wallet-connected-cta"
-              >
+                data-testid="no-wallet-connected-cta">
                 Connect XMTP
               </button>
             </NoXMTPConnectedMessage>
@@ -72,10 +69,10 @@ const NavigationPanel = ({ isError }: NavigationPanelProps): JSX.Element => {
   );
 };
 
-const NoWalletConnectedMessage: React.FC<{ isError: boolean; children?: React.ReactNode }> = ({
-  isError,
-  children
-}) => {
+const NoWalletConnectedMessage: React.FC<{
+  isError: boolean;
+  children?: React.ReactNode;
+}> = ({ isError, children }) => {
   return (
     <div className="flex flex-col flex-grow justify-center">
       <div className="flex flex-col items-center px-4 text-center">
@@ -90,12 +87,13 @@ const NoWalletConnectedMessage: React.FC<{ isError: boolean; children?: React.Re
         )}
         <p
           className="text-xl md:text-lg text-n-200 md:text-n-300 font-bold"
-          data-testid="no-wallet-connected-header"
-        >
-          {isError ? 'Error connecting' : 'No wallet connected'}
+          data-testid="no-wallet-connected-header">
+          {isError ? "Error connecting" : "No wallet connected"}
         </p>
-        <p className="text-lx md:text-md text-n-200 font-normal" data-testid="no-wallet-connected-subheader">
-          {isError ? 'Please try again' : 'Please connect a wallet to begin'}
+        <p
+          className="text-lx md:text-md text-n-200 font-normal"
+          data-testid="no-wallet-connected-subheader">
+          {isError ? "Please try again" : "Please connect a wallet to begin"}
         </p>
       </div>
       <div className="mt-2 flex justify-center items-center">{children}</div>
@@ -103,10 +101,10 @@ const NoWalletConnectedMessage: React.FC<{ isError: boolean; children?: React.Re
   );
 };
 
-const NoXMTPConnectedMessage: React.FC<{ isError?: boolean; children?: React.ReactNode }> = ({
-  isError,
-  children
-}) => {
+const NoXMTPConnectedMessage: React.FC<{
+  isError?: boolean;
+  children?: React.ReactNode;
+}> = ({ isError, children }) => {
   return (
     <div className="flex flex-col flex-grow justify-center">
       <div className="flex flex-col items-center px-4 text-center">
@@ -121,12 +119,13 @@ const NoXMTPConnectedMessage: React.FC<{ isError?: boolean; children?: React.Rea
         )}
         <p
           className="text-xl md:text-lg text-n-200 md:text-n-300 font-bold"
-          data-testid="no-wallet-connected-header"
-        >
-          {isError ? 'Error connecting' : 'XMTP client not connected'}
+          data-testid="no-wallet-connected-header">
+          {isError ? "Error connecting" : "XMTP client not connected"}
         </p>
-        <p className="text-lx md:text-md text-n-200 font-normal" data-testid="no-wallet-connected-subheader">
-          {isError ? 'Please try again' : 'Please connect to XMTP'}
+        <p
+          className="text-lx md:text-md text-n-200 font-normal"
+          data-testid="no-wallet-connected-subheader">
+          {isError ? "Please try again" : "Please connect to XMTP"}
         </p>
       </div>
       <div className="mt-2 flex justify-center items-center">{children}</div>
@@ -136,14 +135,28 @@ const NoXMTPConnectedMessage: React.FC<{ isError?: boolean; children?: React.Rea
 
 const ConversationsPanel = (): JSX.Element => {
   const client = useXmtpStore((state) => state.client);
-  const loadingConversations = useXmtpStore((state) => state.loadingConversations);
+  const loadingConversations = useXmtpStore(
+    (state) => state.loadingConversations,
+  );
 
   if (client === undefined) {
-    return <Loader headingText="Awaiting signatures..." subHeadingText="Use your wallet to sign" isLoading />;
+    return (
+      <Loader
+        headingText="Awaiting signatures..."
+        subHeadingText="Use your wallet to sign"
+        isLoading
+      />
+    );
   }
 
   if (loadingConversations) {
-    return <Loader headingText="Loading conversations..." subHeadingText="Please wait a moment" isLoading />;
+    return (
+      <Loader
+        headingText="Loading conversations..."
+        subHeadingText="Please wait a moment"
+        isLoading
+      />
+    );
   }
 
   return (

@@ -1,11 +1,15 @@
-import { SortDirection } from '@xmtp/xmtp-js';
-import { useEffect, useState } from 'react';
-import { MESSAGE_LIMIT } from '../helpers';
-import { useXmtpStore } from '../store/xmtp';
+import { SortDirection } from "@xmtp/xmtp-js";
+import { useEffect, useState } from "react";
+import { MESSAGE_LIMIT } from "../helpers";
+import { useXmtpStore } from "../store/xmtp";
 
 const useGetMessages = (conversationKey: string, endTime?: Date) => {
-  const convoMessages = useXmtpStore((state) => state.convoMessages.get(conversationKey));
-  const conversation = useXmtpStore((state) => state.conversations.get(conversationKey));
+  const convoMessages = useXmtpStore((state) =>
+    state.convoMessages.get(conversationKey),
+  );
+  const conversation = useXmtpStore((state) =>
+    state.conversations.get(conversationKey),
+  );
   const addMessages = useXmtpStore((state) => state.addMessages);
   const [hasMore, setHasMore] = useState<Map<string, boolean>>(new Map());
 
@@ -18,7 +22,7 @@ const useGetMessages = (conversationKey: string, endTime?: Date) => {
       const newMessages = await conversation.messages({
         direction: SortDirection.SORT_DIRECTION_DESCENDING,
         limit: MESSAGE_LIMIT,
-        endTime: endTime
+        endTime: endTime,
       });
       if (newMessages.length > 0) {
         addMessages(conversationKey, newMessages);
@@ -40,7 +44,7 @@ const useGetMessages = (conversationKey: string, endTime?: Date) => {
 
   return {
     convoMessages,
-    hasMore: hasMore.get(conversationKey) ?? false
+    hasMore: hasMore.get(conversationKey) ?? false,
   };
 };
 

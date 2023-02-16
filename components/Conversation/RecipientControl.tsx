@@ -1,31 +1,38 @@
-import { useState, useEffect } from 'react';
-import AddressInput from '../AddressInput';
-import { useXmtpStore } from '../../store/xmtp';
-import Conversation from './Conversation';
-import BackArrow from '../BackArrow';
-import useWalletAddress from '../../hooks/useWalletAddress';
-import useWindowSize from '../../hooks/useWindowSize';
-import { isValidLongWalletAddress } from '../../helpers';
+import { useState, useEffect } from "react";
+import AddressInput from "../AddressInput";
+import { useXmtpStore } from "../../store/xmtp";
+import Conversation from "./Conversation";
+import BackArrow from "../BackArrow";
+import useWalletAddress from "../../hooks/useWalletAddress";
+import useWindowSize from "../../hooks/useWindowSize";
+import { isValidLongWalletAddress } from "../../helpers";
 
 const RecipientInputMode = {
   InvalidEntry: 0,
   FindingEntry: 1,
   Submitted: 2,
   NotOnNetwork: 3,
-  OnNetwork: 4
+  OnNetwork: 4,
 };
 
 type RecipientControlProps = {
   setShowMessageView: Function;
 };
 
-const RecipientControl = ({ setShowMessageView }: RecipientControlProps): JSX.Element => {
+const RecipientControl = ({
+  setShowMessageView,
+}: RecipientControlProps): JSX.Element => {
   const client = useXmtpStore((state) => state.client);
-  const recipientWalletAddress = useXmtpStore((state) => state.recipientWalletAddress) || '';
-  const setRecipientWalletAddress = useXmtpStore((state) => state.setRecipientWalletAddress);
+  const recipientWalletAddress =
+    useXmtpStore((state) => state.recipientWalletAddress) || "";
+  const setRecipientWalletAddress = useXmtpStore(
+    (state) => state.setRecipientWalletAddress,
+  );
   const size = useWindowSize();
   const { isValid, isEns, ensName, ensAddress, isLoading } = useWalletAddress();
-  const [recipientInputMode, setRecipientInputMode] = useState(RecipientInputMode.InvalidEntry);
+  const [recipientInputMode, setRecipientInputMode] = useState(
+    RecipientInputMode.InvalidEntry,
+  );
 
   const checkIfOnNetwork = async (address: string) => {
     setRecipientInputMode(RecipientInputMode.Submitted);
@@ -86,7 +93,7 @@ const RecipientControl = ({ setShowMessageView }: RecipientControlProps): JSX.El
               <BackArrow
                 onClick={() => {
                   setShowMessageView(false);
-                  setRecipientWalletAddress('');
+                  setRecipientWalletAddress("");
                 }}
               />
             </div>
@@ -95,25 +102,27 @@ const RecipientControl = ({ setShowMessageView }: RecipientControlProps): JSX.El
             className="w-full flex pl-2 md:pl-0 h-8 pt-1"
             onSubmit={(e) => e.preventDefault()}
             action="#"
-            method="GET"
-          >
+            method="GET">
             <label htmlFor="recipient-field" className="sr-only">
               Recipient
             </label>
             <div className="relative w-full text-n-300 focus-within:text-n-600">
               <div
                 className="absolute top-1 left-0 flex items-center pointer-events-none text-md md:text-sm font-medium md:font-semibold"
-                data-testid="message-to-key"
-              >
+                data-testid="message-to-key">
                 To:
               </div>
               <AddressInput
                 id="recipient-field"
                 className="block w-[90%] pl-7 pr-3 pt-[3px] md:pt-[2px] md:pt-[1px] bg-transparent caret-n-600 text-n-600 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-0 focus:border-transparent text-lg font-mono"
                 onInputChange={(e) => {
-                  setRecipientWalletAddress((e.target as HTMLInputElement).value);
+                  setRecipientWalletAddress(
+                    (e.target as HTMLInputElement).value,
+                  );
                 }}
-                isOnXmtpNetwork={recipientInputMode === RecipientInputMode.OnNetwork}
+                isOnXmtpNetwork={
+                  recipientInputMode === RecipientInputMode.OnNetwork
+                }
               />
               <button type="submit" className="hidden" />
             </div>
@@ -127,11 +136,13 @@ const RecipientControl = ({ setShowMessageView }: RecipientControlProps): JSX.El
         ) : (
           <div
             className="text-sm md:text-xs text-n-300 ml-[29px] pl-2 md:pl-0 pb-1 md:pb-[3px]"
-            data-testid="message-to-subtext"
-          >
-            {recipientInputMode === RecipientInputMode.NotOnNetwork && 'Recipient is not on the XMTP network'}
-            {recipientInputMode === RecipientInputMode.FindingEntry && 'Finding ENS domain...'}
-            {recipientInputMode === RecipientInputMode.InvalidEntry && 'Please enter a valid wallet address'}
+            data-testid="message-to-subtext">
+            {recipientInputMode === RecipientInputMode.NotOnNetwork &&
+              "Recipient is not on the XMTP network"}
+            {recipientInputMode === RecipientInputMode.FindingEntry &&
+              "Finding ENS domain..."}
+            {recipientInputMode === RecipientInputMode.InvalidEntry &&
+              "Please enter a valid wallet address"}
           </div>
         )}
       </div>
