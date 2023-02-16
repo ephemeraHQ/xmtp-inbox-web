@@ -1,5 +1,5 @@
 import { fetchEnsAddress } from "@wagmi/core";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   classNames,
   isEnsAddress,
@@ -26,6 +26,16 @@ const AddressInput = ({
 }: AddressInputProps): JSX.Element => {
   const [recipientEnteredValue, setRecipientEnteredValue] =
     useState<string>("");
+
+  const inputElement = useRef(null);
+
+  const focusInputElementRef = () => {
+    (inputElement.current as any)?.focus();
+  };
+
+  useEffect(() => {
+    focusInputElementRef();
+  }, []);
 
   useEffect(() => {
     const handleSubmit = async () => {
@@ -60,6 +70,7 @@ const AddressInput = ({
         setRecipientEnteredValue((e.target as HTMLInputElement).value)
       }
       value={recipientEnteredValue}
+      ref={inputElement}
       autoComplete="off"
       autoCorrect="off"
       autoCapitalize="off"

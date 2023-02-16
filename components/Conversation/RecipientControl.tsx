@@ -138,7 +138,7 @@ const RecipientControl = ({
         </div>
         {recipientInputMode === RecipientInputMode.Submitted ||
         recipientInputMode === RecipientInputMode.OnNetwork ? (
-          <div className="text-md text-n-300 text-sm font-mono ml-10 md:ml-8 pb-1 md:pb-[1px]">
+          <div className="text-md text-n-300 text-sm font-mono ml-7 pb-1 md:pb-[1px]">
             {ensName ? ensAddress ?? recipientWalletAddress : null}
           </div>
         ) : (
