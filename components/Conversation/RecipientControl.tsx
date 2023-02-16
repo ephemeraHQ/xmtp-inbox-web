@@ -12,7 +12,7 @@ import {
   isValidLongWalletAddress,
 } from "../../helpers";
 import { useAccount } from "wagmi";
-import { address } from "../Address";
+import { recipientDom } from "../../helpers";
 
 type RecipientControlProps = {
   setShowMessageView: Function;
@@ -31,7 +31,7 @@ const RecipientControl = ({
   );
   const size = useWindowSize();
   const [recipientInputMode, setRecipientInputMode] = useState(
-    RecipientInputMode.OnNetwork,
+    RecipientInputMode.InvalidEntry,
   );
   const { isValid, ensName, ensAddress } = useWalletAddress();
   const conversations = useXmtpStore((state) => state.conversations);
@@ -54,11 +54,6 @@ const RecipientControl = ({
         setRecipientInputMode(RecipientInputMode.NotOnNetwork);
       }
     }
-  };
-
-  const handleSubmit = async (address: address) => {
-    event?.preventDefault();
-    checkIfOnNetwork(address);
   };
 
   useEffect(() => {
@@ -127,7 +122,7 @@ const RecipientControl = ({
                   <AddressInput
                     id="recipient-field"
                     className="block w-[90%] pr-3 pt-[3px] md:pt-[2px] md:pt-[1px] bg-transparent caret-n-600 text-n-600 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-0 focus:border-transparent text-lg font-mono"
-                    submitValue={handleSubmit}
+                    submitValue={checkIfOnNetwork}
                     setRecipientInputMode={setRecipientInputMode}
                   />
                 )}
@@ -145,12 +140,7 @@ const RecipientControl = ({
           <div
             className="text-sm md:text-xs text-n-300 ml-[29px] pl-2 md:pl-0 pb-1 md:pb-[3px]"
             data-testid="message-to-subtext">
-            {recipientInputMode === RecipientInputMode.NotOnNetwork &&
-              "Recipient is not on the XMTP network"}
-            {recipientInputMode === RecipientInputMode.FindingEntry &&
-              "Finding ENS domain..."}
-            {recipientInputMode === RecipientInputMode.InvalidEntry &&
-              "Please enter a valid wallet address"}
+            {recipientDom(recipientInputMode)}
           </div>
         )}
       </div>
