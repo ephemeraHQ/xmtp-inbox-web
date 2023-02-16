@@ -11,5 +11,5 @@ export const RecipientInputMode = {
   FindingEntry: 1,
   Submitted: 2,
   NotOnNetwork: 3,
-  OnNetwork: 4
+  OnNetwork: 4,
 };

@@ -1,12 +1,11 @@
-import React from 'react';
-import { ChatIcon } from '@heroicons/react/outline';
-import Address, { address } from './Address';
-import { Conversation } from '@xmtp/xmtp-js';
-import { classNames, formatDate, getConversationKey } from '../helpers';
-import Avatar from './Avatar';
-import { useXmtpStore } from '../store/xmtp';
-import { useAccount } from 'wagmi';
-
+import React from "react";
+import { ChatIcon } from "@heroicons/react/outline";
+import Address, { address } from "./Address";
+import { Conversation } from "@xmtp/xmtp-js";
+import { classNames, formatDate, getConversationKey } from "../helpers";
+import Avatar from "./Avatar";
+import { useXmtpStore } from "../store/xmtp";
+import { useAccount } from "wagmi";
 
 type ConversationTileProps = {
   conversation: Conversation;

@@ -1,6 +1,5 @@
-import { classNames, shortAddress } from '../helpers';
-import useWalletAddress from '../hooks/useWalletAddress';
-
+import { classNames, shortAddress } from "../helpers";
+import useWalletAddress from "../hooks/useWalletAddress";
 
 export type address = `0x${string}`;
 

@@ -1,7 +1,12 @@
-import { fetchEnsAddress } from '@wagmi/core';
-import React, { useEffect, useState } from 'react';
-import { classNames, isEnsAddress, isValidLongWalletAddress, RecipientInputMode } from '../helpers';
-import { address } from './Address';
+import { fetchEnsAddress } from "@wagmi/core";
+import React, { useEffect, useState } from "react";
+import {
+  classNames,
+  isEnsAddress,
+  isValidLongWalletAddress,
+  RecipientInputMode,
+} from "../helpers";
+import { address } from "./Address";
 
 type AddressInputProps = {
   id?: string;
@@ -17,9 +22,9 @@ const AddressInput = ({
   className,
   placeholder,
   submitValue,
-  setRecipientInputMode
+  setRecipientInputMode,
 }: AddressInputProps): JSX.Element => {
-  const [recipientEnteredValue, setRecipientEnteredValue] = useState('');
+  const [recipientEnteredValue, setRecipientEnteredValue] = useState("");
 
   useEffect(() => {
     const handleSubmit = async () => {
@@ -42,9 +47,11 @@ const AddressInput = ({
     <input
       id={id}
       name="recipient"
-      className={classNames(className || '')}
+      className={classNames(className || "")}
       placeholder={placeholder}
-      onChange={(e) => setRecipientEnteredValue((e.target as HTMLInputElement).value)}
+      onChange={(e) =>
+        setRecipientEnteredValue((e.target as HTMLInputElement).value)
+      }
       value={recipientEnteredValue}
       autoComplete="off"
       autoCorrect="off"
