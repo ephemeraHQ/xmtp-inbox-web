@@ -4,9 +4,6 @@ export function classNames(...classes: (string | null)[]) {
 
 export const recipientPillInputStyle = (userIsSender: boolean) =>
   classNames(
-    'absolute',
-    'top-[4px] md:top-[2px]',
-    'left-[26px] md:left-[23px]',
     'rounded-2xl',
     'px-[5px] md:px-2',
     'border',
@@ -19,6 +16,7 @@ export const recipientPillInputStyle = (userIsSender: boolean) =>
     'text-center',
     'text-transparent',
     'select-none',
+    'text-black ',
     userIsSender ? 'bg-bt-100' : 'bg-zinc-50',
     userIsSender ? 'border-bt-300' : 'border-gray-300'
   );
