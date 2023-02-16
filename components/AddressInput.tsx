@@ -13,8 +13,8 @@ type AddressInputProps = {
   name?: string;
   className?: string;
   placeholder?: string;
-  submitValue: (address: address) => void;
-  setRecipientInputMode: (value: number) => void;
+  submitValue?: (address: address) => void;
+  setRecipientInputMode?: (value: number) => void;
 };
 
 const AddressInput = ({
@@ -24,23 +24,30 @@ const AddressInput = ({
   submitValue,
   setRecipientInputMode,
 }: AddressInputProps): JSX.Element => {
-  const [recipientEnteredValue, setRecipientEnteredValue] = useState("");
+  const [recipientEnteredValue, setRecipientEnteredValue] =
+    useState<string>("");
 
   useEffect(() => {
     const handleSubmit = async () => {
-      if (isEnsAddress(recipientEnteredValue)) {
-        setRecipientInputMode(RecipientInputMode.FindingEntry);
-        const address = await fetchEnsAddress({ name: recipientEnteredValue });
-        if (address) {
-          submitValue(address);
+      if (recipientEnteredValue) {
+        if (isEnsAddress(recipientEnteredValue)) {
+          setRecipientInputMode &&
+            setRecipientInputMode(RecipientInputMode.FindingEntry);
+          const address = await fetchEnsAddress({
+            name: recipientEnteredValue,
+          });
+          if (address) {
+            submitValue && submitValue(address);
+          }
+        } else if (isValidLongWalletAddress(recipientEnteredValue)) {
+          submitValue && submitValue(recipientEnteredValue as address);
+        } else {
+          setRecipientInputMode &&
+            setRecipientInputMode(RecipientInputMode.InvalidEntry);
         }
-      } else if (isValidLongWalletAddress(recipientEnteredValue)) {
-        submitValue(recipientEnteredValue as address);
-      } else {
-        setRecipientInputMode(RecipientInputMode.InvalidEntry);
       }
     };
-    if (recipientEnteredValue) handleSubmit();
+    handleSubmit();
   }, [recipientEnteredValue]);
 
   return (
