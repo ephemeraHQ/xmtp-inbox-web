@@ -17,7 +17,7 @@ You are free to customize and deploy the app.
 This app has not undergone a formal security audit.
 
 > **Note**  
-> You might also be interested in the [XMTP Quickstart React chat app](https://github.com/xmtp/xmtp-quickstart-react), which provides lighter weight code than the XMTP Inbox app. You can use the Quickstart app to learn to build a basic messaging app.
+> You might also be interested in the [XMTP Quickstart React chat app](https://github.com/xmtp/xmtp-quickstart-react), which provides lighter-weight code than the XMTP Inbox app. You can use the Quickstart app to learn to build a basic messaging app.
 
 ## Get started
 
@@ -69,9 +69,7 @@ This app also uses [wagmi](https://wagmi.sh/) to supply an [ethers Signer](https
 Specifically, the user must provide two signatures using their connected blockchain account:
 
 1. A one-time signature that is used to generate the account's private XMTP identity
-2. A signature that is used on app start-up to enable, or initialize, the XMTP message API client with that identity
-
-Methods for connecting and disconnecting are included in `WalletProvider` alongside the provider, signer, wallet address, and ENS utilities.
+2. A signature that is used on app startup to enable, or initialize, the XMTP message API client with that identity
 
 ### Chat conversations
 
