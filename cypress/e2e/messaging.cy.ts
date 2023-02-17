@@ -43,12 +43,13 @@ describe(
       sendAndEnterMessage(testUserWithXmtpAccount, shortMessage, 6, true);
     });
 
-    it("Shows correct view when editing address", () => {
+    it("Does not allow address to be edited", () => {
       sendAndEnterMessage(testUserWithXmtpAccount, shortMessage, 1);
-      checkElement("message-to-input").click().type("{backspace}");
-      checkMissingElement("message-input");
-      checkElement("message-to-input").type("1");
-      checkElement("message-input");
+      checkMissingElement("message-to-input");
+      checkElement("recipient-wallet-address").should(
+        "have.text",
+        testUserWithXmtpAccount,
+      );
     });
 
     it("Renders error message when sending message to existing user outside of XMTP network", () => {

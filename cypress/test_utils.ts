@@ -23,7 +23,7 @@ export const startDemoEnv = () => {
 };
 
 const enterWalletAddress = (testUser: string) => {
-  checkElement("message-to-input").type(testUser).click();
+  checkElement("message-to-input").type(testUser);
 };
 
 const checkExpectedPreMessageFields = () => {
@@ -60,10 +60,6 @@ const sendMessages = (
   cy.wait(2000);
   checkElement("xmtp-logo").click();
   cy.wait(2000);
-  checkElement("message-to-input").clear();
-  checkElement("message-to-input").type(testUser).click();
-  cy.wait(2000);
-
   // Confirms successful message
   cy.get(`[data-testid=conversations-list-panel]`, { timeout: TIMEOUT })
     .children()
