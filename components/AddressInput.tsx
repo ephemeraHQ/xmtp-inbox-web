@@ -48,6 +48,9 @@ const AddressInput = ({
           });
           if (address) {
             submitValue && submitValue(address);
+          } else {
+            setRecipientInputMode &&
+              setRecipientInputMode(RecipientInputMode.InvalidEntry);
           }
         } else if (isValidLongWalletAddress(recipientEnteredValue)) {
           submitValue && submitValue(recipientEnteredValue as address);

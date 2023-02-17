@@ -1,7 +1,7 @@
 import { Conversation, Stream } from "@xmtp/xmtp-js";
 import { useEffect } from "react";
 import { useAccount } from "wagmi";
-import { getConversationKey } from "../helpers";
+import { getConversationId } from "../helpers";
 import fetchMostRecentMessage from "../helpers/fetchMostRecentMessage";
 import { useXmtpStore } from "../store/xmtp";
 import useStreamAllMessages from "./useStreamAllMessages";
@@ -45,7 +45,7 @@ export const useListConversations = () => {
       Promise.all(
         convos.map(async (convo) => {
           if (convo.peerAddress !== walletAddress) {
-            conversations.set(getConversationKey(convo), convo);
+            conversations.set(getConversationId(convo), convo);
             setConversations(new Map(conversations));
           }
         }),
@@ -61,7 +61,7 @@ export const useListConversations = () => {
       conversationStream = await client.conversations.stream();
       for await (const convo of conversationStream) {
         if (convo.peerAddress !== walletAddress) {
-          conversations.set(getConversationKey(convo), convo);
+          conversations.set(getConversationId(convo), convo);
           setConversations(new Map(conversations));
           const preview = await fetchMostRecentMessage(convo);
           if (preview.message) {

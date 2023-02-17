@@ -7,7 +7,7 @@ import useWalletAddress from "../../hooks/useWalletAddress";
 import useWindowSize from "../../hooks/useWindowSize";
 import {
   RecipientInputMode,
-  getConversationKey,
+  getConversationId,
   recipientPillInputStyle,
   isValidLongWalletAddress,
 } from "../../helpers";
@@ -72,11 +72,17 @@ const RecipientControl = ({
                 recipientWalletAddress,
               );
         if (conversation) {
-          conversations.set(getConversationKey(conversation), conversation);
+          conversations.set(getConversationId(conversation), conversation);
           setConversations(new Map(conversations));
         }
       }
     };
+    if (
+      recipientWalletAddress &&
+      recipientInputMode !== RecipientInputMode.OnNetwork
+    ) {
+      setRecipientInputMode(RecipientInputMode.OnNetwork);
+    }
     if (recipientInputMode === RecipientInputMode.OnNetwork) {
       setLookupValue();
     }
@@ -114,7 +120,9 @@ const RecipientControl = ({
               </div>
               <div className="w-full">
                 {isValid && (
-                  <span className={recipientPillInputStyle(userIsSender)}>
+                  <span
+                    className={recipientPillInputStyle(userIsSender)}
+                    data-testid="recipient-wallet-address">
                     {ensName ?? recipientWalletAddress}
                   </span>
                 )}
