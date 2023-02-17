@@ -1,4 +1,4 @@
-# XMTP Inbox web chat app for
+# XMTP Inbox web chat app
 
 ![Unit and Component Tests](https://github.com/xmtp-labs/xmtp-inbox-web/actions/workflows/tests.yml/badge.svg)
 ![E2E Tests](https://github.com/xmtp-labs/xmtp-inbox-web/actions/workflows/cypress.yml/badge.svg)
