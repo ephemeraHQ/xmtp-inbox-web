@@ -5,7 +5,7 @@ export function classNames(...classes: (string | null)[]) {
 export const recipientPillInputStyle = (userIsSender: boolean) =>
   classNames(
     "rounded-2xl",
-    "px-[5px] md:px-2",
+    "p-1",
     "border",
     "text-md",
     "focus:outline-none",
