@@ -3,7 +3,7 @@ import {
   isEnsAddress,
   formatDate,
   formatTime,
-  getConversationKey,
+  getConversationId,
   shortAddress,
   truncate,
   isValidRecipientAddressFormat,
@@ -94,7 +94,7 @@ describe("isEnsAddress", () => {
   });
 });
 
-describe("getConversationKey", () => {
+describe("getConversationId", () => {
   let conversation = {
     context: {
       conversationId: "testConversationId",
@@ -102,17 +102,17 @@ describe("getConversationKey", () => {
     peerAddress: "testPeerAddress",
   };
   it("should send back formatted conversation key if conversation id exists", () => {
-    expect(getConversationKey(conversation)).toBe(
+    expect(getConversationId(conversation)).toBe(
       "testPeerAddress/testConversationId",
     );
   });
   it("should send back peer address only if conversation key if conversation id does not exist", () => {
     conversation.context.conversationId = undefined;
-    expect(getConversationKey(conversation)).toBe("testPeerAddress");
+    expect(getConversationId(conversation)).toBe("testPeerAddress");
   });
   it("should handle falsey inputs by returning empty string", () => {
     let conversation = undefined;
-    expect(getConversationKey(conversation)).toBe("");
+    expect(getConversationId(conversation)).toBe("");
   });
 });
 

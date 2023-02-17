@@ -2,11 +2,10 @@ import React from "react";
 import { ChatIcon } from "@heroicons/react/outline";
 import Address, { address } from "./Address";
 import { Conversation } from "@xmtp/xmtp-js";
-import { classNames, formatDate, getConversationKey } from "../helpers";
+import { classNames, formatDate, getConversationId } from "../helpers";
 import Avatar from "./Avatar";
 import { useXmtpStore } from "../store/xmtp";
 import { useAccount } from "wagmi";
-import useWalletAddress from "../hooks/useWalletAddress";
 
 type ConversationTileProps = {
   conversation: Conversation;
@@ -26,7 +25,7 @@ const ConversationTile = ({
   const conversationId = useXmtpStore((state) => state.conversationId);
   const setConversationId = useXmtpStore((state) => state.setConversationId);
 
-  const conversationKey = getConversationKey(conversation);
+  const conversationKey = getConversationId(conversation);
 
   if (!previewMessages.get(conversationKey)) {
     return null;
@@ -110,9 +109,9 @@ const ConversationsList = (): JSX.Element => {
     convoB: Conversation,
   ): number => {
     const convoALastMessageDate =
-      previewMessages.get(getConversationKey(convoA))?.sent || new Date();
+      previewMessages.get(getConversationId(convoA))?.sent || new Date();
     const convoBLastMessageDate =
-      previewMessages.get(getConversationKey(convoB))?.sent || new Date();
+      previewMessages.get(getConversationId(convoB))?.sent || new Date();
     return convoALastMessageDate < convoBLastMessageDate ? 1 : -1;
   };
 
@@ -129,7 +128,7 @@ const ConversationsList = (): JSX.Element => {
           .map((convo) => {
             return (
               <ConversationTile
-                key={getConversationKey(convo)}
+                key={getConversationId(convo)}
                 conversation={convo}
               />
             );

@@ -1,6 +1,4 @@
 import { classNames, shortAddress } from "../helpers";
-import { useEnsName } from "wagmi";
-import useValidWalletAddress from "../hooks/useWalletAddress";
 import useWalletAddress from "../hooks/useWalletAddress";
 
 export type address = `0x${string}`;

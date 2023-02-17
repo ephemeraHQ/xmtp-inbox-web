@@ -1,6 +1,6 @@
 import { DecodedMessage } from "@xmtp/xmtp-js";
 import { useEffect, useState } from "react";
-import { getConversationKey, shortAddress, truncate } from "../helpers";
+import { getConversationId, shortAddress, truncate } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
 import { fetchEnsName } from "@wagmi/core";
 import { useAccount } from "wagmi";
@@ -34,7 +34,7 @@ export const useStreamAllMessages = () => {
       messageStream = await client?.conversations?.streamAllMessages();
 
       for await (const message of messageStream) {
-        const key = getConversationKey(message.conversation);
+        const key = getConversationId(message.conversation);
         setPreviewMessage(key, message);
 
         const numAdded = addMessages(key, [message]);
