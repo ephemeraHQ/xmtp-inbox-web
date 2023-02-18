@@ -22,6 +22,7 @@ const ConversationTile = ({
 }: ConversationTileProps): JSX.Element | null => {
   const { address } = useAccount();
   const previewMessages = useXmtpStore((state) => state.previewMessages);
+
   const loadingConversations = useXmtpStore(
     (state) => state.loadingConversations,
   );
@@ -37,31 +38,6 @@ const ConversationTile = ({
     setRecipientWalletAddress(conversation.peerAddress);
     setConversationId(conversationKey);
   };
-
-  useEffect(() => {
-    const resolveRouting = async () => {
-      const path = window?.location?.pathname ?? "";
-      if (path.includes("/dm/")) {
-        let convoKey = path.split("/dm/")[1];
-        if (isEnsAddress(convoKey)) {
-          const address = await fetchEnsAddress({
-            name: convoKey,
-          });
-          convoKey = address ?? "";
-        }
-        if (convoKey !== "" && convoKey === conversationKey) {
-          setRecipientWalletAddress(conversation.peerAddress);
-          setConversationId(conversationKey);
-          window.history.replaceState(
-            {},
-            "Chat Via XMTP",
-            window.location.href.split("/dm/")[0],
-          );
-        }
-      }
-    };
-    resolveRouting();
-  }, [window?.location?.pathname]);
 
   if (!previewMessages.get(conversationKey)) {
     return null;
@@ -134,6 +110,12 @@ const ConversationTile = ({
 const ConversationsList = (): JSX.Element => {
   const conversations = useXmtpStore((state) => state.conversations);
   const previewMessages = useXmtpStore((state) => state.previewMessages);
+  const client = useXmtpStore((state) => state.client);
+  const setRecipientWalletAddress = useXmtpStore(
+    (state) => state.setRecipientWalletAddress,
+  );
+  const setConversationId = useXmtpStore((state) => state.setConversationId);
+  const setConversations = useXmtpStore((state) => state.setConversations);
 
   const orderByLatestMessage = (
     convoA: Conversation,
@@ -146,9 +128,52 @@ const ConversationsList = (): JSX.Element => {
     return convoALastMessageDate < convoBLastMessageDate ? 1 : -1;
   };
 
-  if (!conversations || conversations.size == 0) {
-    return <NoConversationsMessage />;
-  }
+  useEffect(() => {
+    const resolveRouting = async () => {
+      const path = window?.location?.pathname ?? "";
+      if (path.includes("/dm/")) {
+        let convoKey = path.split("/dm/")[1];
+        if (isEnsAddress(convoKey)) {
+          const address = await fetchEnsAddress({
+            name: convoKey,
+          });
+          convoKey = address ?? "";
+        }
+        const selectedConversation = conversations.get(convoKey);
+        if (selectedConversation) {
+          setRecipientWalletAddress(selectedConversation.peerAddress);
+          setConversationId(convoKey);
+        } else if (convoKey !== "") {
+          try {
+            const recipientAddress = convoKey.split("/")[0];
+            const canMessage = await client?.canMessage(recipientAddress);
+            if (canMessage) {
+              const conversation = await client?.conversations?.newConversation(
+                recipientAddress,
+              );
+              if (conversation) {
+                setRecipientWalletAddress(conversation?.peerAddress);
+                setConversationId(recipientAddress);
+                conversations.set(
+                  getConversationId(conversation),
+                  conversation,
+                );
+                setConversations(new Map(conversations));
+              }
+            }
+          } catch (e) {
+            console.error(e);
+          }
+        }
+        window.history.replaceState(
+          {},
+          "Chat Via XMTP",
+          window.location.href.split("/dm/")[0],
+        );
+      }
+    };
+    resolveRouting();
+  }, [window?.location?.pathname]);
 
   return (
     <>
