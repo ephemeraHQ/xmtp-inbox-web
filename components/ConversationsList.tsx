@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ChatIcon } from "@heroicons/react/outline";
 import Address, { address } from "./Address";
 import { Conversation } from "@xmtp/xmtp-js";
-import { classNames, formatDate, getConversationId } from "../helpers";
+import {
+  classNames,
+  formatDate,
+  getConversationId,
+  isEnsAddress,
+} from "../helpers";
 import Avatar from "./Avatar";
 import { useXmtpStore } from "../store/xmtp";
 import { useAccount } from "wagmi";
+import { fetchEnsAddress } from "@wagmi/core";
 
 type ConversationTileProps = {
   conversation: Conversation;
@@ -27,6 +33,36 @@ const ConversationTile = ({
 
   const conversationKey = getConversationId(conversation);
 
+  const onClick = () => {
+    setRecipientWalletAddress(conversation.peerAddress);
+    setConversationId(conversationKey);
+  };
+
+  useEffect(() => {
+    const resolveRouting = async () => {
+      const path = window?.location?.pathname ?? "";
+      if (path.includes("/dm/")) {
+        let convoKey = path.split("/dm/")[1];
+        if (isEnsAddress(convoKey)) {
+          const address = await fetchEnsAddress({
+            name: convoKey,
+          });
+          convoKey = address ?? "";
+        }
+        if (convoKey !== "" && convoKey === conversationKey) {
+          setRecipientWalletAddress(conversation.peerAddress);
+          setConversationId(conversationKey);
+          window.history.replaceState(
+            {},
+            "Chat Via XMTP",
+            window.location.href.split("/dm/")[0],
+          );
+        }
+      }
+    };
+    resolveRouting();
+  }, [window?.location?.pathname]);
+
   if (!previewMessages.get(conversationKey)) {
     return null;
   }
@@ -41,11 +77,6 @@ const ConversationTile = ({
   if (!latestMessage) {
     return null;
   }
-
-  const onClick = () => {
-    setRecipientWalletAddress(conversation.peerAddress);
-    setConversationId(conversationKey);
-  };
 
   return (
     <div
