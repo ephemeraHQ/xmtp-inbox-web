@@ -1,12 +1,16 @@
-import React from 'react';
-import { ButtonLoader } from './components/Loaders/ButtonLoader';
-import { ArrowCircleRightIcon, PlusCircleIcon } from '@heroicons/react/outline';
+import React from "react";
+import { ButtonLoader } from "./components/Loaders/ButtonLoader";
+import { ArrowCircleRightIcon, PlusCircleIcon } from "@heroicons/react/outline";
 
 interface ButtonProps {
   /**
+   * What are the button contents?
+   */
+  label: React.ReactNode;
+  /**
    * What type of button is this?
    */
-  category?: 'text' | 'icon';
+  category?: "text" | "icon";
   /**
    * Is it the primary view of that button?
    */
@@ -14,11 +18,7 @@ interface ButtonProps {
   /**
    * How large is this button?
    */
-  size?: 'small' | 'large';
-  /**
-   * What are the button contents?
-   */
-  label: string | React.ReactNode;
+  buttonSize?: "small" | "large";
   /**
    * Should the button display a loading state?
    */
@@ -30,7 +30,7 @@ interface ButtonProps {
   /**
    * What is the background of the button?
    */
-  background?: 'pill' | 'ghost';
+  background?: "pill" | "ghost";
   /**
    * Optional click handler
    */
@@ -42,39 +42,44 @@ interface ButtonProps {
   /**
    * What icon should be displayed instead of the default right arrow?
    */
-  icon?: React.ReactNode | null;
+  icon?: React.ReactNode;
 }
 
 const classMapping = {
   pill: {
     primary: {
       backgroundColor:
-        'bg-indigo-600 hover:bg-indigo-800 focus:outline-none focus:ring focus:ring-indigo-800',
-      fontColor: 'text-white'
+        "bg-indigo-600 hover:bg-indigo-800 focus:outline-none focus:ring focus:ring-indigo-800",
+      fontColor: "text-white",
     },
     secondary: {
-      backgroundColor: 'bg-red-600 hover:bg-red-800 focus:outline-none focus:ring focus:ring-red-800',
-      fontColor: 'text-white'
-    }
+      backgroundColor:
+        "bg-red-600 hover:bg-red-800 focus:outline-none focus:ring focus:ring-red-800",
+      fontColor: "text-white",
+    },
   },
   ghost: {
     primary: {
-      backgroundColor: 'white',
-      fontColor: 'text-indigo-600 hover:text-indigo-800 focus:outline-none focus:ring focus:ring-indigo-800'
+      backgroundColor: "white",
+      fontColor:
+        "text-indigo-600 hover:text-indigo-800 focus:outline-none focus:ring focus:ring-indigo-800",
     },
     secondary: {
-      backgroundColor: 'white',
-      fontColor: 'text-red-600 hover:text-red-800 focus:outline-none focus:ring focus:ring-red-800'
-    }
-  }
+      backgroundColor: "white",
+      fontColor:
+        "text-red-600 hover:text-red-800 focus:outline-none focus:ring focus:ring-red-800",
+    },
+  },
 };
 
-const getSizeClass = (size: string, isIcon?: boolean) => {
-  const currentSize = size ? size : 'large';
+const getSizeClass = (buttonSize: string, isIcon?: boolean) => {
+  const currentSize = buttonSize ? buttonSize : "large";
   if (isIcon) {
-    return currentSize === 'large' ? 'text-lg' : 'text-sm h-8';
+    return currentSize === "large" ? "text-lg" : "text-sm h-8";
   } else {
-    return currentSize === 'large' ? 'text-lg h-12 px-6 py-4' : 'text-sm h-8 px-4 py-2';
+    return currentSize === "large"
+      ? "text-lg h-12 px-6 py-4"
+      : "text-sm h-8 px-4 py-2";
   }
 };
 
@@ -88,12 +93,12 @@ export const TextButton = ({
   icon = <ArrowCircleRightIcon width={24} />,
   isLoading = false,
   isDisabled = false,
-  size = 'large',
-  background = 'pill',
-  srText = ''
+  buttonSize = "large",
+  background = "pill",
+  srText = "",
 }: ButtonProps) => {
-  const disabled = isDisabled ? 'opacity-50 cursor-not-allowed' : '';
-  const sizeClass = getSizeClass(size);
+  const disabled = isDisabled ? "opacity-50 cursor-not-allowed" : "";
+  const sizeClass = getSizeClass(buttonSize);
 
   const backgroundColor = primary
     ? classMapping[background].primary.backgroundColor
@@ -108,13 +113,16 @@ export const TextButton = ({
       type="button"
       disabled={isDisabled}
       className={`${backgroundColor} ${fontColor} ${disabled} ${sizeClass} min-w-[25%] h-fit m-2 font-bold rounded-full`}
-    >
+      aria-label={srText}>
       <>
         <div className="flex justify-center items-center h-fit">
           {label}
-          {isLoading ? <ButtonLoader color={fontColor} /> : <span className="pl-2">{icon}</span>}
+          {isLoading ? (
+            <ButtonLoader color={fontColor} />
+          ) : (
+            <span className="pl-2">{icon}</span>
+          )}
         </div>
-        <span className="sr-only">{srText}</span>
       </>
     </button>
   );
@@ -128,29 +136,29 @@ export const IconButton = ({
   primary = true,
   isLoading = false,
   isDisabled = false,
-  size = 'large',
-  srText
+  buttonSize = "large",
+  srText,
 }: ButtonProps) => {
-  const disabled = isDisabled ? 'opacity-50 cursor-not-allowed' : '';
-  const sizeClass = getSizeClass(size, true);
-  const shape = primary ? 'rounded-full' : 'rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl';
-  const backgroundFocus = 'focus:outline-none focus:ring focus:ring-indigo-800';
+  const disabled = isDisabled ? "opacity-50 cursor-not-allowed" : "";
+  const sizeClass = getSizeClass(buttonSize, true);
+  const shape = primary
+    ? "rounded-full"
+    : "rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl";
+  const backgroundFocus = "focus:outline-none focus:ring focus:ring-indigo-800";
 
   return (
     <button
       type="button"
       disabled={isDisabled}
       className={`${backgroundFocus} ${sizeClass} ${disabled} ${shape} flex justify-center items-center p-0 h-fit`}
-    >
+      aria-label={srText}>
       <>
         <div
           className={`bg-indigo-600 hover:bg-indigo-800 ${
-            size === 'small' ? 'p-1 min-h-20' : 'p-2 min-h-24'
-          } ${shape}`}
-        >
-          {isLoading ? <ButtonLoader color={'white'} /> : label}
+            buttonSize === "small" ? "p-1 min-h-20" : "p-2 min-h-24"
+          } ${shape}`}>
+          {isLoading ? <ButtonLoader color={"white"} /> : label}
         </div>
-        <span className="sr-only">{srText}</span>
       </>
     </button>
   );
@@ -158,9 +166,9 @@ export const IconButton = ({
 
 export const Button = ({ category, ...children }: ButtonProps) => {
   switch (category) {
-    case 'text':
+    case "text":
       return <TextButton {...children} />;
-    case 'icon':
+    case "icon":
       return <IconButton {...children} />;
     default:
       return <TextButton {...children} />;

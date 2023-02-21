@@ -1,14 +1,14 @@
-import React, { ChangeEvent, useLayoutEffect, useRef } from 'react';
-import { Avatar } from './Avatar';
-import { ArrowUpIcon } from '@heroicons/react/solid';
-import { InformationCircleIcon } from '@heroicons/react/outline';
-import { Button } from './Button';
+import React, { ChangeEvent, useLayoutEffect, useRef } from "react";
+import { Avatar } from "./Avatar";
+import { ArrowUpIcon } from "@heroicons/react/solid";
+import { InformationCircleIcon } from "@heroicons/react/outline";
+import { Button } from "./Button";
 
 interface InputProps {
   /**
    * Is this a message or address input?
    */
-  type?: 'message' | 'address';
+  category?: "message" | "address";
   /**
    * What, if any, subtext is there?
    */
@@ -53,9 +53,9 @@ const AddressInput = ({
   avatarUrlProps,
   isLoading,
   subtext,
-  onTooltipClick
+  onTooltipClick,
 }: InputProps) => {
-  const subtextColor = isError ? 'text-red-400' : 'text-gray-400';
+  const subtextColor = isError ? "text-red-400" : "text-gray-400";
   return (
     <div className="flex align-center m-8">
       <form className="flex w-full" onSubmit={onSubmit}>
@@ -77,7 +77,9 @@ const AddressInput = ({
               autoCorrect="false"
             />
           )}
-          {subtext && <p className={`font-mono text-sm ${subtextColor}`}>{subtext}</p>}
+          {subtext && (
+            <p className={`font-mono text-sm ${subtextColor}`}>{subtext}</p>
+          )}
         </div>
       </form>
       <InformationCircleIcon onClick={onTooltipClick} height="24" />
@@ -87,12 +89,16 @@ const AddressInput = ({
 
 const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
   let textAreaRef = useRef<HTMLTextAreaElement>(null);
-  const [value, setValue] = React.useState('');
-  const onChange = (event: ChangeEvent<HTMLTextAreaElement>) => setValue(event.target.value);
+  const [value, setValue] = React.useState("");
+  const onChange = (event: ChangeEvent<HTMLTextAreaElement>) =>
+    setValue(event.target.value);
   const borderStyles =
-    'border border-gray-300 focus-within:border-indigo-300 rounded-tl-2xl rounded-bl-2xl rounded-tr-2xl';
+    "border border-gray-300 focus-within:border-indigo-300 rounded-tl-2xl rounded-bl-2xl rounded-tr-2xl";
   const textAreaStyles = `${
-    textAreaRef?.current?.scrollHeight && textAreaRef?.current?.scrollHeight <= 32 ? 'max-h-8' : 'max-h-40'
+    textAreaRef?.current?.scrollHeight &&
+    textAreaRef?.current?.scrollHeight <= 32
+      ? "max-h-8"
+      : "max-h-40"
   } min-h-8 outline-none border-none focus:ring-0 resize-none mr-0 mx-4 p-1 w-full text-md text-gray-900"`;
 
   useLayoutEffect(() => {
@@ -100,8 +106,11 @@ const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
     if (textAreaRef?.current) {
       let currentScrollHeight = textAreaRef?.current.scrollHeight;
       // Reset height - important to shrink on delete
-      textAreaRef.current.style.height = 'inherit';
-      textAreaRef.current.style.height = `${Math.max(currentScrollHeight, MIN_TEXTAREA_HEIGHT)}px`;
+      textAreaRef.current.style.height = "inherit";
+      textAreaRef.current.style.height = `${Math.max(
+        currentScrollHeight,
+        MIN_TEXTAREA_HEIGHT,
+      )}px`;
     }
   }, [value]);
 
@@ -136,11 +145,11 @@ const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
   );
 };
 
-export const Input = ({ type, ...children }: InputProps) => {
-  switch (type) {
-    case 'address':
+export const Input = ({ category, ...children }: InputProps) => {
+  switch (category) {
+    case "address":
       return <AddressInput {...children} />;
-    case 'message':
+    case "message":
       return <MessageInput {...children} />;
     default:
       return <AddressInput {...children} />;

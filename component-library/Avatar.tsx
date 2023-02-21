@@ -1,5 +1,5 @@
-import React from 'react';
-import Blockies from 'react-blockies';
+import React from "react";
+import Blockies from "react-blockies";
 
 interface AvatarProps {
   /**
@@ -29,14 +29,23 @@ export const Avatar = ({ avatarUrl, isLoading, address }: AvatarProps) => {
     return (
       <div>
         <div className="w-10 h-10 rounded-full border border-n-80" />
-        <img className="w-10 h-10 rounded-full z-10 -mt-10" src={avatarUrl} alt={address} />
+        <img
+          className="w-10 h-10 rounded-full z-10 -mt-10"
+          src={avatarUrl}
+          alt={address}
+        />
       </div>
     );
   }
 
   return (
     <div data-testid="connected-footer-image">
-      <Blockies seed={address?.toLowerCase() || ''} scale={5} size={8} className="rounded-full" />
+      <Blockies
+        seed={address?.toLowerCase() || ""}
+        scale={5}
+        size={8}
+        className="rounded-full"
+      />
     </div>
   );
 };

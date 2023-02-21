@@ -1,13 +1,13 @@
-import { Conversation, DecodedMessage, SortDirection } from '@xmtp/xmtp-js';
-import { getConversationKey } from './string';
+import { Conversation, DecodedMessage, SortDirection } from "@xmtp/xmtp-js";
+import { getConversationId } from "./string";
 
 const fetchMostRecentMessage = async (
-  convo: Conversation
+  convo: Conversation,
 ): Promise<{ key: string; message?: DecodedMessage }> => {
-  const key = getConversationKey(convo);
+  const key = getConversationId(convo);
   const newMessages = await convo?.messages({
     limit: 1,
-    direction: SortDirection.SORT_DIRECTION_DESCENDING
+    direction: SortDirection.SORT_DIRECTION_DESCENDING,
   });
 
   if (!newMessages?.length) {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface ButtonLoaderProps {
   /**
@@ -15,8 +15,7 @@ export const ButtonLoader = ({ color }: ButtonLoaderProps) => {
   return (
     <div
       role="status"
-      className={`flex justify-center align-center birder border-dotted border-2 border-${color}-600 min-h-5`}
-    >
+      className={`flex justify-center align-center birder border-dotted border-2 border-${color}-600 min-h-5`}>
       <div className="min-h-2 bg-yellow-600"></div>
       <span className="sr-only">Loading...</span>
     </div>
