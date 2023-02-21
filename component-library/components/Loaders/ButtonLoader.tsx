@@ -6,7 +6,7 @@ interface ButtonLoaderProps {
   /**
    * What color should the loader/spinner be?
    */
-  color: string;
+  color?: string;
   /**
    * How large is this button?
    */
@@ -23,8 +23,8 @@ export const ButtonLoader = ({ size, color }: ButtonLoaderProps) => {
       <div
         className={classNames(
           'rounded-full',
-          color === 'primary' ? `border-gray-300` : 'border-gray-500',
           loaderStyles.btnLoader,
+          color === 'primary' ? loaderStyles.btnLoaderLight : loaderStyles.btnLoaderDark,
           size === 'small' ? loaderStyles.btnLoaderSm : loaderStyles.btnLoaderLg,
           loaderStyles.animateSpin
         )}

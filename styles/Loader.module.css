@@ -75,6 +75,14 @@
   left: 25px;
 }
 
+.btnLoaderLight {
+  border-color: #c2c6d2;
+}
+
+.btnLoaderDark {
+  border-color: #31006e;
+}
+
 .btnLoader {
   border-style: solid;
   border-top-color: transparent;

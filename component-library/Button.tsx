@@ -112,7 +112,7 @@ export const TextButton = ({
       <>
         <div className="flex justify-center items-center h-fit space-x-4">
           <div>{label}</div>
-          {isLoading ? <ButtonLoader size="small" /> : <span>{icon}</span>}
+          {isLoading ? <ButtonLoader color={'primary'} size="small" /> : <span>{icon}</span>}
         </div>
         <span className="sr-only">{srText}</span>
       </>
