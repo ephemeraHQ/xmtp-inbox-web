@@ -110,9 +110,9 @@ export const TextButton = ({
       className={`${backgroundColor} ${fontColor} ${disabled} ${sizeClass} min-w-[25%] h-fit m-2 font-bold rounded-full`}
     >
       <>
-        <div className="flex justify-center items-center h-fit">
-          {label}
-          {isLoading ? <ButtonLoader color={fontColor} /> : <span className="pl-2">{icon}</span>}
+        <div className="flex justify-center items-center h-fit space-x-4">
+          <div>{label}</div>
+          {isLoading ? <ButtonLoader size="small" /> : <span>{icon}</span>}
         </div>
         <span className="sr-only">{srText}</span>
       </>
@@ -148,7 +148,7 @@ export const IconButton = ({
             size === 'small' ? 'p-1 min-h-20' : 'p-2 min-h-24'
           } ${shape}`}
         >
-          {isLoading ? <ButtonLoader color={'white'} /> : label}
+          {isLoading ? <ButtonLoader color={'primary'} size="small" /> : label}
         </div>
         <span className="sr-only">{srText}</span>
       </>
