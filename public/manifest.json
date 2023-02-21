@@ -1,0 +1,10 @@
+{
+  "name": "XMTP Inbox",
+  "short_name": "Inbox",
+  "theme_color": "#31006e",
+  "background_color": "#ffffff",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/"
+}
