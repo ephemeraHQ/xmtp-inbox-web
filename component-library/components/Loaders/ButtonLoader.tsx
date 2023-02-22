@@ -1,6 +1,6 @@
-import React from 'react';
-import { classNames } from '../../../helpers';
-import loaderStyles from '../../../styles/Loader.module.css';
+import React from "react";
+import { classNames } from "../../../helpers";
+import loaderStyles from "../../../styles/Loader.module.css";
 
 interface ButtonLoaderProps {
   /**
@@ -10,7 +10,7 @@ interface ButtonLoaderProps {
   /**
    * How large is this button?
    */
-  size?: 'small' | 'large';
+  size?: "small" | "large";
 }
 
 /**
@@ -22,11 +22,15 @@ export const ButtonLoader = ({ size, color }: ButtonLoaderProps) => {
     <div className="flex flex-row">
       <div
         className={classNames(
-          'rounded-full',
+          "rounded-full",
           loaderStyles.btnLoader,
-          color === 'primary' ? loaderStyles.btnLoaderLight : loaderStyles.btnLoaderDark,
-          size === 'small' ? loaderStyles.btnLoaderSm : loaderStyles.btnLoaderLg,
-          loaderStyles.animateSpin
+          color === "primary"
+            ? loaderStyles.btnLoaderLight
+            : loaderStyles.btnLoaderDark,
+          size === "small"
+            ? loaderStyles.btnLoaderSm
+            : loaderStyles.btnLoaderLg,
+          loaderStyles.animateSpin,
         )}
       />
     </div>
