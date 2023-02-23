@@ -63,7 +63,7 @@ const RecipientControl = ({
       if (
         isValidLongWalletAddress(recipientWalletAddress) &&
         !conversations.get(recipientWalletAddress) &&
-        !conversations.get(conversationIdOnXmtp)
+        !conversations.get(conversationId ?? "")
       ) {
         const conversation =
           conversationIdOnXmtp &&
