@@ -7,7 +7,6 @@ import { useXmtpStore } from "../../store/xmtp";
 
 const DisconnectButton = () => {
   const { address } = useAccount();
-  const setShowMessageView = useXmtpStore((state) => state.setShowMessageView);
   const resetXmtpState = useXmtpStore((state) => state.resetXmtpState);
   const { disconnect: disconnectWagmi, reset: resetWagmi } = useDisconnect();
 
@@ -25,7 +24,6 @@ const DisconnectButton = () => {
           disconnectWagmi();
           resetWagmi();
           resetXmtpState();
-          setShowMessageView?.(false);
         }}
       />
     </div>
