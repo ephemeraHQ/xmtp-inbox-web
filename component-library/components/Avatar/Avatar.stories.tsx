@@ -13,7 +13,7 @@ const Template: ComponentStory<typeof Avatar> = (args) => (
 
 export const AvatarWithCustomImage = Template.bind({});
 AvatarWithCustomImage.args = {
-  avatarUrl: "https://picsum.photos/200/300",
+  url: "https://picsum.photos/200/300",
 };
 
 export const AvatarWithoutCustomImage = Template.bind({});
