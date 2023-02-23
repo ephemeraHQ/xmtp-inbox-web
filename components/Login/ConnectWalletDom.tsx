@@ -18,11 +18,10 @@ const ConnectWalletDom = ({
         />
       </div>
       <div className="font-bold text-3xl mt-[-28px] text-center">
-        Your interoperable <br /> web3 inbox
+        Your interoperable web3 inbox
       </div>
       <div className="text-lg mt-2 text-center">
-        You&apos;re just a few steps away from secure, <br /> wallet-to-wallet
-        messaging
+        {"You're just a few steps away from secure, wallet-to-wallet messaging"}
       </div>
       <div className="mt-2">
         <Button
