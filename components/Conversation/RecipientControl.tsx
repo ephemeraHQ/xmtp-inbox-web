@@ -64,7 +64,10 @@ const RecipientControl = ({
             ? await client?.conversations?.newConversation(
                 recipientWalletAddress,
                 {
-                  conversationId,
+                  conversationId: conversationId.replace(
+                    `${recipientWalletAddress}/`,
+                    "",
+                  ),
                   metadata: {},
                 },
               )
