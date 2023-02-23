@@ -58,7 +58,11 @@ const RecipientControl = ({
 
   useEffect(() => {
     const setLookupValue = async () => {
-      if (isValidLongWalletAddress(recipientWalletAddress)) {
+      if (
+        isValidLongWalletAddress(recipientWalletAddress) &&
+        !conversations.get(recipientWalletAddress) &&
+        !conversations.get(conversationId ?? "")
+      ) {
         const conversation =
           conversationId && conversationId !== recipientWalletAddress
             ? await client?.conversations?.newConversation(
