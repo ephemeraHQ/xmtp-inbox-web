@@ -7,7 +7,7 @@ export default {
   title: "Input/MessageInput",
   component: Input,
   argTypes: {
-    type: { control: false },
+    variant: { control: false },
     subtext: { control: false },
     avatarUrlProps: { control: false },
     isError: { control: false },
@@ -16,7 +16,7 @@ export default {
 } as ComponentMeta<typeof Input>;
 
 const Template: ComponentStory<typeof Input> = (args) => (
-  <Input {...args} category="message" />
+  <Input {...args} variant="message" />
 );
 
 export const MessageInput = Template.bind({});
