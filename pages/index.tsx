@@ -7,9 +7,8 @@ import useHandleConnect from "../hooks/useHandleConnect";
 import { useAccount } from "wagmi";
 import { useRouter } from "next/router";
 import ConnectingDom from "../components/Login/ConnectingDom";
-import CreateXmtpIdentityDom from "../components/Login/CreateXmtpIdentityDom";
 import ConnectWalletDom from "../components/Login/ConnectWalletDom";
-import EnableXmtpIdentityDom from "../components/Login/EnableXmtpIdentityDom";
+import XmtpOnboardingDom from "../components/Login/XmtpOnboardingDom";
 
 const Home: NextPage = () => {
   const client = useXmtpStore((state) => state.client);
@@ -47,15 +46,27 @@ const Home: NextPage = () => {
           <ConnectingDom />
         ) : (
           <>
-            {newAccount && client === null ? (
-              <CreateXmtpIdentityDom
+            {newAccount && !client ? (
+              <XmtpOnboardingDom
                 isLoading={isLoading}
-                createXmtpIdentity={createXmtpIdentity}
+                cta={createXmtpIdentity}
+                ctaText="Create XMTP identity"
+                infoText="Now that your wallet is connected, we're going to create your XMTP identity on our network with a wallet signature."
+                stepNumber="1"
+                imgSrc="/login-page-step-img.png"
+                header="Create your XMTP identity"
+                loadingHeader="Creating your XMTP identity..."
               />
             ) : (
-              <EnableXmtpIdentityDom
-                enableXmtpIdentity={connectToXmtp}
+              <XmtpOnboardingDom
                 isLoading={isLoading}
+                cta={connectToXmtp}
+                ctaText="Enable XMTP Identity"
+                infoText="You’re activated on the XMTP network! Now let’s enable your ability to start messaging and you can start messaging wallets right away."
+                stepNumber="2"
+                imgSrc="/login-page-step-img.png"
+                header="Enable messaging on XMTP"
+                loadingHeader="Almost there! One more signature."
               />
             )}
           </>
