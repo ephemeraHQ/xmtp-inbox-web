@@ -132,7 +132,7 @@ const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
 
         <div className="flex items-center p-1">
           <Button
-            category="icon"
+            variant="icon"
             primary={false}
             label={<ArrowUpIcon color="white" width="12" />}
             srText="Submit Message"

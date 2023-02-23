@@ -7,7 +7,7 @@ export default {
   title: "Button/IconButton",
   component: Button,
   argTypes: {
-    category: { control: false },
+    variant: { control: false },
     background: { control: false },
     icon: { control: false },
     label: { control: false },
@@ -15,17 +15,14 @@ export default {
 } as ComponentMeta<typeof Button>;
 
 const IconTemplate: ComponentStory<typeof Button> = (args) => (
-  <Button category="icon" {...args} />
+  <Button variant="icon" {...args} />
 );
 
 export const Circle = IconTemplate.bind({});
-Circle.args = {
-  label: <PlusCircleIcon width="24" color="white" />,
-};
+Circle.args = {};
 
 export const Message = IconTemplate.bind({});
 Message.args = {
-  label: <PlusCircleIcon width={24} color="white" />,
   primary: false,
 };
 
@@ -54,12 +51,42 @@ MessageDisabled.args = {
 export const CircleSmall = IconTemplate.bind({});
 CircleSmall.args = {
   label: <PlusCircleIcon width={20} color="white" />,
-  buttonSize: "small",
+  size: "small",
 };
 
 export const MessageSmall = IconTemplate.bind({});
 MessageSmall.args = {
   label: <PlusCircleIcon width={20} color="white" />,
   primary: false,
-  buttonSize: "small",
+  size: "small",
+};
+
+export const CircleSmallLoading = IconTemplate.bind({});
+CircleSmallLoading.args = {
+  label: <PlusCircleIcon width={20} color="white" />,
+  size: "small",
+  isLoading: true,
+};
+
+export const MessageSmallLoading = IconTemplate.bind({});
+MessageSmallLoading.args = {
+  label: <PlusCircleIcon width={20} color="white" />,
+  primary: false,
+  size: "small",
+  isLoading: true,
+};
+
+export const CircleSmallDisabled = IconTemplate.bind({});
+CircleSmallDisabled.args = {
+  label: <PlusCircleIcon width={20} color="white" />,
+  size: "small",
+  isDisabled: true,
+};
+
+export const MessageSmallDisabled = IconTemplate.bind({});
+MessageSmallDisabled.args = {
+  label: <PlusCircleIcon width={20} color="white" />,
+  primary: false,
+  size: "small",
+  isDisabled: true,
 };

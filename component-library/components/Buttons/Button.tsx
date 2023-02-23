@@ -1,5 +1,5 @@
 import React from "react";
-import { ButtonLoader } from "./components/Loaders/ButtonLoader";
+import { ButtonLoader } from "../Loaders/ButtonLoader";
 import { ArrowCircleRightIcon, PlusCircleIcon } from "@heroicons/react/outline";
 
 interface ButtonProps {
@@ -10,7 +10,7 @@ interface ButtonProps {
   /**
    * What type of button is this?
    */
-  category?: "text" | "icon";
+  variant?: "pill" | "icon" | "ghost";
   /**
    * Is it the primary view of that button?
    */
@@ -18,7 +18,7 @@ interface ButtonProps {
   /**
    * How large is this button?
    */
-  buttonSize?: "small" | "large";
+  size?: "small" | "large";
   /**
    * Should the button display a loading state?
    */
@@ -28,10 +28,6 @@ interface ButtonProps {
    */
   isDisabled?: boolean;
   /**
-   * What is the background of the button?
-   */
-  background?: "pill" | "ghost";
-  /**
    * Optional click handler
    */
   onClick?: () => void;
@@ -39,13 +35,9 @@ interface ButtonProps {
    * What should the screen reader text show?
    */
   srText?: string;
-  /**
-   * What icon should be displayed instead of the default right arrow?
-   */
-  icon?: React.ReactNode;
 }
 
-const classMapping = {
+const colorClassMapping = {
   pill: {
     primary: {
       backgroundColor:
@@ -70,17 +62,29 @@ const classMapping = {
         "text-red-600 hover:text-red-800 focus:outline-none focus:ring focus:ring-red-800",
     },
   },
+  icon: {
+    primary: {
+      backgroundColor:
+        "bg-indigo-600 hover:bg-indigo-800 focus:outline-none focus:ring focus:ring-indigo-800",
+      fontColor: null,
+    },
+    secondary: null,
+  },
 };
 
-const getSizeClass = (buttonSize: string, isIcon?: boolean) => {
-  const currentSize = buttonSize ? buttonSize : "large";
-  if (isIcon) {
-    return currentSize === "large" ? "text-lg" : "text-sm h-8";
-  } else {
-    return currentSize === "large"
-      ? "text-lg h-12 px-6 py-4"
-      : "text-sm h-8 px-4 py-2";
-  }
+const sizeClassMapping = {
+  pill: {
+    large: "text-lg h-12 px-6 py-4",
+    small: "text-sm h-8 px-4 py-2",
+  },
+  ghost: {
+    large: "text-lg p-0",
+    small: "text-sm p-0",
+  },
+  icon: {
+    large: "text-lg p-0",
+    small: "text-sm p-0",
+  },
 };
 
 /**
@@ -89,38 +93,39 @@ const getSizeClass = (buttonSize: string, isIcon?: boolean) => {
 
 export const TextButton = ({
   label,
+  variant = "pill",
   primary = true,
-  icon = <ArrowCircleRightIcon width={24} />,
   isLoading = false,
   isDisabled = false,
-  buttonSize = "large",
-  background = "pill",
+  size = "large",
   srText = "",
 }: ButtonProps) => {
   const disabled = isDisabled ? "opacity-50 cursor-not-allowed" : "";
-  const sizeClass = getSizeClass(buttonSize);
+  const sizeClass = sizeClassMapping[variant][size];
 
   const backgroundColor = primary
-    ? classMapping[background].primary.backgroundColor
-    : classMapping[background].secondary.backgroundColor;
+    ? colorClassMapping[variant].primary.backgroundColor
+    : colorClassMapping[variant].secondary?.backgroundColor;
 
   const fontColor = primary
-    ? classMapping[background].primary.fontColor
-    : classMapping[background].secondary.fontColor;
+    ? colorClassMapping[variant].primary.fontColor
+    : colorClassMapping[variant].secondary?.fontColor;
+
+  const minWidth = size === "large" ? 25 : 20;
 
   return (
     <button
       type="button"
       disabled={isDisabled}
-      className={`${backgroundColor} ${fontColor} ${disabled} ${sizeClass} min-w-[25%] h-fit m-2 font-bold rounded-full`}
+      className={`${backgroundColor} ${fontColor} ${disabled} ${sizeClass} min-w-[${minWidth}%] h-fit m-2 font-bold rounded-full`}
       aria-label={srText}>
       <>
-        <div className="flex justify-center items-center h-fit space-x-4">
+        <div className="flex justify-center items-center h-fit space-x-2">
           <div>{label}</div>
           {isLoading ? (
-            <ButtonLoader color={"primary"} size="small" />
+            <ButtonLoader color={"primary"} size={size} />
           ) : (
-            <span>{icon}</span>
+            <ArrowCircleRightIcon width={size === "large" ? 24 : 16} />
           )}
         </div>
       </>
@@ -136,38 +141,39 @@ export const IconButton = ({
   primary = true,
   isLoading = false,
   isDisabled = false,
-  buttonSize = "large",
+  size = "large",
   srText,
 }: ButtonProps) => {
   const disabled = isDisabled ? "opacity-50 cursor-not-allowed" : "";
-  const sizeClass = getSizeClass(buttonSize, true);
+  const sizeClass = sizeClassMapping.icon[size];
   const shape = primary
     ? "rounded-full"
     : "rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl";
-  const backgroundFocus = "focus:outline-none focus:ring focus:ring-indigo-800";
 
   return (
     <button
       type="button"
       disabled={isDisabled}
-      className={`${backgroundFocus} ${sizeClass} ${disabled} ${shape} flex justify-center items-center p-0 h-fit`}
+      className={`${colorClassMapping.icon.primary.backgroundColor} ${sizeClass} ${disabled} ${shape} flex justify-center items-center p-0 h-fit`}
       aria-label={srText}>
       <>
         <div
           className={`bg-indigo-600 hover:bg-indigo-800 ${
-            buttonSize === "small" ? "p-1 min-h-20" : "p-2 min-h-24"
+            size === "small" ? "p-1 min-h-20" : "p-2 min-h-24"
           } ${shape}`}>
-          {isLoading ? <ButtonLoader color={"primary"} size="small" /> : label}
+          {isLoading ? <ButtonLoader color={"primary"} size={size} /> : label}
         </div>
       </>
     </button>
   );
 };
 
-export const Button = ({ category, ...children }: ButtonProps) => {
-  switch (category) {
-    case "text":
+export const Button = ({ variant, ...children }: ButtonProps) => {
+  switch (variant) {
+    case "pill":
       return <TextButton {...children} />;
+    case "ghost":
+      return <TextButton variant="ghost" {...children} />;
     case "icon":
       return <IconButton {...children} />;
     default:
