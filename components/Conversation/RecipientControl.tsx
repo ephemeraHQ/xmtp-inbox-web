@@ -58,20 +58,20 @@ const RecipientControl = ({
 
   useEffect(() => {
     const setLookupValue = async () => {
+      const conversationIdOnXmtp =
+        conversationId?.replace(`${recipientWalletAddress}/`, "") ?? "";
       if (
         isValidLongWalletAddress(recipientWalletAddress) &&
         !conversations.get(recipientWalletAddress) &&
-        !conversations.get(conversationId ?? "")
+        !conversations.get(conversationIdOnXmtp)
       ) {
         const conversation =
-          conversationId && conversationId !== recipientWalletAddress
+          conversationIdOnXmtp &&
+          conversationIdOnXmtp !== recipientWalletAddress
             ? await client?.conversations?.newConversation(
                 recipientWalletAddress,
                 {
-                  conversationId: conversationId.replace(
-                    `${recipientWalletAddress}/`,
-                    "",
-                  ),
+                  conversationId: conversationIdOnXmtp,
                   metadata: {},
                 },
               )
