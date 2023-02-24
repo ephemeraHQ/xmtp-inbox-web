@@ -119,7 +119,7 @@ export const TextButton = ({
       type="button"
       onClick={onClick}
       disabled={isDisabled}
-      className={`${backgroundColor} ${fontColor} ${disabled} ${sizeClass} min-w-[${minWidth}%] h-fit m-2 font-bold rounded-full`}
+      className={`${backgroundColor} ${fontColor} ${disabled} ${sizeClass} min-w-[${minWidth}%] h-fit font-bold rounded-full`}
       aria-label={srText}>
       <>
         <div className="flex justify-center items-center h-fit space-x-2">

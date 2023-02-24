@@ -192,7 +192,7 @@ const TertiaryTextWithIcon = ({
   return (
     <div
       className={
-        "w-full flex py-2 px-4 flex items-center justify-between border-t-1 border-b-1 border-gray-300"
+        "w-full flex py-2 px-4 flex items-center justify-between border-y border-gray-300"
       }>
       {isLoading ? (
         <ShortCopySkeletonLoader lines={2} />
