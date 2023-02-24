@@ -119,8 +119,7 @@ const PrimaryTextWithIcon = ({
   isLoading = false,
 }) => {
   return (
-    <div
-      className={`w-full bg-gray-50 p-4 flex justify-between items-center `}>
+    <div className={"w-full bg-gray-50 p-4 flex justify-between items-center "}>
       {isLoading ? (
         <ShortCopySkeletonLoader />
       ) : (
@@ -169,10 +168,7 @@ const SecondaryTextWithIcon = ({
         <ShortCopySkeletonLoader />
       ) : (
         <>
-          <div
-            className={`${getLeftIconBackground(
-              leftIcon,
-            )} mr-2 rounded-md`}>
+          <div className={`${getLeftIconBackground(leftIcon)} mr-2 rounded-md`}>
             {getLeftIcon(leftIcon)}
           </div>
           {header}

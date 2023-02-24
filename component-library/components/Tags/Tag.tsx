@@ -14,43 +14,33 @@ interface TagProps {
   /**
    * What text is associated with this tag?
    */
-  text:
-    | "audio"
-    | "messaging"
-    | "shopping"
-    | "transactions"
-    | "walletAddress"
-    | "ensAddress"
-    | "lensAddress";
-  /**
-   * What icon, if any, is associated with this tag?
-   */
-  icon?: React.ReactNode;
+  text: string;
   /**
    * Are we waiting on something?
    */
   isLoading?: boolean;
 }
 
+// To-do: update icon and text logic after we receive from design. These are placeholders for now.
 const IconMapping = {
-  audio: <SpeakerphoneIcon width="16" />,
-  messaging: <ChatIcon width="16" />,
-  shopping: <ShoppingBagIcon width="16" />,
-  transactions: <CreditCardIcon width="16" />,
-  walletAddress: <WalletAddress />,
-  ensAddress: <EnsAddress />,
-  lensAddress: <LensAddress />,
+  ["AUDIO" as string]: <SpeakerphoneIcon width="16" />,
+  ["MESSAGING" as string]: <ChatIcon width="16" />,
+  ["SHOPPING" as string]: <ShoppingBagIcon width="16" />,
+  ["TRANSACTIONS" as string]: <CreditCardIcon width="16" />,
+  ["WALLET_ADDRESS" as string]: <WalletAddress />,
+  ["ENS_ADDRESS" as string]: <EnsAddress />,
+  ["LENS_ADDRESS" as string]: <LensAddress />,
 };
 
 export const Tag = ({ text, isLoading = false }: TagProps) => {
   let mappedIcon = IconMapping[text];
   if (!mappedIcon && text) {
     const addressIcon = text.startsWith("0x") ? (
-      IconMapping.walletAddress
+      IconMapping.WALLET_ADDRESS
     ) : isEnsAddress(text) ? (
-      IconMapping.ensAddress
+      IconMapping.ENS_ADDRESS
     ) : text.endsWith(".lens") ? (
-      IconMapping.lensAddress
+      IconMapping.LENS_ADDRESS
     ) : (
       <></>
     );

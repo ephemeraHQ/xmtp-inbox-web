@@ -9,6 +9,7 @@ export default {
   argTypes: {
     variant: { control: false },
     isDisabled: { control: false },
+    avatarUrlProps: { control: false },
   },
 } as ComponentMeta<typeof Input>;
 

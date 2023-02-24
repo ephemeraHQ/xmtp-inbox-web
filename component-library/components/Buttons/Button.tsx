@@ -99,6 +99,7 @@ export const TextButton = ({
   isDisabled = false,
   size = "large",
   srText = "",
+  onClick,
 }: ButtonProps) => {
   const disabled = isDisabled ? "opacity-50 cursor-not-allowed" : "";
   const sizeClass = sizeClassMapping[variant][size];
@@ -116,6 +117,7 @@ export const TextButton = ({
   return (
     <button
       type="button"
+      onClick={onClick}
       disabled={isDisabled}
       className={`${backgroundColor} ${fontColor} ${disabled} ${sizeClass} min-w-[${minWidth}%] h-fit m-2 font-bold rounded-full`}
       aria-label={srText}>
@@ -143,6 +145,7 @@ export const IconButton = ({
   isDisabled = false,
   size = "large",
   srText,
+  onClick,
 }: ButtonProps) => {
   const disabled = isDisabled ? "opacity-50 cursor-not-allowed" : "";
   const sizeClass = sizeClassMapping.icon[size];
@@ -153,6 +156,7 @@ export const IconButton = ({
   return (
     <button
       type="button"
+      onClick={onClick}
       disabled={isDisabled}
       className={`${colorClassMapping.icon.primary.backgroundColor} ${sizeClass} ${disabled} ${shape} flex justify-center items-center p-0 h-fit`}
       aria-label={srText}>
