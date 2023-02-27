@@ -1,6 +1,7 @@
 import { ArrowCircleRightIcon } from "@heroicons/react/outline";
 import React from "react";
 import { Button } from "../../component-library/Button";
+import { classNames } from "../../helpers";
 import Loader from "../Loader";
 import { LoginPageHeaderText, LoginPageInfoText } from "./ConnectingDom";
 import DisconnectButton from "./DisconnectButton";
@@ -40,7 +41,13 @@ const XmtpOnboardingDom = ({
         )}
       </div>
       <div className="md:max-w-[35%] sm:max-w-[75%]">
-        <div className="text-base md:mt-[-172px]">Step {stepNumber} of 2</div>
+        <div
+          className={classNames(
+            "text-base",
+            isLoading ? "md:mt-[12px]" : "md:mt-[-172px]",
+          )}>
+          Step {stepNumber} of 2
+        </div>
         <LoginPageHeaderText text={isLoading ? loadingHeader : header} />
         <LoginPageInfoText
           text={
