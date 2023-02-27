@@ -35,8 +35,7 @@ const XmtpOnboardingDom = ({
           <img
             className="sm:h-[75vh] md:h-[84vh] w-auto"
             src={imgSrc}
-            alt="XMTP Logo"
-            data-testid="xmtp-logo"
+            alt="XMTP Onboarding Img"
           />
         )}
       </div>
