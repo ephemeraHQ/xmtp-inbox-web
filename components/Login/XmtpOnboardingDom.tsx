@@ -2,6 +2,7 @@ import { ArrowCircleRightIcon } from "@heroicons/react/outline";
 import React from "react";
 import { Button } from "../../component-library/Button";
 import Loader from "../Loader";
+import { LoginPageHeaderText, LoginPageInfoText } from "./ConnectingDom";
 import DisconnectButton from "./DisconnectButton";
 
 type XmtpOnboardingDomProps = {
@@ -41,14 +42,14 @@ const XmtpOnboardingDom = ({
       </div>
       <div className="md:max-w-[35%] sm:max-w-[75%]">
         <div className="text-base md:mt-[-172px]">Step {stepNumber} of 2</div>
-        <div className="font-bold text-3xl text-center">
-          {isLoading ? loadingHeader : header}
-        </div>
-        <div className="text-lg mt-2 text-center">
-          {isLoading
-            ? "Look for a confirmation dialog in the wallet you've selected."
-            : infoText}
-        </div>
+        <LoginPageHeaderText text={isLoading ? loadingHeader : header} />
+        <LoginPageInfoText
+          text={
+            isLoading
+              ? "Look for a confirmation dialog in the wallet you've selected."
+              : infoText
+          }
+        />
         <div className="mt-2">
           <Button
             onClick={cta}

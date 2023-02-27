@@ -41,33 +41,38 @@ const Home: NextPage = () => {
         </div>
       )}
       <div className="flex flex-col items-center justify-center mx-6 text-center h-full">
-        {isDisconnected && <ConnectWalletDom handleConnect={handleConnect} />}
-        {isConnecting && !isDisconnected ? (
-          <ConnectingDom />
+        {isDisconnected ? (
+          <ConnectWalletDom handleConnect={handleConnect} />
         ) : (
           <>
-            {newAccount && !client ? (
-              <XmtpOnboardingDom
-                isLoading={isLoading}
-                cta={createXmtpIdentity}
-                ctaText="Create XMTP identity"
-                infoText="Now that your wallet is connected, we're going to create your XMTP identity on our network with a wallet signature."
-                stepNumber="1"
-                imgSrc="/login-page-step-img.png"
-                header="Create your XMTP identity"
-                loadingHeader="Creating your XMTP identity..."
-              />
+            {isConnecting && !isDisconnected ? (
+              <ConnectingDom />
             ) : (
-              <XmtpOnboardingDom
-                isLoading={isLoading}
-                cta={connectToXmtp}
-                ctaText="Enable XMTP Identity"
-                infoText="You’re activated on the XMTP network! Now let’s enable your ability to start messaging and you can start messaging wallets right away."
-                stepNumber="2"
-                imgSrc="/login-page-step-img.png"
-                header="Enable messaging on XMTP"
-                loadingHeader="Almost there! One more signature."
-              />
+              <>
+                {newAccount && !client ? (
+                  <XmtpOnboardingDom
+                    isLoading={isLoading}
+                    cta={createXmtpIdentity}
+                    ctaText="Create XMTP identity"
+                    infoText="Now that your wallet is connected, we're going to create your XMTP identity on our network with a wallet signature."
+                    stepNumber="1"
+                    imgSrc="/login-page-step-img.png"
+                    header="Create your XMTP identity"
+                    loadingHeader="Creating your XMTP identity..."
+                  />
+                ) : (
+                  <XmtpOnboardingDom
+                    isLoading={isLoading}
+                    cta={connectToXmtp}
+                    ctaText="Enable XMTP Identity"
+                    infoText="You’re activated on the XMTP network! Now let’s enable your ability to start messaging and you can start messaging wallets right away."
+                    stepNumber="2"
+                    imgSrc="/login-page-step-img.png"
+                    header="Enable messaging on XMTP"
+                    loadingHeader="Almost there! One more signature."
+                  />
+                )}
+              </>
             )}
           </>
         )}
