@@ -6,11 +6,7 @@ const NoMessageDom = () => {
   return (
     <div className="h-full flex flex-col items-center text-center justify-center">
       <div>
-        <img
-          className="h-full w-auto px-16"
-          src="/no-msg.png"
-          alt="No Messages"
-        />
+        <img className="h-full w-auto" src="/no-msg.png" alt="No Messages" />
       </div>
       <div className="text-lg font-bold mt-8">{"You've got no messages"}</div>
       <div className="text-sm mt-1 mb-2">
