@@ -1,14 +1,14 @@
 import React, { ChangeEvent, useLayoutEffect, useRef } from "react";
-import { Avatar } from "./Avatar";
+import { Avatar } from "../Avatar/Avatar";
 import { ArrowUpIcon } from "@heroicons/react/solid";
 import { InformationCircleIcon } from "@heroicons/react/outline";
-import { Button } from "./Button";
+import { Button } from "../Buttons/Button";
 
 interface InputProps {
   /**
    * Is this a message or address input?
    */
-  category?: "message" | "address";
+  variant?: "message" | "address";
   /**
    * What, if any, subtext is there?
    */
@@ -57,7 +57,7 @@ const AddressInput = ({
 }: InputProps) => {
   const subtextColor = isError ? "text-red-400" : "text-gray-400";
   return (
-    <div className="flex align-center m-8">
+    <div className="flex align-center">
       <form className="flex w-full" onSubmit={onSubmit}>
         <Avatar {...avatarUrlProps} />
         <div className="ml-4">
@@ -93,7 +93,7 @@ const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
   const onChange = (event: ChangeEvent<HTMLTextAreaElement>) =>
     setValue(event.target.value);
   const borderStyles =
-    "border border-gray-300 focus-within:border-indigo-300 rounded-tl-2xl rounded-bl-2xl rounded-tr-2xl";
+    "flex items-center border border-gray-300 focus-within:border-indigo-300 rounded-tl-2xl rounded-bl-2xl rounded-tr-2xl";
   const textAreaStyles = `${
     textAreaRef?.current?.scrollHeight &&
     textAreaRef?.current?.scrollHeight <= 32
@@ -115,7 +115,7 @@ const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
   }, [value]);
 
   return (
-    <form className="m-2">
+    <form>
       <label htmlFor="chat" className="sr-only">
         Type something...
       </label>
@@ -132,7 +132,7 @@ const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
 
         <div className="flex items-center p-1">
           <Button
-            category="icon"
+            variant="icon"
             primary={false}
             label={<ArrowUpIcon color="white" width="12" />}
             srText="Submit Message"
@@ -145,8 +145,8 @@ const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
   );
 };
 
-export const Input = ({ category, ...children }: InputProps) => {
-  switch (category) {
+export const Input = ({ variant, ...children }: InputProps) => {
+  switch (variant) {
     case "address":
       return <AddressInput {...children} />;
     case "message":

@@ -9,14 +9,14 @@ interface AvatarProps {
   /**
    * What, if any, avatar url is there?
    */
-  avatarUrl?: string;
+  url?: string;
   /**
    * What is the address associated with this avatar?
    */
   address?: string;
 }
 
-export const Avatar = ({ avatarUrl, isLoading, address }: AvatarProps) => {
+export const Avatar = ({ url, isLoading, address }: AvatarProps) => {
   if (isLoading) {
     return (
       <div className="animate-pulse flex">
@@ -25,13 +25,13 @@ export const Avatar = ({ avatarUrl, isLoading, address }: AvatarProps) => {
     );
   }
 
-  if (avatarUrl) {
+  if (url) {
     return (
       <div>
         <div className="w-10 h-10 rounded-full border border-n-80" />
         <img
           className="w-10 h-10 rounded-full z-10 -mt-10"
-          src={avatarUrl}
+          src={url}
           alt={address}
         />
       </div>

@@ -1,7 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { Button } from "./Button";
-import { ArrowCircleRightIcon } from "@heroicons/react/outline";
 
 export default {
   title: "Button/TextButton",
@@ -9,105 +8,138 @@ export default {
   argTypes: {
     label: { control: "text", defaultValue: "Connect your wallet" },
     icon: { control: false },
-    category: { control: false },
+    variant: { control: false },
   },
 } as ComponentMeta<typeof Button>;
 
 const TextTemplate: ComponentStory<typeof Button> = (args) => (
-  <Button category="text" {...args} />
+  <Button {...args} />
 );
 
 export const PrimaryPill = TextTemplate.bind({});
-PrimaryPill.args = {};
+PrimaryPill.args = {
+  variant: "pill",
+};
 
 export const NegativePill = TextTemplate.bind({});
 NegativePill.args = {
+  variant: "pill",
   primary: false,
 };
 
 export const PrimaryPillLoading = TextTemplate.bind({});
 PrimaryPillLoading.args = {
+  variant: "pill",
   isLoading: true,
 };
 
 export const NegativePillLoading = TextTemplate.bind({});
 NegativePillLoading.args = {
+  variant: "pill",
   primary: false,
   isLoading: true,
 };
 
 export const PrimaryPillDisabled = TextTemplate.bind({});
 PrimaryPillDisabled.args = {
+  variant: "pill",
   isDisabled: true,
 };
 
 export const NegativePillDisabled = TextTemplate.bind({});
 NegativePillDisabled.args = {
+  variant: "pill",
   primary: false,
   isDisabled: true,
 };
 
 export const PrimaryPillSmall = TextTemplate.bind({});
 PrimaryPillSmall.args = {
-  buttonSize: "small",
-  icon: <ArrowCircleRightIcon width={20} />,
+  variant: "pill",
+  size: "small",
 };
 
 export const NegativePillSmall = TextTemplate.bind({});
 NegativePillSmall.args = {
   primary: false,
-  buttonSize: "small",
-  icon: <ArrowCircleRightIcon width={20} />,
+  size: "small",
+};
+
+export const PrimaryPillSmallLoading = TextTemplate.bind({});
+PrimaryPillSmallLoading.args = {
+  variant: "pill",
+  size: "small",
+  isLoading: true,
+};
+
+export const NegativePillSmallLoading = TextTemplate.bind({});
+NegativePillSmallLoading.args = {
+  primary: false,
+  size: "small",
+  isLoading: true,
 };
 
 export const PrimaryGhost = TextTemplate.bind({});
 PrimaryGhost.args = {
-  background: "ghost",
+  variant: "ghost",
 };
 
 export const NegativeGhost = TextTemplate.bind({});
 NegativeGhost.args = {
+  variant: "ghost",
   primary: false,
-  background: "ghost",
 };
 
 export const PrimaryGhostLoading = TextTemplate.bind({});
 PrimaryGhostLoading.args = {
+  variant: "ghost",
   isLoading: true,
-  background: "ghost",
 };
 
 export const NegativeGhostLoading = TextTemplate.bind({});
 NegativeGhostLoading.args = {
+  variant: "ghost",
   primary: false,
   isLoading: true,
-  background: "ghost",
 };
 
 export const PrimaryGhostDisabled = TextTemplate.bind({});
 PrimaryGhostDisabled.args = {
+  variant: "ghost",
   isDisabled: true,
-  background: "ghost",
 };
 
 export const NegativeGhostDisabled = TextTemplate.bind({});
 NegativeGhostDisabled.args = {
+  variant: "ghost",
   primary: false,
   isDisabled: true,
-  background: "ghost",
 };
 
 export const PrimaryGhostSmall = TextTemplate.bind({});
 PrimaryGhostSmall.args = {
-  buttonSize: "small",
-  background: "ghost",
-  icon: <ArrowCircleRightIcon width={20} />,
+  variant: "ghost",
+  size: "small",
 };
 
 export const NegativeGhostSmall = TextTemplate.bind({});
 NegativeGhostSmall.args = {
+  variant: "ghost",
   primary: false,
-  buttonSize: "small",
-  background: "ghost",
-  icon: <ArrowCircleRightIcon width={20} />,
+  size: "small",
+};
+
+export const PrimaryGhostSmallLoading = TextTemplate.bind({});
+PrimaryGhostSmallLoading.args = {
+  variant: "ghost",
+  size: "small",
+  isLoading: true,
+};
+
+export const NegativeGhostSmallLoading = TextTemplate.bind({});
+NegativeGhostSmallLoading.args = {
+  variant: "ghost",
+  primary: false,
+  size: "small",
+  isLoading: true,
 };

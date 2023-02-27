@@ -7,13 +7,14 @@ export default {
   title: "Input/AddressInput",
   component: Input,
   argTypes: {
-    category: { control: false },
+    variant: { control: false },
     isDisabled: { control: false },
+    avatarUrlProps: { control: false },
   },
 } as ComponentMeta<typeof Input>;
 
 const Template: ComponentStory<typeof Input> = (args) => (
-  <Input {...args} category="address" />
+  <Input {...args} variant="address" />
 );
 
 export const AddressInput = Template.bind({});
