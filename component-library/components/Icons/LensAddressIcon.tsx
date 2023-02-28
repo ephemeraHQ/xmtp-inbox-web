@@ -1,4 +1,4 @@
-export const LensAddress = () => (
+export const LensAddressIcon = () => (
   <svg
     width="20"
     height="20"

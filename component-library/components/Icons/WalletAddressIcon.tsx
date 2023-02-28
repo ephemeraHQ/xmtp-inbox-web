@@ -1,4 +1,4 @@
-export const WalletAddress = () => (
+export const WalletAddressIcon = () => (
   <svg
     width="12"
     height="20"

@@ -1,4 +1,4 @@
-export const EnsAddress = () => (
+export const EnsAddressIcon = () => (
   <svg
     width="20"
     height="20"
