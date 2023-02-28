@@ -1,14 +1,6 @@
-import {
-  CreditCardIcon,
-  ShoppingBagIcon,
-  SpeakerphoneIcon,
-} from "@heroicons/react/outline";
-import { ChatIcon } from "@heroicons/react/solid";
 import React from "react";
 import { isEnsAddress } from "../../../helpers";
-import { EnsAddress } from "../Icons/EnsAddress";
-import { LensAddress } from "../Icons/LensAddress";
-import { WalletAddress } from "../Icons/WalletAddress";
+import { iconMapping } from "./iconMapping";
 
 interface TagProps {
   /**
@@ -21,26 +13,15 @@ interface TagProps {
   isLoading?: boolean;
 }
 
-// To-do: update icon and text logic after we receive from design. These are placeholders for now.
-const IconMapping = {
-  ["AUDIO" as string]: <SpeakerphoneIcon width="16" />,
-  ["MESSAGING" as string]: <ChatIcon width="16" />,
-  ["SHOPPING" as string]: <ShoppingBagIcon width="16" />,
-  ["TRANSACTIONS" as string]: <CreditCardIcon width="16" />,
-  ["WALLET_ADDRESS" as string]: <WalletAddress />,
-  ["ENS_ADDRESS" as string]: <EnsAddress />,
-  ["LENS_ADDRESS" as string]: <LensAddress />,
-};
-
 export const Tag = ({ text, isLoading = false }: TagProps) => {
-  let mappedIcon = IconMapping[text];
+  let mappedIcon = iconMapping[text];
   if (!mappedIcon && text) {
     const addressIcon = text.startsWith("0x") ? (
-      IconMapping.WALLET_ADDRESS
+      iconMapping.WALLET_ADDRESS
     ) : isEnsAddress(text) ? (
-      IconMapping.ENS_ADDRESS
+      iconMapping.ENS_ADDRESS
     ) : text.endsWith(".lens") ? (
-      IconMapping.LENS_ADDRESS
+      iconMapping.LENS_ADDRESS
     ) : (
       <></>
     );

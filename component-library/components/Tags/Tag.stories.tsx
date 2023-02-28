@@ -4,7 +4,7 @@ import { Tag } from "./Tag";
 import { shortAddress } from "../../../helpers";
 
 export default {
-  title: "Tag/Tags",
+  title: "Tag",
   component: Tag,
   argTypes: {
     text: {

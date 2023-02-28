@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { Avatar } from "./Avatar";
 
 export default {
-  title: "Avatar/Avatars",
+  title: "Avatar",
   component: Avatar,
   argTypes: {
     address: { control: false },
