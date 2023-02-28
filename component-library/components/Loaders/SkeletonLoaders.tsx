@@ -12,3 +12,9 @@ export const ShortCopySkeletonLoader = ({ lines = 1 }) => {
     </div>
   );
 };
+
+export const IconLoader = () => (
+  <div role="status" className="animate-pulse">
+    <div className="h-4 bg-gray-200 rounded-full dark:bg-gray-700 w-8"></div>
+  </div>
+);

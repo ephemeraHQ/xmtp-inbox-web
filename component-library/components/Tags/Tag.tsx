@@ -1,14 +1,6 @@
-import {
-  CreditCardIcon,
-  ShoppingBagIcon,
-  SpeakerphoneIcon,
-} from "@heroicons/react/outline";
-import { ChatIcon } from "@heroicons/react/solid";
 import React from "react";
 import { isEnsAddress } from "../../../helpers";
-import { EnsAddress } from "../Icons/EnsAddress";
-import { LensAddress } from "../Icons/LensAddress";
-import { WalletAddress } from "../Icons/WalletAddress";
+import { iconMapping, TagIcon } from "./iconMapping";
 
 interface TagProps {
   /**
@@ -16,36 +8,29 @@ interface TagProps {
    */
   text: string;
   /**
+   * What icon is associated with this tag?
+   */
+  icon?: TagIcon;
+  /**
    * Are we waiting on something?
    */
   isLoading?: boolean;
 }
 
-// To-do: update icon and text logic after we receive from design. These are placeholders for now.
-const IconMapping = {
-  ["AUDIO" as string]: <SpeakerphoneIcon width="16" />,
-  ["MESSAGING" as string]: <ChatIcon width="16" />,
-  ["SHOPPING" as string]: <ShoppingBagIcon width="16" />,
-  ["TRANSACTIONS" as string]: <CreditCardIcon width="16" />,
-  ["WALLET_ADDRESS" as string]: <WalletAddress />,
-  ["ENS_ADDRESS" as string]: <EnsAddress />,
-  ["LENS_ADDRESS" as string]: <LensAddress />,
-};
-
-export const Tag = ({ text, isLoading = false }: TagProps) => {
-  let mappedIcon = IconMapping[text];
-  if (!mappedIcon && text) {
-    const addressIcon = text.startsWith("0x") ? (
-      IconMapping.WALLET_ADDRESS
+export const Tag = ({ text, icon, isLoading = false }: TagProps) => {
+  let mappedIcon = icon ? iconMapping[icon] : undefined;
+  if (!mappedIcon) {
+    mappedIcon = text.startsWith("0x") ? (
+      iconMapping[TagIcon.WALLET_ADDRESS]
     ) : isEnsAddress(text) ? (
-      IconMapping.ENS_ADDRESS
+      iconMapping[TagIcon.ENS_ADDRESS]
     ) : text.endsWith(".lens") ? (
-      IconMapping.LENS_ADDRESS
+      iconMapping[TagIcon.LENS_ADDRESS]
     ) : (
       <></>
     );
-    mappedIcon = addressIcon;
   }
+
   return (
     <div className="flex inline-flex items-center text-xs h-6 font-bold leading-sm shadow-lg p-3 rounded-full">
       {isLoading ? (

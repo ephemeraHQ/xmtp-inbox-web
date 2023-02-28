@@ -1,12 +1,12 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { TextWithIcon } from "./TextWithIcon";
+import { AddressSettingsCard } from "./AddressSettingsCard";
 import { Avatar } from "../Avatar/Avatar";
 import { shortAddress } from "../../../helpers";
 
 export default {
-  title: "TextWithIcon/Address",
-  component: TextWithIcon,
+  title: "AddressSettingsCard",
+  component: AddressSettingsCard,
   argTypes: {
     variant: { control: false },
     avatar: { control: false },
@@ -17,10 +17,10 @@ export default {
     },
     leftIcon: { control: false },
   },
-} as ComponentMeta<typeof TextWithIcon>;
+} as ComponentMeta<typeof AddressSettingsCard>;
 
-const Template: ComponentStory<typeof TextWithIcon> = (args) => (
-  <TextWithIcon {...args} variant="address" />
+const Template: ComponentStory<typeof AddressSettingsCard> = (args) => (
+  <AddressSettingsCard {...args} />
 );
 
 export const DisconnectedAddressTextWithIcon = Template.bind({});
@@ -35,7 +35,7 @@ ConnectedAddressTextWithIcon.args = {
   avatar: <Avatar />,
   header: "hi.xmtp.eth",
   subtext: shortAddress("0x1234567890123456789012345678901234567890"),
-  rightIcon: true,
+  isConnected: true,
 };
 
 export const DisconnectedAddressTextWithIconLoading = Template.bind({});
@@ -47,6 +47,6 @@ DisconnectedAddressTextWithIconLoading.args = {
 export const ConnectedAddressTextWithIconLoading = Template.bind({});
 ConnectedAddressTextWithIconLoading.args = {
   avatar: <Avatar isLoading />,
-  rightIcon: true,
+  isConnected: true,
   isLoading: true,
 };

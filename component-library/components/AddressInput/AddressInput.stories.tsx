@@ -1,24 +1,24 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import { Input } from "./Input";
+import { AddressInput } from "./AddressInput";
 
 export default {
-  title: "Input/AddressInput",
-  component: Input,
+  title: "AddressInput",
+  component: AddressInput,
   argTypes: {
     variant: { control: false },
     isDisabled: { control: false },
     avatarUrlProps: { control: false },
   },
-} as ComponentMeta<typeof Input>;
+} as ComponentMeta<typeof AddressInput>;
 
-const Template: ComponentStory<typeof Input> = (args) => (
-  <Input {...args} variant="address" />
+const Template: ComponentStory<typeof AddressInput> = (args) => (
+  <AddressInput {...args} />
 );
 
-export const AddressInput = Template.bind({});
-AddressInput.args = {
+export const AddressInputDefault = Template.bind({});
+AddressInputDefault.args = {
   subtext: "Please enter a valid wallet address",
 };
 

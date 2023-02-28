@@ -2,9 +2,9 @@ import React from "react";
 
 interface ImageProps {
   /**
-   * What is the image url?
+   * What is the image src?
    */
-  url: string;
+  src: string;
   /**
    * What is the header of this image?
    */
@@ -24,20 +24,20 @@ interface ImageProps {
   /**
    * What alt text should the image display?
    */
-  altText?: string;
+  alt?: string;
 }
 
 export const Image = ({
-  url,
+  src,
   header,
   subtext,
   eyebrowText,
   cta,
-  altText,
+  alt,
 }: ImageProps) => {
   return (
-    <div className={`relative w-full text-white`}>
-      <img src={url} alt={altText} className="rounded-lg" />
+    <div className={`relative w-fit text-white`}>
+      <img src={src} alt={alt} className="rounded-lg" />
       <div className={"absolute top-0 left-0 p-8 w-6/12"}>
         <p className={"text-xs font-bold"}>{eyebrowText?.toUpperCase()}</p>
         <h3 className={"text-3xl font-bold"}>{header}</h3>

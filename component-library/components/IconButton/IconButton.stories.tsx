@@ -1,21 +1,21 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { Button } from "./Button";
+import { IconButton } from "./IconButton";
 import { PlusCircleIcon } from "@heroicons/react/outline";
 
 export default {
-  title: "Button/IconButton",
-  component: Button,
+  title: "IconButton",
+  component: IconButton,
   argTypes: {
     variant: { control: false },
     background: { control: false },
     icon: { control: false },
     label: { control: false },
   },
-} as ComponentMeta<typeof Button>;
+} as ComponentMeta<typeof IconButton>;
 
-const IconTemplate: ComponentStory<typeof Button> = (args) => (
-  <Button variant="icon" {...args} />
+const IconTemplate: ComponentStory<typeof IconButton> = (args) => (
+  <IconButton {...args} />
 );
 
 export const Circle = IconTemplate.bind({});
@@ -23,7 +23,7 @@ Circle.args = {};
 
 export const Message = IconTemplate.bind({});
 Message.args = {
-  primary: false,
+  variant: "secondary",
 };
 
 export const CircleLoading = IconTemplate.bind({});
@@ -33,7 +33,7 @@ CircleLoading.args = {
 
 export const MessageLoading = IconTemplate.bind({});
 MessageLoading.args = {
-  primary: false,
+  variant: "secondary",
   isLoading: true,
 };
 
@@ -44,7 +44,7 @@ CircleDisabled.args = {
 
 export const MessageDisabled = IconTemplate.bind({});
 MessageDisabled.args = {
-  primary: false,
+  variant: "secondary",
   isDisabled: true,
 };
 
@@ -57,7 +57,7 @@ CircleSmall.args = {
 export const MessageSmall = IconTemplate.bind({});
 MessageSmall.args = {
   label: <PlusCircleIcon width={20} color="white" />,
-  primary: false,
+  variant: "secondary",
   size: "small",
 };
 
@@ -71,7 +71,7 @@ CircleSmallLoading.args = {
 export const MessageSmallLoading = IconTemplate.bind({});
 MessageSmallLoading.args = {
   label: <PlusCircleIcon width={20} color="white" />,
-  primary: false,
+  variant: "secondary",
   size: "small",
   isLoading: true,
 };
@@ -86,7 +86,7 @@ CircleSmallDisabled.args = {
 export const MessageSmallDisabled = IconTemplate.bind({});
 MessageSmallDisabled.args = {
   label: <PlusCircleIcon width={20} color="white" />,
-  primary: false,
+  variant: "secondary",
   size: "small",
   isDisabled: true,
 };
