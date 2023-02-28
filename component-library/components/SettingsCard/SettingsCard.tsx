@@ -3,7 +3,7 @@ import {
   IconLoader,
   ShortCopySkeletonLoader,
 } from "../Loaders/SkeletonLoaders";
-import { iconMapping } from "./iconMapping";
+import { iconMapping, SettingsIcon } from "./iconMapping";
 
 interface SettingsCardProps {
   /**
@@ -18,7 +18,7 @@ interface SettingsCardProps {
   /**
    * What enum for the left icon should we use to map to its corresponding icon?
    */
-  leftIcon?: string;
+  leftIcon?: SettingsIcon;
   /**
    * If there is a toggle, what should happen on change?
    */
@@ -33,16 +33,15 @@ interface SettingsCardProps {
  *
  * Gets the mapped background of the SVG on the left icon
  */
-const getLeftIconBackground = (leftIcon = "") =>
+const getLeftIconBackground = (leftIcon?: SettingsIcon) =>
   leftIcon ? iconMapping[leftIcon]?.backgroundColor : "";
 
 /**
  *
  * Gets the mapped icon SVG to render
  */
-const getLeftIcon = (leftIcon = "") =>
+const getLeftIcon = (leftIcon?: SettingsIcon) =>
   leftIcon ? iconMapping[leftIcon]?.icon : "";
-
 /**
  *
  * Settings item
@@ -50,7 +49,7 @@ const getLeftIcon = (leftIcon = "") =>
 export const SettingsCard = ({
   variant = "primary",
   header = "",
-  leftIcon = "",
+  leftIcon,
   onToggle = undefined,
   isLoading = false,
 }: SettingsCardProps) => {

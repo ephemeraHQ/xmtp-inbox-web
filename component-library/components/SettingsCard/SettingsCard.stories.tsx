@@ -1,6 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { SettingsCard } from "../SettingsCard/SettingsCard";
+import { SettingsIcon } from "./iconMapping";
 
 export default {
   title: "SettingsCard",
@@ -13,17 +14,17 @@ export default {
     onToggle: { control: false },
     leftIcon: {
       options: [
-        "SUPPORT",
-        "PRIVACY",
-        "DATA",
-        "DISCONNECT",
-        "COLLECTIBLES",
-        "NOTIFICATIONS",
-        "CREATE_WALLET",
-        "CONNECT_WALLET",
+        SettingsIcon.SUPPORT,
+        SettingsIcon.PRIVACY,
+        SettingsIcon.DATA,
+        SettingsIcon.DISCONNECT,
+        SettingsIcon.COLLECTIBLES,
+        SettingsIcon.NOTIFICATIONS,
+        SettingsIcon.CREATE_WALLET,
+        SettingsIcon.CONNECT_WALLET,
       ],
       control: { type: "radio" },
-      defaultValue: "SUPPORT",
+      defaultValue: SettingsIcon.SUPPORT,
     },
   },
 } as ComponentMeta<typeof SettingsCard>;
@@ -35,14 +36,14 @@ const Template: ComponentStory<typeof SettingsCard> = (args) => (
 export const SettingsCardPrimary = Template.bind({});
 SettingsCardPrimary.args = {
   header: "Support",
-  leftIcon: "SUPPORT",
+  leftIcon: SettingsIcon.SUPPORT,
   onToggle: undefined,
 };
 
 export const SettingsCardPrimaryWithTooltip = Template.bind({});
 SettingsCardPrimaryWithTooltip.args = {
   header: "Support",
-  leftIcon: "SUPPORT",
+  leftIcon: SettingsIcon.SUPPORT,
   onToggle: () => {},
 };
 
@@ -59,17 +60,18 @@ SettingsCardPrimaryWithTooltipLoading.args = {
 };
 
 export const SettingsCardSecondary = Template.bind({});
-SettingsCardPrimary.args = {
+SettingsCardSecondary.args = {
   variant: "secondary",
   header: "Create wallet",
-  leftIcon: "CREATE_WALLET",
+  leftIcon: SettingsIcon.CREATE_WALLET,
+  onToggle: undefined,
 };
 
 export const SettingsCardSecondaryWithTooltip = Template.bind({});
 SettingsCardSecondaryWithTooltip.args = {
   variant: "secondary",
   header: "Create wallet",
-  leftIcon: "CREATE_WALLET",
+  leftIcon: SettingsIcon.CREATE_WALLET,
   onToggle: () => {},
 };
 

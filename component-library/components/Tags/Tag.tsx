@@ -1,6 +1,6 @@
 import React from "react";
 import { isEnsAddress } from "../../../helpers";
-import { iconMapping } from "./iconMapping";
+import { iconMapping, TagIcon } from "./iconMapping";
 
 interface TagProps {
   /**
@@ -8,25 +8,29 @@ interface TagProps {
    */
   text: string;
   /**
+   * What icon is associated with this tag?
+   */
+  icon?: TagIcon;
+  /**
    * Are we waiting on something?
    */
   isLoading?: boolean;
 }
 
-export const Tag = ({ text, isLoading = false }: TagProps) => {
-  let mappedIcon = iconMapping[text];
-  if (!mappedIcon && text) {
-    const addressIcon = text.startsWith("0x") ? (
-      iconMapping.WALLET_ADDRESS
+export const Tag = ({ text, icon, isLoading = false }: TagProps) => {
+  let mappedIcon = icon ? iconMapping[icon] : undefined;
+  if (!mappedIcon) {
+    mappedIcon = text.startsWith("0x") ? (
+      iconMapping[TagIcon.WALLET_ADDRESS]
     ) : isEnsAddress(text) ? (
-      iconMapping.ENS_ADDRESS
+      iconMapping[TagIcon.ENS_ADDRESS]
     ) : text.endsWith(".lens") ? (
-      iconMapping.LENS_ADDRESS
+      iconMapping[TagIcon.LENS_ADDRESS]
     ) : (
       <></>
     );
-    mappedIcon = addressIcon;
   }
+
   return (
     <div className="flex inline-flex items-center text-xs h-6 font-bold leading-sm shadow-lg p-3 rounded-full">
       {isLoading ? (

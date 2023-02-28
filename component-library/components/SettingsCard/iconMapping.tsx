@@ -9,36 +9,47 @@ import {
 } from "@heroicons/react/solid";
 import { DisconnectIcon } from "../Icons/DisconnectIcon";
 
+export const enum SettingsIcon {
+  CONNECT_WALLET = "connect_wallet",
+  CREATE_WALLET = "create_wallet",
+  COLLECTIBLES = "collectibles",
+  NOTIFICATIONS = "notifications",
+  PRIVACY = "privacy",
+  SUPPORT = "support",
+  DATA = "data",
+  DISCONNECT = "disconnect",
+}
+
 export const iconMapping = {
-  ["CONNECT_WALLET" as string]: {
+  [SettingsIcon.CONNECT_WALLET]: {
     icon: <ShareIcon width="24" className="text-indigo-600" />,
     backgroundColor: null,
   },
-  ["CREATE_WALLET" as string]: {
+  [SettingsIcon.CREATE_WALLET]: {
     icon: <PlusIcon width="24" className="text-indigo-600" />,
     backgroundColor: null,
   },
-  ["COLLECTIBLES" as string]: {
+  [SettingsIcon.COLLECTIBLES]: {
     icon: <GiftIcon width="16" color="green" />,
     backgroundColor: "bg-green-100",
   },
-  ["NOTIFICATIONS" as string]: {
+  [SettingsIcon.NOTIFICATIONS]: {
     icon: <BellIcon width="16" color="green" />,
     backgroundColor: "bg-green-100",
   },
-  ["PRIVACY" as string]: {
+  [SettingsIcon.PRIVACY]: {
     icon: <EyeIcon width="16" className="text-indigo-600" />,
     backgroundColor: "bg-blue-100",
   },
-  ["SUPPORT" as string]: {
+  [SettingsIcon.SUPPORT]: {
     icon: <ChatAlt2Icon width="16" className="text-indigo-600" />,
     backgroundColor: "bg-blue-100",
   },
-  ["DATA" as string]: {
+  [SettingsIcon.DATA]: {
     icon: <TrashIcon width="16" color="red" />,
     backgroundColor: "bg-red-100",
   },
-  ["DISCONNECT" as string]: {
+  [SettingsIcon.DISCONNECT]: {
     icon: <DisconnectIcon />,
     backgroundColor: "bg-red-100",
   },

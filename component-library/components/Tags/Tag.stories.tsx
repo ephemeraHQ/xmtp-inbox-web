@@ -2,15 +2,24 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { Tag } from "./Tag";
 import { shortAddress } from "../../../helpers";
+import { TagIcon } from "./iconMapping";
 
 export default {
   title: "Tag",
   component: Tag,
   argTypes: {
-    text: {
-      options: ["AUDIO", "MESSAGING", "SHOPPING", "TRANSACTIONS"],
+    icon: {
+      options: [
+        TagIcon.AUDIO,
+        TagIcon.MESSAGING,
+        TagIcon.SHOPPING,
+        TagIcon.TRANSACTIONS,
+      ],
       control: { type: "radio" },
-      defaultValue: "AUDIO",
+    },
+    text: {
+      control: { type: "text" },
+      defaultValue: "Tag Label",
     },
   },
 } as ComponentMeta<typeof Tag>;
@@ -19,7 +28,8 @@ const Template: ComponentStory<typeof Tag> = (args) => <Tag {...args} />;
 
 export const CategoryTag = Template.bind({});
 CategoryTag.args = {
-  text: "MESSAGING",
+  text: "Messaging",
+  icon: TagIcon.MESSAGING,
 };
 
 export const WalletAddressTag = Template.bind({});
@@ -29,12 +39,12 @@ WalletAddressTag.args = {
 
 export const EnsAddressTag = Template.bind({});
 EnsAddressTag.args = {
-  text: "hi.xmtp.eth" as any,
+  text: "hi.xmtp.eth",
 };
 
 export const LensAddressTag = Template.bind({});
 LensAddressTag.args = {
-  text: "test.lens" as any,
+  text: "test.lens",
 };
 
 export const TagLoading = Template.bind({});

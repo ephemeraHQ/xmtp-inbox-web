@@ -4,7 +4,7 @@ import {
   IconLoader,
   ShortCopySkeletonLoader,
 } from "../Loaders/SkeletonLoaders";
-import { iconMapping } from "./iconMapping";
+import { iconMapping, InfoCardIcon } from "./iconMapping";
 
 interface InfoCardProps {
   /**
@@ -18,7 +18,7 @@ interface InfoCardProps {
   /**
    * What enum for the left icon should we use to map to its corresponding icon?
    */
-  leftIcon?: string;
+  leftIcon?: InfoCardIcon;
   /**
    * Are we waiting on anything loading?
    */
@@ -33,16 +33,15 @@ interface InfoCardProps {
  *
  * Gets the mapped background of the SVG on the left icon
  */
-const getLeftIconBackground = (leftIcon = "") =>
+const getLeftIconBackground = (leftIcon?: InfoCardIcon) =>
   leftIcon ? iconMapping[leftIcon]?.backgroundColor : "";
 
 /**
  *
  * Gets the mapped icon SVG to render
  */
-const getLeftIcon = (leftIcon = "") =>
+const getLeftIcon = (leftIcon?: InfoCardIcon) =>
   leftIcon ? iconMapping[leftIcon]?.icon : "";
-
 /**
  *
  * Multi-line info card with icon component

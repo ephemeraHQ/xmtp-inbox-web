@@ -4,16 +4,25 @@ import {
   SparklesIcon,
 } from "@heroicons/react/solid";
 
-export const iconMapping = {
-  ["NEW_MESSAGE" as string]: {
+export const enum InfoCardIcon {
+  NEW_MESSAGE = "new_message",
+  GALLERY = "gallery",
+  DOCUMENTATION = "documentation",
+}
+
+export const iconMapping: Record<
+  InfoCardIcon,
+  { icon: React.ReactElement; backgroundColor: string }
+> = {
+  [InfoCardIcon.NEW_MESSAGE]: {
     icon: <ChatAltIcon width="24" className="text-indigo-600" />,
     backgroundColor: "bg-indigo-100",
   },
-  ["GALLERY" as string]: {
+  [InfoCardIcon.GALLERY]: {
     icon: <SparklesIcon width="24" className="text-indigo-600" />,
     backgroundColor: "bg-indigo-100",
   },
-  ["DOCUMENTATION" as string]: {
+  [InfoCardIcon.DOCUMENTATION]: {
     icon: <BookOpenIcon width="24" className="text-indigo-600" />,
     backgroundColor: "bg-indigo-100",
   },
