@@ -7,7 +7,7 @@ export default {
   title: "Image",
   component: Image,
   argTypes: {
-    url: { control: "text", defaultValue: "https://picsum.photos/2000/1000" },
+    src: { control: "text", defaultValue: "https://picsum.photos/2000/1000" },
     header: { control: "text", defaultValue: "" },
     subtext: { control: "text", defaultValue: "" },
     eyebrowText: { control: "text", defaultValue: "" },
