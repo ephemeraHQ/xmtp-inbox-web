@@ -13,6 +13,8 @@ import {
 } from "../../helpers";
 import { useAccount } from "wagmi";
 import { getRecipientInputSubtext } from "../../helpers";
+import Avatar from "../Avatar";
+import { address } from "../Address";
 
 type RecipientControlProps = {
   setShowMessageView: Function;
@@ -104,53 +106,53 @@ const RecipientControl = ({
               />
             </div>
           )}
-          <form
-            className="w-full flex pl-2 md:pl-0 h-8 pt-1"
-            onSubmit={(e) => e.preventDefault()}
-            action="#"
-            method="GET">
-            <label htmlFor="recipient-field" className="sr-only">
-              Recipient
-            </label>
-            <div className="flex w-full text-n-300 focus-within:text-n-600">
+          <Avatar
+            peerAddress={(ensName ?? recipientWalletAddress) as address}
+          />
+          <div className="w-full">
+            <form
+              className="w-full flex pl-2 md:pl-0 h-8 pt-1"
+              onSubmit={(e) => e.preventDefault()}
+              action="#"
+              method="GET">
+              <label htmlFor="recipient-field" className="sr-only">
+                Recipient
+              </label>
+              <div className="flex">
+                <div className="w-full">
+                  {isValid && (
+                    <span
+                      className={recipientPillInputStyle()}
+                      data-testid="recipient-wallet-address">
+                      {ensName ?? recipientWalletAddress}
+                    </span>
+                  )}
+                  {!recipientWalletAddress && (
+                    <AddressInput
+                      id="recipient-field"
+                      className="ml-2 block w-[90%] pr-3 pt-[3px] md:pt-[2px] md:pt-[1px] bg-transparent caret-n-600 text-n-600 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-0 focus:border-transparent text-lg font-mono"
+                      submitValue={checkIfOnNetwork}
+                      setRecipientInputMode={setRecipientInputMode}
+                    />
+                  )}
+                </div>
+                <button type="submit" className="hidden" />
+              </div>
+            </form>
+            {recipientInputMode === RecipientInputMode.Submitted ||
+            recipientInputMode === RecipientInputMode.OnNetwork ? (
+              <div className="text-md text-n-300 text-sm font-mono ml-2 pl-1 pb-1 md:pb-[1px]">
+                {ensName ? ensAddress ?? recipientWalletAddress : null}
+              </div>
+            ) : (
               <div
-                className="text-black flex items-center pointer-events-none text-md md:text-sm font-medium md:font-semibold mr-2"
-                data-testid="message-to-key">
-                To:
+                className="text-sm md:text-xs text-n-300 ml-2 pl-2 md:pl-0 pb-1 md:pb-[3px]"
+                data-testid="message-to-subtext">
+                {getRecipientInputSubtext(recipientInputMode)}
               </div>
-              <div className="w-full">
-                {isValid && (
-                  <span
-                    className={recipientPillInputStyle(userIsSender)}
-                    data-testid="recipient-wallet-address">
-                    {ensName ?? recipientWalletAddress}
-                  </span>
-                )}
-                {!recipientWalletAddress && (
-                  <AddressInput
-                    id="recipient-field"
-                    className="block w-[90%] pr-3 pt-[3px] md:pt-[2px] md:pt-[1px] bg-transparent caret-n-600 text-n-600 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-0 focus:border-transparent text-lg font-mono"
-                    submitValue={checkIfOnNetwork}
-                    setRecipientInputMode={setRecipientInputMode}
-                  />
-                )}
-              </div>
-              <button type="submit" className="hidden" />
-            </div>
-          </form>
+            )}
+          </div>
         </div>
-        {recipientInputMode === RecipientInputMode.Submitted ||
-        recipientInputMode === RecipientInputMode.OnNetwork ? (
-          <div className="text-md text-n-300 text-sm font-mono ml-7 pb-1 md:pb-[1px]">
-            {ensName ? ensAddress ?? recipientWalletAddress : null}
-          </div>
-        ) : (
-          <div
-            className="text-sm md:text-xs text-n-300 ml-[29px] pl-2 md:pl-0 pb-1 md:pb-[3px]"
-            data-testid="message-to-subtext">
-            {getRecipientInputSubtext(recipientInputMode)}
-          </div>
-        )}
       </div>
       {recipientInputMode === RecipientInputMode.OnNetwork && <Conversation />}
     </div>
