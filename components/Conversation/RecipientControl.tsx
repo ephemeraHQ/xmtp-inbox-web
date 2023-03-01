@@ -1,152 +1,159 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/router';
-import AddressInput from '../AddressInput';
-import { checkIfPathIsEns, getAddressFromPath, getConversationIdFromPath } from '../../helpers';
-import { useAppStore } from '../../store/app';
-import BackArrow from '../BackArrow';
-import useEnsHooks from '../../hooks/useEnsHooks';
+import { useState, useEffect } from "react";
+import AddressInput from "../AddressInput";
+import { useXmtpStore } from "../../store/xmtp";
+import Conversation from "./Conversation";
+import BackArrow from "../BackArrow";
+import useWalletAddress from "../../hooks/useWalletAddress";
+import useWindowSize from "../../hooks/useWindowSize";
+import {
+  RecipientInputMode,
+  getConversationId,
+  recipientPillInputStyle,
+  isValidLongWalletAddress,
+} from "../../helpers";
+import { useAccount } from "wagmi";
+import { getRecipientInputSubtext } from "../../helpers";
 
-const RecipientInputMode = {
-  InvalidEntry: 0,
-  ValidEntry: 1,
-  FindingEntry: 2,
-  Submitted: 3,
-  NotOnNetwork: 4
+type RecipientControlProps = {
+  setShowMessageView: Function;
 };
 
-const RecipientControl = (): JSX.Element => {
-  const { lookupAddress, resolveName } = useEnsHooks();
-  const client = useAppStore((state) => state.client);
-  const router = useRouter();
-  const recipientWalletAddress = getAddressFromPath(router);
-  const conversationId = getConversationIdFromPath(router);
-  const [recipientInputMode, setRecipientInputMode] = useState(RecipientInputMode.InvalidEntry);
-  const [hasName, setHasName] = useState(false);
-
-  const checkIfOnNetwork = useCallback(
-    async (address: string): Promise<boolean> => {
-      return client?.canMessage(address) || false;
-    },
-    [client]
+const RecipientControl = ({
+  setShowMessageView,
+}: RecipientControlProps): JSX.Element => {
+  const client = useXmtpStore((state) => state.client);
+  const recipientWalletAddress =
+    useXmtpStore((state) => state.recipientWalletAddress) || "";
+  const conversationId = useXmtpStore((state) => state.conversationId);
+  const setConversationId = useXmtpStore((state) => state.setConversationId);
+  const setRecipientWalletAddress = useXmtpStore(
+    (state) => state.setRecipientWalletAddress,
   );
+  const size = useWindowSize();
+  const [recipientInputMode, setRecipientInputMode] = useState(
+    RecipientInputMode.InvalidEntry,
+  );
+  const { isValid, ensName, ensAddress } = useWalletAddress();
+  const conversations = useXmtpStore((state) => state.conversations);
+  const setConversations = useXmtpStore((state) => state.setConversations);
+  const { address: walletAddress } = useAccount();
 
-  const onSubmit = async (address: string) => {
-    router.push(address ? `/dm/${address}` : '/dm/');
-  };
-
-  const handleBackArrowClick = useCallback(() => {
-    router.push('/');
-  }, [router]);
-
-  const completeSubmit = async (address: string, input: HTMLInputElement) => {
-    if (await checkIfOnNetwork(address)) {
-      onSubmit(address);
-      input.blur();
-      setRecipientInputMode(RecipientInputMode.Submitted);
-    } else {
-      setRecipientInputMode(RecipientInputMode.NotOnNetwork);
+  const checkIfOnNetwork = async (address: string) => {
+    let canMessage;
+    if (client) {
+      try {
+        canMessage = await client.canMessage(address);
+        if (!canMessage) {
+          setRecipientInputMode(RecipientInputMode.NotOnNetwork);
+        } else {
+          setRecipientInputMode(RecipientInputMode.OnNetwork);
+          setRecipientWalletAddress(address);
+          setConversationId(address);
+        }
+      } catch (e) {
+        setRecipientInputMode(RecipientInputMode.NotOnNetwork);
+      }
     }
   };
 
   useEffect(() => {
-    const handleAddressLookup = async (address: string) => {
-      const name = await lookupAddress(address);
-      setHasName(!!name);
-    };
-    if (recipientWalletAddress && !checkIfPathIsEns(recipientWalletAddress)) {
-      setRecipientInputMode(RecipientInputMode.Submitted);
-      handleAddressLookup(recipientWalletAddress);
-    } else {
-      setRecipientInputMode(RecipientInputMode.InvalidEntry);
-    }
-  }, [lookupAddress, recipientWalletAddress]);
-
-  const handleSubmit = useCallback(
-    async (e: React.SyntheticEvent, value?: string) => {
-      e.preventDefault();
-      const data = e.target as typeof e.target & {
-        recipient: { value: string };
-      };
-      const input = e.target as HTMLInputElement;
-      const recipientValue = value || data.recipient.value;
-      if (recipientValue.endsWith('eth')) {
-        setRecipientInputMode(RecipientInputMode.FindingEntry);
-        const address = await resolveName(recipientValue);
-        if (address) {
-          await completeSubmit(address, input);
-        } else {
-          setRecipientInputMode(RecipientInputMode.InvalidEntry);
+    const setLookupValue = async () => {
+      if (isValidLongWalletAddress(recipientWalletAddress)) {
+        const conversation =
+          conversationId && conversationId !== recipientWalletAddress
+            ? await client?.conversations?.newConversation(
+                recipientWalletAddress,
+                {
+                  conversationId,
+                  metadata: {},
+                },
+              )
+            : await client?.conversations?.newConversation(
+                recipientWalletAddress,
+              );
+        if (conversation) {
+          conversations.set(getConversationId(conversation), conversation);
+          setConversations(new Map(conversations));
         }
-      } else if (recipientValue.startsWith('0x') && recipientValue.length === 42) {
-        await completeSubmit(recipientValue, input);
       }
-    },
-    [resolveName]
-  );
+    };
+    if (
+      recipientWalletAddress &&
+      recipientInputMode !== RecipientInputMode.OnNetwork
+    ) {
+      setRecipientInputMode(RecipientInputMode.OnNetwork);
+    }
+    if (recipientInputMode === RecipientInputMode.OnNetwork) {
+      setLookupValue();
+    }
+  }, [recipientInputMode, recipientWalletAddress, conversationId]);
 
-  const handleInputChange = useCallback(
-    async (e: React.SyntheticEvent) => {
-      const data = e.target as typeof e.target & {
-        value: string;
-      };
-      if (router.pathname !== '/dm') {
-        router.push('/dm');
-      }
-      if (data.value.endsWith('.eth') || (data.value.startsWith('0x') && data.value.length === 42)) {
-        handleSubmit(e, data.value);
-      } else {
-        setRecipientInputMode(RecipientInputMode.InvalidEntry);
-      }
-    },
-    [handleSubmit, router]
-  );
+  const userIsSender = recipientWalletAddress === walletAddress;
 
   return (
-    <>
-      <div className="md:hidden flex items-center ml-3">
-        <BackArrow onClick={handleBackArrowClick} />
-      </div>
-      <div className="flex-1 flex-col shrink justify-center flex bg-zinc-50 md:border-b md:border-gray-200 md:px-4 md:pb-[2px]">
-        <form className="w-full flex pl-2 md:pl-0 h-8 pt-1" action="#" method="GET" onSubmit={handleSubmit}>
-          <label htmlFor="recipient-field" className="sr-only">
-            Recipient
-          </label>
-          <div className="relative w-full text-n-300 focus-within:text-n-600">
-            <div
-              className="absolute top-1 left-0 flex items-center pointer-events-none text-md md:text-sm font-medium md:font-semibold"
-              data-testid="message-to-key"
-            >
-              To:
+    <div className="flex-col flex-1">
+      <div className="flex-1 flex-col justify-center flex bg-zinc-50 md:border-b md:border-gray-200 md:px-4 md:pb-[2px] max-h-16 min-h-[4rem]">
+        <div className="flex items-center">
+          {size[0] < 600 && (
+            <div className="flex items-center mx-2 w-3 mt-1">
+              <BackArrow
+                onClick={() => {
+                  setShowMessageView(false);
+                  setRecipientWalletAddress("");
+                }}
+              />
             </div>
-            <AddressInput
-              recipientWalletAddress={recipientWalletAddress}
-              conversationId={conversationId}
-              id="recipient-field"
-              className="block w-[95%] pl-7 pr-3 pt-[3px] md:pt-[2px] md:pt-[1px] bg-transparent caret-n-600 text-n-600 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-0 focus:border-transparent text-lg font-mono"
-              name="recipient"
-              onInputChange={handleInputChange}
-            />
-            <button type="submit" className="hidden" />
-          </div>
-        </form>
-
-        {recipientInputMode === RecipientInputMode.Submitted ? (
-          <div className="text-md text-n-300 text-sm font-mono ml-10 md:ml-8 pb-1 md:pb-[1px]">
-            {hasName ? recipientWalletAddress : <br />}
+          )}
+          <form
+            className="w-full flex pl-2 md:pl-0 h-8 pt-1"
+            onSubmit={(e) => e.preventDefault()}
+            action="#"
+            method="GET">
+            <label htmlFor="recipient-field" className="sr-only">
+              Recipient
+            </label>
+            <div className="flex w-full text-n-300 focus-within:text-n-600">
+              <div
+                className="text-black flex items-center pointer-events-none text-md md:text-sm font-medium md:font-semibold mr-2"
+                data-testid="message-to-key">
+                To:
+              </div>
+              <div className="w-full">
+                {isValid && (
+                  <span
+                    className={recipientPillInputStyle(userIsSender)}
+                    data-testid="recipient-wallet-address">
+                    {ensName ?? recipientWalletAddress}
+                  </span>
+                )}
+                {!recipientWalletAddress && (
+                  <AddressInput
+                    id="recipient-field"
+                    className="block w-[90%] pr-3 pt-[3px] md:pt-[2px] md:pt-[1px] bg-transparent caret-n-600 text-n-600 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-0 focus:border-transparent text-lg font-mono"
+                    submitValue={checkIfOnNetwork}
+                    setRecipientInputMode={setRecipientInputMode}
+                  />
+                )}
+              </div>
+              <button type="submit" className="hidden" />
+            </div>
+          </form>
+        </div>
+        {recipientInputMode === RecipientInputMode.Submitted ||
+        recipientInputMode === RecipientInputMode.OnNetwork ? (
+          <div className="text-md text-n-300 text-sm font-mono ml-7 pb-1 md:pb-[1px]">
+            {ensName ? ensAddress ?? recipientWalletAddress : null}
           </div>
         ) : (
           <div
             className="text-sm md:text-xs text-n-300 ml-[29px] pl-2 md:pl-0 pb-1 md:pb-[3px]"
-            data-testid="message-to-subtext"
-          >
-            {recipientInputMode === RecipientInputMode.NotOnNetwork && 'Recipient is not on the XMTP network'}
-            {recipientInputMode === RecipientInputMode.FindingEntry && 'Finding ENS domain...'}
-            {recipientInputMode === RecipientInputMode.InvalidEntry && 'Please enter a valid wallet address'}
-            {recipientInputMode === RecipientInputMode.ValidEntry && <br />}
+            data-testid="message-to-subtext">
+            {getRecipientInputSubtext(recipientInputMode)}
           </div>
         )}
       </div>
-    </>
+      {recipientInputMode === RecipientInputMode.OnNetwork && <Conversation />}
+    </div>
   );
 };
 

@@ -1,74 +1,61 @@
-import { Client } from '@xmtp/xmtp-js';
-import { Signer } from 'ethers';
-import { useCallback, useEffect, useState } from 'react';
-import { getAppVersion, getEnv, loadKeys, storeKeys, wipeKeys } from '../helpers';
-import { useAppStore } from '../store/app';
-import { useConversationCache } from '../store/conversationCache';
-import { useXmtpStore } from '../store/xmtp';
+import { Client } from "@xmtp/xmtp-js";
+import { useEffect, useState } from "react";
+import { useAccount, useSigner } from "wagmi";
+import { address } from "../components/Address";
+import { getAppVersion, getEnv, loadKeys, storeKeys } from "../helpers";
+import { useConversationCache } from "../store/conversationCache";
+import { useXmtpStore } from "../store/xmtp";
 
-const useInitXmtpClient = (cacheOnly = false) => {
-  const signer = useAppStore((state) => state.signer);
-  const address = useAppStore((state) => state.address) ?? '';
-  const client = useAppStore((state) => state.client);
-  const setClient = useAppStore((state) => state.setClient);
-  const resetAppState = useAppStore((state) => state.resetAppState);
-  const resetXmtpState = useXmtpStore((state) => state.resetXmtpState);
+const useInitXmtpClient = () => {
+  const { data: signer } = useSigner();
+  const { address } = useAccount();
+  const client = useXmtpStore((state) => state.client);
+  const setClient = useXmtpStore((state) => state.setClient);
   const [isRequestPending, setIsRequestPending] = useState(false);
-  const conversationExports = useConversationCache((state) => state.conversations[address]);
+  const conversationExports = useConversationCache(
+    (state) => state.conversations[address as address],
+  );
 
-  const disconnect = () => {
-    resetAppState();
-    resetXmtpState();
-    if (signer) {
-      wipeKeys(address);
+  const initClient = async () => {
+    if (signer && !client) {
+      try {
+        const address = await signer.getAddress();
+        setIsRequestPending(true);
+        let keys = loadKeys(address);
+        if (!keys) {
+          keys = await Client.getKeys(signer, {
+            env: getEnv(),
+            appVersion: getAppVersion(),
+          });
+          storeKeys(address, keys);
+        }
+        const xmtp = await Client.create(null, {
+          env: getEnv(),
+          appVersion: getAppVersion(),
+          privateKeyOverride: keys,
+        });
+        if (conversationExports && conversationExports.length) {
+          // Preload the client with conversations from the cache
+          await xmtp.conversations.import(conversationExports);
+        }
+        setClient(xmtp);
+        setIsRequestPending(false);
+      } catch (e) {
+        console.error(e);
+        setClient(null);
+        setIsRequestPending(false);
+      }
     }
   };
 
-  const initClient = useCallback(
-    async (wallet: Signer) => {
-      if (wallet && !client && address) {
-        try {
-          setIsRequestPending(true);
-          let keys = loadKeys(address);
-          if (!keys) {
-            if (cacheOnly) {
-              return;
-            }
-            keys = await Client.getKeys(wallet, {
-              env: getEnv(),
-              appVersion: getAppVersion()
-            });
-            storeKeys(address, keys);
-          }
-          const xmtp = await Client.create(null, {
-            env: getEnv(),
-            appVersion: getAppVersion(),
-            privateKeyOverride: keys
-          });
-          if (conversationExports && conversationExports.length) {
-            // Preload the client with conversations from the cache
-            await xmtp.conversations.import(conversationExports);
-          }
-          setClient(xmtp);
-          setIsRequestPending(false);
-        } catch (e) {
-          console.error(e);
-          setClient(null);
-          setIsRequestPending(false);
-        }
-      }
-    },
-    [client, address]
-  );
-
   useEffect(() => {
     if (!isRequestPending) {
-      signer ? initClient(signer) : disconnect();
+      signer && initClient();
     }
-  }, [signer, initClient, address]);
+  }, [signer]);
 
   return {
-    initClient
+    initClient,
   };
 };
 

@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
-import { Conversation, DecodedMessage } from '@xmtp/xmtp-js';
-import create from 'zustand';
-import getUniqueMessages from '../helpers/getUniqueMessages';
+import { Conversation, DecodedMessage, Client } from "@xmtp/xmtp-js";
+import { create } from "zustand";
+import { address } from "../components/Address";
+import getUniqueMessages from "../helpers/getUniqueMessages";
 
 interface XmtpState {
   conversations: Map<string, Conversation>;
@@ -13,14 +14,22 @@ interface XmtpState {
   setPreviewMessage: (key: string, message: DecodedMessage) => void;
   setPreviewMessages: (previewMessages: Map<string, DecodedMessage>) => void;
   addMessages: (key: string, newMessages: DecodedMessage[]) => number;
+  client: Client | undefined | null;
+  setClient: (client: Client | undefined | null) => void;
+  recipientWalletAddress: string | address;
+  setRecipientWalletAddress: (address: string) => void;
+  conversationId?: string;
+  setConversationId: (conversationId?: string) => void;
   resetXmtpState: () => void;
 }
 
 export const useXmtpStore = create<XmtpState>((set) => ({
   conversations: new Map(),
-  setConversations: (conversations: Map<string, Conversation>) => set(() => ({ conversations })),
+  setConversations: (conversations: Map<string, Conversation>) =>
+    set(() => ({ conversations })),
   loadingConversations: false,
-  setLoadingConversations: (loadingConversations: boolean) => set(() => ({ loadingConversations })),
+  setLoadingConversations: (loadingConversations: boolean) =>
+    set(() => ({ loadingConversations })),
   convoMessages: new Map(),
   previewMessages: new Map(),
   setPreviewMessage: (key: string, message: DecodedMessage) =>
@@ -46,12 +55,22 @@ export const useXmtpStore = create<XmtpState>((set) => ({
     });
     return numAdded;
   },
+  client: undefined,
+  setClient: (client: Client | undefined | null) => set(() => ({ client })),
+  recipientWalletAddress: "",
+  setRecipientWalletAddress: (address) =>
+    set(() => ({ recipientWalletAddress: address })),
+  conversationId: "",
+  setConversationId: (conversationId) => set(() => ({ conversationId })),
   resetXmtpState: () =>
     set(() => {
       return {
+        client: undefined,
         conversations: new Map(),
         convoMessages: new Map(),
-        previewMessages: new Map()
+        previewMessages: new Map(),
+        recipientWalletAddress: "",
+        conversationId: undefined,
       };
-    })
+    }),
 }));

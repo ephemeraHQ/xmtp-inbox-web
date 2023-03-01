@@ -1,8 +1,8 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { ConversationExport } from '@xmtp/xmtp-js/dist/types/src/conversations/Conversation';
-import { getEnv } from '../helpers';
-import { CONVERSATION_CACHE_VERSION } from '../helpers/constants';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import { ConversationExport } from "@xmtp/xmtp-js/dist/types/src/conversations/Conversation";
+import { getEnv } from "../helpers";
+import { CONVERSATION_CACHE_VERSION } from "../helpers/constants";
 
 /**
  * The ConversationCache is a JSON serializable Zustand store that is persisted to LocalStorage
@@ -12,10 +12,16 @@ interface ConversationCache {
   // Mapping of conversation exports, keyed by wallet address
   conversations: { [walletAddress: string]: ConversationExport[] };
   // Overwrite the cache for a given wallet address
-  setConversations: (walletAddress: string, conversations: ConversationExport[]) => void;
+  setConversations: (
+    walletAddress: string,
+    conversations: ConversationExport[],
+  ) => void;
   // Add a single conversation to the cache.
   // Deduping only happens at the time the cache is loaded, so be careful to not overfill or you will use more LocalStorage space than necessary
-  addConversation: (walletAddress: string, conversation: ConversationExport) => void;
+  addConversation: (
+    walletAddress: string,
+    conversation: ConversationExport,
+  ) => void;
 }
 
 export const useConversationCache = create<ConversationCache>()(
@@ -23,18 +29,25 @@ export const useConversationCache = create<ConversationCache>()(
     (set, get) => ({
       conversations: {},
       setConversations: (walletAddress: string, convos: ConversationExport[]) =>
-        set({ conversations: { ...get().conversations, [walletAddress]: convos } }),
+        set({
+          conversations: { ...get().conversations, [walletAddress]: convos },
+        }),
       addConversation: (walletAddress: string, convo: ConversationExport) => {
         const existing = get().conversations;
         const existingForWallet = existing[walletAddress] || [];
-        return set({ conversations: { ...existing, [walletAddress]: [...existingForWallet, convo] } });
-      }
+        return set({
+          conversations: {
+            ...existing,
+            [walletAddress]: [...existingForWallet, convo],
+          },
+        });
+      },
     }),
     {
       // Ensure that the LocalStorage key includes the network and the cache version
       // If any breaking changes to the ConversationExport schema occur, increment the cache version.
       name: `xmtp:conversations:${getEnv()}:v${CONVERSATION_CACHE_VERSION}`,
-      partialize: (state) => ({ conversations: state.conversations })
-    }
-  )
+      partialize: (state) => ({ conversations: state.conversations }),
+    },
+  ),
 );

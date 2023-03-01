@@ -1,13 +1,20 @@
-import React from 'react';
-import Avatar from '../Avatar';
+import React from "react";
+import { WagmiConfig } from "wagmi";
+import { mockClient } from "../../cypress/mock_wagmi_client";
+import { address } from "../Address";
+import Avatar from "../Avatar";
 
 const props = {
-  peerAddress: '123 Peer Test'
+  peerAddress: "0x321312321" as address,
 };
 
-describe('<Avatar />', () => {
-  it('renders', () => {
+describe("<Avatar />", () => {
+  it("renders", () => {
     // see: https://on.cypress.io/mounting-react
-    cy.mount(<Avatar {...props} />);
+    cy.mount(
+      <WagmiConfig client={mockClient}>
+        <Avatar {...props} />
+      </WagmiConfig>,
+    );
   });
 });

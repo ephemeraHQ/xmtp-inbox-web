@@ -9,7 +9,7 @@
   transform-origin: 20px 20px;
 }
 .lds-roller div:after {
-  content: ' ';
+  content: " ";
   display: block;
   position: absolute;
   width: 6px;
@@ -74,6 +74,42 @@
   top: 0px;
   left: 25px;
 }
+
+.btnLoaderLight {
+  border-color: #c2c6d2;
+}
+
+.btnLoaderDark {
+  border-color: #31006e;
+}
+
+.btnLoader {
+  border-style: solid;
+  border-top-color: transparent;
+}
+
+.btnLoaderXs {
+  border-width: 2px;
+  width: 20px;
+  height: 20px;
+}
+
+.btnLoaderSm {
+  border-width: 2px;
+  width: 24px;
+  height: 24px;
+}
+
+.btnLoaderLg {
+  border-width: 4px;
+  width: 36px;
+  height: 36px;
+}
+
+.animateSpin {
+  animation: lds-roller 1s linear infinite;
+}
+
 @keyframes lds-roller {
   0% {
     transform: rotate(0deg);
