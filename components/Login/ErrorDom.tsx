@@ -6,7 +6,7 @@ import {
   LoginPageHeaderText,
   LoginPageInfoText,
   LoginSubText,
-} from "./ConnectingDom";
+} from "./LoginDomTextElements";
 
 const ErrorDom = ({ cta }: { cta?: () => void }) => {
   return (
@@ -14,7 +14,7 @@ const ErrorDom = ({ cta }: { cta?: () => void }) => {
       <div>
         <ExclamationIcon className="text-red-600" width={64} />
       </div>
-      <LoginPageHeaderText text="Something went wrong..." />
+      <LoginPageHeaderText isLoading={false} text="Something went wrong..." />
       <LoginPageInfoText text="A properly detailed error message describing the error goes here." />
       <div className="mt-2">
         <Button

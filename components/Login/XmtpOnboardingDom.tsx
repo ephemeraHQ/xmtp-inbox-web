@@ -1,9 +1,7 @@
 import { ArrowCircleRightIcon } from "@heroicons/react/outline";
 import React from "react";
 import { Button } from "../../component-library/Button";
-import { classNames } from "../../helpers";
-import Loader from "../Loader";
-import { LoginPageHeaderText, LoginPageInfoText } from "./ConnectingDom";
+import { LoginPageHeaderText, LoginPageInfoText } from "./LoginDomTextElements";
 import DisconnectButton from "./DisconnectButton";
 
 type XmtpOnboardingDomProps = {
@@ -11,7 +9,6 @@ type XmtpOnboardingDomProps = {
   ctaText: string;
   infoText: string;
   stepNumber: string;
-  imgSrc: string;
   loadingHeader: string;
   header: string;
   isLoading: boolean;
@@ -23,32 +20,17 @@ const XmtpOnboardingDom = ({
   isLoading,
   infoText,
   stepNumber,
-  imgSrc,
   loadingHeader,
   header,
 }: XmtpOnboardingDomProps) => {
   return (
     <>
-      <div>
-        {isLoading ? (
-          <Loader isLoading={isLoading} />
-        ) : (
-          <img
-            className="sm:h-[75vh] md:h-[84vh] w-auto"
-            src={imgSrc}
-            alt="XMTP Onboarding Img"
-          />
-        )}
-      </div>
-      <div className="md:max-w-[35%] sm:max-w-[75%]">
-        <div
-          className={classNames(
-            "text-base",
-            isLoading ? "md:mt-[12px]" : "md:mt-[-172px]",
-          )}>
-          Step {stepNumber} of 2
-        </div>
-        <LoginPageHeaderText text={isLoading ? loadingHeader : header} />
+      <div className="md:max-w-[45%] sm:max-w-[75%]">
+        <LoginPageHeaderText
+          stepNumber={stepNumber}
+          text={isLoading ? loadingHeader : header}
+          isLoading={isLoading}
+        />
         <LoginPageInfoText
           text={
             isLoading

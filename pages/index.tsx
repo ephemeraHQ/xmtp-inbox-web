@@ -6,9 +6,15 @@ import useInitXmtpClient from "../hooks/useInitXmtpClient";
 import useHandleConnect from "../hooks/useHandleConnect";
 import { useAccount } from "wagmi";
 import { useRouter } from "next/router";
-import ConnectingDom from "../components/Login/ConnectingDom";
-import ConnectWalletDom from "../components/Login/ConnectWalletDom";
+import {
+  LoginPageHeaderText,
+  LoginPageInfoText,
+  LoginSubText,
+} from "../components/Login/LoginDomTextElements";
 import XmtpOnboardingDom from "../components/Login/XmtpOnboardingDom";
+import Loader from "../components/Loader";
+import { Button } from "../component-library/Button";
+import { ArrowCircleRightIcon } from "@heroicons/react/outline";
 
 const Home: NextPage = () => {
   const client = useXmtpStore((state) => state.client);
@@ -30,23 +36,56 @@ const Home: NextPage = () => {
   }, [client, address, newAccount]);
 
   return (
-    <div className="h-[100vh] p-6 bg-[url('/login-bg.png')] bg-no-repeat bg-cover">
-      {!address && client === null && (
+    <div className="h-[100vh] bg-[url('/login-bg.png')] bg-no-repeat bg-cover">
+      {!address && !client && (
         <div
-          className="flex justify-end text-sm font-bold text-p-500 underline cursor-pointer"
+          className="flex justify-end text-sm font-bold text-p-500 underline cursor-pointer absolute right-4 top-4"
           onClick={() => {
             window.open("https://demo.xmtp.chat", "_blank");
           }}>
           Try a demo
         </div>
       )}
-      <div className="flex flex-col items-center justify-center mx-6 text-center h-full">
+      <div className="flex flex-col items-center mx-6 text-center h-full">
+        <div>
+          {isLoading ? (
+            <Loader isLoading={isLoading} />
+          ) : (
+            <img
+              className="sm:h-[80vh] md:h-[90vh] w-auto"
+              src="/login-page-step-img.png"
+              alt="XMTP Onboarding Img"
+            />
+          )}
+        </div>
         {isDisconnected ? (
-          <ConnectWalletDom handleConnect={handleConnect} />
+          <>
+            <LoginPageHeaderText
+              text="Your interoperable web3 inbox"
+              isLoading={isLoading}
+            />
+            <LoginPageInfoText text="You're just a few steps away from secure, wallet-to-wallet messaging" />
+            <div className="mt-2">
+              <Button
+                onClick={handleConnect}
+                category="text"
+                label="Connect your wallet"
+                icon={<ArrowCircleRightIcon width={20} />}
+              />
+            </div>
+            <LoginSubText />
+          </>
         ) : (
           <>
             {isConnecting && !isDisconnected ? (
-              <ConnectingDom />
+              <div>
+                <LoginPageHeaderText
+                  text="Connecting to your wallet..."
+                  isLoading={isLoading}
+                />
+                <LoginPageInfoText text="Look for a signature dialog in the wallet you previously selected." />
+                <LoginSubText />
+              </div>
             ) : (
               <>
                 {newAccount && !client ? (
@@ -56,7 +95,6 @@ const Home: NextPage = () => {
                     ctaText="Create XMTP identity"
                     infoText="Now that your wallet is connected, we're going to create your XMTP identity on our network with a wallet signature."
                     stepNumber="1"
-                    imgSrc="/login-page-step-img.png"
                     header="Create your XMTP identity"
                     loadingHeader="Creating your XMTP identity..."
                   />
@@ -67,7 +105,6 @@ const Home: NextPage = () => {
                     ctaText="Enable XMTP Identity"
                     infoText="You’re activated on the XMTP network! Now let’s enable your ability to start messaging and you can start messaging wallets right away."
                     stepNumber="2"
-                    imgSrc="/login-page-step-img.png"
                     header="Enable messaging on XMTP"
                     loadingHeader="Almost there! One more signature."
                   />
