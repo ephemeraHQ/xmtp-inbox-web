@@ -60,7 +60,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
       <ConversationView>
         {walletAddress && client ? (
           <>
-            <div className="flex bg-zinc-50 border-b border-gray-200 md:bg-white md:border-0 max-h-16 min-h-[4rem]">
+            <div className="flex border-b border-gray-200 bg-white md:border-0 max-h-16 min-h-[4rem]">
               <RecipientControl setShowMessageView={setShowMessageView} />
             </div>
             {children}

@@ -11,7 +11,6 @@ import {
   recipientPillInputStyle,
   isValidLongWalletAddress,
 } from "../../helpers";
-import { useAccount } from "wagmi";
 import { getRecipientInputSubtext } from "../../helpers";
 import Avatar from "../Avatar";
 import { address } from "../Address";
@@ -38,7 +37,6 @@ const RecipientControl = ({
   const { isValid, ensName, ensAddress } = useWalletAddress();
   const conversations = useXmtpStore((state) => state.conversations);
   const setConversations = useXmtpStore((state) => state.setConversations);
-  const { address: walletAddress } = useAccount();
 
   const checkIfOnNetwork = async (address: string) => {
     let canMessage;
@@ -89,8 +87,6 @@ const RecipientControl = ({
       setLookupValue();
     }
   }, [recipientInputMode, recipientWalletAddress, conversationId]);
-
-  const userIsSender = recipientWalletAddress === walletAddress;
 
   return (
     <div className="flex-col flex-1">
