@@ -1,27 +1,56 @@
 import type { NextPage } from "next";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useXmtpStore } from "../store/xmtp";
 import { watchAccount } from "@wagmi/core";
 import useInitXmtpClient from "../hooks/useInitXmtpClient";
 import useHandleConnect from "../hooks/useHandleConnect";
 import { useAccount } from "wagmi";
 import { useRouter } from "next/router";
-import {
-  LoginPageHeaderText,
-  LoginPageInfoText,
-  LoginSubText,
-} from "../components/Login/LoginDomTextElements";
-import XmtpOnboardingDom from "../components/Login/XmtpOnboardingDom";
 import Loader from "../components/Loader";
 import { PillButton } from "../component-library/components/PillButton/PillButton";
+import DisconnectButton from "../components/Login/DisconnectButton";
+import { classNames } from "../helpers";
+
+const LoginPageHeaderText = ({
+  text,
+  isLoading,
+  stepNumber,
+}: {
+  text: string;
+  isLoading: boolean;
+  stepNumber: number;
+}) => (
+  <>
+    {(stepNumber === 2 || stepNumber === 3) && (
+      <div
+        className={classNames(
+          "text-base",
+          isLoading ? "mt-[12px]" : "mt-[-172px]",
+        )}>
+        Step {stepNumber - 1} of 2
+      </div>
+    )}
+    <div
+      className={classNames(
+        "font-bold",
+        "text-3xl",
+        "text-center",
+        stepNumber === 1 ? (isLoading ? "mt-[12px]" : "mt-[-172px]") : null,
+      )}>
+      {text}
+    </div>
+  </>
+);
 
 const Home: NextPage = () => {
   const client = useXmtpStore((state) => state.client);
+  const [step, setStep] = useState(1);
   const resetXmtpState = useXmtpStore((state) => state.resetXmtpState);
   const { address, isConnecting, isDisconnected } = useAccount();
   const { handleConnect } = useHandleConnect();
   const { createXmtpIdentity, newAccount, connectToXmtp, isLoading } =
     useInitXmtpClient();
+  const [loading, setLoading] = useState(isLoading);
   const router = useRouter();
 
   useEffect(() => {
@@ -34,6 +63,67 @@ const Home: NextPage = () => {
     }
   }, [client, address, newAccount]);
 
+  useEffect(() => {
+    if (isDisconnected) {
+      setStep(1);
+      setLoading(false);
+    } else if (isConnecting && !isDisconnected) {
+      setStep(1);
+      setLoading(true);
+    } else if (newAccount && !client) {
+      setStep(2);
+    } else {
+      setStep(3);
+    }
+  }, [client, isConnecting, isDisconnected, newAccount]);
+
+  const stepMapping = {
+    [1 as number]: {
+      default: {
+        header: "Your interoperable web3 inbox",
+        subheader:
+          "You're just a few steps away from secure, wallet-to-wallet messaging",
+        subtext: "No private keys will be shared",
+        ctaText: "Connect Your Wallet",
+        cta: handleConnect,
+      },
+      loading: {
+        header: "Connecting to your wallet...",
+        subheader:
+          "Look for a signature dialog in the wallet you previously selected",
+        subtext: "No private keys will be shared",
+      },
+    },
+    [2 as number]: {
+      default: {
+        header: "Create your XMTP identity",
+        subheader:
+          "Now that your wallet is connected, we're going to create your XMTP identity on our network with a wallet signature.",
+        ctaText: "Create XMTP Identity",
+        cta: createXmtpIdentity,
+      },
+      loading: {
+        header: "Creating your XMTP identity...",
+        subheader:
+          "Look for a confirmation dialog in the wallet you've selected.",
+      },
+    },
+    [3 as number]: {
+      default: {
+        header: "Enable messaging on XMTP",
+        subheader:
+          "You're activated on the XMTP network! Now let's enable your ability to start messaging and you can start messaging wallets right away.",
+        ctaText: "Enable XMTP Identity",
+        cta: connectToXmtp,
+      },
+      loading: {
+        header: "Almost there! One more signature.",
+        subheader:
+          "Look for a confirmation dialog in the wallet you've selected.",
+      },
+    },
+  };
+
   return (
     <div className="h-[100vh] bg-[url('/login-bg.png')] bg-no-repeat bg-cover">
       {!address && !client && (
@@ -45,10 +135,14 @@ const Home: NextPage = () => {
           Try a demo
         </div>
       )}
-      <div className="flex flex-col items-center mx-6 text-center h-full">
+      <div
+        className={classNames(
+          "flex flex-col items-center mx-6 text-center h-full",
+          loading ? "justify-center" : null,
+        )}>
         <div>
-          {isLoading ? (
-            <Loader isLoading={isLoading} />
+          {loading ? (
+            <Loader isLoading={loading} />
           ) : (
             <img
               className="sm:h-[80vh] md:h-[90vh] w-auto"
@@ -57,56 +151,34 @@ const Home: NextPage = () => {
             />
           )}
         </div>
-        {isDisconnected ? (
-          <>
-            <LoginPageHeaderText
-              text="Your interoperable web3 inbox"
-              isLoading={isLoading}
+        <div className="md:max-w-[45%] sm:max-w-[75%]">
+          <LoginPageHeaderText
+            stepNumber={step}
+            text={
+              loading
+                ? stepMapping[step].loading.header
+                : stepMapping[step].default.header
+            }
+            isLoading={loading}
+          />
+          <div className="text-lg mt-2 text-center">
+            {loading
+              ? stepMapping[step].loading.subheader
+              : stepMapping[step].default.subheader}
+          </div>
+          <div className="mt-2">
+            <PillButton
+              onClick={stepMapping[step].default.cta}
+              label={stepMapping[step].default.ctaText}
             />
-            <LoginPageInfoText text="You're just a few steps away from secure, wallet-to-wallet messaging" />
-            <div className="mt-2">
-              <PillButton onClick={handleConnect} label="Connect your wallet" />
+          </div>
+          {(step === 2 || step === 3) && <DisconnectButton />}
+          {stepMapping[step].default.subtext && (
+            <div className="text-base mt-2 font-bold text-gray-700">
+              No private keys will be shared
             </div>
-            <LoginSubText />
-          </>
-        ) : (
-          <>
-            {isConnecting && !isDisconnected ? (
-              <div>
-                <LoginPageHeaderText
-                  text="Connecting to your wallet..."
-                  isLoading={isLoading}
-                />
-                <LoginPageInfoText text="Look for a signature dialog in the wallet you previously selected." />
-                <LoginSubText />
-              </div>
-            ) : (
-              <>
-                {newAccount && !client ? (
-                  <XmtpOnboardingDom
-                    isLoading={isLoading}
-                    cta={createXmtpIdentity}
-                    ctaText="Create XMTP identity"
-                    infoText="Now that your wallet is connected, we're going to create your XMTP identity on our network with a wallet signature."
-                    stepNumber="1"
-                    header="Create your XMTP identity"
-                    loadingHeader="Creating your XMTP identity..."
-                  />
-                ) : (
-                  <XmtpOnboardingDom
-                    isLoading={isLoading}
-                    cta={connectToXmtp}
-                    ctaText="Enable XMTP Identity"
-                    infoText="You’re activated on the XMTP network! Now let’s enable your ability to start messaging and you can start messaging wallets right away."
-                    stepNumber="2"
-                    header="Enable messaging on XMTP"
-                    loadingHeader="Almost there! One more signature."
-                  />
-                )}
-              </>
-            )}
-          </>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
