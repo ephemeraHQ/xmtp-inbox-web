@@ -41,7 +41,6 @@ const XmtpOnboardingDom = ({
         <div className="mt-2">
           <Button
             onClick={cta}
-            category="text"
             label={ctaText}
             icon={<ArrowCircleRightIcon width={20} />}
           />

@@ -68,7 +68,6 @@ const Home: NextPage = () => {
             <div className="mt-2">
               <Button
                 onClick={handleConnect}
-                category="text"
                 label="Connect your wallet"
                 icon={<ArrowCircleRightIcon width={20} />}
               />

@@ -13,8 +13,8 @@ const DisconnectButton = () => {
   return (
     <div className="mb-2">
       <Button
-        buttonSize="small"
-        background="ghost"
+        size="small"
+        variant="ghost"
         primary={false}
         category="text"
         label="Disconnect wallet"
