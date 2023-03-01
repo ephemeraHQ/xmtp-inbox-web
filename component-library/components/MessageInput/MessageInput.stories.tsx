@@ -1,26 +1,26 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import { Input } from "./Input";
+import { MessageInput } from "./MessageInput";
 
 export default {
-  title: "Input/MessageInput",
-  component: Input,
+  title: "MessageInput",
+  component: MessageInput,
   argTypes: {
-    type: { control: false },
+    variant: { control: false },
     subtext: { control: false },
     avatarUrlProps: { control: false },
     isError: { control: false },
     isLoading: { control: false },
   },
-} as ComponentMeta<typeof Input>;
+} as ComponentMeta<typeof MessageInput>;
 
-const Template: ComponentStory<typeof Input> = (args) => (
-  <Input {...args} category="message" />
+const Template: ComponentStory<typeof MessageInput> = (args) => (
+  <MessageInput {...args} />
 );
 
-export const MessageInput = Template.bind({});
-MessageInput.args = {};
+export const MessageInputDefault = Template.bind({});
+MessageInputDefault.args = {};
 
 export const MessageInputDisabled = Template.bind({});
 MessageInputDisabled.args = {

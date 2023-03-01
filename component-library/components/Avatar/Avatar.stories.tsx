@@ -3,8 +3,11 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { Avatar } from "./Avatar";
 
 export default {
-  title: "Avatar/Avatars",
+  title: "Avatar",
   component: Avatar,
+  argTypes: {
+    address: { control: false },
+  },
 } as ComponentMeta<typeof Avatar>;
 
 const Template: ComponentStory<typeof Avatar> = (args) => (
@@ -13,7 +16,7 @@ const Template: ComponentStory<typeof Avatar> = (args) => (
 
 export const AvatarWithCustomImage = Template.bind({});
 AvatarWithCustomImage.args = {
-  avatarUrl: "https://picsum.photos/200/300",
+  url: "https://picsum.photos/200/300",
 };
 
 export const AvatarWithoutCustomImage = Template.bind({});

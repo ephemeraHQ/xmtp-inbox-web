@@ -28,8 +28,8 @@ export const ButtonLoader = ({ size, color }: ButtonLoaderProps) => {
             ? loaderStyles.btnLoaderLight
             : loaderStyles.btnLoaderDark,
           size === "small"
-            ? loaderStyles.btnLoaderSm
-            : loaderStyles.btnLoaderLg,
+            ? loaderStyles.btnLoaderXs
+            : loaderStyles.btnLoaderSm,
           loaderStyles.animateSpin,
         )}
       />
