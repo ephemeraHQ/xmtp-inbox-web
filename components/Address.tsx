@@ -6,9 +6,14 @@ export type address = `0x${string}`;
 type AddressProps = {
   address: address;
   className?: string;
+  children?: React.ReactNode;
 };
 
-const Address = ({ address, className }: AddressProps): JSX.Element => {
+const Address = ({
+  address,
+  className,
+  children,
+}: AddressProps): JSX.Element => {
   const { ensName, isLoading } = useWalletAddress(address);
 
   return (
@@ -21,6 +26,7 @@ const Address = ({ address, className }: AddressProps): JSX.Element => {
       title={address}
       data-testid="connected-footer-secondary-text">
       {ensName || shortAddress(address)}
+      {children}
     </span>
   );
 };

@@ -3,8 +3,8 @@ import { Conversation } from "@xmtp/xmtp-js";
 import { getConversationId, isEnsAddress } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
 import { fetchEnsAddress } from "@wagmi/core";
-import NoConversationsMessage from "./Conversation/NoConversationMessage";
 import ConversationTile from "./Conversation/ConversationTile";
+import NoMessageDom from "./NoMessageDom";
 
 const ConversationsList = (): JSX.Element => {
   const conversations = useXmtpStore((state) => state.conversations);
@@ -75,7 +75,7 @@ const ConversationsList = (): JSX.Element => {
   }, [window?.location?.pathname]);
 
   if (!conversations || conversations.size == 0) {
-    return <NoConversationsMessage />;
+    return <NoMessageDom />;
   }
 
   return (

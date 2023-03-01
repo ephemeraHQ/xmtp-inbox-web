@@ -1,29 +1,26 @@
 import React from "react";
-import { useAccount } from "wagmi";
 import { classNames } from "../helpers";
 import Address, { address } from "./Address";
 
 type addressPillProps = {
   address: address;
+  userIsSender: boolean;
 };
 
-const AddressPill = ({ address }: addressPillProps): JSX.Element => {
-  const { address: walletAddress } = useAccount();
-  const userIsSender = address === walletAddress;
+const AddressPill = ({
+  address,
+  userIsSender,
+}: addressPillProps): JSX.Element => {
   return (
     <Address
       className={classNames(
-        "rounded-2xl",
-        "border",
-        "text-md",
-        "mr-2",
         "px-2",
-        "py-1",
         "font-bold",
-        userIsSender ? "bg-bt-100 text-b-600" : "bg-zinc-50",
-        userIsSender ? "border-bt-300" : "border-gray-300",
+        userIsSender ? "text-indigo-600" : "text-black",
       )}
-      address={address}></Address>
+      address={address}>
+      {userIsSender && " (you)"}
+    </Address>
   );
 };
 

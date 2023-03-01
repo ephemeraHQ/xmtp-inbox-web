@@ -2,11 +2,12 @@ import { DecodedMessage } from "@xmtp/xmtp-js";
 import React, { FC } from "react";
 import Emoji from "react-emoji-render";
 import Avatar from "../Avatar";
-import { formatTime } from "../../helpers";
+import { classNames, formatTime } from "../../helpers";
 import AddressPill from "../AddressPill";
 import InfiniteScroll from "react-infinite-scroll-component";
 import useWindowSize from "../../hooks/useWindowSize";
 import { address } from "../Address";
+import { useAccount } from "wagmi";
 
 export type MessageListProps = {
   messages: DecodedMessage[];
@@ -29,28 +30,55 @@ const formatDate = (d?: Date) =>
     day: "numeric",
   });
 
-const MessageTile = ({ message }: MessageTileProps): JSX.Element => (
-  <div className="flex items-start mx-auto mb-4">
-    <Avatar peerAddress={message.senderAddress as address} />
-    <div className="ml-2 max-w-[90%]">
-      <div>
-        <AddressPill address={message.senderAddress as address} />
-        <span className="text-sm font-normal place-self-end text-n-300 text-md uppercase">
+const MessageTile = ({ message }: MessageTileProps): JSX.Element => {
+  const { address: walletAddress } = useAccount();
+  const userIsSender = message.senderAddress === walletAddress;
+
+  return (
+    <div
+      className={classNames(
+        "flex items-start mx-auto mb-4",
+        userIsSender ? "justify-end" : "justify-start",
+      )}>
+      <div className={classNames("mx-4 max-w-[90%]")}>
+        <div
+          className={classNames(
+            "flex",
+            userIsSender ? "justify-end" : "justify-start",
+          )}>
+          <AddressPill
+            address={message.senderAddress as address}
+            userIsSender={userIsSender}
+          />
+        </div>
+        <div
+          className={classNames(
+            "block text-md px-2 mt-1 font-normal break-words px-3 py-5",
+            userIsSender
+              ? "bg-indigo-600 text-white"
+              : "bg-gray-200 text-black",
+            userIsSender
+              ? "rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl"
+              : "rounded-tl-2xl rounded-tr-2xl rounded-br-2xl",
+          )}
+          data-testid={"message-tile-text"}>
+          {message.error ? (
+            `Error: ${message.error?.message}`
+          ) : (
+            <Emoji text={message.content || ""} />
+          )}
+        </div>
+        <div
+          className={classNames(
+            "mt-1 text-sm font-normal flex text-n-300 text-md uppercase",
+            userIsSender ? "mr-2 justify-end" : "ml-2 justify-start",
+          )}>
           {formatTime(message.sent)}
-        </span>
+        </div>
       </div>
-      <span
-        className="block text-md px-2 mt-2 text-black font-normal break-words"
-        data-testid={"message-tile-text"}>
-        {message.error ? (
-          `Error: ${message.error?.message}`
-        ) : (
-          <Emoji text={message.content || ""} />
-        )}
-      </span>
     </div>
-  </div>
-);
+  );
+};
 
 const DateDividerBorder: React.FC<{ children?: React.ReactNode }> = ({
   children,
@@ -101,7 +129,7 @@ const MessagesList = ({
       dataLength={messages.length}
       next={fetchNextMessages}
       className="flex flex-col-reverse overflow-y-auto pl-4"
-      height={size[1] > 700 ? "87vh" : "83vh"}
+      height={size[1] > 700 ? "86vh" : "83vh"}
       inverse
       endMessage={!messages.length && <ConversationBeginningNotice />}
       hasMore={hasMore}
