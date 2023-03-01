@@ -13,8 +13,7 @@ import {
 } from "../components/Login/LoginDomTextElements";
 import XmtpOnboardingDom from "../components/Login/XmtpOnboardingDom";
 import Loader from "../components/Loader";
-import { Button } from "../component-library/Button";
-import { ArrowCircleRightIcon } from "@heroicons/react/outline";
+import { PillButton } from "../component-library/components/PillButton/PillButton";
 
 const Home: NextPage = () => {
   const client = useXmtpStore((state) => state.client);
@@ -66,11 +65,7 @@ const Home: NextPage = () => {
             />
             <LoginPageInfoText text="You're just a few steps away from secure, wallet-to-wallet messaging" />
             <div className="mt-2">
-              <Button
-                onClick={handleConnect}
-                label="Connect your wallet"
-                icon={<ArrowCircleRightIcon width={20} />}
-              />
+              <PillButton onClick={handleConnect} label="Connect your wallet" />
             </div>
             <LoginSubText />
           </>

@@ -1,6 +1,5 @@
-import { ArrowCircleRightIcon } from "@heroicons/react/outline";
 import React from "react";
-import { Button } from "../component-library/Button";
+import { PillButton } from "../component-library/components/PillButton/PillButton";
 
 const NoMessageDom = () => {
   return (
@@ -12,12 +11,7 @@ const NoMessageDom = () => {
       <div className="text-sm mt-1 mb-2">
         Start a conversation to get going!
       </div>
-      <Button
-        buttonSize="small"
-        category="text"
-        label="Compose your first message"
-        icon={<ArrowCircleRightIcon width={20} />}
-      />
+      <PillButton size="small" label="Compose your first message" />
     </div>
   );
 };

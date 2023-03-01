@@ -1,8 +1,8 @@
 import { ArrowCircleRightIcon } from "@heroicons/react/outline";
 import React from "react";
-import { Button } from "../../component-library/Button";
 import { LoginPageHeaderText, LoginPageInfoText } from "./LoginDomTextElements";
 import DisconnectButton from "./DisconnectButton";
+import { PillButton } from "../../component-library/components/PillButton/PillButton";
 
 type XmtpOnboardingDomProps = {
   cta: () => void;
@@ -39,11 +39,7 @@ const XmtpOnboardingDom = ({
           }
         />
         <div className="mt-2">
-          <Button
-            onClick={cta}
-            label={ctaText}
-            icon={<ArrowCircleRightIcon width={20} />}
-          />
+          <PillButton onClick={cta} label={ctaText} />
         </div>
         <DisconnectButton />
       </div>

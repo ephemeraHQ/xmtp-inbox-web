@@ -1,7 +1,7 @@
 import { ArrowRightIcon } from "@heroicons/react/outline";
 import React from "react";
 import { useAccount, useDisconnect } from "wagmi";
-import { Button } from "../../component-library/Button";
+import { GhostButton } from "../../component-library/components/GhostButton/GhostButton";
 import { wipeKeys } from "../../helpers";
 import { useXmtpStore } from "../../store/xmtp";
 
@@ -12,11 +12,8 @@ const DisconnectButton = () => {
 
   return (
     <div className="mb-2">
-      <Button
+      <GhostButton
         size="small"
-        variant="ghost"
-        primary={false}
-        category="text"
         label="Disconnect wallet"
         icon={<ArrowRightIcon width={12} />}
         onClick={() => {

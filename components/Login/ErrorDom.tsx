@@ -1,7 +1,6 @@
-import { ArrowCircleRightIcon } from "@heroicons/react/outline";
 import { ExclamationIcon } from "@heroicons/react/solid";
 import React from "react";
-import { Button } from "../../component-library/Button";
+import { NegativePill } from "../../component-library/components/PillButton/PillButton.stories";
 import {
   LoginPageHeaderText,
   LoginPageInfoText,
@@ -17,13 +16,7 @@ const ErrorDom = ({ cta }: { cta?: () => void }) => {
       <LoginPageHeaderText isLoading={false} text="Something went wrong..." />
       <LoginPageInfoText text="A properly detailed error message describing the error goes here." />
       <div className="mt-2">
-        <Button
-          onClick={cta}
-          category="text"
-          primary={false}
-          label="Connect again"
-          icon={<ArrowCircleRightIcon width={20} />}
-        />
+        <NegativePill onClick={cta} label="Connect again" />
       </div>
       <LoginSubText />
     </>
