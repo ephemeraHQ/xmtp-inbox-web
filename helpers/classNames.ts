@@ -14,7 +14,6 @@ export const recipientPillInputStyle = (userIsSender: boolean) =>
     "font-mono",
     "overflow-visible",
     "text-center",
-    "text-transparent",
     "select-none",
     "text-black ",
     userIsSender ? "bg-bt-100" : "bg-zinc-50",
