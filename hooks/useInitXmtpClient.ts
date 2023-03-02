@@ -3,6 +3,10 @@ import { useEffect, useState } from "react";
 import { useSigner } from "wagmi";
 import { getAppVersion, getEnv, loadKeys, storeKeys } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
+import {
+  AttachmentCodec,
+  RemoteAttachmentCodec,
+} from "xmtp-content-type-remote-attachment";
 
 const useInitXmtpClient = () => {
   const { data: signer } = useSigner();
@@ -27,6 +31,7 @@ const useInitXmtpClient = () => {
           env: getEnv(),
           appVersion: getAppVersion(),
           privateKeyOverride: keys,
+          codecs: [new AttachmentCodec(), new RemoteAttachmentCodec()],
         });
         setClient(xmtp);
         setIsRequestPending(false);
