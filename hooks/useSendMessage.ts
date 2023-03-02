@@ -39,8 +39,7 @@ const useSendMessage = (
     async (message: string) => {
       if (attachment) {
         const web3Storage = new Web3Storage({
-          token:
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDdDRTI3ODdGODQ2MEFEMzc1RERlNEZBRmE2MTIwNTgxMjc1NzJlRjEiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2Nzc1MzMzMDc0NDcsIm5hbWUiOiJUZXN0In0.u7aofksiECPlAwLW7A1xl_l1LSY2rmrgjgTdDcARSjs",
+          token: "",
         });
 
         const encryptedEncoded = await RemoteAttachmentCodec.encodeEncrypted(
