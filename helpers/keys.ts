@@ -18,5 +18,6 @@ export const storeKeys = (walletAddress: string, keys: Uint8Array) => {
 };
 
 export const wipeKeys = (walletAddress: string) => {
+  // This will clear the conversation cache + the private keys
   localStorage.removeItem(buildLocalStorageKey(walletAddress));
 };

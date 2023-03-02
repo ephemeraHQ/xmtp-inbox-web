@@ -11,3 +11,5 @@ export const RecipientInputMode = {
   NotOnNetwork: 3,
   OnNetwork: 4,
 };
+
+export const CONVERSATION_CACHE_VERSION = 1;
