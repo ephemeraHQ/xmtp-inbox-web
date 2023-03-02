@@ -4,6 +4,7 @@ import { useAccount } from "wagmi";
 import { getConversationId } from "../helpers";
 import fetchMostRecentMessage from "../helpers/fetchMostRecentMessage";
 import { useXmtpStore } from "../store/xmtp";
+import { useConversationCache } from "../store/conversationCache";
 import useStreamAllMessages from "./useStreamAllMessages";
 
 export const useListConversations = () => {
@@ -17,6 +18,12 @@ export const useListConversations = () => {
   const setPreviewMessage = useXmtpStore((state) => state.setPreviewMessage);
   const setLoadingConversations = useXmtpStore(
     (state) => state.setLoadingConversations,
+  );
+  const setConversationCache = useConversationCache(
+    (state) => state.setConversations,
+  );
+  const addToConversationCache = useConversationCache(
+    (state) => state.addConversation,
   );
 
   useStreamAllMessages();
@@ -32,7 +39,6 @@ export const useListConversations = () => {
       setLoadingConversations(true);
       const newPreviewMessages = new Map(previewMessages);
       const convos = await client.conversations.list();
-
       const previews = await Promise.all(convos.map(fetchMostRecentMessage));
 
       for (const preview of previews) {
@@ -42,19 +48,22 @@ export const useListConversations = () => {
       }
       setPreviewMessages(newPreviewMessages);
 
-      Promise.all(
-        convos.map(async (convo) => {
-          if (convo.peerAddress !== walletAddress) {
-            conversations.set(getConversationId(convo), convo);
-            setConversations(new Map(conversations));
-          }
-        }),
-      ).then(() => {
-        setLoadingConversations(false);
-        if (Notification.permission === "default") {
-          Notification.requestPermission();
+      for (const convo of convos) {
+        if (convo.peerAddress !== walletAddress) {
+          conversations.set(getConversationId(convo), convo);
         }
-      });
+      }
+      setConversations(new Map(conversations));
+      setLoadingConversations(false);
+      if (Notification.permission === "default") {
+        Notification.requestPermission();
+      }
+
+      if (walletAddress) {
+        // Update the cache with the full conversation exports
+        const convoExports = await client.conversations.export();
+        setConversationCache(walletAddress, convoExports);
+      }
     };
 
     const streamConversations = async () => {
@@ -63,6 +72,12 @@ export const useListConversations = () => {
         if (convo.peerAddress !== walletAddress) {
           conversations.set(getConversationId(convo), convo);
           setConversations(new Map(conversations));
+
+          if (walletAddress) {
+            // Add the newly streamed conversation to the cache
+            addToConversationCache(walletAddress, convo.export());
+          }
+
           const preview = await fetchMostRecentMessage(convo);
           if (preview.message) {
             setPreviewMessage(preview.key, preview.message);
