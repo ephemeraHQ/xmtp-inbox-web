@@ -22,7 +22,7 @@ interface MessagePreviewCard {
   /**
    * What is the datetime of the message
    */
-  datetime?: string;
+  datetime?: Date;
   /**
    * Are we waiting on anything loading?
    */
@@ -38,7 +38,7 @@ export const MessagePreviewCard = ({
   text = "New message",
   avatar = <Avatar />,
   displayAddress = "New recipient",
-  datetime = formatDistanceToNow(new Date()),
+  datetime = new Date(),
   isLoading = false,
   onClick,
 }: MessagePreviewCard) => {
@@ -62,7 +62,9 @@ export const MessagePreviewCard = ({
       {isLoading ? (
         <IconLoader />
       ) : (
-        <div className="text-xs text-gray-400 w-1/4 text-right">{datetime}</div>
+        <div className="text-xs text-gray-400 w-1/4 text-right">
+          {formatDistanceToNow(datetime)}
+        </div>
       )}
     </div>
   );
