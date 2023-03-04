@@ -1,6 +1,7 @@
-import type {
+import {
   Attachment,
   RemoteAttachment,
+  ContentTypeRemoteAttachment,
 } from "xmtp-content-type-remote-attachment";
 import type { Filelike } from "web3.storage";
 import {
@@ -39,7 +40,8 @@ const useSendMessage = (
     async (message: string) => {
       if (attachment) {
         const web3Storage = new Web3Storage({
-          token: "",
+          token:
+            "",
         });
 
         const encryptedEncoded = await RemoteAttachmentCodec.encodeEncrypted(
@@ -48,12 +50,14 @@ const useSendMessage = (
         );
 
         const upload = new Upload(
-          "XMTP Encrypted Content",
+          "XMTPEncryptedContent",
           encryptedEncoded.payload,
         );
 
         const cid = await web3Storage.put([upload]);
-        const url = `https://${cid}.ipfs.w3s.link`;
+        const url = `https://${cid}.ipfs.w3s.link/XMTPEncryptedContent`;
+
+        console.log(`url is`, url)
 
         const remoteAttachment: RemoteAttachment = {
           url: url,
@@ -61,12 +65,15 @@ const useSendMessage = (
           salt: encryptedEncoded.salt,
           nonce: encryptedEncoded.nonce,
           secret: encryptedEncoded.secret,
-          scheme: "https",
+          scheme: "https://",
           filename: attachment.filename,
           contentLength: attachment.data.byteLength,
         };
 
-        await selectedConversation?.send(remoteAttachment);
+        await selectedConversation?.send(remoteAttachment, {
+          contentFallback: message,
+          contentType: ContentTypeRemoteAttachment,
+        });
       } else {
         await selectedConversation?.send(message);
       }

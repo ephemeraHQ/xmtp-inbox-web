@@ -48,7 +48,6 @@ const ConversationTile = ({
   }
 
   let preview: String;
-  console.log("latest message", latestMessage);
   if (!latestMessage) {
     preview = "";
   } else if (typeof latestMessage.content === "string") {

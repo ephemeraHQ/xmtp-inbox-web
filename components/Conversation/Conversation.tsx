@@ -66,7 +66,7 @@ const Conversation = (): JSX.Element => {
   }
 
   return (
-    <AttachmentWrapper setAttachment={setAttachment}>
+    <AttachmentWrapper attachment={attachment} setAttachment={setAttachment}>
       <div className="bg-white h-[calc(100vh-7rem)]">
         <div className="h-full flex justify-between flex-col">
           <MessagesList
@@ -76,7 +76,11 @@ const Conversation = (): JSX.Element => {
           />
         </div>
       </div>
-      <MessageComposer onSend={sendMessage} />
+      <MessageComposer
+        onSend={sendMessage}
+        attachment={attachment}
+        setAttachment={setAttachment}
+      />
     </AttachmentWrapper>
   );
 };

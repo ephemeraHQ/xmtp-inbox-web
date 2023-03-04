@@ -61,7 +61,7 @@ const RemoteAttachmentMessageTile = ({
               type: attachment.mimeType,
             }),
           );
-          console.log(`got an object url`, objectURL);
+
           setURL(objectURL);
           setStatus("loaded");
         }
@@ -79,14 +79,20 @@ const RemoteAttachmentMessageTile = ({
   return (
     <div>
       {status === "loading" ? "Loading…" : ""}
-      {url ? <img src={url} /> : ""}
-      <p>
+      {url ? (
+        <img src={url} style={{ maxHeight: "200px", borderRadius: "12px" }} />
+      ) : (
+        ""
+      )}
+      <small>
         {remoteAttachment.filename} -{" "}
-        {humanFileSize(remoteAttachment.contentLength)} -{" "}
-        <button onClick={load} type="button">
-          Load
-        </button>
-      </p>
+        {humanFileSize(remoteAttachment.contentLength)}
+        {status == "loaded" || (
+          <button onClick={load} type="button">
+            - Load
+          </button>
+        )}
+      </small>
     </div>
   );
 };

@@ -1,8 +1,9 @@
 import { PropsWithChildren } from "react";
 import type { Attachment } from "xmtp-content-type-remote-attachment";
-import React, { useState } from "react";
+import React, { useState, useRef, useLayoutEffect } from "react";
 
 type AttachmentWrapperProps = {
+  attachment?: Attachment;
   setAttachment: React.Dispatch<React.SetStateAction<Attachment | undefined>>;
 };
 
@@ -10,6 +11,15 @@ const AttachmentWrapper = (
   props: PropsWithChildren<AttachmentWrapperProps>,
 ): JSX.Element => {
   const [isDragActive, setIsDragActive] = useState(false);
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+
+  useLayoutEffect(() => {
+    if (bottomRef.current instanceof HTMLInputElement) {
+      if (bottomRef.current.parentNode instanceof HTMLElement) {
+        bottomRef.current.parentNode.scrollTop = 10000000;
+      }
+    }
+  }, [props.attachment]);
 
   // handle drag events
   const handleDrag = function (e: React.DragEvent<HTMLDivElement>) {
@@ -36,6 +46,7 @@ const AttachmentWrapper = (
       const fileReader = new FileReader();
       fileReader.addEventListener("load", async function (e: ProgressEvent) {
         const data = fileReader.result;
+        console.log("load called", data);
 
         if (!(data instanceof ArrayBuffer)) {
           console.log("no data");
@@ -50,11 +61,14 @@ const AttachmentWrapper = (
 
         props.setAttachment(attachment);
       });
+
+      fileReader.readAsArrayBuffer(file);
     }
   };
 
   return (
     <div
+      ref={bottomRef}
       className={isDragActive ? "bg-blue" : ""}
       onDragEnter={handleDrag}
       onDragLeave={handleDrag}
@@ -66,6 +80,7 @@ const AttachmentWrapper = (
           Drop it.
         </p>
       )}
+      <span ref={bottomRef}></span>
     </div>
   );
 };
