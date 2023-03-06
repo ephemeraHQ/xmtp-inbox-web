@@ -2,21 +2,20 @@ import { ChatAlt2Icon, ChevronDoubleRightIcon } from "@heroicons/react/solid";
 import { CogIcon, SparklesIcon } from "@heroicons/react/outline";
 import { classNames } from "../../../helpers";
 import { ListButton } from "../ListButton/ListButton";
-import { Avatar } from "../Avatar/Avatar";
 import { XmtpIcon } from "../Icons/XmtpIcon";
 
 interface SideNav {
   /**
    * Is Side Nav Open?
    */
-  isOpen: boolean;
+  isOpen?: boolean;
   /**
    * Contents inside side nav
    */
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
 }
 
-const SideNav = ({ isOpen, icon = <XmtpIcon /> }: SideNav) => {
+const SideNav = ({ isOpen = false, icon = <XmtpIcon /> }: SideNav) => {
   const closedNavListItems = (
     <div className="flex flex-col space-y-4 mt-10">
       <ListButton
