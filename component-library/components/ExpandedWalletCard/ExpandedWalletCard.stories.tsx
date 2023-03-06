@@ -21,6 +21,7 @@ const Template: ComponentStory<typeof ExpandedWalletCard> = (args) => (
 
 export const ExpandedWalletCardDefault = Template.bind({});
 ExpandedWalletCardDefault.args = {
+  isOpen: true,
   avatar: <Avatar />,
   currentAddress: "darick.eth",
   addresses: [
