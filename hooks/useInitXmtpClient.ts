@@ -1,14 +1,20 @@
 import { Client } from "@xmtp/xmtp-js";
 import { useEffect, useState } from "react";
-import { useSigner } from "wagmi";
+import { useAccount, useSigner } from "wagmi";
+import { address } from "../components/Address";
 import { getAppVersion, getEnv, loadKeys, storeKeys } from "../helpers";
+import { useConversationCache } from "../store/conversationCache";
 import { useXmtpStore } from "../store/xmtp";
 
 const useInitXmtpClient = () => {
   const { data: signer } = useSigner();
+  const { address } = useAccount();
   const client = useXmtpStore((state) => state.client);
   const setClient = useXmtpStore((state) => state.setClient);
   const [isRequestPending, setIsRequestPending] = useState(false);
+  const conversationExports = useConversationCache(
+    (state) => state.conversations[address as address],
+  );
 
   const initClient = async () => {
     if (signer && !client) {
@@ -28,6 +34,10 @@ const useInitXmtpClient = () => {
           appVersion: getAppVersion(),
           privateKeyOverride: keys,
         });
+        if (conversationExports && conversationExports.length) {
+          // Preload the client with conversations from the cache
+          await xmtp.conversations.import(conversationExports);
+        }
         setClient(xmtp);
         setIsRequestPending(false);
       } catch (e) {
