@@ -7,6 +7,11 @@ import { MessageInput } from "../../components/MessageInput/MessageInput";
 import { LearnMore } from "../../components/LearnMore/LearnMore";
 import { MessagePreviewCard } from "../../components/MessagePreviewCard/MessagePreviewCard";
 import { alternatingMessage } from "../../components/FullConversation/FullConversation.stories";
+import { ProfileDropdown } from "../../components/ProfileDropdown/ProfileDropdown";
+import { HeaderDropdown } from "../../components/HeaderDropdown/HeaderDropdown";
+import { ExpandedWalletCard } from "../../components/ExpandedWalletCard/ExpandedWalletCard";
+import { shortAddress } from "../../../helpers";
+import { Avatar } from "../../components/Avatar/Avatar";
 
 interface MessagesPageProps {
   // This exact page is really not intended to be used for anything except storybook, since it shows the different views.
@@ -106,7 +111,113 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
     );
   }
 
-  if (type === "resolved_ens_with_messages") {
+  if (type === "profile_dropdown") {
+    return (
+      <div className="flex w-screen">
+        <SideNav />
+        <ProfileDropdown isOpen addressCards={[]} />
+        <div className="flex flex-col h-screen w-1/3 overflow-scroll">
+          <HeaderDropdown isOpen={false} />
+          <ConversationList
+            messages={Array(20).fill(
+              <MessagePreviewCard
+                text="Here's an existing message"
+                displayAddress="theseWillAllBeTheSame.eth"
+                datetime={new Date()}
+              />,
+            )}
+          />
+        </div>
+        <div className="flex flex-col w-full h-screen">
+          <AddressInput
+            resolvedAddress={{
+              displayAddress: "montez.eth",
+              walletAddress: "01234",
+            }}
+          />
+          <FullConversation messages={[]} />
+          <MessageInput onSubmit={() => {}} />
+        </div>
+      </div>
+    );
+  }
+
+  if (type === "header_dropdown") {
+    return (
+      <div className="flex w-screen">
+        <SideNav />
+        <div className="flex flex-col h-screen w-1/3 overflow-scroll">
+          <HeaderDropdown isOpen />
+          <ConversationList
+            messages={Array(20).fill(
+              <MessagePreviewCard
+                text="Here's an existing message"
+                displayAddress="theseWillAllBeTheSame.eth"
+                datetime={new Date()}
+              />,
+            )}
+          />
+        </div>
+        <div className="flex flex-col w-full h-screen">
+          <AddressInput
+            resolvedAddress={{
+              displayAddress: "montez.eth",
+              walletAddress: "01234",
+            }}
+          />
+          <FullConversation messages={[]} />
+          <MessageInput onSubmit={() => {}} />
+        </div>
+      </div>
+    );
+  }
+
+  if (type === "expanded_tooltip") {
+    return (
+      <div className="flex w-screen">
+        <SideNav />
+        <div className="flex flex-col h-screen w-1/3 overflow-scroll">
+          <ConversationList
+            messages={Array(20).fill(
+              <MessagePreviewCard
+                text="Here's an existing message"
+                displayAddress="theseWillAllBeTheSame.eth"
+                datetime={new Date()}
+              />,
+            )}
+          />
+        </div>
+        <div className="flex flex-col w-full h-screen">
+          <AddressInput
+            resolvedAddress={{
+              displayAddress: "montez.eth",
+              walletAddress: "01234",
+            }}
+          />
+          <ExpandedWalletCard
+            isOpen
+            avatar={<Avatar />}
+            currentAddress="darick.eth"
+            addresses={[
+              shortAddress("0x0123456789012345678901234567890123456789"),
+              "darick.eth",
+              "darick.lens",
+            ]}
+            collectibles={[
+              <Avatar key={1} />,
+              <Avatar key={2} />,
+              <Avatar key={3} />,
+              <Avatar key={3} />,
+            ]}
+          />
+          <FullConversation messages={[]} />
+          <MessageInput onSubmit={() => {}} />
+        </div>
+      </div>
+    );
+  }
+
+  if (type === "profile") {
     return (
       <div className="flex w-screen">
         <SideNav />
