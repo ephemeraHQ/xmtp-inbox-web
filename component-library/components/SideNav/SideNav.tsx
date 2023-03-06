@@ -38,7 +38,7 @@ const SideNav = ({ isOpen = false, icon = <XmtpIcon /> }: SideNav) => {
   );
 
   const openNavListItems = (
-    <div className="flex flex-col items-start p-4 space-y-4">
+    <div className="flex flex-col items-start space-y-4 w-full">
       <ListButton
         label="Messages"
         startIconOverride={<ChatAlt2Icon width={24} className="mr-4" />}
@@ -71,7 +71,7 @@ const SideNav = ({ isOpen = false, icon = <XmtpIcon /> }: SideNav) => {
         isOpen ? "w-[20vw]" : "w-[5vw]",
       )}>
       {isOpen ? openNavListItems : closedNavListItems}
-      <div className="pb-4">{icon}</div>
+      <div className="pb-4 w-full">{icon}</div>
     </div>
   );
 };
