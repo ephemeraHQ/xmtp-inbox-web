@@ -24,7 +24,7 @@ export const ProfileDropdown = ({
         as="div"
         className="overflow-y-auto fixed inset-0 z-10"
         onClose={() => {}}>
-        <div className="bg-white w-fit rounded-lg absolute top-10 left-4">
+        <div className="bg-white w-fit rounded-lg absolute top-12 left-4">
           <div className="rounded-xl border border-gray-100 max-w-sm">
             <div className="p-4">
               <div className="mb-4">

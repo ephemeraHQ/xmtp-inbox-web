@@ -6,17 +6,13 @@ import { IconButton } from "../IconButton/IconButton";
 
 interface HeaderDropdownProps {
   /**
-   * What header text shows for this dropdown?
-   */
-  header: string;
-  /**
    * Is the dropdown open?
    */
   isOpen: boolean;
   /**
    * What options does the user have to change?
    */
-  dropdownOptions: Array<string>;
+  dropdownOptions?: Array<string>;
   /**
    * What is currently selected?
    */
@@ -51,10 +47,10 @@ export const HeaderDropdown = ({
           as="div"
           className="overflow-y-auto fixed inset-0 z-10"
           onClose={() => {}}>
-          <div className="bg-white w-fit rounded-lg absolute top-10 left-4">
+          <div className="bg-white w-fit rounded-lg absolute top-14 left-16">
             <div
               id="headerModalId"
-              className="p-4 border border-gray-100 rounded-lg max-w-fit mt-4">
+              className="p-4 border border-gray-100 rounded-lg max-w-fit">
               {dropdownOptions.map((item) => {
                 return (
                   <div key={item} className="flex w-full justify-between">
