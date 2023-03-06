@@ -19,7 +19,7 @@ export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
   const onChange = (event: ChangeEvent<HTMLTextAreaElement>) =>
     setValue(event.target.value);
   const borderStyles =
-    "flex items-center border border-gray-300 focus-within:border-indigo-300 rounded-tl-2xl rounded-bl-2xl rounded-tr-2xl";
+    "border border-gray-300 focus-within:border-1 focus-within:border-indigo-600 rounded-tl-2xl rounded-bl-2xl rounded-tr-2xl";
   const textAreaStyles = `${
     textAreaRef?.current?.scrollHeight &&
     textAreaRef?.current?.scrollHeight <= 32
@@ -45,7 +45,10 @@ export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
       <label htmlFor="chat" className="sr-only">
         Type something...
       </label>
-      <div className={`flex items-end max-h-300 ${borderStyles}`}>
+      <div
+        className={`flex ${
+          value ? "items-end" : "items-center"
+        } max-h-300 m-4 ${borderStyles}`}>
         <textarea
           id="chat"
           onChange={onChange}

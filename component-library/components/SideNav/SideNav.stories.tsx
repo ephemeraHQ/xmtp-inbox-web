@@ -6,7 +6,7 @@ export default {
   title: "SideNav",
   component: SideNav,
   argTypes: {
-    isOpen: { control: "boolean" },
+    icon: { control: false },
   },
 } as ComponentMeta<typeof SideNav>;
 

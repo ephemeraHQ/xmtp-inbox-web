@@ -38,15 +38,15 @@ export const MessagePreviewCard = ({
   text = "New message",
   avatar = <Avatar />,
   displayAddress = "New recipient",
-  datetime = new Date(),
+  datetime,
   isLoading = false,
   onClick,
 }: MessagePreviewCard) => {
   return (
     <div
-      className="flex justify-between items-start bg-gray-50 border border-gray-200 p-2"
+      className="flex justify-between items-start bg-gray-50 border border-gray-100 border-t-0 p-4 h-min"
       onClick={onClick}>
-      <div className="mr-2 flex-none">{avatar}</div>
+      <div className="mr-3 flex-none">{avatar}</div>
       <div className="flex flex-col items-start w-3/4">
         {isLoading ? (
           <ShortCopySkeletonLoader />
@@ -62,8 +62,8 @@ export const MessagePreviewCard = ({
       {isLoading ? (
         <IconLoader />
       ) : (
-        <div className="text-xs text-gray-400 w-1/4 text-right">
-          {formatDistanceToNow(datetime)}
+        <div className="text-xs text-gray-400 w-1/4 text-right ml-4">
+          {datetime && formatDistanceToNow(datetime)}
         </div>
       )}
     </div>

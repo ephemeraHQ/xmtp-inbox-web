@@ -20,10 +20,6 @@ interface ExpandedWalletCardProps {
    * What collectibles are associated with this card?
    */
   collectibles?: Array<React.ReactNode>;
-  /**
-   * Is this card open?
-   */
-  isOpen?: boolean;
 }
 
 export const ExpandedWalletCard = ({

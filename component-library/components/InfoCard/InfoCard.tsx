@@ -27,6 +27,10 @@ interface InfoCardProps {
    * What is the click event?
    */
   onClick?: () => void;
+  /**
+   * Should the top border be hidden?
+   */
+  hideTopBorder?: boolean;
 }
 
 /**
@@ -52,12 +56,13 @@ export const InfoCard = ({
   leftIcon,
   isLoading = false,
   onClick = undefined,
+  hideTopBorder = false,
 }: InfoCardProps) => {
   return (
     <div
-      className={
-        "w-full flex py-2 px-4 flex items-center justify-between border-y border-gray-300"
-      }>
+      className={`w-full flex py-2 px-4 flex items-center justify-between border-y border-gray-300 ${
+        hideTopBorder && "border-t-0 "
+      }`}>
       {isLoading ? (
         <ShortCopySkeletonLoader lines={2} />
       ) : (
