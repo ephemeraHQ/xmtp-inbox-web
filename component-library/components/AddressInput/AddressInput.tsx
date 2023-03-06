@@ -4,6 +4,13 @@ import { InformationCircleIcon } from "@heroicons/react/outline";
 
 interface AddressInputProps {
   /**
+   * What, if any, resolved address is there?
+   */
+  resolvedAddress?: {
+    displayAddress: string;
+    walletAddress?: string;
+  };
+  /**
    * What, if any, subtext is there?
    */
   subtext?: string;
@@ -38,6 +45,7 @@ interface AddressInputProps {
 }
 
 export const AddressInput = ({
+  resolvedAddress,
   subtext,
   avatarUrlProps,
   onSubmit,
@@ -47,7 +55,7 @@ export const AddressInput = ({
 }: AddressInputProps) => {
   const subtextColor = isError ? "text-red-400" : "text-gray-400";
   return (
-    <div className="flex align-center">
+    <div className="flex align-center px-4 py-3 border border-gray-100 border-l-0 z-10">
       <form className="flex w-full" onSubmit={onSubmit}>
         <Avatar {...avatarUrlProps} />
         <div className="ml-4">
@@ -55,6 +63,17 @@ export const AddressInput = ({
             <div role="status" className="max-w-sm animate-pulse m-0 pt-1 pb-3">
               <div className="h-4 bg-gray-200 rounded-full dark:bg-gray-700 w-48 m-0"></div>
               <span className="sr-only">Loading...</span>
+            </div>
+          ) : resolvedAddress ? (
+            <div className="flex flex-col text-md">
+              <span className="font-bold">
+                {resolvedAddress.displayAddress}
+              </span>
+              {resolvedAddress.walletAddress && (
+                <span className="text-sm font-mono">
+                  {resolvedAddress.walletAddress}
+                </span>
+              )}
             </div>
           ) : (
             <input
@@ -67,9 +86,9 @@ export const AddressInput = ({
               autoCorrect="false"
             />
           )}
-          {subtext && (
-            <p className={`font-mono text-sm ${subtextColor}`}>{subtext}</p>
-          )}
+          <p className={`font-mono text-sm ${subtextColor}`}>
+            {subtext || (!resolvedAddress && "Please enter a wallet address")}
+          </p>
         </div>
       </form>
       <InformationCircleIcon onClick={onTooltipClick} height="24" />

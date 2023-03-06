@@ -22,6 +22,14 @@ AddressInputDefault.args = {
   subtext: "Please enter a valid wallet address",
 };
 
+export const AddressInputResolvedAddress = Template.bind({});
+AddressInputResolvedAddress.args = {
+  resolvedAddress: {
+    displayAddress: "hi.xmtp.eth",
+    walletAddress: "0x0123456789012345678901234567890123456789",
+  },
+};
+
 export const AddressInputLoading = Template.bind({});
 AddressInputLoading.args = {
   subtext: "Fetching ENS address...",
