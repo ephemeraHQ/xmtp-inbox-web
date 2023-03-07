@@ -6,7 +6,6 @@ import { FullConversation } from "../../components/FullConversation/FullConversa
 import { MessageInput } from "../../components/MessageInput/MessageInput";
 import { LearnMore } from "../../components/LearnMore/LearnMore";
 import { MessagePreviewCard } from "../../components/MessagePreviewCard/MessagePreviewCard";
-import { alternatingMessage } from "../../components/FullConversation/FullConversation.stories";
 import { ProfileDropdown } from "../../components/ProfileDropdown/ProfileDropdown";
 import { HeaderDropdown } from "../../components/HeaderDropdown/HeaderDropdown";
 import { ExpandedWalletCard } from "../../components/ExpandedWalletCard/ExpandedWalletCard";
@@ -49,7 +48,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
         <div className="flex flex-col w-full h-screen">
           <AddressInput />
           <FullConversation messages={[]} />
-          <MessageInput onSubmit={() => {}} />
+          <MessageInput />
         </div>
       </div>
     );
@@ -67,7 +66,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
         <div className="flex flex-col w-full h-screen">
           <AddressInput subtext="Finding ENS..." />
           <FullConversation messages={[]} />
-          <MessageInput onSubmit={() => {}} />
+          <MessageInput />
         </div>
       </div>
     );
@@ -90,7 +89,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             }}
           />
           <FullConversation messages={[]} />
-          <MessageInput onSubmit={() => {}} />
+          <MessageInput />
         </div>
       </div>
     );
@@ -117,7 +116,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
         <div className="h-screen flex flex-col w-full">
           <AddressInput subtext="Finding ENS..." />
           <FullConversation />
-          <MessageInput onSubmit={() => {}} />
+          <MessageInput />
         </div>
       </div>
     );
@@ -149,7 +148,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             }}
           />
           <FullConversation />
-          <MessageInput onSubmit={() => {}} />
+          <MessageInput />
         </div>
       </div>
     );
@@ -179,7 +178,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             }}
           />
           <FullConversation messages={[]} />
-          <MessageInput onSubmit={() => {}} />
+          <MessageInput />
         </div>
       </div>
     );
@@ -210,11 +209,8 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
               walletAddress: "01234",
             }}
           />
-          <FullConversation
-            messages={Array(2).fill(alternatingMessage)}
-            convoStartDate={new Date()}
-          />
-          <MessageInput onSubmit={() => {}} />
+          <FullConversation isLoading={true} convoStartDate={new Date()} />
+          <MessageInput />
         </div>
       </div>
     );
@@ -245,11 +241,8 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
               walletAddress: "01234",
             }}
           />
-          <FullConversation
-            messages={Array(20).fill(alternatingMessage)}
-            convoStartDate={new Date()}
-          />
-          <MessageInput onSubmit={() => {}} />
+          <FullConversation isLoading={true} convoStartDate={new Date()} />
+          <MessageInput />
         </div>
       </div>
     );
@@ -281,7 +274,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             }}
           />
           <FullConversation isLoading />
-          <MessageInput onSubmit={() => {}} isDisabled />
+          <MessageInput isDisabled />
         </div>
       </div>
     );
@@ -328,7 +321,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             }}
           />
           <FullConversation messages={[]} />
-          <MessageInput onSubmit={() => {}} />
+          <MessageInput />
         </div>
       </div>
     );
@@ -360,7 +353,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             }}
           />
           <FullConversation messages={[]} />
-          <MessageInput onSubmit={() => {}} />
+          <MessageInput />
         </div>
       </div>
     );
@@ -408,7 +401,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             ]}
           />
           <FullConversation messages={[]} />
-          <MessageInput onSubmit={() => {}} />
+          <MessageInput />
         </div>
       </div>
     );

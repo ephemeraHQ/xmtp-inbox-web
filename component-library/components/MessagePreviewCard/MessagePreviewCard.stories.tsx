@@ -1,8 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-
 import { MessagePreviewCard } from "./MessagePreviewCard";
-import { Avatar } from "../Avatar/Avatar";
 
 export default {
   title: "MessagePreviewCard",
@@ -28,5 +26,4 @@ MessagePreviewMessageDefault.args = {
 export const MessagePreviewMessageLoading = Template.bind({});
 MessagePreviewMessageLoading.args = {
   isLoading: true,
-  avatar: <Avatar isLoading />,
 };

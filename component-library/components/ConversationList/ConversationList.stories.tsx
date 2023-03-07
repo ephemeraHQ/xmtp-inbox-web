@@ -25,9 +25,7 @@ ConversationListDefault.args = {
 
 export const ConversationListWithMessagesLoading = Template.bind({});
 ConversationListWithMessagesLoading.args = {
-  messages: Array(20).fill(
-    <MessagePreviewCard avatar={<Avatar isLoading />} isLoading />,
-  ),
+  messages: Array(20).fill(<MessagePreviewCard isLoading />),
 };
 
 export const ConversationListWithEmptyMessages = Template.bind({});
