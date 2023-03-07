@@ -22,7 +22,7 @@ interface ExpandedWalletCardProps {
    */
   collectibles?: Array<React.ReactNode>;
   /**
-   * Is the dom open?
+   * Is the modal open?
    */
   isOpen: boolean;
 }

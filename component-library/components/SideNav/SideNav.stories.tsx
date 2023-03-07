@@ -1,6 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import SideNav from "./SideNav";
+import { shortAddress } from "../../../helpers";
 
 export default {
   title: "SideNav",
@@ -22,4 +23,6 @@ SideNavDefault.args = {
 export const SideNavOpen = Template.bind({});
 SideNavOpen.args = {
   isOpen: true,
+  displayAddress: "hi.xmtp.eth",
+  walletAddress: shortAddress("0x0123456789012345678901234567890123456789"),
 };
