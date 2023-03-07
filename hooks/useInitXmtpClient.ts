@@ -49,7 +49,6 @@ const useInitXmtpClient = () => {
             appVersion: getAppVersion(),
             privateKeyOverride: keys,
           });
-          console.log(xmtp);
           setClient(xmtp);
           setIsRequestPending(false);
           setNewAccount(false);

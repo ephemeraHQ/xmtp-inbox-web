@@ -21,6 +21,10 @@ interface HeaderDropdownProps {
    * What happens on change?
    */
   onChange?: Function;
+  /**
+   * On new message button click?
+   */
+  onClick?: Function;
 }
 
 export const HeaderDropdown = ({
@@ -28,6 +32,7 @@ export const HeaderDropdown = ({
   dropdownOptions = ["All messages", "Message requests"],
   defaultSelected = "All messages",
   onChange,
+  onClick,
 }: HeaderDropdownProps) => {
   const [currentlySelected, setCurrentlySelected] = useState(defaultSelected);
   return (
@@ -39,7 +44,10 @@ export const HeaderDropdown = ({
           <h1 className="font-bold text-lg mr-2">{currentlySelected}</h1>
           <ChevronDownIcon width="24" />
         </span>
-        <IconButton label={<PlusIcon color="white" width="16" />} />
+        <IconButton
+          onClick={() => onClick && onClick()}
+          label={<PlusIcon color="white" width="16" />}
+        />
       </div>
 
       <Transition.Root show={isOpen} as={Fragment}>

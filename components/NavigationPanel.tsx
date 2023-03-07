@@ -25,6 +25,7 @@ const ConversationsPanel = (): JSX.Element => {
   const setRecipientWalletAddress = useXmtpStore(
     (state) => state.setRecipientWalletAddress,
   );
+  const conversationId = useXmtpStore((state) => state.conversationId);
   const setConversationId = useXmtpStore((state) => state.setConversationId);
 
   const orderByLatestMessage = (
@@ -50,9 +51,10 @@ const ConversationsPanel = (): JSX.Element => {
         .sort(orderByLatestMessage)
         .map((convo) => {
           const previewMessage = previewMessages.get(getConversationId(convo));
-          console.log(previewMessage);
+          const isSelected = conversationId === getConversationId(convo);
           return (
             <MessagePreviewCard
+              isSelected={isSelected}
               key={previewMessage?.id}
               text={previewMessage?.content}
               datetime={previewMessage?.sent}

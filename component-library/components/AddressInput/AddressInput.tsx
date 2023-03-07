@@ -62,13 +62,13 @@ export const AddressInput = ({
     <div className="flex items-center px-4 py-3 border border-gray-100 border-l-0 z-10 w-full">
       <form className="flex w-full" onSubmit={(e) => e.preventDefault()}>
         <Avatar {...avatarUrlProps} />
-        <div className="ml-4">
+        <div className="ml-4 flex flex-col justify-center">
           {isLoading ? (
             <div role="status" className="max-w-sm animate-pulse m-0 pt-1 pb-3">
               <div className="h-4 bg-gray-200 rounded-full dark:bg-gray-700 w-48 m-0"></div>
               <span className="sr-only">Loading...</span>
             </div>
-          ) : resolvedAddress ? (
+          ) : resolvedAddress?.displayAddress ? (
             <div className="flex flex-col text-md">
               <span className="font-bold">
                 {resolvedAddress.displayAddress}
@@ -95,9 +95,7 @@ export const AddressInput = ({
               value={value}
             />
           )}
-          <p className={`font-mono text-xs ${subtextColor}`}>
-            {subtext || (!resolvedAddress && "Please enter a wallet address")}
-          </p>
+          <p className={`font-mono text-xs ${subtextColor}`}>{subtext}</p>
         </div>
       </form>
       <InformationCircleIcon onClick={onTooltipClick} height="24" />

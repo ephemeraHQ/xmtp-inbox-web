@@ -4,7 +4,7 @@ import {
   CogIcon,
   SparklesIcon,
 } from "@heroicons/react/outline";
-import { classNames } from "../../../helpers";
+import { classNames, shortAddress } from "../../../helpers";
 import { XmtpIcon } from "../Icons/XmtpIcon";
 import { Avatar } from "../Avatar/Avatar";
 import { useState } from "react";
@@ -71,20 +71,26 @@ const SideNav = ({
   return (
     <div
       className={classNames(
-        "flex flex-col justify-between items-center h-screen bg-gray-50 p-2 w-fit",
+        "flex flex-col justify-between items-center h-screen bg-gray-50 px-2 w-fit",
       )}>
       <div className="flex flex-col items-start space-y-4 w-full">
         <div className="py-4 flex">
           <div>
             <div className="flex">
               <div className="mb-12">
-                <Avatar />
+                <Avatar address={walletAddress} />
               </div>
               {isOpen && (
                 <>
-                  <div className="flex flex-col px-2">
-                    <span className="font-bold">{displayAddress}</span>
-                    <span className="font-sm">{walletAddress}</span>
+                  <div className="flex flex-col px-2 justify-center`">
+                    <span className="font-bold">
+                      {shortAddress(displayAddress ?? "")}
+                    </span>
+                    {walletAddress && (
+                      <span className="font-sm">
+                        {shortAddress(walletAddress)}
+                      </span>
+                    )}
                   </div>
                   <div>
                     <ChevronDownIcon width={16} />

@@ -1,11 +1,9 @@
 import Link from "next/link";
-import { useAccount, useConnect, useEnsAvatar } from "wagmi";
+import { useAccount, useEnsAvatar, useEnsName } from "wagmi";
 import { NavigationView, ConversationView } from "../components/Views";
 import { fetchEnsAddress } from "@wagmi/core";
-import NewMessageButton from "../components/NewMessageButton";
 import NavigationPanel from "../components/NavigationPanel";
 import XmtpInfoPanel from "../components/XmtpInfoPanel";
-import UserMenu from "../components/UserMenu";
 import React, { useEffect, useState } from "react";
 import useListConversations from "../hooks/useListConversations";
 import { useXmtpStore } from "../store/xmtp";
@@ -35,9 +33,11 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   });
 
   const { address: walletAddress } = useAccount();
-  const [showMessageView, setShowMessageView] = useState(
-    walletAddress && client,
-  );
+  const {
+    data: ensNameConnectedWallet,
+    isLoading: isLoadingEnsConnectedWallet,
+  } = useEnsName({ address: walletAddress });
+  const [showMessageView, setShowMessageView] = useState<boolean>(true);
   const size = useWindowSize();
 
   useListConversations();
@@ -132,13 +132,22 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
     handleSubmit();
   }, [recipientEnteredValue]);
 
+  const onClick = () => {
+    setRecipientWalletAddress("");
+    setConversationId();
+    setShowMessageView(true);
+  };
+
   const navigationView = () => {
     return (
       <NavigationView>
-        <SideNav />
+        <SideNav
+          displayAddress={ensNameConnectedWallet ?? walletAddress}
+          walletAddress={ensNameConnectedWallet ? walletAddress : undefined}
+        />
         <div className="flex flex-col flex-grow md:border-r md:border-gray-200 bg-white overflow-y-auto max-w-[300px]">
           <div className="max-h-16 min-h-[4rem] flex items-center justify-between flex-shrink-0">
-            <HeaderDropdown isOpen={false} />
+            <HeaderDropdown onClick={onClick} isOpen={false} />
           </div>
           <NavigationPanel />
         </div>
@@ -154,16 +163,10 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
             <div className="flex flex-col border-b border-gray-200 bg-white md:border-0 max-h-16 min-h-[4rem]">
               <AddressInput
                 isError={!isValid}
-                subtext={
-                  RecipientInputMode.OnNetwork
-                    ? ensName
-                      ? ensAddress ?? recipientWalletAddress
-                      : undefined
-                    : getRecipientInputSubtext(recipientInputMode)
-                }
+                subtext={getRecipientInputSubtext(recipientInputMode)}
                 resolvedAddress={{
                   displayAddress: ensName ?? recipientWalletAddress,
-                  walletAddress: !ensName ? recipientWalletAddress : "",
+                  walletAddress: ensName ? recipientWalletAddress : "",
                 }}
                 avatarUrlProps={{
                   avatarUrl: data ?? "",
