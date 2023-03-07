@@ -23,11 +23,11 @@ export const ExpandedWalletCardDefault = Template.bind({});
 ExpandedWalletCardDefault.args = {
   isOpen: true,
   avatar: <Avatar />,
-  currentAddress: "darick.eth",
+  currentAddress: "hi.xmtp.eth",
   addresses: [
     shortAddress("0x0123456789012345678901234567890123456789"),
-    "darick.eth",
-    "darick.lens",
+    "hi.xmtp.eth",
+    "hi.xmtp.lens",
   ],
   collectibles: [
     <Avatar key={1} />,

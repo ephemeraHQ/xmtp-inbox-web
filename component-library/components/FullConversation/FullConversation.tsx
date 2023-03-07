@@ -30,7 +30,7 @@ export const FullConversation = ({
     );
   }
   return (
-    <div className="h-full flex flex-col-reverse justify-start p-4 overflow-scroll">
+    <div className="w-full h-full flex flex-col-reverse justify-start p-4 overflow-scroll">
       <>{messages}</>
       {convoStartDate && (
         <div className="relative py-4">

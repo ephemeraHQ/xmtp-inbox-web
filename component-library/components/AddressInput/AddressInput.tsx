@@ -55,7 +55,7 @@ export const AddressInput = ({
 }: AddressInputProps) => {
   const subtextColor = isError ? "text-red-400" : "text-gray-400";
   return (
-    <div className="flex align-center px-4 py-3 border border-gray-100 border-l-0 z-10">
+    <div className="flex items-center px-4 py-3 border border-gray-100 border-l-0 z-10">
       <form className="flex w-full" onSubmit={onSubmit}>
         <Avatar {...avatarUrlProps} />
         <div className="ml-4">
@@ -77,7 +77,7 @@ export const AddressInput = ({
             </div>
           ) : (
             <input
-              className="text-gray-700 mb-0 pl-0 font-mono text-sm w-full leading-tight border-none focus:ring-0 cursor-text"
+              className="text-gray-700 m-0 p-0 font-mono text-sm w-full leading-tight border-none focus:ring-0 cursor-text"
               id="address"
               type="text"
               autoFocus
@@ -86,7 +86,7 @@ export const AddressInput = ({
               autoCorrect="false"
             />
           )}
-          <p className={`font-mono text-sm ${subtextColor}`}>
+          <p className={`font-mono text-xs ${subtextColor}`}>
             {subtext || (!resolvedAddress && "Please enter a wallet address")}
           </p>
         </div>

@@ -34,13 +34,6 @@ const toProps = {
   datetime: new Date(),
 };
 
-export const alternatingMessage = (
-  <div>
-    <FullMessage {...fromProps} />
-    <FullMessage {...toProps} />
-  </div>
-);
-
 export const FullConversationNoMessages = Template.bind({});
 FullConversationNoMessages.args = {
   messages: [],
@@ -48,7 +41,12 @@ FullConversationNoMessages.args = {
 
 export const FullConversationWithMessages = Template.bind({});
 FullConversationWithMessages.args = {
-  messages: Array(20).fill(alternatingMessage),
+  messages: Array(20).fill(
+    <div>
+      <FullMessage {...fromProps} />
+      <FullMessage {...toProps} />
+    </div>,
+  ),
   convoStartDate: new Date(),
 };
 

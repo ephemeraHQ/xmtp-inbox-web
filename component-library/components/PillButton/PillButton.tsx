@@ -87,7 +87,7 @@ export const PillButton = ({
       className={`${backgroundColor} ${fontColor} ${disabled} ${sizeClass} min-w-[${minWidth}%] h-fit font-bold rounded-full`}
       aria-label={srText}>
       <>
-        <div className="flex justify-center items-center h-fit space-x-2">
+        <div className="flex justify-center items-center h-fit space-x-1">
           <div>{label}</div>
           {isLoading ? (
             <ButtonLoader color={"primary"} size={size} />

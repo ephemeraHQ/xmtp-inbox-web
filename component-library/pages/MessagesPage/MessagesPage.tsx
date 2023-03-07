@@ -25,12 +25,12 @@ interface MessagesPageProps {
 export const MessagesPage = ({ type }: MessagesPageProps) => {
   if (type === "empty") {
     return (
-      <div className="flex w-screen">
-        <SideNav />
-        <div className="w-1/3 h-screen">
+      <div className="w-screen md:h-screen flex flex-col md:flex-row">
+        <div className="flex md:w-1/2">
+          <SideNav />
           <ConversationList />
         </div>
-        <div className="flex flex-col w-full h-screen">
+        <div className="flex flex-col w-full h-full">
           <LearnMore />
         </div>
       </div>
@@ -38,10 +38,13 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
   }
   if (type === "compose_new") {
     return (
-      <div className="flex w-screen">
-        <SideNav />
-        <div className="w-1/3 h-screen">
-          <ConversationList messages={[<MessagePreviewCard key={0} />]} />
+      <div className="w-screen md:h-screen flex flex-col md:flex-row">
+        <div className="flex md:w-1/2">
+          <SideNav />
+          <div className="w-full flex flex-col h-screen overflow-scroll">
+            <HeaderDropdown isOpen={false} />
+            <ConversationList messages={[<MessagePreviewCard key={0} />]} />
+          </div>
         </div>
         <div className="flex flex-col w-full h-screen">
           <AddressInput />
@@ -53,10 +56,13 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
   }
   if (type === "finding_ens_no_messages") {
     return (
-      <div className="flex w-screen">
-        <SideNav />
-        <div className="w-1/3 h-screen">
-          <ConversationList messages={[<MessagePreviewCard key={0} />]} />
+      <div className="w-screen md:h-screen flex flex-col md:flex-row">
+        <div className="flex md:w-1/2">
+          <SideNav />
+          <div className="w-full flex flex-col h-screen overflow-scroll">
+            <HeaderDropdown isOpen={false} />
+            <ConversationList messages={[<MessagePreviewCard key={0} />]} />
+          </div>
         </div>
         <div className="flex flex-col w-full h-screen">
           <AddressInput subtext="Finding ENS..." />
@@ -68,15 +74,18 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
   }
   if (type === "resolved_ens_no_messages") {
     return (
-      <div className="flex w-screen">
-        <SideNav />
-        <div className="w-1/3 h-screen">
-          <ConversationList messages={[<MessagePreviewCard key={0} />]} />
+      <div className="w-screen md:h-screen flex flex-col md:flex-row">
+        <div className="flex md:w-1/2">
+          <SideNav />
+          <div className="w-full flex flex-col h-screen overflow-scroll">
+            <HeaderDropdown isOpen={false} />
+            <ConversationList messages={[<MessagePreviewCard key={0} />]} />
+          </div>
         </div>
         <div className="flex flex-col w-full h-screen">
           <AddressInput
             resolvedAddress={{
-              displayAddress: "montez.eth",
+              displayAddress: "hi.xmtp.eth",
               walletAddress: "01234",
             }}
           />
@@ -89,20 +98,23 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
 
   if (type === "finding_ens_with_messages") {
     return (
-      <div className="flex w-screen">
-        <SideNav />
-        <div className="flex flex-col h-screen w-1/3 overflow-scroll">
-          <ConversationList
-            messages={Array(20).fill(
-              <MessagePreviewCard
-                text="Here's an existing message"
-                displayAddress="theseWillAllBeTheSame.eth"
-                datetime={new Date()}
-              />,
-            )}
-          />
+      <div className="w-screen md:h-screen flex flex-col md:flex-row">
+        <div className="h-screen flex md:w-1/2 md:min-w-fit overflow-y-scroll">
+          <SideNav />
+          <div className="w-full flex flex-col h-screen overflow-scroll">
+            <HeaderDropdown isOpen={false} />
+            <ConversationList
+              messages={Array(20).fill(
+                <MessagePreviewCard
+                  text="Here's an existing message"
+                  displayAddress="theseWillAllBeTheSame.eth"
+                  datetime={new Date()}
+                />,
+              )}
+            />
+          </div>
         </div>
-        <div className="flex flex-col w-full h-screen">
+        <div className="h-screen flex flex-col w-full">
           <AddressInput subtext="Finding ENS..." />
           <FullConversation />
           <MessageInput onSubmit={() => {}} />
@@ -111,135 +123,32 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
     );
   }
 
-  if (type === "profile_dropdown") {
+  if (type === "resolved_ens_with_messages") {
     return (
-      <div className="flex w-screen">
-        <SideNav />
-        <ProfileDropdown isOpen addressCards={[]} />
-        <div className="flex flex-col h-screen w-1/3 overflow-scroll">
-          <HeaderDropdown isOpen={false} />
-          <ConversationList
-            messages={Array(20).fill(
-              <MessagePreviewCard
-                text="Here's an existing message"
-                displayAddress="theseWillAllBeTheSame.eth"
-                datetime={new Date()}
-              />,
-            )}
-          />
+      <div className="w-screen md:h-screen flex flex-col md:flex-row">
+        <div className="flex md:w-1/2 md:min-w-fit overflow-y-scroll">
+          <SideNav />
+          <div className="w-full flex flex-col h-screen overflow-scroll">
+            <HeaderDropdown isOpen={false} />
+            <ConversationList
+              messages={Array(20).fill(
+                <MessagePreviewCard
+                  text="Here's an existing message"
+                  displayAddress="theseWillAllBeTheSame.eth"
+                  datetime={new Date()}
+                />,
+              )}
+            />
+          </div>
         </div>
         <div className="flex flex-col w-full h-screen">
           <AddressInput
             resolvedAddress={{
-              displayAddress: "montez.eth",
+              displayAddress: "hi.xmtp.eth",
               walletAddress: "01234",
             }}
           />
-          <FullConversation messages={[]} />
-          <MessageInput onSubmit={() => {}} />
-        </div>
-      </div>
-    );
-  }
-
-  if (type === "header_dropdown") {
-    return (
-      <div className="flex w-screen">
-        <SideNav />
-        <div className="flex flex-col h-screen w-1/3 overflow-scroll">
-          <HeaderDropdown isOpen />
-          <ConversationList
-            messages={Array(20).fill(
-              <MessagePreviewCard
-                text="Here's an existing message"
-                displayAddress="theseWillAllBeTheSame.eth"
-                datetime={new Date()}
-              />,
-            )}
-          />
-        </div>
-        <div className="flex flex-col w-full h-screen">
-          <AddressInput
-            resolvedAddress={{
-              displayAddress: "montez.eth",
-              walletAddress: "01234",
-            }}
-          />
-          <FullConversation messages={[]} />
-          <MessageInput onSubmit={() => {}} />
-        </div>
-      </div>
-    );
-  }
-
-  if (type === "expanded_tooltip") {
-    return (
-      <div className="flex w-screen">
-        <SideNav />
-        <div className="flex flex-col h-screen w-1/3 overflow-scroll">
-          <ConversationList
-            messages={Array(20).fill(
-              <MessagePreviewCard
-                text="Here's an existing message"
-                displayAddress="theseWillAllBeTheSame.eth"
-                datetime={new Date()}
-              />,
-            )}
-          />
-        </div>
-        <div className="flex flex-col w-full h-screen">
-          <AddressInput
-            resolvedAddress={{
-              displayAddress: "montez.eth",
-              walletAddress: "01234",
-            }}
-          />
-          <ExpandedWalletCard
-            isOpen
-            avatar={<Avatar />}
-            currentAddress="darick.eth"
-            addresses={[
-              shortAddress("0x0123456789012345678901234567890123456789"),
-              "darick.eth",
-              "darick.lens",
-            ]}
-            collectibles={[
-              <Avatar key={1} />,
-              <Avatar key={2} />,
-              <Avatar key={3} />,
-              <Avatar key={3} />,
-            ]}
-          />
-          <FullConversation messages={[]} />
-          <MessageInput onSubmit={() => {}} />
-        </div>
-      </div>
-    );
-  }
-
-  if (type === "profile") {
-    return (
-      <div className="flex w-screen">
-        <SideNav />
-        <div className="flex flex-col h-screen w-1/3 overflow-scroll">
-          <ConversationList
-            messages={Array(20).fill(
-              <MessagePreviewCard
-                text="Here's an existing message"
-                displayAddress="theseWillAllBeTheSame.eth"
-                datetime={new Date()}
-              />,
-            )}
-          />
-        </div>
-        <div className="flex flex-col w-full h-screen">
-          <AddressInput
-            resolvedAddress={{
-              displayAddress: "montez.eth",
-              walletAddress: "01234",
-            }}
-          />
-          <FullConversation messages={[]} />
+          <FullConversation />
           <MessageInput onSubmit={() => {}} />
         </div>
       </div>
@@ -248,13 +157,24 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
 
   if (type === "expanded_left_nav") {
     return (
-      <div className="flex w-screen">
-        <SideNav isOpen />
-        <ConversationList messages={[<MessagePreviewCard key={0} />]} />
+      <div className="w-screen md:h-screen flex flex-col md:flex-row">
+        <div className="flex md:w-1/2 md:min-w-fit overflow-y-scroll">
+          <SideNav
+            isOpen
+            displayAddress="hi.xmtp.eth"
+            walletAddress={shortAddress(
+              "0x0123456789x0123456789x0123456789x0123456789",
+            )}
+          />
+          <div className="w-full flex flex-col h-screen overflow-scroll">
+            <HeaderDropdown isOpen={false} />
+            <ConversationList messages={[<MessagePreviewCard key={0} />]} />
+          </div>
+        </div>
         <div className="flex flex-col w-full h-screen">
           <AddressInput
             resolvedAddress={{
-              displayAddress: "montez.eth",
+              displayAddress: "hi.xmtp.eth",
               walletAddress: "01234",
             }}
           />
@@ -267,23 +187,26 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
 
   if (type === "short_history") {
     return (
-      <div className="flex w-screen h-screen">
-        <SideNav />
-        <div className="flex flex-col h-screen w-1/3 overflow-scroll">
-          <ConversationList
-            messages={Array(20).fill(
-              <MessagePreviewCard
-                text="Here's an existing message"
-                displayAddress="theseWillAllBeTheSame.eth"
-                datetime={new Date()}
-              />,
-            )}
-          />
+      <div className="w-screen md:h-screen flex flex-col md:flex-row">
+        <div className="flex md:w-1/2 md:min-w-fit overflow-y-scroll">
+          <SideNav />
+          <div className="w-full flex flex-col h-screen overflow-scroll">
+            <HeaderDropdown isOpen={false} />
+            <ConversationList
+              messages={Array(20).fill(
+                <MessagePreviewCard
+                  text="Here's an existing message"
+                  displayAddress="theseWillAllBeTheSame.eth"
+                  datetime={new Date()}
+                />,
+              )}
+            />
+          </div>
         </div>
-        <div className="flex flex-col w-full overflow-scroll">
+        <div className="flex flex-col w-full h-screen">
           <AddressInput
             resolvedAddress={{
-              displayAddress: "montez.eth",
+              displayAddress: "hi.xmtp.eth",
               walletAddress: "01234",
             }}
           />
@@ -299,23 +222,26 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
 
   if (type === "long_history") {
     return (
-      <div className="flex w-screen h-screen">
-        <SideNav />
-        <div className="flex flex-col h-screen w-1/3 overflow-scroll">
-          <ConversationList
-            messages={Array(20).fill(
-              <MessagePreviewCard
-                text="Here's an existing message"
-                displayAddress="theseWillAllBeTheSame.eth"
-                datetime={new Date()}
-              />,
-            )}
-          />
+      <div className="w-screen md:h-screen flex flex-col md:flex-row">
+        <div className="flex md:w-1/2 md:min-w-fit overflow-y-scroll">
+          <SideNav />
+          <div className="w-full flex flex-col h-screen overflow-scroll">
+            <HeaderDropdown isOpen={false} />
+            <ConversationList
+              messages={Array(20).fill(
+                <MessagePreviewCard
+                  text="Here's an existing message"
+                  displayAddress="theseWillAllBeTheSame.eth"
+                  datetime={new Date()}
+                />,
+              )}
+            />
+          </div>
         </div>
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full h-screen">
           <AddressInput
             resolvedAddress={{
-              displayAddress: "montez.eth",
+              displayAddress: "hi.xmtp.eth",
               walletAddress: "01234",
             }}
           />
@@ -331,23 +257,26 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
 
   if (type === "convo_loading") {
     return (
-      <div className="flex w-screen h-screen">
-        <SideNav />
-        <div className="flex flex-col h-screen w-1/3 overflow-scroll">
-          <ConversationList
-            messages={Array(20).fill(
-              <MessagePreviewCard
-                text="Here's an existing message"
-                displayAddress="theseWillAllBeTheSame.eth"
-                datetime={new Date()}
-              />,
-            )}
-          />
+      <div className="w-screen md:h-screen flex flex-col md:flex-row">
+        <div className="flex md:w-1/2 md:min-w-fit overflow-y-scroll">
+          <SideNav />
+          <div className="w-full flex flex-col h-screen overflow-scroll">
+            <HeaderDropdown isOpen={false} />
+            <ConversationList
+              messages={Array(20).fill(
+                <MessagePreviewCard
+                  text="Here's an existing message"
+                  displayAddress="theseWillAllBeTheSame.eth"
+                  datetime={new Date()}
+                />,
+              )}
+            />
+          </div>
         </div>
         <div className="flex flex-col w-full h-screen">
           <AddressInput
             resolvedAddress={{
-              displayAddress: "montez.eth",
+              displayAddress: "hi.xmtp.eth",
               walletAddress: "01234",
             }}
           />
@@ -360,13 +289,126 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
 
   if (type === "page_loading") {
     return (
-      <div className="flex w-screen h-screen">
-        <SideNav />
-        <div className="flex flex-col h-screen w-1/3 overflow-hidden">
-          <ConversationList isLoading />,
+      <div className="w-screen md:h-screen flex flex-col md:flex-row">
+        <div className="flex md:w-1/2 md:min-w-fit overflow-y-scroll">
+          <SideNav />
+          <ConversationList isLoading />
         </div>
-        <div className="flex flex-col w-2/3 h-full">
+        <div className="hidden md:flex flex-col w-full h-screen">
           <FullConversation isLoading />
+        </div>
+      </div>
+    );
+  }
+
+  if (type === "profile_dropdown") {
+    return (
+      <div className="flex w-screen md:h-screen flex-col md:flex-row">
+        <div className="min-w-fit flex overflow-y-scroll">
+          <SideNav />
+          <ProfileDropdown isOpen addressCards={[]} />
+          <div className="flex flex-col h-screen overflow-scroll">
+            <HeaderDropdown isOpen={false} />
+            <ConversationList
+              messages={Array(20).fill(
+                <MessagePreviewCard
+                  text="Here's an existing message"
+                  displayAddress="theseWillAllBeTheSame.eth"
+                  datetime={new Date()}
+                />,
+              )}
+            />
+          </div>
+        </div>
+        <div className="flex flex-col w-full h-screen">
+          <AddressInput
+            resolvedAddress={{
+              displayAddress: "hi.xmtp.eth",
+              walletAddress: "01234",
+            }}
+          />
+          <FullConversation messages={[]} />
+          <MessageInput onSubmit={() => {}} />
+        </div>
+      </div>
+    );
+  }
+
+  if (type === "header_dropdown") {
+    return (
+      <div className="flex w-screen md:h-screen flex-col md:flex-row">
+        <div className="min-w-fit flex overflow-y-scroll">
+          <SideNav />
+          <div className="flex flex-col h-screen overflow-scroll">
+            <HeaderDropdown isOpen />
+            <ConversationList
+              messages={Array(20).fill(
+                <MessagePreviewCard
+                  text="Here's an existing message"
+                  displayAddress="theseWillAllBeTheSame.eth"
+                  datetime={new Date()}
+                />,
+              )}
+            />
+          </div>
+        </div>
+        <div className="flex flex-col w-full h-screen">
+          <AddressInput
+            resolvedAddress={{
+              displayAddress: "hi.xmtp.eth",
+              walletAddress: "01234",
+            }}
+          />
+          <FullConversation messages={[]} />
+          <MessageInput onSubmit={() => {}} />
+        </div>
+      </div>
+    );
+  }
+
+  if (type === "expanded_tooltip") {
+    return (
+      <div className="flex w-screen md:h-screen flex-col md:flex-row">
+        <div className="min-w-fit flex overflow-y-scroll">
+          <SideNav />
+          <div className="flex flex-col h-screen overflow-scroll">
+            <HeaderDropdown isOpen={false} />
+            <ConversationList
+              messages={Array(20).fill(
+                <MessagePreviewCard
+                  text="Here's an existing message"
+                  displayAddress="theseWillAllBeTheSame.eth"
+                  datetime={new Date()}
+                />,
+              )}
+            />
+          </div>
+        </div>
+        <div className="flex flex-col w-full h-screen">
+          <AddressInput
+            resolvedAddress={{
+              displayAddress: "hi.xmtp.eth",
+              walletAddress: "01234",
+            }}
+          />
+          <ExpandedWalletCard
+            isOpen
+            avatar={<Avatar />}
+            currentAddress="hi.xmtp.eth"
+            addresses={[
+              shortAddress("0x0123456789012345678901234567890123456789"),
+              "hi.xmtp.eth",
+              "hi.xmtp.lens",
+            ]}
+            collectibles={[
+              <Avatar key={1} />,
+              <Avatar key={2} />,
+              <Avatar key={3} />,
+              <Avatar key={3} />,
+            ]}
+          />
+          <FullConversation messages={[]} />
+          <MessageInput onSubmit={() => {}} />
         </div>
       </div>
     );

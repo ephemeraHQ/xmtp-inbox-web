@@ -19,16 +19,18 @@ export const ConversationList = ({
   isLoading,
 }: ConversationListProps) => {
   return !messages?.length && isLoading ? (
-    <div className="h-screen w-full bg-gray-300">
+    <div className="w-fit overflow-hidden h-screen w-full bg-gray-300">
       {Array(20).fill(
         <MessagePreviewCard avatar={<Avatar isLoading />} isLoading />,
       )}
     </div>
   ) : !messages.length && !isLoading ? (
-    <div className="border border-gray-100 h-screen">
+    <div className="w-fit overflow-hidden sm:w-full p-8 border border-gray-100 h-screen">
       <EmptyMessage />
     </div>
   ) : (
-    <div className="flex flex-col h-screen bg-gray-100">{messages}</div>
+    <div className="w-full overflow-scroll flex flex-col h-screen bg-gray-100">
+      {messages}
+    </div>
   );
 };

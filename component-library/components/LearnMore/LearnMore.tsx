@@ -6,13 +6,13 @@ import { TagIcon } from "../Tags/iconMapping";
 import { Tag } from "../Tags/Tag";
 
 export const LearnMore = () => (
-  <div className="flex flex-col justify-center items-center max-w-xl p-4 h-full m-0 m-auto">
+  <div className="flex flex-col justify-center items-center max-w-xl p-4 md:h-full m-0 m-auto">
     <div>
-      <h1 className="text-4xl font-bold mb-4">
+      <h1 className="text-4xl font-bold my-4">
         Learn more about the XMTP Universe
       </h1>
     </div>
-    <div className="flex w-full">
+    <div className="flex flex-col md:flex-row w-full">
       <div className="flex">
         <div className="flex flex-col max-w-sm p-2">
           <Image src="https://picsum.photos/350/150" alt="Company 1" />
@@ -65,6 +65,6 @@ export const LearnMore = () => (
         hideTopBorder
       />
     </div>
-    <span className="text-sm w-full">Version 1234567</span>
+    <span className="text-sm w-full">Version ##VERSION##</span>
   </div>
 );

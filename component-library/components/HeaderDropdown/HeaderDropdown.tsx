@@ -62,7 +62,7 @@ export const HeaderDropdown = ({
                           onChange?.();
                           //   setCurrentlySelected();
                         }}
-                        className={`cursor-pointer my-1 ${
+                        className={`cursor-pointer my-1 outline-none ${
                           item === currentlySelected ? "font-bold my-1" : ""
                         }`}>
                         {item}

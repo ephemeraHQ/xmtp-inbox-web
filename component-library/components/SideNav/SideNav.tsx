@@ -1,8 +1,13 @@
 import { ChatAlt2Icon, ChevronDoubleRightIcon } from "@heroicons/react/solid";
-import { CogIcon, SparklesIcon } from "@heroicons/react/outline";
+import {
+  ChevronDownIcon,
+  CogIcon,
+  SparklesIcon,
+} from "@heroicons/react/outline";
 import { classNames } from "../../../helpers";
-import { ListButton } from "../ListButton/ListButton";
 import { XmtpIcon } from "../Icons/XmtpIcon";
+import { Avatar } from "../Avatar/Avatar";
+import { useState } from "react";
 
 interface SideNav {
   /**
@@ -13,64 +18,85 @@ interface SideNav {
    * Contents inside side nav
    */
   icon?: React.ReactNode;
+  /**
+   * What is the display address?
+   */
+  displayAddress?: string;
+  /**
+   * What is the wallet address?
+   */
+  walletAddress?: string;
 }
 
-const SideNav = ({ isOpen = false, icon = <XmtpIcon /> }: SideNav) => {
-  const closedNavListItems = (
-    <div className="flex flex-col space-y-4 mt-10">
-      <ListButton
-        startIconOverride={<ChatAlt2Icon width={24} />}
-        className="p-2 bg-gray-200 rounded-lg font-bold w-full flex item-center justify-center"
-      />
-      <ListButton
-        startIconOverride={<SparklesIcon width={24} />}
-        className="hover:bg-gray-200 hover:text-black p-2 text-gray-400 rounded-lg w-full flex item-center justify-center"
-      />
-      <ListButton
-        startIconOverride={<CogIcon width={24} />}
-        className="hover:bg-gray-200 hover:text-black p-2 text-gray-400 rounded-lg w-full flex item-center justify-center"
-      />
-      <ListButton
-        startIconOverride={<ChevronDoubleRightIcon width={24} />}
-        className="hover:bg-gray-200 hover:text-black p-2 text-gray-400 rounded-lg w-full flex item-center justify-center"
-      />
-    </div>
-  );
+const SideNav = ({
+  isOpen = false,
+  icon = <XmtpIcon />,
+  displayAddress,
+  walletAddress,
+}: SideNav) => {
+  const icons = [
+    <ChatAlt2Icon key="Messages" width={24} className={isOpen ? "mr-4" : ""} />,
+    <SparklesIcon key="Gallery" width={24} className={isOpen ? "mr-4" : ""} />,
+    <CogIcon key="Settings" width={24} className={isOpen ? "mr-4" : ""} />,
+    <ChevronDoubleRightIcon
+      key="Collapse"
+      width={24}
+      className={isOpen ? "mr-4" : ""}
+    />,
+  ];
+  const [currentIcon, setCurrentIcon] = useState(icons[0].key);
 
-  const openNavListItems = (
-    <div className="flex flex-col items-start space-y-4 w-full">
-      <ListButton
-        label="Messages"
-        startIconOverride={<ChatAlt2Icon width={24} className="mr-4" />}
-        className="py-3 px-4 bg-gray-200 rounded-lg font-bold w-full flex"
-      />
-      <ListButton
-        label="Gallery"
-        startIconOverride={<SparklesIcon width={24} className="mr-4" />}
-        className="hover:bg-gray-200 hover:text-black py-3 px-4 text-gray-400 rounded-lg w-full flex"
-      />
-      <ListButton
-        label="Settings"
-        startIconOverride={<CogIcon width={24} className="mr-4" />}
-        className="hover:bg-gray-200 hover:text-black py-3 px-4 text-gray-400 rounded-lg w-full flex"
-      />
-      <ListButton
-        label="Collapse"
-        startIconOverride={
-          <ChevronDoubleRightIcon width={24} className="mr-4" />
-        }
-        className="hover:bg-gray-200 hover:text-black py-3 px-4 text-gray-400 rounded-lg w-full flex"
-      />
-    </div>
-  );
+  const mappedButtons = icons.map((icon) => {
+    return (
+      <button
+        key={icon.key}
+        type="button"
+        onClick={(event) => {
+          setCurrentIcon((event.target as HTMLElement).innerText);
+        }}
+        aria-label={currentIcon as string}
+        className={`${
+          currentIcon === icon.key && "font-bold"
+        } hover:bg-gray-200 p-2 hover:text-black text-gray-400 rounded-lg w-full flex item-center h-fit rounded cursor-pointer`}>
+        <>
+          <div className="flex justify-center items-center h-fit">
+            {icon}
+            {isOpen && icon.key}
+          </div>
+        </>
+      </button>
+    );
+  });
 
   return (
     <div
       className={classNames(
-        "flex flex-col justify-between items-center h-screen bg-gray-50 p-4",
-        isOpen ? "w-[20vw]" : "w-[5vw]",
+        "flex flex-col justify-between items-center h-screen bg-gray-50 p-2 w-fit",
       )}>
-      {isOpen ? openNavListItems : closedNavListItems}
+      <div className="flex flex-col items-start space-y-4 w-full">
+        <div className="py-4 flex">
+          <div>
+            <div className="flex">
+              <Avatar />
+
+              {isOpen && (
+                <>
+                  <div className="flex flex-col px-2">
+                    <span className="font-bold">{displayAddress}</span>
+                    <span className="font-sm">{walletAddress}</span>
+                  </div>
+                  <div>
+                    <ChevronDownIcon width={16} />
+                  </div>
+                </>
+              )}
+            </div>
+            <div className="flex flex-col items-start pt-4">
+              {mappedButtons}
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="pb-4 w-full">{icon}</div>
     </div>
   );
