@@ -65,25 +65,21 @@ const useInitXmtpClient = () => {
 
   const initClient = async () => {
     if (signer && !client) {
+      const address = await signer.getAddress();
       try {
-        const address = await signer.getAddress();
-        let keys = loadKeys(address);
-        if (!keys) {
-          try {
-            const canMessage = await Client.canMessage(address);
-            if (canMessage) {
-              setNewAccount(false);
-              connectToXmtp();
-            } else {
-              setNewAccount(true);
-            }
-          } catch (e) {
-            console.error(e);
-            setNewAccount(true);
-          }
+        setIsLoading(true);
+        const canMessage = await Client.canMessage(address);
+        if (canMessage) {
+          setNewAccount(false);
+          connectToXmtp();
+        } else {
+          setNewAccount(true);
         }
       } catch (e) {
         console.error(e);
+        setNewAccount(true);
+      } finally {
+        setIsLoading(false);
       }
     }
   };

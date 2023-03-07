@@ -22,8 +22,10 @@ import { Conversation } from "../components/Conversation";
 import SideNav from "../component-library/components/SideNav/SideNav";
 import { HeaderDropdown } from "../component-library/components/HeaderDropdown/HeaderDropdown";
 
-const Inbox: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
+const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   const client = useXmtpStore((state) => state.client);
+
+  const [isOpenSideNav, setIsOpenSideNav] = useState(false);
 
   const recipientWalletAddress = useXmtpStore(
     (state) => state.recipientWalletAddress,
@@ -33,10 +35,9 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   });
 
   const { address: walletAddress } = useAccount();
-  const {
-    data: ensNameConnectedWallet,
-    isLoading: isLoadingEnsConnectedWallet,
-  } = useEnsName({ address: walletAddress });
+  const { data: ensNameConnectedWallet } = useEnsName({
+    address: walletAddress,
+  });
   const [showMessageView, setShowMessageView] = useState<boolean>(true);
   const size = useWindowSize();
 
@@ -138,15 +139,21 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
     setShowMessageView(true);
   };
 
+  const onSideNavBtnClick = (key: string) => {
+    if (key === "Collapse") setIsOpenSideNav(!isOpenSideNav);
+  };
+
   const navigationView = () => {
     return (
       <NavigationView>
         <SideNav
+          onClick={onSideNavBtnClick}
+          isOpen={isOpenSideNav}
           displayAddress={ensNameConnectedWallet ?? walletAddress}
           walletAddress={ensNameConnectedWallet ? walletAddress : undefined}
         />
-        <div className="flex flex-col flex-grow md:border-r md:border-gray-200 bg-white overflow-y-auto max-w-[300px]">
-          <div className="max-h-16 min-h-[4rem] flex items-center justify-between flex-shrink-0">
+        <div className="flex flex-col flex-grow md:border-r md:border-gray-200 bg-white overflow-y-auto md:w-[300px]">
+          <div className="max-h-16 min-h-[4rem] flex items-center justify-between">
             <HeaderDropdown onClick={onClick} isOpen={false} />
           </div>
           <NavigationPanel />

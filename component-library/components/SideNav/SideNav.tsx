@@ -26,6 +26,10 @@ interface SideNav {
    * What is the wallet address?
    */
   walletAddress?: string;
+  /**
+   * Function to navigate
+   */
+  onClick?: Function;
 }
 
 const SideNav = ({
@@ -33,6 +37,7 @@ const SideNav = ({
   icon = <XmtpIcon />,
   displayAddress,
   walletAddress,
+  onClick,
 }: SideNav) => {
   const icons = [
     <ChatAlt2Icon key="Messages" width={24} className={isOpen ? "mr-4" : ""} />,
@@ -53,6 +58,7 @@ const SideNav = ({
         type="button"
         onClick={(event) => {
           setCurrentIcon((event.target as HTMLElement).innerText);
+          onClick && onClick(icon.key);
         }}
         aria-label={currentIcon as string}
         className={`${
@@ -76,12 +82,12 @@ const SideNav = ({
       <div className="flex flex-col items-start space-y-4 w-full">
         <div className="py-4 flex">
           <div>
-            <div className="flex">
-              <div className="mb-12">
+            <div className="flex mb-12">
+              <div>
                 <Avatar address={walletAddress} />
               </div>
               {isOpen && (
-                <>
+                <div className="flex items-center">
                   <div className="flex flex-col px-2 justify-center`">
                     <span className="font-bold">
                       {shortAddress(displayAddress ?? "")}
@@ -95,7 +101,7 @@ const SideNav = ({
                   <div>
                     <ChevronDownIcon width={16} />
                   </div>
-                </>
+                </div>
               )}
             </div>
             <div className="flex flex-col items-start pt-4 space-y-4">

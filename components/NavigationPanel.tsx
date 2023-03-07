@@ -6,12 +6,9 @@ import { getConversationId } from "../helpers";
 import { MessagePreviewCard } from "../component-library/components/MessagePreviewCard/MessagePreviewCard";
 
 const NavigationPanel = (): JSX.Element => {
-  const { address } = useAccount();
-  const client = useXmtpStore((state) => state.client);
-
   return (
     <div className="flex-grow flex flex-col h-[calc(100vh-8rem)] overflow-y-auto">
-      {address && client !== null ? <ConversationsPanel /> : null}
+      <ConversationsPanel />
     </div>
   );
 };
