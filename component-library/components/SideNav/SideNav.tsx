@@ -77,8 +77,9 @@ const SideNav = ({
         <div className="py-4 flex">
           <div>
             <div className="flex">
-              <Avatar />
-
+              <div className="mb-12">
+                <Avatar />
+              </div>
               {isOpen && (
                 <>
                   <div className="flex flex-col px-2">
@@ -91,7 +92,7 @@ const SideNav = ({
                 </>
               )}
             </div>
-            <div className="flex flex-col items-start pt-4">
+            <div className="flex flex-col items-start pt-4 space-y-4">
               {mappedButtons}
             </div>
           </div>

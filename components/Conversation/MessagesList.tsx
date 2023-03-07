@@ -1,54 +1,35 @@
 import { DecodedMessage } from "@xmtp/xmtp-js";
 import React, { FC } from "react";
-import Emoji from "react-emoji-render";
-import Avatar from "../Avatar";
-import { formatTime } from "../../helpers";
-import AddressPill from "../AddressPill";
 import InfiniteScroll from "react-infinite-scroll-component";
-import useWindowSize from "../../hooks/useWindowSize";
-import { address } from "../Address";
-
-export type MessageListProps = {
-  messages: DecodedMessage[];
-  fetchNextMessages: () => void;
-  hasMore: boolean;
-};
-
-type MessageTileProps = {
-  message: DecodedMessage;
-};
+import { FullConversation } from "../../component-library/components/FullConversation/FullConversation";
+import { FullMessage } from "../../component-library/components/FullMessage/FullMessage";
+import { useAccount } from "wagmi";
+import { formatDate } from "../../helpers";
 
 const isOnSameDay = (d1?: Date, d2?: Date): boolean => {
   return d1?.toDateString() === d2?.toDateString();
 };
 
-const formatDate = (d?: Date) =>
-  d?.toLocaleString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+export type MessageListProps = {
+  messages: DecodedMessage[];
+  fetchNextMessages: () => void;
+  hasMore: boolean;
+  isLoading?: boolean;
+};
 
-const MessageTile = ({ message }: MessageTileProps): JSX.Element => (
-  <div className="flex items-start mx-auto mb-4">
-    <Avatar peerAddress={message.senderAddress as address} />
-    <div className="ml-2 max-w-[90%]">
-      <div>
-        <AddressPill address={message.senderAddress as address} />
-        <span className="text-sm font-normal place-self-end text-n-300 text-md uppercase">
-          {formatTime(message.sent)}
-        </span>
-      </div>
-      <span
-        className="block text-md px-2 mt-2 text-black font-normal break-words"
-        data-testid={"message-tile-text"}>
-        {message.error ? (
-          `Error: ${message.error?.message}`
-        ) : (
-          <Emoji text={message.content || ""} />
-        )}
-      </span>
-    </div>
+const LoadingMore: FC = () => (
+  <div className="p-1 mt-6 text-center text-gray-300 font-bold text-sm">
+    Loading Messages...
+  </div>
+);
+
+const ConversationBeginningNotice = (): JSX.Element => (
+  <div className="flex align-items-center justify-center pb-4 mt-4">
+    <span
+      className="text-gray-300 text-sm font-semibold"
+      data-testid="message-beginning-text">
+      This is the beginning of the conversation
+    </span>
   </div>
 );
 
@@ -72,44 +53,26 @@ const DateDivider = ({ date }: { date?: Date }): JSX.Element => (
   </div>
 );
 
-const ConversationBeginningNotice = (): JSX.Element => (
-  <div className="flex align-items-center justify-center pb-4 mt-4">
-    <span
-      className="text-gray-300 text-sm font-semibold"
-      data-testid="message-beginning-text">
-      This is the beginning of the conversation
-    </span>
-  </div>
-);
-
-const LoadingMore: FC = () => (
-  <div className="p-1 mt-6 text-center text-gray-300 font-bold text-sm">
-    Loading Messages...
-  </div>
-);
-
 const MessagesList = ({
   messages,
   fetchNextMessages,
   hasMore,
 }: MessageListProps): JSX.Element => {
   let lastMessageDate: Date | undefined;
-  const size = useWindowSize();
+  const { address: walletAddress } = useAccount();
 
   return (
     <InfiniteScroll
       dataLength={messages.length}
       next={fetchNextMessages}
       className="flex flex-col-reverse overflow-y-auto pl-4"
-      height={size[1] > 700 ? "87vh" : "83vh"}
+      height={"81vh"}
       inverse
       endMessage={!messages.length && <ConversationBeginningNotice />}
       hasMore={hasMore}
       loader={<LoadingMore />}>
-      <div
-        className="flex flex-col-reverse"
-        data-testid="message-tile-container">
-        {messages?.map((msg: DecodedMessage, index: number) => {
+      <FullConversation
+        messages={messages?.map((msg, index) => {
           const dateHasChanged = lastMessageDate
             ? !isOnSameDay(lastMessageDate, msg.sent)
             : false;
@@ -118,14 +81,22 @@ const MessagesList = ({
               {index === messages.length - 1 ? (
                 <ConversationBeginningNotice />
               ) : null}
-              <MessageTile message={msg} />
+              <FullMessage
+                text={msg.content}
+                key={`${msg.id}_${index}`}
+                from={{
+                  displayAddress: msg.senderAddress,
+                  isSelf: walletAddress === msg.senderAddress,
+                }}
+                datetime={msg.sent}
+              />
               {dateHasChanged ? <DateDivider date={lastMessageDate} /> : null}
             </div>
           );
           lastMessageDate = msg.sent;
           return messageDiv;
         })}
-      </div>
+      />
     </InfiniteScroll>
   );
 };

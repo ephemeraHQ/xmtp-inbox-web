@@ -1,168 +1,69 @@
-import { LinkIcon, ExclamationCircleIcon } from "@heroicons/react/outline";
 import { useXmtpStore } from "../store/xmtp";
-import ConversationsList from "./ConversationsList";
-import Loader from "./Loader";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
-import useHandleConnect from "../hooks/useHandleConnect";
-import useInitXmtpClient from "../hooks/useInitXmtpClient";
+import { ConversationList } from "../component-library/components/ConversationList/ConversationList";
+import { Conversation } from "@xmtp/xmtp-js";
+import { getConversationId } from "../helpers";
+import { MessagePreviewCard } from "../component-library/components/MessagePreviewCard/MessagePreviewCard";
 
-type NavigationPanelProps = {
-  isError: boolean;
-};
-
-const NavigationPanel = ({ isError }: NavigationPanelProps): JSX.Element => {
+const NavigationPanel = (): JSX.Element => {
   const { address } = useAccount();
   const client = useXmtpStore((state) => state.client);
-  const { handleConnect } = useHandleConnect();
-  const { initClient } = useInitXmtpClient();
 
   return (
     <div className="flex-grow flex flex-col h-[calc(100vh-8rem)] overflow-y-auto">
-      {address && client !== null ? (
-        <ConversationsPanel />
-      ) : (
-        <>
-          {!address ? (
-            <NoWalletConnectedMessage isError={isError}>
-              <ConnectButton.Custom>
-                {({ account, chain, mounted }) => {
-                  const ready = mounted;
-                  const connected = ready && account && chain;
-                  return (
-                    <div
-                      {...(!ready && {
-                        "aria-hidden": true,
-                      })}>
-                      {(() => {
-                        if (!connected) {
-                          return (
-                            <button
-                              type="button"
-                              className="bg-p-600 px-4 rounded-lg h-[40px] text-white font-bold"
-                              onClick={handleConnect}
-                              data-testid="no-wallet-connected-cta">
-                              Connect Wallet
-                            </button>
-                          );
-                        }
-                      })()}
-                    </div>
-                  );
-                }}
-              </ConnectButton.Custom>
-            </NoWalletConnectedMessage>
-          ) : (
-            <NoXMTPConnectedMessage>
-              <button
-                type="button"
-                className="bg-p-600 px-4 rounded-lg h-[40px] text-white font-bold cursor-pointer"
-                onClick={initClient}
-                data-testid="no-wallet-connected-cta">
-                Connect XMTP
-              </button>
-            </NoXMTPConnectedMessage>
-          )}
-        </>
-      )}
-    </div>
-  );
-};
-
-const NoWalletConnectedMessage: React.FC<{
-  isError: boolean;
-  children?: React.ReactNode;
-}> = ({ isError, children }) => {
-  return (
-    <div className="flex flex-col flex-grow justify-center">
-      <div className="flex flex-col items-center px-4 text-center">
-        {isError ? (
-          <ExclamationCircleIcon className="h-8 w-8" aria-hidden="true" />
-        ) : (
-          <LinkIcon
-            className="h-8 w-8 mb-1 stroke-n-200 md:stroke-n-300"
-            aria-hidden="true"
-            data-testid="no-wallet-connected-icon"
-          />
-        )}
-        <p
-          className="text-xl md:text-lg text-n-200 md:text-n-300 font-bold"
-          data-testid="no-wallet-connected-header">
-          {isError ? "Error connecting" : "No wallet connected"}
-        </p>
-        <p
-          className="text-lx md:text-md text-n-200 font-normal"
-          data-testid="no-wallet-connected-subheader">
-          {isError ? "Please try again" : "Please connect a wallet to begin"}
-        </p>
-      </div>
-      <div className="mt-2 flex justify-center items-center">{children}</div>
-    </div>
-  );
-};
-
-const NoXMTPConnectedMessage: React.FC<{
-  isError?: boolean;
-  children?: React.ReactNode;
-}> = ({ isError, children }) => {
-  return (
-    <div className="flex flex-col flex-grow justify-center">
-      <div className="flex flex-col items-center px-4 text-center">
-        {isError ? (
-          <ExclamationCircleIcon className="h-8 w-8" aria-hidden="true" />
-        ) : (
-          <LinkIcon
-            className="h-8 w-8 mb-1 stroke-n-200 md:stroke-n-300"
-            aria-hidden="true"
-            data-testid="no-wallet-connected-icon"
-          />
-        )}
-        <p
-          className="text-xl md:text-lg text-n-200 md:text-n-300 font-bold"
-          data-testid="no-wallet-connected-header">
-          {isError ? "Error connecting" : "XMTP client not connected"}
-        </p>
-        <p
-          className="text-lx md:text-md text-n-200 font-normal"
-          data-testid="no-wallet-connected-subheader">
-          {isError ? "Please try again" : "Please connect to XMTP"}
-        </p>
-      </div>
-      <div className="mt-2 flex justify-center items-center">{children}</div>
+      {address && client !== null ? <ConversationsPanel /> : null}
     </div>
   );
 };
 
 const ConversationsPanel = (): JSX.Element => {
-  const client = useXmtpStore((state) => state.client);
   const loadingConversations = useXmtpStore(
     (state) => state.loadingConversations,
   );
+  const conversations = useXmtpStore((state) => state.conversations);
+  const previewMessages = useXmtpStore((state) => state.previewMessages);
+  const setRecipientWalletAddress = useXmtpStore(
+    (state) => state.setRecipientWalletAddress,
+  );
+  const setConversationId = useXmtpStore((state) => state.setConversationId);
 
-  if (client === undefined) {
-    return (
-      <Loader
-        headingText="Awaiting signatures..."
-        subHeadingText="Use your wallet to sign"
-        isLoading
-      />
-    );
-  }
+  const orderByLatestMessage = (
+    convoA: Conversation,
+    convoB: Conversation,
+  ): number => {
+    const convoALastMessageDate =
+      previewMessages.get(getConversationId(convoA))?.sent || new Date();
+    const convoBLastMessageDate =
+      previewMessages.get(getConversationId(convoB))?.sent || new Date();
+    return convoALastMessageDate < convoBLastMessageDate ? 1 : -1;
+  };
 
-  if (loadingConversations) {
-    return (
-      <Loader
-        headingText="Loading conversations..."
-        subHeadingText="Please wait a moment"
-        isLoading
-      />
-    );
-  }
+  const onClick = (conversation: Conversation) => {
+    setRecipientWalletAddress(conversation.peerAddress);
+    setConversationId(getConversationId(conversation));
+  };
 
   return (
-    <nav className="flex-1 pb-4" data-testid="conversations-list-panel">
-      <ConversationsList />
-    </nav>
+    <ConversationList
+      isLoading={loadingConversations}
+      messages={Array.from(conversations.values())
+        .sort(orderByLatestMessage)
+        .map((convo) => {
+          const previewMessage = previewMessages.get(getConversationId(convo));
+          console.log(previewMessage);
+          return (
+            <MessagePreviewCard
+              key={previewMessage?.id}
+              text={previewMessage?.content}
+              datetime={previewMessage?.sent}
+              displayAddress={convo?.peerAddress}
+              onClick={() => {
+                onClick(convo);
+              }}
+            />
+          );
+        })}
+    />
   );
 };
 

@@ -25,11 +25,10 @@ interface AddressInputProps {
     // What's the address of this wallet?
     address: string;
   };
-
   /**
    * What happens on a submit?
    */
-  onSubmit?: () => void;
+  onChange?: React.Dispatch<React.SetStateAction<string>>;
   /**
    * Upon submit, has there been an error?
    */
@@ -42,21 +41,26 @@ interface AddressInputProps {
    * Is there a tooltip click event that needs to be handled?
    */
   onTooltipClick?: () => void;
+  /**
+   * Input Value
+   */
+  value?: string;
 }
 
 export const AddressInput = ({
   resolvedAddress,
   subtext,
   avatarUrlProps,
-  onSubmit,
+  onChange,
   isError,
   isLoading,
   onTooltipClick,
+  value,
 }: AddressInputProps) => {
   const subtextColor = isError ? "text-red-400" : "text-gray-400";
   return (
-    <div className="flex items-center px-4 py-3 border border-gray-100 border-l-0 z-10">
-      <form className="flex w-full" onSubmit={onSubmit}>
+    <div className="flex items-center px-4 py-3 border border-gray-100 border-l-0 z-10 w-full">
+      <form className="flex w-full" onSubmit={(e) => e.preventDefault()}>
         <Avatar {...avatarUrlProps} />
         <div className="ml-4">
           {isLoading ? (
@@ -84,6 +88,11 @@ export const AddressInput = ({
               spellCheck="false"
               autoComplete="false"
               autoCorrect="false"
+              autoCapitalize="off"
+              onChange={(e) =>
+                onChange && onChange((e.target as HTMLInputElement).value)
+              }
+              value={value}
             />
           )}
           <p className={`font-mono text-xs ${subtextColor}`}>

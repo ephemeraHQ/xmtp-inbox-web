@@ -6,7 +6,7 @@ interface InputProps {
   /**
    * What happens on a submit?
    */
-  onSubmit?: () => void;
+  onSubmit?: (msg: string) => Promise<void>;
   /**
    * Is the CTA button disabled?
    */
@@ -58,13 +58,12 @@ export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
           placeholder="Type something..."
           value={value}
         />
-
         <div className="flex items-center p-1">
           <IconButton
             variant="secondary"
             label={<ArrowUpIcon color="white" width="12" />}
             srText="Submit Message"
-            onClick={onSubmit}
+            onClick={() => onSubmit && onSubmit(value)}
             isDisabled={isDisabled}
           />
         </div>

@@ -24,9 +24,9 @@ interface FullMessageProps {
 export const FullMessage = ({ text, from, datetime }: FullMessageProps) => {
   const isOutgoingMessage = from.isSelf;
 
-  const incomingMessageBackgroundStyles = "bg-gray-200 rounded-bl-xl";
+  const incomingMessageBackgroundStyles = "bg-gray-200 rounded-br-lg";
   const outgoingMessageBackgroundStyles =
-    "bg-indigo-600 text-white rounded-br-xl";
+    "bg-indigo-600 text-white rounded-bl-lg";
 
   return (
     <div
@@ -48,7 +48,7 @@ export const FullMessage = ({ text, from, datetime }: FullMessageProps) => {
           {text}
         </div>
         <div
-          className={`text-gray-300 w-full flex ${
+          className={`text-gray-300 w-full flex mb-4 ${
             isOutgoingMessage ? "justify-end pr-4" : "justify-start pl-4"
           }`}>
           {format(datetime, "h:mm a")}

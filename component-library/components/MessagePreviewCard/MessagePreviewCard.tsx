@@ -5,16 +5,13 @@ import {
   ShortCopySkeletonLoader,
 } from "../Loaders/SkeletonLoaders";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
+import { shortAddress } from "../../../helpers";
 
 interface MessagePreviewCard {
   /**
    * What is the message text?
    */
   text?: string;
-  /**
-   * What is the avatar associated with the message?
-   */
-  avatar?: React.ReactNode;
   /**
    * What is the display address associated with the message?
    */
@@ -35,23 +32,29 @@ interface MessagePreviewCard {
 }
 
 export const MessagePreviewCard = ({
-  text = "New message",
-  avatar = <Avatar />,
+  text,
   displayAddress = "New recipient",
   datetime,
   isLoading = false,
   onClick,
 }: MessagePreviewCard) => {
+  if (!text) {
+    return null;
+  }
   return (
     <div
       className="flex justify-between items-start bg-gray-50 border border-gray-100 border-t-0 p-4 h-min"
       onClick={onClick}>
-      <div className="mr-3 flex-none">{avatar}</div>
+      <div className="mr-3 flex-none">
+        {<Avatar address={displayAddress} isLoading={isLoading} />}
+      </div>
       <div className="flex flex-col items-start w-3/4">
         {isLoading ? (
           <ShortCopySkeletonLoader />
         ) : (
-          <span className="text-md font-bold">{displayAddress}</span>
+          <span className="text-md font-bold">
+            {shortAddress(displayAddress)}
+          </span>
         )}
         {isLoading ? (
           <ShortCopySkeletonLoader />

@@ -1,11 +1,12 @@
 import React, { useCallback, useState } from "react";
-import { MessagesList, MessageComposer } from "./";
+import { MessagesList } from "./";
 import Loader from "../../components/Loader";
 import useGetMessages from "../../hooks/useGetMessages";
 import useSendMessage from "../../hooks/useSendMessage";
 import { useXmtpStore } from "../../store/xmtp";
 import useWalletAddress from "../../hooks/useWalletAddress";
 import { isEnsAddress } from "../../helpers";
+import { MessageInput } from "../../component-library/components/MessageInput/MessageInput";
 
 const Conversation = (): JSX.Element => {
   const conversations = useXmtpStore((state) => state.conversations);
@@ -71,7 +72,7 @@ const Conversation = (): JSX.Element => {
           />
         </div>
       </div>
-      <MessageComposer onSend={sendMessage} />
+      <MessageInput onSubmit={sendMessage} />
     </>
   );
 };

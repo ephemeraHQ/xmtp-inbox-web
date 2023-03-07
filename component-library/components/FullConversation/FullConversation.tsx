@@ -1,10 +1,9 @@
 import { format } from "date-fns";
 import React from "react";
-import { FullMessage } from "../FullMessage/FullMessage";
 import { MessageLoader } from "../Loaders/SkeletonLoaders";
 
 interface FullConversationProps {
-  messages?: Array<typeof FullMessage>;
+  messages?: Array<JSX.Element>;
   convoStartDate?: Date;
   isLoading?: boolean;
 }
@@ -14,9 +13,6 @@ export const FullConversation = ({
   convoStartDate,
   isLoading = false,
 }: FullConversationProps) => {
-  const spanClasses =
-    "text-gray-300 text-sm font-bold flex flex-col-reverse items-center m-4";
-
   if (isLoading) {
     const alternatingMessages = (
       <>
@@ -25,7 +21,7 @@ export const FullConversation = ({
     );
     return (
       <div className="h-full flex flex-col-reverse justify-start p-4 overflow-none">
-        {Array(2).fill(alternatingMessages)}
+        {Array(10).fill(alternatingMessages)}
       </div>
     );
   }
@@ -44,9 +40,6 @@ export const FullConversation = ({
           </div>
         </div>
       )}
-      <span className={spanClasses}>
-        This is the beginning of the conversation
-      </span>
     </div>
   );
 };
