@@ -25,6 +25,10 @@ interface HeaderDropdownProps {
    * On new message button click?
    */
   onClick?: Function;
+  /**
+   * Is this dropdown disabled?
+   */
+  disabled?: boolean;
 }
 
 export const HeaderDropdown = ({
@@ -33,6 +37,7 @@ export const HeaderDropdown = ({
   defaultSelected = "All messages",
   onChange,
   onClick,
+  disabled,
 }: HeaderDropdownProps) => {
   const [currentlySelected, setCurrentlySelected] = useState(defaultSelected);
   return (
@@ -42,56 +47,58 @@ export const HeaderDropdown = ({
       <div className="flex justify-between items-center">
         <span className="flex">
           <h1 className="font-bold text-lg mr-2">{currentlySelected}</h1>
-          <ChevronDownIcon width="24" />
+          {!disabled && <ChevronDownIcon width="24" />}
         </span>
         <IconButton
-          onClick={() => onClick && onClick()}
+          onClick={() => onClick?.()}
           label={<PlusIcon color="white" width="16" />}
         />
       </div>
 
-      <Transition.Root show={isOpen} as={Fragment}>
-        <Dialog
-          as="div"
-          className="overflow-y-auto fixed inset-0 z-10"
-          onClose={() => {}}>
-          <div className="bg-white w-fit rounded-lg absolute top-14 left-16">
-            <div
-              id="headerModalId"
-              className="p-4 border border-gray-100 rounded-lg max-w-fit">
-              {dropdownOptions.map((item) => {
-                return (
-                  <div key={item} className="flex w-full justify-between">
-                    <div className="flex">
-                      <CogIcon width={24} className="text-gray-300 mr-4" />
-                      <button
-                        type="button"
-                        onClick={() => {
-                          onChange?.();
-                          //   setCurrentlySelected();
-                        }}
-                        className={`cursor-pointer my-1 outline-none ${
-                          item === currentlySelected ? "font-bold my-1" : ""
-                        }`}>
-                        {item}
-                      </button>
+      {!disabled && (
+        <Transition.Root show={isOpen} as={Fragment}>
+          <Dialog
+            as="div"
+            className="overflow-y-auto fixed inset-0 z-10"
+            onClose={() => {}}>
+            <div className="bg-white w-fit rounded-lg absolute top-14 left-16">
+              <div
+                id="headerModalId"
+                className="p-4 border border-gray-100 rounded-lg max-w-fit">
+                {dropdownOptions.map((item) => {
+                  return (
+                    <div key={item} className="flex w-full justify-between">
+                      <div className="flex">
+                        <CogIcon width={24} className="text-gray-300 mr-4" />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            onChange?.();
+                            // setCurrentlySelected?.();
+                          }}
+                          className={`cursor-pointer my-1 outline-none ${
+                            item === currentlySelected ? "font-bold my-1" : ""
+                          }`}>
+                          {item}
+                        </button>
+                      </div>
+                      <div className="flex items-center">
+                        {item === currentlySelected && (
+                          <CheckCircleIcon
+                            fill="limegreen"
+                            width="24"
+                            className="ml-4"
+                          />
+                        )}
+                      </div>
                     </div>
-                    <div className="flex items-center">
-                      {item === currentlySelected && (
-                        <CheckCircleIcon
-                          fill="limegreen"
-                          width="24"
-                          className="ml-4"
-                        />
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        </Dialog>
-      </Transition.Root>
+          </Dialog>
+        </Transition.Root>
+      )}
     </div>
   );
 };

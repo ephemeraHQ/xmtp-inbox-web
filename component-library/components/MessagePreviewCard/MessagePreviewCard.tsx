@@ -34,6 +34,10 @@ interface MessagePreviewCard {
    * Is conversation selected?
    */
   isSelected?: boolean;
+  /**
+   * What avatar url do we show here?
+   */
+  avatarUrl: string;
   // To-do: Add error views once we have the designs
 }
 
@@ -44,13 +48,8 @@ export const MessagePreviewCard = ({
   isLoading = false,
   onClick,
   isSelected,
+  avatarUrl,
 }: MessagePreviewCard) => {
-  const { data: ensName, isLoading: isLoadingEns } = useEnsName({
-    address: displayAddress as address,
-  });
-  const { data, isLoading: isLoadingAvatar } = useEnsAvatar({
-    address: displayAddress as address,
-  });
   if (!text) {
     return null;
   }
@@ -64,18 +63,18 @@ export const MessagePreviewCard = ({
       <div className="mr-3 flex-none">
         {
           <Avatar
-            url={data ?? ""}
+            url={avatarUrl ?? ""}
             address={displayAddress}
-            isLoading={isLoadingAvatar}
+            isLoading={isLoading}
           />
         }
       </div>
       <div className="flex flex-col items-start w-3/4">
-        {isLoadingEns ? (
+        {isLoading ? (
           <ShortCopySkeletonLoader />
         ) : (
           <span className="text-md font-bold">
-            {ensName || shortAddress(displayAddress)}
+            {shortAddress(displayAddress) || displayAddress}
           </span>
         )}
         {isLoading ? (

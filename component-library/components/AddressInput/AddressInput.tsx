@@ -98,7 +98,9 @@ export const AddressInput = ({
           <p className={`font-mono text-xs ${subtextColor}`}>{subtext}</p>
         </div>
       </form>
-      <InformationCircleIcon onClick={onTooltipClick} height="24" />
+      {onTooltipClick && (
+        <InformationCircleIcon onClick={onTooltipClick} height="24" />
+      )}
     </div>
   );
 };
