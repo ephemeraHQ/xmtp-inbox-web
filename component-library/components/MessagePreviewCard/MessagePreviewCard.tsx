@@ -1,13 +1,12 @@
 import React from "react";
-import { Avatar } from "../Avatar/Avatar";
 import {
   IconLoader,
   ShortCopySkeletonLoader,
 } from "../Loaders/SkeletonLoaders";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
-import { classNames, shortAddress } from "../../../helpers";
-import { useEnsAvatar, useEnsName } from "wagmi";
-import { address } from "../../../components/Address";
+import { classNames } from "../../../helpers";
+import { AvatarWithHooks } from "../ComponentsWithHooks/AvatarWithHooks";
+import { MessagePreviewCardHeader } from "../ComponentsWithHooks/MessagePreviewCardHeader";
 
 interface MessagePreviewCard {
   /**
@@ -34,10 +33,6 @@ interface MessagePreviewCard {
    * Is conversation selected?
    */
   isSelected?: boolean;
-  /**
-   * What avatar url do we show here?
-   */
-  avatarUrl: string;
   // To-do: Add error views once we have the designs
 }
 
@@ -48,7 +43,6 @@ export const MessagePreviewCard = ({
   isLoading = false,
   onClick,
   isSelected,
-  avatarUrl,
 }: MessagePreviewCard) => {
   if (!text) {
     return null;
@@ -61,21 +55,13 @@ export const MessagePreviewCard = ({
       )}
       onClick={onClick}>
       <div className="mr-3 flex-none">
-        {
-          <Avatar
-            url={avatarUrl ?? ""}
-            address={displayAddress}
-            isLoading={isLoading}
-          />
-        }
+        <AvatarWithHooks address={displayAddress} />
       </div>
       <div className="flex flex-col items-start w-3/4">
         {isLoading ? (
           <ShortCopySkeletonLoader />
         ) : (
-          <span className="text-md font-bold">
-            {shortAddress(displayAddress) || displayAddress}
-          </span>
+          <MessagePreviewCardHeader address={displayAddress} />
         )}
         {isLoading ? (
           <ShortCopySkeletonLoader />

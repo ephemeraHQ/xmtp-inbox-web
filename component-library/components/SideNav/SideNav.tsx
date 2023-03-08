@@ -6,8 +6,8 @@ import {
 } from "@heroicons/react/outline";
 import { classNames, shortAddress } from "../../../helpers";
 import { XmtpIcon } from "../Icons/XmtpIcon";
-import { Avatar } from "../Avatar/Avatar";
 import { useState } from "react";
+import { AvatarWithHooks } from "../ComponentsWithHooks/AvatarWithHooks";
 
 interface SideNav {
   /**
@@ -84,7 +84,7 @@ const SideNav = ({
           <div>
             <div className="flex mb-12">
               <div>
-                <Avatar address={walletAddress} />
+                <AvatarWithHooks address={walletAddress} />
               </div>
               {isOpen && (
                 <div className="flex items-center">

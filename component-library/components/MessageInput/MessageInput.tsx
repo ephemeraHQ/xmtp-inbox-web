@@ -57,13 +57,17 @@ export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
           className={textAreaStyles}
           placeholder="Type something..."
           value={value}
+          disabled={isDisabled}
         />
         <div className="flex items-center p-1">
           <IconButton
             variant="secondary"
             label={<ArrowUpIcon color="white" width="12" />}
             srText="Submit Message"
-            onClick={() => onSubmit && onSubmit(value)}
+            onClick={() => {
+              setValue("");
+              onSubmit && onSubmit(value);
+            }}
             isDisabled={isDisabled}
           />
         </div>

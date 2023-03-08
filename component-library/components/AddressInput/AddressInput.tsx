@@ -1,6 +1,7 @@
 import React from "react";
 import { Avatar } from "../Avatar/Avatar";
 import { InformationCircleIcon } from "@heroicons/react/outline";
+import { AvatarWithHooks } from "../ComponentsWithHooks/AvatarWithHooks";
 
 interface AddressInputProps {
   /**
@@ -14,17 +15,17 @@ interface AddressInputProps {
    * What, if any, subtext is there?
    */
   subtext?: string;
-  /**
-   * What are the props associated with the avatar?
-   */
-  avatarUrlProps?: {
-    // What is the avatar url?
-    avatarUrl: string;
-    // Is the avatar url loading?
-    isLoading: boolean;
-    // What's the address of this wallet?
-    address: string;
-  };
+  // /**
+  //  * What are the props associated with the avatar?
+  //  */
+  // avatarUrlProps?: {
+  //   // What is the avatar url?
+  //   avatarUrl: string;
+  //   // Is the avatar url loading?
+  //   isLoading: boolean;
+  //   // What's the address of this wallet?
+  //   address: string;
+  // };
   /**
    * What happens on a submit?
    */
@@ -45,12 +46,14 @@ interface AddressInputProps {
    * Input Value
    */
   value?: string;
+  // What's the address of this wallet?
+  address?: string;
 }
 
 export const AddressInput = ({
   resolvedAddress,
   subtext,
-  avatarUrlProps,
+  address,
   onChange,
   isError,
   isLoading,
@@ -61,10 +64,10 @@ export const AddressInput = ({
   return (
     <div className="flex items-center px-4 py-3 border border-gray-100 border-l-0 z-10 w-full">
       <form className="flex w-full" onSubmit={(e) => e.preventDefault()}>
-        <Avatar {...avatarUrlProps} />
+        <AvatarWithHooks address={address} />
         <div className="ml-4 flex flex-col justify-center">
           {isLoading ? (
-            <div role="status" className="max-w-sm animate-pulse m-0 pt-1 pb-3">
+            <div role="status" className="max-w-sm animate-pulse m-0 pt-1 pb-1">
               <div className="h-4 bg-gray-200 rounded-full dark:bg-gray-700 w-48 m-0"></div>
               <span className="sr-only">Loading...</span>
             </div>

@@ -1,4 +1,4 @@
-import { useAccount, useEnsAvatar, useEnsName } from "wagmi";
+import { useAccount, useEnsName } from "wagmi";
 import { fetchEnsAddress } from "@wagmi/core";
 import React, { useCallback, useEffect, useState } from "react";
 import useListConversations from "../hooks/useListConversations";
@@ -33,6 +33,8 @@ const isOnSameDay = (d1?: Date, d2?: Date): boolean => {
   return d1?.toDateString() === d2?.toDateString();
 };
 
+let lastMessageDate: Date;
+
 const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   // XMTP Store
   const client = useXmtpStore((state) => state.client);
@@ -58,13 +60,9 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   const [convo, setConvo] = useState();
   const [recipientEnteredValue, setRecipientEnteredValue] =
     useState<string>("");
-  const [lastMessageDate, setLastMessageDate] = useState();
+
   const [endTime, setEndTime] = useState<Map<string, Date>>(new Map());
 
-  // Wagmi Hooks
-  const { data, isLoading: isAvatarUrlLoading } = useEnsAvatar({
-    address: recipientWalletAddress as address,
-  });
   const { address: walletAddress } = useAccount();
   const { data: ensNameConnectedWallet } = useEnsName({
     address: walletAddress,
@@ -91,6 +89,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
 
   // XMTP Hooks
   useListConversations();
+
   // ENS Address from same hook required for conversation ID check above
   const { isValid, ensName } = useWalletAddress();
 
@@ -138,22 +137,19 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
     const handleSubmit = async () => {
       if (recipientEnteredValue) {
         if (isEnsAddress(recipientEnteredValue)) {
-          setRecipientInputMode &&
-            setRecipientInputMode(RecipientInputMode.FindingEntry);
+          setRecipientInputMode(RecipientInputMode.FindingEntry);
           const address = await fetchEnsAddress({
             name: recipientEnteredValue,
           });
           if (address) {
             checkIfOnNetwork(address);
           } else {
-            setRecipientInputMode &&
-              setRecipientInputMode(RecipientInputMode.InvalidEntry);
+            setRecipientInputMode(RecipientInputMode.InvalidEntry);
           }
         } else if (isValidLongWalletAddress(recipientEnteredValue)) {
           checkIfOnNetwork(recipientEnteredValue as address);
         } else {
-          setRecipientInputMode &&
-            setRecipientInputMode(RecipientInputMode.InvalidEntry);
+          setRecipientInputMode(RecipientInputMode.InvalidEntry);
         }
       }
     };
@@ -165,8 +161,10 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   // Click events
   const onNewMessageClick = () => {
     setRecipientWalletAddress("");
+    setRecipientInputMode(RecipientInputMode.InvalidEntry);
     setConversationId();
     setShowMessageView(true);
+    setRecipientEnteredValue("");
   };
 
   const onSideNavBtnClick = (key: string) => {
@@ -231,7 +229,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
 
   return (
     <div className="bg-white w-screen md:h-screen flex flex-col md:flex-row">
-      <div className="flex md:w-1/2 md:min-w-fit overflow-y-scroll">
+      <div className="flex md:w-[35%] overflow-y-scroll">
         <SideNav
           onClick={onSideNavBtnClick}
           isOpen={isOpenSideNav}
@@ -259,8 +257,6 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
                       datetime={previewMessage?.sent}
                       displayAddress={convo?.peerAddress}
                       onClick={() => onConvoClick?.(convo)}
-                      // avatarUrl={avatarData || ""}
-                      // isLoading={isLoadingAvatar || isLoadingEns}
                     />
                   )
                 );
@@ -276,11 +272,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
             displayAddress: ensName ?? recipientWalletAddress,
             walletAddress: ensName ? recipientWalletAddress : "",
           }}
-          avatarUrlProps={{
-            avatarUrl: data ?? "",
-            isLoading: isAvatarUrlLoading,
-            address: recipientWalletAddress,
-          }}
+          address={recipientWalletAddress}
           onChange={setRecipientEnteredValue}
           isLoading={RecipientInputMode.FindingEntry === recipientInputMode}
           value={recipientEnteredValue}
@@ -317,7 +309,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
                 </div>
               );
               if (lastMessageDate !== msg.sent) {
-                setLastMessageDate(msg.sent);
+                lastMessageDate = msg.sent;
               }
               return messageDiv;
             })}
