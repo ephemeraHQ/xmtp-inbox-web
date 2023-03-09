@@ -1,7 +1,6 @@
 import React from "react";
 import { Avatar } from "../Avatar/Avatar";
 import { InformationCircleIcon } from "@heroicons/react/outline";
-import { AvatarWithHooks } from "../ComponentsWithHooks/AvatarWithHooks";
 
 interface AddressInputProps {
   /**
@@ -15,17 +14,17 @@ interface AddressInputProps {
    * What, if any, subtext is there?
    */
   subtext?: string;
-  // /**
-  //  * What are the props associated with the avatar?
-  //  */
-  // avatarUrlProps?: {
-  //   // What is the avatar url?
-  //   avatarUrl: string;
-  //   // Is the avatar url loading?
-  //   isLoading: boolean;
-  //   // What's the address of this wallet?
-  //   address: string;
-  // };
+  /**
+   * What are the props associated with the avatar?
+   */
+  avatarUrlProps?: {
+    // What is the avatar url?
+    avatarUrl?: string;
+    // Is the avatar url loading?
+    isLoading?: boolean;
+    // What's the address of this wallet?
+    address?: string;
+  };
   /**
    * What happens on a submit?
    */
@@ -46,14 +45,12 @@ interface AddressInputProps {
    * Input Value
    */
   value?: string;
-  // What's the address of this wallet?
-  address?: string;
 }
 
 export const AddressInput = ({
   resolvedAddress,
   subtext,
-  address,
+  avatarUrlProps,
   onChange,
   isError,
   isLoading,
@@ -64,7 +61,7 @@ export const AddressInput = ({
   return (
     <div className="flex items-center px-4 py-3 border border-gray-100 border-l-0 z-10 w-full">
       <form className="flex w-full" onSubmit={(e) => e.preventDefault()}>
-        <AvatarWithHooks address={address} />
+        <Avatar {...avatarUrlProps} />
         <div className="ml-4 flex flex-col justify-center">
           {isLoading ? (
             <div role="status" className="max-w-sm animate-pulse m-0 pt-1 pb-1">
@@ -87,7 +84,6 @@ export const AddressInput = ({
               className="text-gray-700 m-0 p-0 font-mono text-sm w-full leading-tight border-none focus:ring-0 cursor-text"
               id="address"
               type="text"
-              autoFocus
               spellCheck="false"
               autoComplete="false"
               autoCorrect="false"
@@ -98,7 +94,7 @@ export const AddressInput = ({
               value={value}
             />
           )}
-          <p className={`font-mono text-xs ${subtextColor}`}>{subtext}</p>
+          <p className={`font-mono text-sm ${subtextColor}`}>{subtext}</p>
         </div>
       </form>
       {onTooltipClick && (

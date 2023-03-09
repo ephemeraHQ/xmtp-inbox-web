@@ -25,18 +25,18 @@ export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
     textAreaRef?.current?.scrollHeight <= 32
       ? "max-h-8"
       : "max-h-40"
-  } min-h-8 outline-none border-none focus:ring-0 resize-none mr-0 mx-4 p-1 w-full text-md text-gray-900"`;
+  } min-h-8 outline-none border-none focus:ring-0 resize-none mr-0 mx-4 p-1 w-full text-md text-gray-900`;
 
   useLayoutEffect(() => {
-    const MIN_TEXTAREA_HEIGHT = 8;
-    if (textAreaRef?.current) {
+    const MIN_TEXTAREA_HEIGHT = 32;
+    if (textAreaRef?.current?.value) {
       let currentScrollHeight = textAreaRef?.current.scrollHeight;
-      // Reset height - important to shrink on delete
-      textAreaRef.current.style.height = "inherit";
       textAreaRef.current.style.height = `${Math.max(
         currentScrollHeight,
         MIN_TEXTAREA_HEIGHT,
       )}px`;
+    } else if (textAreaRef?.current) {
+      textAreaRef.current.style.height = `${MIN_TEXTAREA_HEIGHT}px`;
     }
   }, [value]);
 
@@ -52,6 +52,15 @@ export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
         <textarea
           id="chat"
           onChange={onChange}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              if (value) {
+                onSubmit?.(value);
+                setValue("");
+              }
+            }
+          }}
           ref={textAreaRef}
           rows={1}
           className={textAreaStyles}
@@ -65,8 +74,10 @@ export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
             label={<ArrowUpIcon color="white" width="12" />}
             srText="Submit Message"
             onClick={() => {
-              setValue("");
-              onSubmit && onSubmit(value);
+              if (value) {
+                onSubmit?.(value);
+                setValue("");
+              }
             }}
             isDisabled={isDisabled}
           />

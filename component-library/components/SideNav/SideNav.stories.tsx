@@ -17,12 +17,6 @@ const Template: ComponentStory<typeof SideNav> = (args) => (
 
 export const SideNavDefault = Template.bind({});
 SideNavDefault.args = {
-  isOpen: false,
-};
-
-export const SideNavOpen = Template.bind({});
-SideNavOpen.args = {
-  isOpen: true,
   displayAddress: "hi.xmtp.eth",
   walletAddress: shortAddress("0x0123456789012345678901234567890123456789"),
 };

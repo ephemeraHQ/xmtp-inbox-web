@@ -1,7 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import OnboardingStep from "./OnboardingStep";
+import { OnboardingStep } from "./OnboardingStep";
 
 export default {
   title: "OnboardingStep",

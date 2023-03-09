@@ -7,13 +7,9 @@ import {
 import { classNames, shortAddress } from "../../../helpers";
 import { XmtpIcon } from "../Icons/XmtpIcon";
 import { useState } from "react";
-import { AvatarWithHooks } from "../ComponentsWithHooks/AvatarWithHooks";
+import { Avatar } from "../Avatar/Avatar";
 
 interface SideNav {
-  /**
-   * Is Side Nav Open?
-   */
-  isOpen?: boolean;
   /**
    * Contents inside side nav
    */
@@ -27,18 +23,22 @@ interface SideNav {
    */
   walletAddress?: string;
   /**
-   * Function to navigate
+   * What is the avatarUrl?
    */
-  onClick?: Function;
+  avatarUrl?: string;
 }
 
 const SideNav = ({
-  isOpen = false,
   icon = <XmtpIcon />,
   displayAddress,
   walletAddress,
-  onClick,
+  avatarUrl,
 }: SideNav) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const onSideNavBtnClick = (key: string) => {
+    if (key === "Collapse") setIsOpen(!isOpen);
+  };
   const icons = [
     <ChatAlt2Icon key="Messages" width={24} className={isOpen ? "mr-4" : ""} />,
     <SparklesIcon key="Gallery" width={24} className={isOpen ? "mr-4" : ""} />,
@@ -58,7 +58,7 @@ const SideNav = ({
         type="button"
         onClick={(event) => {
           setCurrentIcon((event.target as HTMLElement).innerText);
-          onClick && onClick(icon.key);
+          onSideNavBtnClick(icon.key as string);
         }}
         aria-label={currentIcon as string}
         className={`${
@@ -84,7 +84,7 @@ const SideNav = ({
           <div>
             <div className="flex mb-12">
               <div>
-                <AvatarWithHooks address={walletAddress} />
+                <Avatar url={avatarUrl} address={walletAddress} />
               </div>
               {isOpen && (
                 <div className="flex items-center">

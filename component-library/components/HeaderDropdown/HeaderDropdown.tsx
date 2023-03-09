@@ -6,10 +6,6 @@ import { IconButton } from "../IconButton/IconButton";
 
 interface HeaderDropdownProps {
   /**
-   * Is the dropdown open?
-   */
-  isOpen: boolean;
-  /**
    * What options does the user have to change?
    */
   dropdownOptions?: Array<string>;
@@ -32,13 +28,13 @@ interface HeaderDropdownProps {
 }
 
 export const HeaderDropdown = ({
-  isOpen = false,
   dropdownOptions = ["All messages", "Message requests"],
   defaultSelected = "All messages",
   onChange,
   onClick,
   disabled,
 }: HeaderDropdownProps) => {
+  const [isOpen, setIsOpen] = useState(false);
   const [currentlySelected, setCurrentlySelected] = useState(defaultSelected);
   return (
     <div
@@ -47,7 +43,9 @@ export const HeaderDropdown = ({
       <div className="flex justify-between items-center">
         <span className="flex">
           <h1 className="font-bold text-lg mr-2">{currentlySelected}</h1>
-          {!disabled && <ChevronDownIcon width="24" />}
+          {!disabled && (
+            <ChevronDownIcon width="24" onClick={() => setIsOpen(!isOpen)} />
+          )}
         </span>
         <IconButton
           onClick={() => onClick?.()}
@@ -55,7 +53,7 @@ export const HeaderDropdown = ({
         />
       </div>
 
-      {!disabled && (
+      {!disabled && isOpen && (
         <Transition.Root show={isOpen} as={Fragment}>
           <Dialog
             as="div"

@@ -84,7 +84,7 @@ export const GhostButton = ({
       type="button"
       onClick={onClick}
       disabled={isDisabled}
-      className={`${backgroundColor} ${fontColor} ${disabled} ${sizeClass} min-w-[${minWidth}%] h-fit font-bold rounded-full`}
+      className={`${backgroundColor} ${fontColor} ${disabled} ${sizeClass} min-w-[${minWidth}%] h-fit font-bold rounded-full m-1 p-1`}
       aria-label={srText}>
       <>
         <div className="flex justify-center items-center h-fit space-x-2">
