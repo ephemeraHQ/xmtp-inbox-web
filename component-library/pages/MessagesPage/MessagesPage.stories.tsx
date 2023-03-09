@@ -72,11 +72,6 @@ MessagesPageProfileDropdownExpanded.args = {
   type: "profile_dropdown",
 };
 
-export const MessagesHeaderDropdownExpanded = Template.bind({});
-MessagesHeaderDropdownExpanded.args = {
-  type: "header_dropdown",
-};
-
 export const MessagesPageTooltipExpanded = Template.bind({});
 MessagesPageTooltipExpanded.args = {
   type: "expanded_tooltip",

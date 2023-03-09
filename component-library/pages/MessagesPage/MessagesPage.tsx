@@ -11,6 +11,8 @@ import { HeaderDropdown } from "../../components/HeaderDropdown/HeaderDropdown";
 import { ExpandedWalletCard } from "../../components/ExpandedWalletCard/ExpandedWalletCard";
 import { shortAddress } from "../../../helpers";
 import { Avatar } from "../../components/Avatar/Avatar";
+import { FullMessage } from "../../components/FullMessage/FullMessage";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 interface MessagesPageProps {
   // This exact page is really not intended to be used for anything except storybook, since it shows the different views.
@@ -21,7 +23,32 @@ interface MessagesPageProps {
   type?: string;
 }
 
+const fromProps = {
+  text: "This should be a from message. Here is my super, super, super interesting from message. What do you think?",
+  from: {
+    displayAddress: "hi.xmtp.eth",
+    isSelf: true,
+  },
+  datetime: new Date(),
+};
+
+const toProps = {
+  text: "This should be a to message. Here is my super, super, super interesting to message. What do you think?",
+  from: {
+    displayAddress: "otherperson.xmtp.eth",
+    isSelf: false,
+  },
+  datetime: new Date(),
+};
+
 export const MessagesPage = ({ type }: MessagesPageProps) => {
+  const alternatingMessage = (
+    <div>
+      <FullMessage {...fromProps} />
+      <FullMessage {...toProps} />
+    </div>
+  );
+
   if (type === "empty") {
     return (
       <div className="w-screen md:h-screen flex flex-col md:flex-row">
@@ -41,7 +68,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
         <div className="flex md:w-1/2">
           <SideNav />
           <div className="w-full flex flex-col h-screen overflow-scroll">
-            <HeaderDropdown isOpen={false} />
+            <HeaderDropdown />
             <ConversationList messages={[<MessagePreviewCard key={0} />]} />
           </div>
         </div>
@@ -59,7 +86,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
         <div className="flex md:w-1/2">
           <SideNav />
           <div className="w-full flex flex-col h-screen overflow-scroll">
-            <HeaderDropdown isOpen={false} />
+            <HeaderDropdown />
             <ConversationList messages={[<MessagePreviewCard key={0} />]} />
           </div>
         </div>
@@ -77,7 +104,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
         <div className="flex md:w-1/2">
           <SideNav />
           <div className="w-full flex flex-col h-screen overflow-scroll">
-            <HeaderDropdown isOpen={false} />
+            <HeaderDropdown />
             <ConversationList messages={[<MessagePreviewCard key={0} />]} />
           </div>
         </div>
@@ -101,7 +128,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
         <div className="h-screen flex md:w-1/2 md:min-w-fit overflow-y-scroll">
           <SideNav />
           <div className="w-full flex flex-col h-screen overflow-scroll">
-            <HeaderDropdown isOpen={false} />
+            <HeaderDropdown />
             <ConversationList
               messages={Array(20).fill(
                 <MessagePreviewCard
@@ -128,7 +155,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
         <div className="flex md:w-1/2 md:min-w-fit overflow-y-scroll">
           <SideNav />
           <div className="w-full flex flex-col h-screen overflow-scroll">
-            <HeaderDropdown isOpen={false} />
+            <HeaderDropdown />
             <ConversationList
               messages={Array(20).fill(
                 <MessagePreviewCard
@@ -159,14 +186,13 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
       <div className="w-screen md:h-screen flex flex-col md:flex-row">
         <div className="flex md:w-1/2 md:min-w-fit overflow-y-scroll">
           <SideNav
-            isOpen
             displayAddress="hi.xmtp.eth"
             walletAddress={shortAddress(
               "0x0123456789x0123456789x0123456789x0123456789",
             )}
           />
           <div className="w-full flex flex-col h-screen overflow-scroll">
-            <HeaderDropdown isOpen={false} />
+            <HeaderDropdown />
             <ConversationList messages={[<MessagePreviewCard key={0} />]} />
           </div>
         </div>
@@ -190,7 +216,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
         <div className="flex md:w-1/2 md:min-w-fit overflow-y-scroll">
           <SideNav />
           <div className="w-full flex flex-col h-screen overflow-scroll">
-            <HeaderDropdown isOpen={false} />
+            <HeaderDropdown />
             <ConversationList
               messages={Array(20).fill(
                 <MessagePreviewCard
@@ -209,7 +235,20 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
               walletAddress: "01234",
             }}
           />
-          <FullConversation isLoading={true} convoStartDate={new Date()} />
+          <div className="h-full w-full flex flex-col-reverse overflow-scroll">
+            <InfiniteScroll
+              height={"100%"}
+              dataLength={40}
+              next={() => {}}
+              endMessage={!40}
+              hasMore={false}
+              loader={false}>
+              <FullConversation
+                messages={Array(2).fill(alternatingMessage)}
+                convoStartDate={new Date()}
+              />
+            </InfiniteScroll>
+          </div>
           <MessageInput />
         </div>
       </div>
@@ -219,10 +258,10 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
   if (type === "long_history") {
     return (
       <div className="w-screen md:h-screen flex flex-col md:flex-row">
-        <div className="flex md:w-1/2 md:min-w-fit overflow-y-scroll">
+        <div className="flex md:w-1/2 md:min-w-fit">
           <SideNav />
-          <div className="w-full flex flex-col h-screen overflow-scroll">
-            <HeaderDropdown isOpen={false} />
+          <div className="w-full flex flex-col h-full overflow-scroll">
+            <HeaderDropdown />
             <ConversationList
               messages={Array(20).fill(
                 <MessagePreviewCard
@@ -234,14 +273,27 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             />
           </div>
         </div>
-        <div className="flex flex-col w-full h-screen">
+        <div className="flex flex-col w-full h-full">
           <AddressInput
             resolvedAddress={{
               displayAddress: "hi.xmtp.eth",
               walletAddress: "01234",
             }}
           />
-          <FullConversation isLoading={true} convoStartDate={new Date()} />
+          <div className="h-full w-full flex flex-col-reverse overflow-scroll">
+            <InfiniteScroll
+              height={"100%"}
+              dataLength={40}
+              next={() => {}}
+              endMessage={!40}
+              hasMore={false}
+              loader={false}>
+              <FullConversation
+                messages={Array(20).fill(alternatingMessage)}
+                convoStartDate={new Date()}
+              />
+            </InfiniteScroll>
+          </div>
           <MessageInput />
         </div>
       </div>
@@ -254,7 +306,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
         <div className="flex md:w-1/2 md:min-w-fit overflow-y-scroll">
           <SideNav />
           <div className="w-full flex flex-col h-screen overflow-scroll">
-            <HeaderDropdown isOpen={false} />
+            <HeaderDropdown />
             <ConversationList
               messages={Array(20).fill(
                 <MessagePreviewCard
@@ -301,39 +353,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
           <SideNav />
           <ProfileDropdown isOpen addressCards={[]} />
           <div className="flex flex-col h-screen overflow-scroll">
-            <HeaderDropdown isOpen={false} />
-            <ConversationList
-              messages={Array(20).fill(
-                <MessagePreviewCard
-                  text="Here's an existing message"
-                  displayAddress="theseWillAllBeTheSame.eth"
-                  datetime={new Date()}
-                />,
-              )}
-            />
-          </div>
-        </div>
-        <div className="flex flex-col w-full h-screen">
-          <AddressInput
-            resolvedAddress={{
-              displayAddress: "hi.xmtp.eth",
-              walletAddress: "01234",
-            }}
-          />
-          <FullConversation messages={[]} />
-          <MessageInput />
-        </div>
-      </div>
-    );
-  }
-
-  if (type === "header_dropdown") {
-    return (
-      <div className="flex w-screen md:h-screen flex-col md:flex-row">
-        <div className="min-w-fit flex overflow-y-scroll">
-          <SideNav />
-          <div className="flex flex-col h-screen overflow-scroll">
-            <HeaderDropdown isOpen />
+            <HeaderDropdown />
             <ConversationList
               messages={Array(20).fill(
                 <MessagePreviewCard
@@ -365,7 +385,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
         <div className="min-w-fit flex overflow-y-scroll">
           <SideNav />
           <div className="flex flex-col h-screen overflow-scroll">
-            <HeaderDropdown isOpen={false} />
+            <HeaderDropdown />
             <ConversationList
               messages={Array(20).fill(
                 <MessagePreviewCard
