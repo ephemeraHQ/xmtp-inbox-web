@@ -22,6 +22,7 @@ export const AddressInputWrapper = () => {
     recipientEnteredValue,
     setRecipientEnteredValue,
   } = useGetRecipientInputMode();
+
   const { isValid, ensName } = useWalletAddress();
 
   // Wagmi Hooks

@@ -11,12 +11,6 @@ import { useXmtpStore } from "../store/xmtp";
 import useWalletAddress from "./useWalletAddress";
 
 const useGetRecipientInputMode = () => {
-  const [recipientInputMode, setRecipientInputMode] = useState(
-    RecipientInputMode.InvalidEntry,
-  );
-  const [recipientEnteredValue, setRecipientEnteredValue] =
-    useState<string>("");
-
   const client = useXmtpStore((state) => state.client);
   const recipientWalletAddress = useXmtpStore(
     (state) => state.recipientWalletAddress,
@@ -26,6 +20,19 @@ const useGetRecipientInputMode = () => {
   );
   const storeConversationId =
     useXmtpStore((state) => state.conversationId) || "";
+
+  const recipientInputMode = useXmtpStore((state) => state.recipientInputMode);
+  const setRecipientInputMode = useXmtpStore(
+    (state) => state.setRecipientInputMode,
+  );
+
+  const recipientEnteredValue = useXmtpStore(
+    (state) => state.recipientEnteredValue,
+  );
+  const setRecipientEnteredValue = useXmtpStore(
+    (state) => state.setRecipientEnteredValue,
+  );
+
   const conversations = useXmtpStore((state) => state.conversations);
   const setConversations = useXmtpStore((state) => state.setConversations);
 

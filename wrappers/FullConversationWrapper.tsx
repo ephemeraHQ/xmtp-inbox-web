@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { DateDivider } from "../component-library/components/DateDivider/DateDivider";
 import { FullConversation } from "../component-library/components/FullConversation/FullConversation";
 import { FullMessage } from "../component-library/components/FullMessage/FullMessage";
 import { isValidLongWalletAddress, shortAddress } from "../helpers";
@@ -8,6 +9,8 @@ import useGetRecipientInputMode from "../hooks/useGetRecipientInputMode";
 import { useXmtpStore } from "../store/xmtp";
 
 export const FullConversationWrapper = () => {
+  let lastMessageDate: Date;
+
   // Local state
   const [endTime, setEndTime] = useState<Map<string, Date>>(new Map());
 
@@ -19,7 +22,7 @@ export const FullConversationWrapper = () => {
 
   // XMTP Hooks
   const { conversationId } = useGetRecipientInputMode();
-  const { convoMessages: messages, hasMore } = useGetMessages(
+  const { convoMessages: messages = [], hasMore } = useGetMessages(
     conversationId as string,
     endTime.get(conversationId as string),
   );
@@ -46,16 +49,17 @@ export const FullConversationWrapper = () => {
 
   return (
     <InfiniteScroll
-      height={"100%"}
-      dataLength={messages?.length || 0}
+      className="flex flex-col-reverse overflow-y-auto pl-4"
+      height={"83vh"}
+      dataLength={messages.length}
       next={fetchNextMessages}
       endMessage={!messages?.length}
       hasMore={hasMore}
+      inverse
       loader={false}>
       <FullConversation
         isLoading={loadingConversations}
         messages={messages?.map((msg, index) => {
-          let lastMessageDate;
           const dateHasChanged = lastMessageDate
             ? !isOnSameDay(lastMessageDate, msg.sent)
             : false;
@@ -72,14 +76,10 @@ export const FullConversationWrapper = () => {
                 }}
                 datetime={msg.sent}
               />
-              {/* {dateHasChanged ? (
-                    <DateDivider date={lastMessageDate} />
-                  ) : null} */}
+              {dateHasChanged ? <DateDivider date={lastMessageDate} /> : null}
             </div>
           );
-          if (lastMessageDate !== msg.sent) {
-            lastMessageDate = msg.sent;
-          }
+          lastMessageDate = msg.sent;
           return messageDiv;
         })}
       />

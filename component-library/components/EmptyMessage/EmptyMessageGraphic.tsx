@@ -6,7 +6,7 @@ export const emptyMessageSvg = (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink">
-    <g clip-path="url(#clip0_1612_10342)">
+    <g clipPath="url(#clip0_1612_10342)">
       <path
         d="M177.042 58.1602C178.349 55.1511 181.178 45.5917 188.427 39.982C191.691 37.4563 193.523 38.0034 195.92 36.898C195.92 36.898 196.958 36.3996 198.161 35.4365C201.761 32.5511 201.33 23.6288 204.564 19.4805C209.389 13.2899 225.694 13.4773 230.906 21.6015C232.517 24.1159 233.416 27.9494 232.322 31.5056C229.838 39.5548 218.965 40.1581 217.789 47.8064C217.429 50.1372 218.411 50.2572 218.467 53.0452C218.654 62.5633 206.931 71.5119 194.935 75.634C189.158 77.62 178.068 72.2052 176.596 71.0248C173.216 68.3155 175.667 61.323 177.042 58.1565V58.1602Z"
         fill="url(#paint0_linear_1612_10342)"
@@ -15,8 +15,8 @@ export const emptyMessageSvg = (
         opacity="0.7"
         d="M219.741 27.26C216.275 30.2803 212.709 33.6754 209.131 37.4864C199.697 47.5442 192.863 57.6732 187.914 66.5056C189.327 64.0436 193.013 58.4377 200.057 55.511C202.462 54.5105 204.717 54.0495 206.576 53.8472"
         stroke="white"
-        stroke-width="0.77"
-        stroke-miterlimit="10"
+        strokeWidth="0.77"
+        strokeMiterlimit="10"
       />
       <path
         className="mix-blend-mode:multiply"
@@ -89,8 +89,8 @@ export const emptyMessageSvg = (
         opacity="0.7"
         d="M45.167 12.4656C45.2981 21.328 46.3509 32.9671 49.9813 46.1015C54.2973 61.7202 60.7039 73.8316 65.9491 82.1094"
         stroke="white"
-        stroke-width="1.12"
-        stroke-miterlimit="10"
+        strokeWidth="1.12"
+        strokeMiterlimit="10"
       />
       <path
         className="mix-blend-mode:multiply"
@@ -105,8 +105,8 @@ export const emptyMessageSvg = (
         opacity="0.7"
         d="M26.7452 45.3855C30.0722 47.2666 33.7101 49.62 37.4491 52.5654C44.5338 58.1451 49.6816 64.0359 53.3007 68.9449"
         stroke="white"
-        stroke-width="0.97"
-        stroke-miterlimit="10"
+        strokeWidth="0.97"
+        strokeMiterlimit="10"
       />
       <path
         className="mix-blend-mode:multiply"
@@ -157,10 +157,10 @@ export const emptyMessageSvg = (
         x2="194.4"
         y2="51.3273"
         gradientUnits="userSpaceOnUse">
-        <stop stop-color="#C4DFCC" />
-        <stop offset="0.17" stop-color="#BAD9C5" />
-        <stop offset="0.68" stop-color="#A2CCB5" />
-        <stop offset="1" stop-color="#9AC7B0" />
+        <stop stopColor="#C4DFCC" />
+        <stop offset="0.17" stopColor="#BAD9C5" />
+        <stop offset="0.68" stopColor="#A2CCB5" />
+        <stop offset="1" stopColor="#9AC7B0" />
       </linearGradient>
       <radialGradient
         id="paint1_radial_1612_10342"
@@ -169,11 +169,11 @@ export const emptyMessageSvg = (
         r="1"
         gradientUnits="userSpaceOnUse"
         gradientTransform="translate(197.179 30.9372) rotate(-122.545) scale(28.328 30.5916)">
-        <stop offset="0.18" stop-color="#9AC7B0" />
-        <stop offset="0.27" stop-color="#9EC9B2" stop-opacity="0.9" />
-        <stop offset="0.46" stop-color="#A8CFB9" stop-opacity="0.65" />
-        <stop offset="0.72" stop-color="#B9D9C5" stop-opacity="0.25" />
-        <stop offset="0.88" stop-color="#C4DFCC" stop-opacity="0" />
+        <stop offset="0.18" stopColor="#9AC7B0" />
+        <stop offset="0.27" stopColor="#9EC9B2" stopOpacity="0.9" />
+        <stop offset="0.46" stopColor="#A8CFB9" stopOpacity="0.65" />
+        <stop offset="0.72" stopColor="#B9D9C5" stopOpacity="0.25" />
+        <stop offset="0.88" stopColor="#C4DFCC" stopOpacity="0" />
       </radialGradient>
       <linearGradient
         id="paint2_linear_1612_10342"
@@ -182,11 +182,11 @@ export const emptyMessageSvg = (
         x2="203.402"
         y2="45.6526"
         gradientUnits="userSpaceOnUse">
-        <stop offset="0.18" stop-color="#9AC7B0" />
-        <stop offset="0.27" stop-color="#9EC9B2" stop-opacity="0.9" />
-        <stop offset="0.46" stop-color="#A8CFB9" stop-opacity="0.65" />
-        <stop offset="0.72" stop-color="#B9D9C5" stop-opacity="0.25" />
-        <stop offset="0.88" stop-color="#C4DFCC" stop-opacity="0" />
+        <stop offset="0.18" stopColor="#9AC7B0" />
+        <stop offset="0.27" stopColor="#9EC9B2" stopOpacity="0.9" />
+        <stop offset="0.46" stopColor="#A8CFB9" stopOpacity="0.65" />
+        <stop offset="0.72" stopColor="#B9D9C5" stopOpacity="0.25" />
+        <stop offset="0.88" stopColor="#C4DFCC" stopOpacity="0" />
       </linearGradient>
       <linearGradient
         id="paint3_linear_1612_10342"
@@ -195,11 +195,11 @@ export const emptyMessageSvg = (
         x2="167.142"
         y2="118.469"
         gradientUnits="userSpaceOnUse">
-        <stop offset="0.1" stop-color="#A78BFA" />
-        <stop offset="0.22" stop-color="#8B5CF6" />
-        <stop offset="0.56" stop-color="#7C3AED" />
-        <stop offset="0.84" stop-color="#7C3AED" />
-        <stop offset="1" stop-color="#7C3AED" />
+        <stop offset="0.1" stopColor="#A78BFA" />
+        <stop offset="0.22" stopColor="#8B5CF6" />
+        <stop offset="0.56" stopColor="#7C3AED" />
+        <stop offset="0.84" stopColor="#7C3AED" />
+        <stop offset="1" stopColor="#7C3AED" />
       </linearGradient>
       <linearGradient
         id="paint4_linear_1612_10342"
@@ -208,8 +208,8 @@ export const emptyMessageSvg = (
         x2="176.019"
         y2="39.3675"
         gradientUnits="userSpaceOnUse">
-        <stop stop-color="#CBE0ED" />
-        <stop offset="1" stop-color="#B3CFDD" />
+        <stop stopColor="#CBE0ED" />
+        <stop offset="1" stopColor="#B3CFDD" />
       </linearGradient>
       <linearGradient
         id="paint5_linear_1612_10342"
@@ -218,8 +218,8 @@ export const emptyMessageSvg = (
         x2="176.019"
         y2="51.0479"
         gradientUnits="userSpaceOnUse">
-        <stop stop-color="#CBE0ED" />
-        <stop offset="1" stop-color="#B3CFDD" />
+        <stop stopColor="#CBE0ED" />
+        <stop offset="1" stopColor="#B3CFDD" />
       </linearGradient>
       <linearGradient
         id="paint6_linear_1612_10342"
@@ -228,8 +228,8 @@ export const emptyMessageSvg = (
         x2="-18.6254"
         y2="63.2679"
         gradientUnits="userSpaceOnUse">
-        <stop stop-color="#CBE0ED" />
-        <stop offset="1" stop-color="#B3CFDD" />
+        <stop stopColor="#CBE0ED" />
+        <stop offset="1" stopColor="#B3CFDD" />
       </linearGradient>
       <linearGradient
         id="paint7_linear_1612_10342"
@@ -238,8 +238,8 @@ export const emptyMessageSvg = (
         x2="176.019"
         y2="75.4879"
         gradientUnits="userSpaceOnUse">
-        <stop stop-color="#CBE0ED" />
-        <stop offset="1" stop-color="#B3CFDD" />
+        <stop stopColor="#CBE0ED" />
+        <stop offset="1" stopColor="#B3CFDD" />
       </linearGradient>
       <radialGradient
         id="paint8_radial_1612_10342"
@@ -248,10 +248,10 @@ export const emptyMessageSvg = (
         r="1"
         gradientUnits="userSpaceOnUse"
         gradientTransform="translate(88.9865 79.9157) scale(79.9737 50.3938)">
-        <stop offset="0.34" stop-color="#235DB4" />
-        <stop offset="0.4" stop-color="#2864B8" stop-opacity="0.91" />
-        <stop offset="0.81" stop-color="#4F9CDC" stop-opacity="0.26" />
-        <stop offset="1" stop-color="#5FB3EB" stop-opacity="0" />
+        <stop offset="0.34" stopColor="#235DB4" />
+        <stop offset="0.4" stopColor="#2864B8" stopOpacity="0.91" />
+        <stop offset="0.81" stopColor="#4F9CDC" stopOpacity="0.26" />
+        <stop offset="1" stopColor="#5FB3EB" stopOpacity="0" />
       </radialGradient>
       <radialGradient
         id="paint9_radial_1612_10342"
@@ -260,10 +260,10 @@ export const emptyMessageSvg = (
         r="1"
         gradientUnits="userSpaceOnUse"
         gradientTransform="translate(188.131 26.5517) scale(37.0571 37.0647)">
-        <stop offset="0.34" stop-color="#4338CA" />
-        <stop offset="0.4" stop-color="#6D28D9" />
-        <stop offset="0.81" stop-color="#4F9CDC" stop-opacity="0.26" />
-        <stop offset="1" stop-color="#5FB3EB" stop-opacity="0" />
+        <stop offset="0.34" stopColor="#4338CA" />
+        <stop offset="0.4" stopColor="#6D28D9" />
+        <stop offset="0.81" stopColor="#4F9CDC" stopOpacity="0.26" />
+        <stop offset="1" stopColor="#5FB3EB" stopOpacity="0" />
       </radialGradient>
       <linearGradient
         id="paint10_linear_1612_10342"
@@ -272,11 +272,11 @@ export const emptyMessageSvg = (
         x2="176.979"
         y2="40.5403"
         gradientUnits="userSpaceOnUse">
-        <stop offset="0.1" stop-color="#F9DE5B" />
-        <stop offset="0.22" stop-color="#F7CE42" />
-        <stop offset="0.41" stop-color="#F5B71F" />
-        <stop offset="0.57" stop-color="#F3A909" />
-        <stop offset="0.67" stop-color="#F3A401" />
+        <stop offset="0.1" stopColor="#F9DE5B" />
+        <stop offset="0.22" stopColor="#F7CE42" />
+        <stop offset="0.41" stopColor="#F5B71F" />
+        <stop offset="0.57" stopColor="#F3A909" />
+        <stop offset="0.67" stopColor="#F3A401" />
       </linearGradient>
       <linearGradient
         id="paint11_linear_1612_10342"
@@ -285,11 +285,11 @@ export const emptyMessageSvg = (
         x2="189.132"
         y2="-2.10024"
         gradientUnits="userSpaceOnUse">
-        <stop offset="0.1" stop-color="#F9DE5B" />
-        <stop offset="0.22" stop-color="#F7CE42" />
-        <stop offset="0.41" stop-color="#F5B71F" />
-        <stop offset="0.57" stop-color="#F3A909" />
-        <stop offset="0.67" stop-color="#F3A401" />
+        <stop offset="0.1" stopColor="#F9DE5B" />
+        <stop offset="0.22" stopColor="#F7CE42" />
+        <stop offset="0.41" stopColor="#F5B71F" />
+        <stop offset="0.57" stopColor="#F3A909" />
+        <stop offset="0.67" stopColor="#F3A401" />
       </linearGradient>
       <linearGradient
         id="paint12_linear_1612_10342"
@@ -298,10 +298,10 @@ export const emptyMessageSvg = (
         x2="49.3647"
         y2="60.652"
         gradientUnits="userSpaceOnUse">
-        <stop stop-color="#C4DFCC" />
-        <stop offset="0.17" stop-color="#BAD9C5" />
-        <stop offset="0.68" stop-color="#A2CCB5" />
-        <stop offset="1" stop-color="#9AC7B0" />
+        <stop stopColor="#C4DFCC" />
+        <stop offset="0.17" stopColor="#BAD9C5" />
+        <stop offset="0.68" stopColor="#A2CCB5" />
+        <stop offset="1" stopColor="#9AC7B0" />
       </linearGradient>
       <linearGradient
         id="paint13_linear_1612_10342"
@@ -310,10 +310,10 @@ export const emptyMessageSvg = (
         x2="61.6996"
         y2="24.1459"
         gradientUnits="userSpaceOnUse">
-        <stop stop-color="#9AC7B0" />
-        <stop offset="0.34" stop-color="#ABD1BB" stop-opacity="0.58" />
-        <stop offset="0.71" stop-color="#BDDBC7" stop-opacity="0.16" />
-        <stop offset="0.88" stop-color="#C4DFCC" stop-opacity="0" />
+        <stop stopColor="#9AC7B0" />
+        <stop offset="0.34" stopColor="#ABD1BB" stopOpacity="0.58" />
+        <stop offset="0.71" stopColor="#BDDBC7" stopOpacity="0.16" />
+        <stop offset="0.88" stopColor="#C4DFCC" stopOpacity="0" />
       </linearGradient>
       <linearGradient
         id="paint14_linear_1612_10342"
@@ -322,10 +322,10 @@ export const emptyMessageSvg = (
         x2="31.8031"
         y2="61.9955"
         gradientUnits="userSpaceOnUse">
-        <stop stop-color="#C4DFCC" />
-        <stop offset="0.17" stop-color="#BAD9C5" />
-        <stop offset="0.68" stop-color="#A2CCB5" />
-        <stop offset="1" stop-color="#9AC7B0" />
+        <stop stopColor="#C4DFCC" />
+        <stop offset="0.17" stopColor="#BAD9C5" />
+        <stop offset="0.68" stopColor="#A2CCB5" />
+        <stop offset="1" stopColor="#9AC7B0" />
       </linearGradient>
       <linearGradient
         id="paint15_linear_1612_10342"
@@ -334,10 +334,10 @@ export const emptyMessageSvg = (
         x2="36.135"
         y2="49.4552"
         gradientUnits="userSpaceOnUse">
-        <stop stop-color="#9AC7B0" />
-        <stop offset="0.34" stop-color="#ABD1BB" stop-opacity="0.58" />
-        <stop offset="0.71" stop-color="#BDDBC7" stop-opacity="0.16" />
-        <stop offset="0.88" stop-color="#C4DFCC" stop-opacity="0" />
+        <stop stopColor="#9AC7B0" />
+        <stop offset="0.34" stopColor="#ABD1BB" stopOpacity="0.58" />
+        <stop offset="0.71" stopColor="#BDDBC7" stopOpacity="0.16" />
+        <stop offset="0.88" stopColor="#C4DFCC" stopOpacity="0" />
       </linearGradient>
       <linearGradient
         id="paint16_linear_1612_10342"
@@ -346,8 +346,8 @@ export const emptyMessageSvg = (
         x2="14.0388"
         y2="70.7114"
         gradientUnits="userSpaceOnUse">
-        <stop stop-color="#9CA3AF" />
-        <stop offset="1" stop-color="#E5E7EB" />
+        <stop stopColor="#9CA3AF" />
+        <stop offset="1" stopColor="#E5E7EB" />
       </linearGradient>
       <clipPath id="clip0_1612_10342">
         <rect width="233" height="146" fill="white" />

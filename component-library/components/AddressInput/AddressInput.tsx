@@ -28,7 +28,7 @@ interface AddressInputProps {
   /**
    * What happens on a submit?
    */
-  onChange?: React.Dispatch<React.SetStateAction<string>>;
+  onChange?: (value: string) => void;
   /**
    * Upon submit, has there been an error?
    */

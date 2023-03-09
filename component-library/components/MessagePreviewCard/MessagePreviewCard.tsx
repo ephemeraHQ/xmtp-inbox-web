@@ -41,13 +41,16 @@ interface MessagePreviewCard {
 
 export const MessagePreviewCard = ({
   avatarUrl,
-  text = "New message",
+  text,
   displayAddress = "New recipient",
   datetime,
   isLoading = false,
   onClick,
   isSelected,
 }: MessagePreviewCard) => {
+  if (!text) {
+    return null;
+  }
   return (
     <div
       className={classNames(

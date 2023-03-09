@@ -36,6 +36,7 @@ export const HeaderDropdown = ({
 }: HeaderDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentlySelected, setCurrentlySelected] = useState(defaultSelected);
+
   return (
     <div
       data-modal-target="headerModalId"
