@@ -54,7 +54,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
           <ConversationList />
         </div>
         <div className="flex flex-col w-full h-full">
-          <LearnMore />
+          <LearnMore version="7" />
         </div>
       </div>
     );
@@ -64,7 +64,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
       <div className="w-screen md:h-screen flex flex-col md:flex-row">
         <div className="flex md:w-1/2">
           <SideNav />
-          <div className="w-full flex flex-col h-screen overflow-scroll">
+          <div className="w-full flex flex-col h-screen overflow-auto">
             <HeaderDropdown />
             <ConversationList messages={[<MessagePreviewCard key={0} />]} />
           </div>
@@ -82,7 +82,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
       <div className="w-screen md:h-screen flex flex-col md:flex-row">
         <div className="flex md:w-1/2">
           <SideNav />
-          <div className="w-full flex flex-col h-screen overflow-scroll">
+          <div className="w-full flex flex-col h-screen overflow-auto">
             <HeaderDropdown />
             <ConversationList messages={[<MessagePreviewCard key={0} />]} />
           </div>
@@ -100,7 +100,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
       <div className="w-screen md:h-screen flex flex-col md:flex-row">
         <div className="flex md:w-1/2">
           <SideNav />
-          <div className="w-full flex flex-col h-screen overflow-scroll">
+          <div className="w-full flex flex-col h-screen overflow-auto">
             <HeaderDropdown />
             <ConversationList
               messages={[
@@ -126,9 +126,9 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
   if (type === "finding_ens_with_messages") {
     return (
       <div className="w-screen md:h-screen flex flex-col md:flex-row">
-        <div className="h-screen flex md:w-1/2 md:min-w-fit overflow-y-scroll">
+        <div className="h-screen flex md:w-1/2 md:min-w-fit overflow-y-auto">
           <SideNav />
-          <div className="w-full flex flex-col h-screen overflow-scroll">
+          <div className="w-full flex flex-col h-screen overflow-auto">
             <HeaderDropdown />
             <ConversationList
               messages={[
@@ -156,9 +156,9 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
   if (type === "resolved_ens_with_messages") {
     return (
       <div className="w-screen md:h-screen flex flex-col md:flex-row">
-        <div className="flex md:w-1/2 md:min-w-fit overflow-y-scroll">
+        <div className="flex md:w-1/2 md:min-w-fit overflow-y-auto">
           <SideNav />
-          <div className="w-full flex flex-col h-screen overflow-scroll">
+          <div className="w-full flex flex-col h-screen overflow-auto">
             <HeaderDropdown />
             <ConversationList
               messages={[
@@ -194,14 +194,14 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
   if (type === "left_nav") {
     return (
       <div className="w-screen md:h-screen flex flex-col md:flex-row">
-        <div className="flex md:w-1/2 md:min-w-fit overflow-y-scroll">
+        <div className="flex md:w-1/2 md:min-w-fit overflow-y-auto">
           <SideNav
             displayAddress="hi.xmtp.eth"
             walletAddress={shortAddress(
               "0x194c31cAe1418D5256E8c58e0d08Aee1046C6Ed0",
             )}
           />
-          <div className="w-full flex flex-col h-screen overflow-scroll">
+          <div className="w-full flex flex-col h-screen overflow-auto">
             <HeaderDropdown />
             <ConversationList
               messages={[
@@ -227,9 +227,9 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
   if (type === "short_history") {
     return (
       <div className="w-screen md:h-screen flex flex-col md:flex-row">
-        <div className="flex md:w-1/2 md:min-w-fit overflow-y-scroll">
+        <div className="flex md:w-1/2 md:min-w-fit overflow-y-auto">
           <SideNav />
-          <div className="w-full flex flex-col h-screen overflow-scroll">
+          <div className="w-full flex flex-col h-screen overflow-auto">
             <HeaderDropdown />
             <ConversationList
               messages={Array(20).fill(
@@ -249,7 +249,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
               walletAddress: "0x194c31cAe1418D5256E8c58e0d08Aee1046C6Ed0",
             }}
           />
-          <div className="h-full w-full flex flex-col-reverse overflow-scroll">
+          <div className="h-full w-full flex flex-col-reverse overflow-auto">
             <InfiniteScroll
               height={"100%"}
               dataLength={40}
@@ -271,7 +271,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
       <div className="w-screen md:h-screen flex flex-col md:flex-row">
         <div className="flex md:w-1/2 md:min-w-fit">
           <SideNav />
-          <div className="w-full flex flex-col h-full overflow-scroll">
+          <div className="w-full flex flex-col h-full overflow-auto">
             <HeaderDropdown />
             <ConversationList
               messages={Array(20).fill(
@@ -291,7 +291,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
               walletAddress: "0x194c31cAe1418D5256E8c58e0d08Aee1046C6Ed0",
             }}
           />
-          <div className="h-full w-full flex flex-col-reverse overflow-scroll">
+          <div className="h-full w-full flex flex-col-reverse overflow-auto">
             <InfiniteScroll
               height={"100%"}
               dataLength={40}
@@ -311,9 +311,9 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
   if (type === "convo_loading") {
     return (
       <div className="w-screen md:h-screen flex flex-col md:flex-row">
-        <div className="flex md:w-1/2 md:min-w-fit overflow-y-scroll">
+        <div className="flex md:w-1/2 md:min-w-fit overflow-y-auto">
           <SideNav />
-          <div className="w-full flex flex-col h-screen overflow-scroll">
+          <div className="w-full flex flex-col h-screen overflow-auto">
             <HeaderDropdown />
             <ConversationList
               messages={Array(20).fill(
@@ -343,7 +343,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
   if (type === "page_loading") {
     return (
       <div className="w-screen md:h-screen flex flex-col md:flex-row">
-        <div className="flex md:w-1/2 md:min-w-fit overflow-y-scroll">
+        <div className="flex md:w-1/2 md:min-w-fit overflow-y-auto">
           <SideNav />
           <ConversationList isLoading />
         </div>
@@ -357,10 +357,10 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
   if (type === "profile_dropdown") {
     return (
       <div className="flex w-screen md:h-screen flex-col md:flex-row">
-        <div className="min-w-fit flex overflow-y-scroll">
+        <div className="min-w-fit flex overflow-y-auto">
           <SideNav />
           <ProfileDropdown isOpen addressCards={[]} />
-          <div className="flex flex-col h-screen overflow-scroll">
+          <div className="flex flex-col h-screen overflow-auto">
             <HeaderDropdown />
             <ConversationList
               messages={Array(20).fill(
@@ -390,9 +390,9 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
   if (type === "expanded_tooltip") {
     return (
       <div className="flex w-screen md:h-screen flex-col md:flex-row">
-        <div className="min-w-fit flex overflow-y-scroll">
+        <div className="min-w-fit flex overflow-y-auto">
           <SideNav />
-          <div className="flex flex-col h-screen overflow-scroll">
+          <div className="flex flex-col h-screen overflow-auto">
             <HeaderDropdown />
             <ConversationList
               messages={Array(20).fill(

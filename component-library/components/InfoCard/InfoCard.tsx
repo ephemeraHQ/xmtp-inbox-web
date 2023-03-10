@@ -1,10 +1,8 @@
 import { ChevronRightIcon } from "@heroicons/react/outline";
 import React from "react";
 import { classNames } from "../../../helpers";
-import {
-  IconLoader,
-  ShortCopySkeletonLoader,
-} from "../Loaders/SkeletonLoaders";
+import { ShortCopySkeletonLoader } from "../Loaders/SkeletonLoaders/ShortCopySkeletonLoader";
+import { IconSkeletonLoader } from "../Loaders/SkeletonLoaders/IconSkeletonLoader";
 import { iconMapping, InfoCardIcon } from "./iconMapping";
 
 interface InfoCardProps {
@@ -29,9 +27,9 @@ interface InfoCardProps {
    */
   onClick?: () => void;
   /**
-   * Should the top border be hidden?
+   * Are there additional styles?
    */
-  hideTopBorder?: boolean;
+  styles?: string;
 }
 
 /**
@@ -57,7 +55,7 @@ export const InfoCard = ({
   leftIcon,
   isLoading = false,
   onClick = undefined,
-  hideTopBorder = false,
+  styles,
 }: InfoCardProps) => {
   return (
     <div
@@ -71,7 +69,7 @@ export const InfoCard = ({
         "justify-between",
         "border-y",
         "border-gray-300",
-        hideTopBorder ? "border-t-0" : null,
+        styles || null,
       )}>
       {isLoading ? (
         <ShortCopySkeletonLoader lines={2} />
@@ -95,7 +93,7 @@ export const InfoCard = ({
       )}
       <div>
         {isLoading && onClick ? (
-          <IconLoader />
+          <IconSkeletonLoader />
         ) : (
           onClick && (
             <ChevronRightIcon width="24" color="gray" className="ml-4" />

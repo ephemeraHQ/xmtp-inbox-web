@@ -2,6 +2,7 @@ import React from "react";
 import { Avatar } from "../Avatar/Avatar";
 import { InformationCircleIcon } from "@heroicons/react/outline";
 import { classNames } from "../../../helpers";
+import { ShortCopySkeletonLoader } from "../Loaders/SkeletonLoaders/ShortCopySkeletonLoader";
 
 interface AddressInputProps {
   /**
@@ -60,18 +61,17 @@ export const AddressInput = ({
 }: AddressInputProps) => {
   const subtextColor = isError ? "text-red-400" : "text-gray-400";
   return (
-    <div className="flex items-center px-4 py-3 border border-gray-100 border-l-0 z-10 w-full">
-      <form className="flex w-full" onSubmit={(e) => e.preventDefault()}>
+    <div className="flex px-4 py-3 border border-gray-100 border-l-0 z-10 max-h-sm w-full">
+      <form
+        className="flex w-full items-center"
+        onSubmit={(e) => e.preventDefault()}>
         <Avatar {...avatarUrlProps} />
         <div className="ml-4 flex flex-col justify-center">
           {isLoading ? (
-            <div role="status" className="max-w-sm animate-pulse m-0 pt-1 pb-1">
-              <div className="h-4 bg-gray-200 rounded-full dark:bg-gray-700 w-48 m-0"></div>
-              <span className="sr-only">Loading...</span>
-            </div>
+            <ShortCopySkeletonLoader lines={1} />
           ) : resolvedAddress?.displayAddress ? (
             <div className="flex flex-col text-md">
-              <span className="font-bold">
+              <span className="font-bold h-4 m-1">
                 {resolvedAddress.displayAddress}
               </span>
               {resolvedAddress.walletAddress && (
@@ -82,7 +82,7 @@ export const AddressInput = ({
             </div>
           ) : (
             <input
-              className="text-gray-700 m-0 p-0 font-mono text-sm w-full leading-tight border-none focus:ring-0 cursor-text"
+              className="text-gray-700 h-4 m-1 font-mono text-sm w-full leading-tight border-none focus:ring-0 cursor-text"
               id="address"
               type="text"
               spellCheck="false"

@@ -1,8 +1,8 @@
 import React from "react";
-import {
-  IconLoader,
-  ShortCopySkeletonLoader,
-} from "../Loaders/SkeletonLoaders";
+
+import { IconSkeletonLoader } from "../Loaders/SkeletonLoaders/IconSkeletonLoader";
+import { ShortCopySkeletonLoader } from "../Loaders/SkeletonLoaders/ShortCopySkeletonLoader";
+
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { classNames } from "../../../helpers";
 import { Avatar } from "../Avatar/Avatar";
@@ -80,7 +80,7 @@ export const MessagePreviewCard = ({
         )}
       </div>
       {isLoading ? (
-        <IconLoader />
+        <IconSkeletonLoader />
       ) : (
         <div className="text-xs text-gray-400 w-1/4 text-right ml-4">
           {datetime && `${formatDistanceToNow(datetime)} ago`}

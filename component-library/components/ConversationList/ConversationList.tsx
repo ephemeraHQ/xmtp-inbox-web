@@ -26,7 +26,7 @@ export const ConversationList = ({
       <EmptyMessage />
     </div>
   ) : (
-    <div className="w-full overflow-scroll sm:w-full flex flex-col h-screen bg-gray-100">
+    <div className="w-full overflow-auto sm:w-full flex flex-col h-screen bg-gray-100">
       {messages}
     </div>
   );

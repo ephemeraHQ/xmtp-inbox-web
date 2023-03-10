@@ -44,7 +44,7 @@ export const ExpandedWalletCard = ({
           <div className="max-w-xs flex flex-col justify-center items-center p-4 rounded-lg border border-gray-100">
             {avatar}
             <span className="font-bold py-4">{currentAddress}</span>
-            <div className="flex w-full overflow-scroll border-b border-gray-100 pb-4 mb-4">
+            <div className="flex w-full overflow-auto border-b border-gray-100 pb-4 mb-4">
               {addresses?.map((address) => (
                 <Tag key={address} text={address} />
               ))}
@@ -54,7 +54,7 @@ export const ExpandedWalletCard = ({
               Collectibles
             </span>
 
-            <div className="flex w-full justify-between overflow-scroll mb-4">
+            <div className="flex w-full justify-between overflow-auto mb-4">
               {collectibles}
             </div>
             <SettingsCard

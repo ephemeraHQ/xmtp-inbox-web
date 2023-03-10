@@ -1,5 +1,5 @@
 import React from "react";
-import { MessageLoader } from "../Loaders/SkeletonLoaders";
+import { MessageSkeletonLoader } from "../Loaders/SkeletonLoaders/MessageSkeletonLoader";
 
 interface FullConversationProps {
   messages?: Array<JSX.Element>;
@@ -13,12 +13,12 @@ export const FullConversation = ({
   if (isLoading) {
     const alternatingMessages = (
       <>
-        <MessageLoader incoming={false} /> <MessageLoader />
+        <MessageSkeletonLoader incoming={false} /> <MessageSkeletonLoader />
       </>
     );
     return (
       <div
-        className={`h-full flex flex-col-reverse justify-start p-4 overflow-scroll`}>
+        className={`h-full flex flex-col-reverse justify-start p-4 overflow-auto`}>
         {Array(3).fill(alternatingMessages)}
       </div>
     );
