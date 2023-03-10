@@ -6,7 +6,7 @@ interface ButtonLoaderProps {
   /**
    * What color should the loader/spinner be?
    */
-  color?: string;
+  color?: "primary" | "secondary";
   /**
    * How large is this button?
    */
@@ -16,7 +16,10 @@ interface ButtonLoaderProps {
 /**
  * Primary UI component for user interaction
  */
-export const ButtonLoader = ({ size, color }: ButtonLoaderProps) => {
+export const ButtonLoader = ({
+  size,
+  color = "primary",
+}: ButtonLoaderProps) => {
   // To-do: Change to proper loader once designs are finished
   return (
     <div className="flex flex-row">

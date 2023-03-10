@@ -39,10 +39,10 @@ export const EnsAddressIcon = () => (
         x2="9.99482"
         y2="20.062"
         gradientUnits="userSpaceOnUse">
-        <stop stop-color="#513EFF" />
-        <stop offset="0.18" stop-color="#5157FF" />
-        <stop offset="0.57" stop-color="#5298FF" />
-        <stop offset="1" stop-color="#52E5FF" />
+        <stop stopColor="#513EFF" />
+        <stop offset="0.18" stopColor="#5157FF" />
+        <stop offset="0.57" stopColor="#5298FF" />
+        <stop offset="1" stopColor="#52E5FF" />
       </linearGradient>
     </defs>
   </svg>

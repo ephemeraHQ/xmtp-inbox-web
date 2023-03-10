@@ -1,8 +1,17 @@
 import React from "react";
 import { Avatar } from "../Avatar/Avatar";
 import { InformationCircleIcon } from "@heroicons/react/outline";
+import { classNames } from "../../../helpers";
+import { ShortCopySkeletonLoader } from "../Loaders/SkeletonLoaders/ShortCopySkeletonLoader";
 
 interface AddressInputProps {
+  /**
+   * What, if any, resolved address is there?
+   */
+  resolvedAddress?: {
+    displayAddress: string;
+    walletAddress?: string;
+  };
   /**
    * What, if any, subtext is there?
    */
@@ -12,17 +21,16 @@ interface AddressInputProps {
    */
   avatarUrlProps?: {
     // What is the avatar url?
-    avatarUrl: string;
+    avatarUrl?: string;
     // Is the avatar url loading?
-    isLoading: boolean;
+    isLoading?: boolean;
     // What's the address of this wallet?
-    address: string;
+    address?: string;
   };
-
   /**
    * What happens on a submit?
    */
-  onSubmit?: () => void;
+  onChange?: (value: string) => void;
   /**
    * Upon submit, has there been an error?
    */
@@ -35,44 +43,66 @@ interface AddressInputProps {
    * Is there a tooltip click event that needs to be handled?
    */
   onTooltipClick?: () => void;
+  /**
+   * Input Value
+   */
+  value?: string;
 }
 
 export const AddressInput = ({
+  resolvedAddress,
   subtext,
   avatarUrlProps,
-  onSubmit,
+  onChange,
   isError,
   isLoading,
   onTooltipClick,
+  value,
 }: AddressInputProps) => {
   const subtextColor = isError ? "text-red-400" : "text-gray-400";
   return (
-    <div className="flex align-center">
-      <form className="flex w-full" onSubmit={onSubmit}>
+    <div className="flex px-4 py-3 border border-gray-100 border-l-0 z-10 max-h-sm w-full">
+      <form
+        className="flex w-full items-center"
+        onSubmit={(e) => e.preventDefault()}>
         <Avatar {...avatarUrlProps} />
-        <div className="ml-4">
+        <div className="ml-4 flex flex-col justify-center">
           {isLoading ? (
-            <div role="status" className="max-w-sm animate-pulse m-0 pt-1 pb-3">
-              <div className="h-4 bg-gray-200 rounded-full dark:bg-gray-700 w-48 m-0"></div>
-              <span className="sr-only">Loading...</span>
+            <ShortCopySkeletonLoader lines={1} />
+          ) : resolvedAddress?.displayAddress ? (
+            <div className="flex flex-col text-md">
+              <span className="font-bold h-4 m-1">
+                {resolvedAddress.displayAddress}
+              </span>
+              {resolvedAddress.walletAddress && (
+                <span className="text-sm font-mono">
+                  {resolvedAddress.walletAddress}
+                </span>
+              )}
             </div>
           ) : (
             <input
-              className="text-gray-700 mb-0 pl-0 font-mono text-sm w-full leading-tight border-none focus:ring-0 cursor-text"
+              className="text-gray-700 h-4 m-1 font-mono text-sm w-full leading-tight border-none focus:ring-0 cursor-text"
               id="address"
               type="text"
-              autoFocus
               spellCheck="false"
               autoComplete="false"
               autoCorrect="false"
+              autoCapitalize="off"
+              onChange={(e) =>
+                onChange && onChange((e.target as HTMLInputElement).value)
+              }
+              value={value}
             />
           )}
-          {subtext && (
-            <p className={`font-mono text-sm ${subtextColor}`}>{subtext}</p>
-          )}
+          <p className={classNames("font-mono", "text-sm", subtextColor)}>
+            {subtext}
+          </p>
         </div>
       </form>
-      <InformationCircleIcon onClick={onTooltipClick} height="24" />
+      {onTooltipClick && (
+        <InformationCircleIcon onClick={onTooltipClick} height="24" />
+      )}
     </div>
   );
 };
