@@ -36,7 +36,7 @@ export const Image = ({
   alt,
 }: ImageProps) => {
   return (
-    <div className={`relative w-fit text-white`}>
+    <div className={"relative w-fit text-white"}>
       <img src={src} alt={alt} className="rounded-lg" />
       <div className={"absolute top-0 left-0 p-8 w-6/12"}>
         <p className={"text-xs font-bold"}>{eyebrowText?.toUpperCase()}</p>

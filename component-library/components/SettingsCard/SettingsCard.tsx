@@ -1,4 +1,5 @@
 import React from "react";
+import { classNames } from "../../../helpers";
 import {
   IconLoader,
   ShortCopySkeletonLoader,
@@ -55,17 +56,26 @@ export const SettingsCard = ({
 }: SettingsCardProps) => {
   return (
     <div
-      className={`w-full bg-gray-50 p-4 flex justify-between items-center ${
-        variant === "secondary" && `text-indigo-600`
-      }`}>
+      className={classNames(
+        "w-full",
+        "bg-gray-50",
+        "p-4",
+        "flex",
+        "justify-between",
+        "items-center",
+        variant === "secondary" ? "text-indigo-600" : "",
+      )}>
       {isLoading ? (
         <ShortCopySkeletonLoader />
       ) : (
         <div className="flex align-center">
           <div
-            className={`${
-              leftIcon && getLeftIconBackground(leftIcon)
-            } rounded-md p-1 mr-4`}>
+            className={classNames(
+              leftIcon ? getLeftIconBackground(leftIcon) : "",
+              "rounded-md",
+              "p-1",
+              "mr-4",
+            )}>
             {leftIcon && getLeftIcon(leftIcon)}
           </div>
           <span className="font-bold flex items-center">{header}</span>

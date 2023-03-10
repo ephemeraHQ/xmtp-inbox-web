@@ -1,5 +1,6 @@
 import { ChevronRightIcon } from "@heroicons/react/outline";
 import React from "react";
+import { classNames } from "../../../helpers";
 import {
   IconLoader,
   ShortCopySkeletonLoader,
@@ -27,6 +28,10 @@ interface InfoCardProps {
    * What is the click event?
    */
   onClick?: () => void;
+  /**
+   * Should the top border be hidden?
+   */
+  hideTopBorder?: boolean;
 }
 
 /**
@@ -52,20 +57,34 @@ export const InfoCard = ({
   leftIcon,
   isLoading = false,
   onClick = undefined,
+  hideTopBorder = false,
 }: InfoCardProps) => {
   return (
     <div
-      className={
-        "w-full flex py-2 px-4 flex items-center justify-between border-y border-gray-300"
-      }>
+      className={classNames(
+        "w-full",
+        "flex",
+        "py-2",
+        "px-4",
+        "flex",
+        "items-center",
+        "justify-between",
+        "border-y",
+        "border-gray-300",
+        hideTopBorder ? "border-t-0" : null,
+      )}>
       {isLoading ? (
         <ShortCopySkeletonLoader lines={2} />
       ) : (
         <div className="flex">
           <div
-            className={`${getLeftIconBackground(
-              leftIcon,
-            )} p-2 mr-4 rounded-md h-fit`}>
+            className={classNames(
+              getLeftIconBackground(leftIcon),
+              "p-2",
+              "mr-4",
+              "rounded-md",
+              "h-fit",
+            )}>
             {getLeftIcon(leftIcon)}
           </div>
           <div className="flex flex-col">
