@@ -1,10 +1,8 @@
 import { CheckIcon } from "@heroicons/react/outline";
 import React from "react";
 import { WalletAddressIcon } from "../Icons/WalletAddressIcon";
-import {
-  IconLoader,
-  ShortCopySkeletonLoader,
-} from "../Loaders/SkeletonLoaders";
+import { IconSkeletonLoader } from "../Loaders/SkeletonLoaders/IconSkeletonLoader";
+import { ShortCopySkeletonLoader } from "../Loaders/SkeletonLoaders/ShortCopySkeletonLoader";
 
 interface AddressSettingsCardProps {
   /**
@@ -62,7 +60,7 @@ export const AddressSettingsCard = ({
       </div>
       <div>
         {isLoading && isConnected ? (
-          <IconLoader />
+          <IconSkeletonLoader />
         ) : (
           isConnected && <CheckIcon width="24" />
         )}

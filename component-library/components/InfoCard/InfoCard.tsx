@@ -1,9 +1,8 @@
 import { ChevronRightIcon } from "@heroicons/react/outline";
 import React from "react";
-import {
-  IconLoader,
-  ShortCopySkeletonLoader,
-} from "../Loaders/SkeletonLoaders";
+import { classNames } from "../../../helpers";
+import { ShortCopySkeletonLoader } from "../Loaders/SkeletonLoaders/ShortCopySkeletonLoader";
+import { IconSkeletonLoader } from "../Loaders/SkeletonLoaders/IconSkeletonLoader";
 import { iconMapping, InfoCardIcon } from "./iconMapping";
 
 interface InfoCardProps {
@@ -27,6 +26,10 @@ interface InfoCardProps {
    * What is the click event?
    */
   onClick?: () => void;
+  /**
+   * Are there additional styles?
+   */
+  styles?: string;
 }
 
 /**
@@ -52,20 +55,34 @@ export const InfoCard = ({
   leftIcon,
   isLoading = false,
   onClick = undefined,
+  styles,
 }: InfoCardProps) => {
   return (
     <div
-      className={
-        "w-full flex py-2 px-4 flex items-center justify-between border-y border-gray-300"
-      }>
+      className={classNames(
+        "w-full",
+        "flex",
+        "py-2",
+        "px-4",
+        "flex",
+        "items-center",
+        "justify-between",
+        "border-y",
+        "border-gray-300",
+        styles || null,
+      )}>
       {isLoading ? (
         <ShortCopySkeletonLoader lines={2} />
       ) : (
         <div className="flex">
           <div
-            className={`${getLeftIconBackground(
-              leftIcon,
-            )} p-2 mr-4 rounded-md h-fit`}>
+            className={classNames(
+              getLeftIconBackground(leftIcon),
+              "p-2",
+              "mr-4",
+              "rounded-md",
+              "h-fit",
+            )}>
             {getLeftIcon(leftIcon)}
           </div>
           <div className="flex flex-col">
@@ -76,7 +93,7 @@ export const InfoCard = ({
       )}
       <div>
         {isLoading && onClick ? (
-          <IconLoader />
+          <IconSkeletonLoader />
         ) : (
           onClick && (
             <ChevronRightIcon width="24" color="gray" className="ml-4" />

@@ -1,18 +1,12 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import OnboardingStep from "./OnboardingStep";
+import { OnboardingStep } from "./OnboardingStep";
 
 export default {
   title: "OnboardingStep",
   component: OnboardingStep,
-  argTypes: {
-    variant: { control: false },
-    subtext: { control: false },
-    avatarUrlProps: { control: false },
-    isError: { control: false },
-    isLoading: { control: false },
-  },
+  argTypes: {},
 } as ComponentMeta<typeof OnboardingStep>;
 
 const Template: ComponentStory<typeof OnboardingStep> = (args) => (
