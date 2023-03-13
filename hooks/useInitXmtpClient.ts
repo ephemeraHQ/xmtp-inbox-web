@@ -1,16 +1,22 @@
 import { Client } from "@xmtp/xmtp-js";
 import { useEffect, useState } from "react";
-import { useSigner } from "wagmi";
+import { useAccount, useSigner } from "wagmi";
 import { getAppVersion, getEnv, loadKeys, storeKeys } from "../helpers";
+import { useConversationCache } from "../store/conversationCache";
 import { useXmtpStore } from "../store/xmtp";
+import { address } from "../pages/inbox";
 
 const useInitXmtpClient = () => {
   const { data: signer } = useSigner();
+  const { address } = useAccount();
   const client = useXmtpStore((state) => state.client);
   const setClient = useXmtpStore((state) => state.setClient);
   const [isRequestPending, setIsRequestPending] = useState(false);
   const [newAccount, setNewAccount] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const conversationExports = useConversationCache(
+    (state) => state.conversations[address as address],
+  );
 
   const createXmtpIdentity = async () => {
     try {
@@ -54,6 +60,17 @@ const useInitXmtpClient = () => {
           setNewAccount(false);
           setIsLoading(false);
         }
+        const xmtp = await Client.create(null, {
+          env: getEnv(),
+          appVersion: getAppVersion(),
+          privateKeyOverride: keys,
+        });
+        if (conversationExports && conversationExports.length) {
+          // Preload the client with conversations from the cache
+          await xmtp.conversations.import(conversationExports);
+        }
+        setClient(xmtp);
+        setIsRequestPending(false);
       } catch (e) {
         console.error(e);
         setClient(null);

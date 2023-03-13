@@ -1,8 +1,15 @@
 import React from "react";
+<<<<<<< HEAD
 import {
   IconLoader,
   ShortCopySkeletonLoader,
 } from "../Loaders/SkeletonLoaders";
+=======
+
+import { IconSkeletonLoader } from "../Loaders/SkeletonLoaders/IconSkeletonLoader";
+import { ShortCopySkeletonLoader } from "../Loaders/SkeletonLoaders/ShortCopySkeletonLoader";
+
+>>>>>>> main
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { classNames } from "../../../helpers";
 import { Avatar } from "../Avatar/Avatar";
@@ -41,14 +48,22 @@ interface MessagePreviewCard {
 
 export const MessagePreviewCard = ({
   avatarUrl,
+<<<<<<< HEAD
   text,
+=======
+  text = "New message",
+>>>>>>> main
   displayAddress = "New recipient",
   datetime,
   isLoading = false,
   onClick,
   isSelected,
 }: MessagePreviewCard) => {
+<<<<<<< HEAD
   if (!text) {
+=======
+  if (!text && !isLoading) {
+>>>>>>> main
     return null;
   }
   return (
@@ -80,7 +95,11 @@ export const MessagePreviewCard = ({
         )}
       </div>
       {isLoading ? (
+<<<<<<< HEAD
         <IconLoader />
+=======
+        <IconSkeletonLoader />
+>>>>>>> main
       ) : (
         <div className="text-xs text-gray-400 w-1/4 text-right ml-4">
           {datetime && `${formatDistanceToNow(datetime)} ago`}

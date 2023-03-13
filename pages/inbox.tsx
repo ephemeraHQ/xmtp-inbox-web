@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import useListConversations from "../hooks/useListConversations";
 import { useXmtpStore } from "../store/xmtp";
 import { getConversationId } from "../helpers";
 import { ConversationList } from "../component-library/components/ConversationList/ConversationList";
 import { Conversation } from "@xmtp/xmtp-js";
-import router from "next/router";
 import { MessagePreviewCardWrapper } from "../wrappers/MessagePreviewCardWrapper";
 import { FullConversationWrapper } from "../wrappers/FullConversationWrapper";
 import { AddressInputWrapper } from "../wrappers/AddressInputWrapper";
@@ -40,17 +39,11 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
     return convoALastMessageDate < convoBLastMessageDate ? 1 : -1;
   };
 
-  // useEffect(() => {
-  //   if (!client) {
-  //     router.push("/");
-  //   }
-  // }, [client]);
-
   return (
     <div className="bg-white w-screen md:h-full flex flex-col md:flex-row">
-      <div className="flex md:w-2/5 overflow-y-scroll">
+      <div className="flex md:w-2/5 overflow-y-auto">
         <SideNavWrapper />
-        <div className="w-full max-w-lg flex flex-col h-screen overflow-scroll">
+        <div className="w-full max-w-lg flex flex-col h-screen overflow-auto">
           {!loadingConversations && <HeaderDropdownWrapper />}
           <ConversationList
             isLoading={loadingConversations}

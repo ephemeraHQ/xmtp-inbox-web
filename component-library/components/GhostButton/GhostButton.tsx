@@ -1,6 +1,7 @@
 import React from "react";
 import { ButtonLoader } from "../Loaders/ButtonLoader";
 import { ArrowCircleRightIcon } from "@heroicons/react/outline";
+import { classNames } from "../../../helpers";
 
 interface GhostButtonProps {
   /**
@@ -84,7 +85,22 @@ export const GhostButton = ({
       type="button"
       onClick={onClick}
       disabled={isDisabled}
+<<<<<<< HEAD
       className={`${backgroundColor} ${fontColor} ${disabled} ${sizeClass} min-w-[${minWidth}%] h-fit font-bold rounded-full m-1 p-1`}
+=======
+      className={classNames(
+        backgroundColor,
+        fontColor,
+        disabled,
+        sizeClass,
+        `min-w-[${minWidth}%]`,
+        "h-fit",
+        "font-bold",
+        "rounded-full",
+        "m-1",
+        "p-1",
+      )}
+>>>>>>> main
       aria-label={srText}>
       <>
         <div className="flex justify-center items-center h-fit space-x-2">

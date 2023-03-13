@@ -2,7 +2,6 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { ConversationList } from "./ConversationList";
-import { Avatar } from "../Avatar/Avatar";
 import { MessagePreviewCard } from "../MessagePreviewCard/MessagePreviewCard";
 
 export default {

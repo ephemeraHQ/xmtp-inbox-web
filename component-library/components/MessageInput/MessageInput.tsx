@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useLayoutEffect, useRef } from "react";
 import { ArrowUpIcon } from "@heroicons/react/solid";
 import { IconButton } from "../IconButton/IconButton";
+import { classNames } from "../../../helpers";
 
 interface InputProps {
   /**
@@ -46,9 +47,19 @@ export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
         Type something...
       </label>
       <div
+<<<<<<< HEAD
         className={`flex ${
           value ? "items-end" : "items-center"
         } max-h-300 m-4 ${borderStyles}`}>
+=======
+        className={classNames(
+          "flex",
+          value ? "items-end" : "items-center",
+          "max-h-300",
+          "m-4",
+          borderStyles,
+        )}>
+>>>>>>> main
         <textarea
           id="chat"
           onChange={onChange}

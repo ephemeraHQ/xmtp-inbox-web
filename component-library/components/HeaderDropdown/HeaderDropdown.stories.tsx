@@ -8,6 +8,12 @@ export default {
   component: HeaderDropdown,
   argTypes: {
     onChange: { control: false },
+<<<<<<< HEAD
+=======
+    dropdownOptions: { control: false },
+    defaultSelected: { control: false },
+    onClick: { control: false },
+>>>>>>> main
   },
 } as ComponentMeta<typeof HeaderDropdown>;
 

@@ -7,7 +7,13 @@ import { FullMessage } from "../FullMessage/FullMessage";
 export default {
   title: "FullConversation",
   component: FullConversation,
+<<<<<<< HEAD
   argTypes: {},
+=======
+  argTypes: {
+    messages: { control: false },
+  },
+>>>>>>> main
 } as ComponentMeta<typeof FullConversation>;
 
 const Template: ComponentStory<typeof FullConversation> = (args) => (
@@ -47,7 +53,10 @@ FullConversationWithMessages.args = {
       <FullMessage {...toProps} />
     </div>,
   ),
+<<<<<<< HEAD
   convoStartDate: new Date(),
+=======
+>>>>>>> main
 };
 
 export const FullConversationLoading = Template.bind({});

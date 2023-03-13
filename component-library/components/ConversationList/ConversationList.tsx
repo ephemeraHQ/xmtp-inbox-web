@@ -18,7 +18,11 @@ export const ConversationList = ({
   isLoading,
 }: ConversationListProps) => {
   return !messages?.length && isLoading ? (
+<<<<<<< HEAD
     <div className="w-fit overflow-hidden h-screen w-full bg-gray-300">
+=======
+    <div className="w-fit overflow-hidden h-screen flex flex-col justify-start sm:w-full bg-gray-300">
+>>>>>>> main
       {Array(12).fill(<MessagePreviewCard isLoading />)}
     </div>
   ) : !messages.length && !isLoading ? (
@@ -26,7 +30,11 @@ export const ConversationList = ({
       <EmptyMessage />
     </div>
   ) : (
+<<<<<<< HEAD
     <div className="w-full overflow-scroll flex flex-col h-screen bg-gray-100">
+=======
+    <div className="w-full overflow-auto sm:w-full flex flex-col h-screen bg-gray-100">
+>>>>>>> main
       {messages}
     </div>
   );

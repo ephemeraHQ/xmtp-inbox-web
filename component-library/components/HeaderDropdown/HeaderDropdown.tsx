@@ -2,6 +2,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { ChevronDownIcon, CogIcon } from "@heroicons/react/outline";
 import { CheckCircleIcon, PlusIcon } from "@heroicons/react/solid";
 import React, { Fragment, useState } from "react";
+import { classNames } from "../../../helpers";
 import { IconButton } from "../IconButton/IconButton";
 
 interface HeaderDropdownProps {
@@ -42,11 +43,9 @@ export const HeaderDropdown = ({
       data-modal-target="headerModalId"
       className="p-4 w-full border border-r border-gray-100">
       <div className="flex justify-between items-center">
-        <span className="flex">
+        <span className="flex" onClick={() => setIsOpen(!isOpen)}>
           <h1 className="font-bold text-lg mr-2">{currentlySelected}</h1>
-          {!disabled && (
-            <ChevronDownIcon width="24" onClick={() => setIsOpen(!isOpen)} />
-          )}
+          {!disabled && <ChevronDownIcon width="24" />}
         </span>
         <IconButton
           onClick={() => onClick?.()}
@@ -73,11 +72,15 @@ export const HeaderDropdown = ({
                           type="button"
                           onClick={() => {
                             onChange?.();
+                            setIsOpen(false);
                             // setCurrentlySelected?.();
                           }}
-                          className={`cursor-pointer my-1 outline-none ${
-                            item === currentlySelected ? "font-bold my-1" : ""
-                          }`}>
+                          className={classNames(
+                            "cursor-pointer",
+                            "my-1",
+                            "outline-none",
+                            item === currentlySelected ? "font-bold my-1" : "",
+                          )}>
                           {item}
                         </button>
                       </div>

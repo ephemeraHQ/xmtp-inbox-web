@@ -1,6 +1,7 @@
 import React from "react";
 import { ButtonLoader } from "../Loaders/ButtonLoader";
 import { ArrowCircleRightIcon } from "@heroicons/react/outline";
+import { classNames } from "../../../helpers";
 
 interface PillButtonProps {
   /**
@@ -84,7 +85,17 @@ export const PillButton = ({
       type="button"
       onClick={onClick}
       disabled={isDisabled}
-      className={`${backgroundColor} ${fontColor} ${disabled} ${sizeClass} min-w-[${minWidth}%] h-fit font-bold rounded-full`}
+      className={classNames(
+        backgroundColor,
+        fontColor,
+        disabled,
+        sizeClass,
+        `min-w-[${minWidth}%]`,
+        "h-fit",
+        "font-bold",
+        "rounded-full ",
+        "m-4",
+      )}
       aria-label={srText}>
       <>
         <div className="flex justify-center items-center h-fit space-x-1">
