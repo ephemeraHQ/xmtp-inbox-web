@@ -27,15 +27,9 @@ interface InfoCardProps {
    */
   onClick?: () => void;
   /**
-<<<<<<< HEAD
-   * Should the top border be hidden?
-   */
-  hideTopBorder?: boolean;
-=======
    * Are there additional styles?
    */
   styles?: string;
->>>>>>> main
 }
 
 /**
@@ -61,15 +55,6 @@ export const InfoCard = ({
   leftIcon,
   isLoading = false,
   onClick = undefined,
-<<<<<<< HEAD
-  hideTopBorder = false,
-}: InfoCardProps) => {
-  return (
-    <div
-      className={`w-full flex py-2 px-4 flex items-center justify-between border-y border-gray-300 ${
-        hideTopBorder && "border-t-0 "
-      }`}>
-=======
   styles,
 }: InfoCardProps) => {
   return (
@@ -84,13 +69,13 @@ export const InfoCard = ({
         "justify-between",
         "border-y",
         "border-gray-300",
+        "cursor-pointer",
         styles || null,
       )}>
->>>>>>> main
       {isLoading ? (
         <ShortCopySkeletonLoader lines={2} />
       ) : (
-        <div className="flex">
+        <div className="flex" onClick={onClick}>
           <div
             className={classNames(
               getLeftIconBackground(leftIcon),

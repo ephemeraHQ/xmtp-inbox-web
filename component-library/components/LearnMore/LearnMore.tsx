@@ -10,11 +10,13 @@ interface LearnMoreProps {
     tags: React.ReactNode;
   }>;
   version: string;
+  setStartedFirstMessage: () => void;
 }
 
 export const LearnMore = ({
   highlightedCompanies = [],
   version,
+  setStartedFirstMessage,
 }: LearnMoreProps) => (
   <div className="flex flex-col justify-center items-center max-w-xl p-4 md:h-screen m-0 m-auto">
     <div>
@@ -42,7 +44,7 @@ export const LearnMore = ({
         header="Send a new message"
         subtext="Find an existing contact or message someone using their wallet address or ENS address"
         leftIcon={InfoCardIcon.NEW_MESSAGE}
-        onClick={() => {}}
+        onClick={setStartedFirstMessage}
       />
       <InfoCard
         header="Check out the XMTP gallery"

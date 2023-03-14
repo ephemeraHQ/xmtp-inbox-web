@@ -63,7 +63,7 @@ const useInitXmtpClient = () => {
         const xmtp = await Client.create(null, {
           env: getEnv(),
           appVersion: getAppVersion(),
-          privateKeyOverride: keys,
+          privateKeyOverride: keys || undefined,
         });
         if (conversationExports && conversationExports.length) {
           // Preload the client with conversations from the cache

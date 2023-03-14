@@ -71,18 +71,7 @@ export const AddressInput = ({
             <ShortCopySkeletonLoader lines={1} />
           ) : resolvedAddress?.displayAddress ? (
             <div className="flex flex-col text-md">
-              <span className="font-bold h-4 m-1">
-                {resolvedAddress.displayAddress}
-              </span>
-              {resolvedAddress.walletAddress && (
-                <span className="text-sm font-mono">
-                  {resolvedAddress.walletAddress}
-                </span>
-              )}
-            </div>
-          ) : resolvedAddress?.displayAddress ? (
-            <div className="flex flex-col text-md">
-              <span className="font-bold">
+              <span className="font-bold h-4 m-1 ml-0">
                 {resolvedAddress.displayAddress}
               </span>
               {resolvedAddress.walletAddress && (
@@ -93,7 +82,7 @@ export const AddressInput = ({
             </div>
           ) : (
             <input
-              className="text-gray-700 h-4 m-1 font-mono text-sm w-full leading-tight border-none focus:ring-0 cursor-text"
+              className="text-gray-700 px-0 h-4 m-1 font-mono text-sm w-full leading-tight border-none focus:ring-0 cursor-text"
               id="address"
               type="text"
               spellCheck="false"

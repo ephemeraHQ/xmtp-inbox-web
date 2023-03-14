@@ -61,11 +61,6 @@ const SideNav = ({
           onSideNavBtnClick(icon.key as string);
         }}
         aria-label={currentIcon as string}
-<<<<<<< HEAD
-        className={`${
-          currentIcon === icon.key && "font-bold"
-        } hover:bg-gray-200 p-2 hover:text-black text-gray-400 rounded-lg w-full flex item-center h-fit rounded cursor-pointer`}>
-=======
         className={classNames(
           currentIcon === icon.key ? "font-bold" : "",
           "hover:bg-gray-200",
@@ -80,7 +75,6 @@ const SideNav = ({
           "rounded",
           "cursor-pointer",
         )}>
->>>>>>> main
         <>
           <div className="flex justify-center items-center h-fit">
             {icon}

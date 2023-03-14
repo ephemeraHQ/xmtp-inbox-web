@@ -11,6 +11,7 @@ import { HeaderDropdownWrapper } from "../wrappers/HeaderDropdownWrapper";
 import { MessageInputWrapper } from "../wrappers/MessageInputWrapper";
 import { SideNavWrapper } from "../wrappers/SideNavWrapper";
 import useInitXmtpClient from "../hooks/useInitXmtpClient";
+import { LearnMore } from "../component-library/components/LearnMore/LearnMore";
 
 export type address = "0x${string}";
 
@@ -23,6 +24,12 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   const previewMessages = useXmtpStore((state) => state.previewMessages);
   const loadingConversations = useXmtpStore(
     (state) => state.loadingConversations,
+  );
+  const startedFirstMessage = useXmtpStore(
+    (state) => state.startedFirstMessage,
+  );
+  const setStartedFirstMessage = useXmtpStore(
+    (state) => state.setStartedFirstMessage,
   );
 
   // XMTP Hooks
@@ -59,11 +66,22 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
         </div>
       </div>
       <div className="flex w-full flex-col h-screen">
-        <AddressInputWrapper />
-        <div className="h-[calc(100vh-8rem)] flex flex-col">
-          <FullConversationWrapper />
-        </div>
-        <MessageInputWrapper />
+        {!conversations.size &&
+        !loadingConversations &&
+        !startedFirstMessage ? (
+          <LearnMore
+            version={"replace"}
+            setStartedFirstMessage={setStartedFirstMessage}
+          />
+        ) : (
+          <>
+            <AddressInputWrapper />
+            <div className="h-[calc(100vh-8rem)] flex flex-col">
+              <FullConversationWrapper />
+            </div>
+            <MessageInputWrapper />
+          </>
+        )}
       </div>
     </div>
   );

@@ -51,30 +51,6 @@ export const OnboardingStep = ({
     return (
       <div className="bg-white flex flex-col justify-center items-center max-w-sm text-center m-auto h-screen w-screen p-8">
         {isLoading ? <Spinner /> : <Logo />}
-<<<<<<< HEAD
-        <p className="pt-4">{step > 1 ? `Step ${step - 1} of 2` : null}</p>
-        <h1 className="text-4xl font-bold p-4">{header}</h1>
-        <p>{subheader}</p>
-        <div className="p-4">
-          {cta === ctaStep.ENABLE ? (
-            <PillButton label="Enable XMTP identity" onClick={onEnable} />
-          ) : cta === ctaStep.CREATE ? (
-            <PillButton label="Create XMTP identity" onClick={onCreate} />
-          ) : cta === ctaStep.CONNECT ? (
-            <PillButton label="Connect your wallet" onClick={onConnect} />
-          ) : null}
-        </div>
-        {subtext ? (
-          <p className="font-bold text-md text-gray-500">{subtext}</p>
-        ) : (
-          <GhostButton
-            onClick={onDisconnect}
-            label="Disconnect Wallet"
-            variant="secondary"
-            icon={<DisconnectIcon />}
-          />
-        )}
-=======
         <div>
           <p className="pt-4">{step > 1 ? `Step ${step - 1} of 2` : null}</p>
           <h1 className="text-4xl font-bold p-4">{header}</h1>
@@ -99,7 +75,6 @@ export const OnboardingStep = ({
             />
           )}
         </div>
->>>>>>> main
       </div>
     );
   } else {

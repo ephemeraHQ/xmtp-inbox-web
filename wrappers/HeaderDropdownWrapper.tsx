@@ -10,6 +10,9 @@ export const HeaderDropdownWrapper = () => {
     (state) => state.setRecipientWalletAddress,
   );
   const setConversationId = useXmtpStore((state) => state.setConversationId);
+  const setStartedFirstMessage = useXmtpStore(
+    (state) => state.setStartedFirstMessage,
+  );
 
   // XMTP Hooks
   const { setRecipientInputMode, setRecipientEnteredValue } =
@@ -22,6 +25,7 @@ export const HeaderDropdownWrapper = () => {
         setRecipientInputMode(RecipientInputMode.InvalidEntry);
         setConversationId();
         setRecipientEnteredValue("");
+        setStartedFirstMessage();
       }}
       disabled
     />
