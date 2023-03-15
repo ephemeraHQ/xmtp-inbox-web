@@ -93,7 +93,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
         ) : (
           <>
             <AddressInputWrapper />
-            <div className="h-full w-full flex flex-col-reverse overflow-auto">
+            <div className="h-[calc(100vh-8rem)] flex flex-col">
               <FullConversationWrapper />
             </div>
             <MessageInputWrapper />

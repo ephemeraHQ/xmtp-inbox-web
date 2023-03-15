@@ -249,9 +249,10 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
               walletAddress: "0x194c31cAe1418D5256E8c58e0d08Aee1046C6Ed0",
             }}
           />
-          <div className="h-full w-full flex flex-col-reverse overflow-auto">
+          <div className="h-[calc(100vh-8rem)] flex flex-col">
             <InfiniteScroll
-              height={"100%"}
+              height={"83vh"}
+              className="flex flex-col-reverse overflow-y-auto"
               dataLength={40}
               next={() => {}}
               endMessage={!40}
@@ -291,12 +292,13 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
               walletAddress: "0x194c31cAe1418D5256E8c58e0d08Aee1046C6Ed0",
             }}
           />
-          <div className="h-full w-full flex flex-col-reverse overflow-auto">
+          <div className="h-[calc(100vh-8rem)] flex flex-col">
             <InfiniteScroll
-              height={"100%"}
-              dataLength={40}
+              height={"80vh"}
+              className="flex flex-col-reverse overflow-y-auto"
+              dataLength={20}
               next={() => {}}
-              endMessage={!40}
+              endMessage={!20}
               hasMore={false}
               loader={false}>
               <FullConversation messages={Array(20).fill(alternatingMessage)} />
