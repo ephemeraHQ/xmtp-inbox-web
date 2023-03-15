@@ -47,7 +47,8 @@ const OnboardingPage: NextPage = () => {
   }, [client, isConnecting, isDisconnected, newAccount]);
 
   return (
-    <div className="h-screen bg-no-repeat bg-cover bg-white">
+    <div
+      className={classNames("bg-white", "h-screen", "w-full", "overflow-auto")}>
       {!address && !client && (
         <div
           className="flex justify-end text-sm font-bold text-p-500 underline cursor-pointer absolute right-4 top-4"
@@ -57,25 +58,19 @@ const OnboardingPage: NextPage = () => {
           Try a demo
         </div>
       )}
-      <div
-        className={classNames(
-          "flex flex-col items-center mx-6 text-center h-full",
-          loading ? "justify-center" : null,
-        )}>
-        <OnboardingStep
-          step={step}
-          isLoading={isLoading}
-          onConnect={handleConnect}
-          onCreate={createXmtpIdentity}
-          onEnable={connectToXmtp}
-          onDisconnect={() => {
-            wipeKeys(address ?? "");
-            disconnectWagmi();
-            resetWagmi();
-            resetXmtpState();
-          }}
-        />
-      </div>
+      <OnboardingStep
+        step={step}
+        isLoading={isLoading}
+        onConnect={handleConnect}
+        onCreate={createXmtpIdentity}
+        onEnable={connectToXmtp}
+        onDisconnect={() => {
+          wipeKeys(address ?? "");
+          disconnectWagmi();
+          resetWagmi();
+          resetXmtpState();
+        }}
+      />
     </div>
   );
 };

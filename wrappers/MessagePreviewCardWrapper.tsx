@@ -8,7 +8,7 @@ import { address } from "../pages/inbox";
 import { useXmtpStore } from "../store/xmtp";
 
 interface MessagePreviewCardWrapperProps {
-  convo: Conversation;
+  convo?: Conversation;
 }
 export const MessagePreviewCardWrapper = ({
   convo,
@@ -29,10 +29,10 @@ export const MessagePreviewCardWrapper = ({
 
   // Get ENS name and avatar from Wagmi
   const { data: previewEnsName } = useEnsName({
-    address: convo.peerAddress as address,
+    address: convo?.peerAddress as address,
   });
   const { data: convoAvatarUrl, isLoading: convoAvatarLoading } = useEnsAvatar({
-    address: convo.peerAddress as address,
+    address: convo?.peerAddress as address,
   });
 
   // Helpers
@@ -53,9 +53,13 @@ export const MessagePreviewCardWrapper = ({
       key={previewMessage?.id}
       text={previewMessage?.content}
       datetime={previewMessage?.sent}
-      displayAddress={previewEnsName || shortAddress(convo?.peerAddress)}
+      displayAddress={
+        previewEnsName || shortAddress(convo?.peerAddress || "") || undefined
+      }
       onClick={() => {
-        onConvoClick?.(convo);
+        if (convo) {
+          onConvoClick?.(convo);
+        }
       }}
       isLoading={convoAvatarLoading}
       avatarUrl={convoAvatarUrl || ""}

@@ -49,8 +49,7 @@ export const FullConversationWrapper = () => {
 
   return (
     <InfiniteScroll
-      className="flex flex-col-reverse overflow-y-auto pl-4"
-      height={"83vh"}
+      height={"100%"}
       dataLength={messages.length}
       next={fetchNextMessages}
       endMessage={!messages?.length}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import useListConversations from "../hooks/useListConversations";
 import { useXmtpStore } from "../store/xmtp";
 import { getConversationId } from "../helpers";
@@ -12,6 +12,7 @@ import { MessageInputWrapper } from "../wrappers/MessageInputWrapper";
 import { SideNavWrapper } from "../wrappers/SideNavWrapper";
 import useInitXmtpClient from "../hooks/useInitXmtpClient";
 import { LearnMore } from "../component-library/components/LearnMore/LearnMore";
+import router from "next/router";
 
 export type address = "0x${string}";
 
@@ -22,6 +23,10 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   const conversations = useXmtpStore((state) => state.conversations);
 
   const previewMessages = useXmtpStore((state) => state.previewMessages);
+  const recipientEnteredValue = useXmtpStore(
+    (state) => state.recipientEnteredValue,
+  );
+
   const loadingConversations = useXmtpStore(
     (state) => state.loadingConversations,
   );
@@ -31,6 +36,12 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   const setStartedFirstMessage = useXmtpStore(
     (state) => state.setStartedFirstMessage,
   );
+
+  useEffect(() => {
+    if (!client) {
+      router.push("/");
+    }
+  }, [client]);
 
   // XMTP Hooks
   useListConversations();
@@ -47,21 +58,27 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   };
 
   return (
-    <div className="bg-white w-screen md:h-full flex flex-col md:flex-row">
-      <div className="flex md:w-2/5 overflow-y-auto">
+    <div className="bg-white w-screen md:h-screen flex flex-col md:flex-row">
+      <div className="flex md:w-1/2">
         <SideNavWrapper />
-        <div className="w-full max-w-lg flex flex-col h-screen overflow-auto">
+        <div className="w-full flex flex-col h-screen overflow-auto">
           {!loadingConversations && <HeaderDropdownWrapper />}
           <ConversationList
+            hasRecipientEnteredValue={!!recipientEnteredValue}
+            setStartedFirstMessage={setStartedFirstMessage}
             isLoading={loadingConversations}
-            messages={Array.from(conversations.values())
-              .sort(orderByLatestMessage)
-              .map((convo) => (
-                <MessagePreviewCardWrapper
-                  key={getConversationId(convo)}
-                  convo={convo}
-                />
-              ))}
+            messages={
+              conversations.size === 0 && recipientEnteredValue
+                ? [<MessagePreviewCardWrapper key="default" />]
+                : Array.from(conversations.values())
+                    .sort(orderByLatestMessage)
+                    .map((convo) => (
+                      <MessagePreviewCardWrapper
+                        key={getConversationId(convo)}
+                        convo={convo}
+                      />
+                    ))
+            }
           />
         </div>
       </div>
@@ -76,7 +93,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
         ) : (
           <>
             <AddressInputWrapper />
-            <div className="h-[calc(100vh-8rem)] flex flex-col">
+            <div className="h-full w-full flex flex-col-reverse overflow-auto">
               <FullConversationWrapper />
             </div>
             <MessageInputWrapper />

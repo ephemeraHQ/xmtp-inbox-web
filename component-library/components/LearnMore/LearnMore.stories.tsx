@@ -1,24 +1,12 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { LearnMore } from "./LearnMore";
-<<<<<<< HEAD
-=======
 import { Tag } from "../Tags/Tag";
 import { TagIcon } from "../Tags/iconMapping";
->>>>>>> main
 
 export default {
   title: "LearnMore",
   component: LearnMore,
-<<<<<<< HEAD
-  argTypes: {},
-} as ComponentMeta<typeof LearnMore>;
-
-const Template: ComponentStory<typeof LearnMore> = () => <LearnMore />;
-
-export const LearnMoreDefault = Template.bind({});
-LearnMoreDefault.args = {};
-=======
   argTypes: {
     highlightedCompanies: { control: false },
   },
@@ -59,4 +47,3 @@ LearnMoreWithCompanies.args = {
   ],
   version: "7",
 };
->>>>>>> main
