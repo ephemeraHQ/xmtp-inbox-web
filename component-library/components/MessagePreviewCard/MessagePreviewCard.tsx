@@ -41,15 +41,14 @@ interface MessagePreviewCard {
 
 export const MessagePreviewCard = ({
   avatarUrl,
-  text = "New message",
-  displayAddress = "New recipient",
+  text,
+  displayAddress,
   datetime,
   isLoading = false,
   onClick,
   isSelected,
 }: MessagePreviewCard) => {
-  const isFirstMessage =
-    text === "New message" && displayAddress === "New recipient";
+  const isFirstMessage = !text && !displayAddress;
 
   if (!text && !isFirstMessage && !isLoading) {
     return null;
@@ -72,13 +71,15 @@ export const MessagePreviewCard = ({
         {isLoading ? (
           <ShortCopySkeletonLoader />
         ) : (
-          <span className="text-md font-bold">{displayAddress}</span>
+          <span className="text-md font-bold">
+            {displayAddress ?? "New recipient"}
+          </span>
         )}
         {isLoading ? (
           <ShortCopySkeletonLoader />
         ) : (
           <span className="text-md text-gray-500 line-clamp-1 max-w-[90%] break-all">
-            {text}
+            {text ?? "New message"}
           </span>
         )}
       </div>
