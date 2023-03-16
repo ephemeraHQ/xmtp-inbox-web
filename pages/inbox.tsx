@@ -78,7 +78,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
         {size[0] > 700 || (!recipientWalletAddress && !startedFirstMessage) ? (
           <>
             <SideNavWrapper />
-            <div className="w-full flex flex-col h-screen overflow-auto">
+            <div className="h-screen w-full flex flex-col h-screen overflow-auto">
               {!loadingConversations && <HeaderDropdownWrapper />}
               <ConversationList
                 hasRecipientEnteredValue={!!recipientEnteredValue}
@@ -125,7 +125,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
                 ) : null}
                 <AddressInputWrapper />
               </div>
-              <div className="h-[calc(100vh-8rem)] flex flex-col">
+              <div className="h-[calc(100vh-7rem)] flex flex-col">
                 <FullConversationWrapper />
               </div>
               <MessageInputWrapper />
