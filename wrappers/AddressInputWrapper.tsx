@@ -1,7 +1,11 @@
 import React from "react";
 import { useEnsAvatar } from "wagmi";
 import { AddressInput } from "../component-library/components/AddressInput/AddressInput";
-import { getRecipientInputSubtext, RecipientInputMode } from "../helpers";
+import {
+  getRecipientInputSubtext,
+  RecipientInputMode,
+  shortAddress,
+} from "../helpers";
 import useGetRecipientInputMode from "../hooks/useGetRecipientInputMode";
 import useWalletAddress from "../hooks/useWalletAddress";
 import { address } from "../pages/inbox";
@@ -39,7 +43,7 @@ export const AddressInputWrapper = () => {
           : ""
       }
       resolvedAddress={{
-        displayAddress: ensName ?? recipientWalletAddress,
+        displayAddress: ensName ?? shortAddress(recipientWalletAddress),
         walletAddress: ensName ? recipientWalletAddress : "",
       }}
       onChange={setRecipientEnteredValue}

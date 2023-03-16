@@ -13,6 +13,8 @@ import { SideNavWrapper } from "../wrappers/SideNavWrapper";
 import useInitXmtpClient from "../hooks/useInitXmtpClient";
 import { LearnMore } from "../component-library/components/LearnMore/LearnMore";
 import router from "next/router";
+import useWindowSize from "../hooks/useWindowSize";
+import { ChevronLeftIcon } from "@heroicons/react/solid";
 
 export type address = "0x${string}";
 
@@ -21,6 +23,16 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   // XMTP Store
   const client = useXmtpStore((state) => state.client);
   const conversations = useXmtpStore((state) => state.conversations);
+
+  const recipientWalletAddress = useXmtpStore(
+    (state) => state.recipientWalletAddress,
+  );
+
+  const setRecipientWalletAddress = useXmtpStore(
+    (state) => state.setRecipientWalletAddress,
+  );
+
+  const size = useWindowSize();
 
   const previewMessages = useXmtpStore((state) => state.previewMessages);
   const recipientEnteredValue = useXmtpStore(
@@ -60,27 +72,31 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   return (
     <div className="bg-white w-screen md:h-screen flex flex-col md:flex-row">
       <div className="flex md:w-1/2">
-        <SideNavWrapper />
-        <div className="w-full flex flex-col h-screen overflow-auto">
-          {!loadingConversations && <HeaderDropdownWrapper />}
-          <ConversationList
-            hasRecipientEnteredValue={!!recipientEnteredValue}
-            setStartedFirstMessage={setStartedFirstMessage}
-            isLoading={loadingConversations}
-            messages={
-              conversations.size === 0 && recipientEnteredValue
-                ? [<MessagePreviewCardWrapper key="default" />]
-                : Array.from(conversations.values())
-                    .sort(orderByLatestMessage)
-                    .map((convo) => (
-                      <MessagePreviewCardWrapper
-                        key={getConversationId(convo)}
-                        convo={convo}
-                      />
-                    ))
-            }
-          />
-        </div>
+        {size[0] > 700 || (!recipientWalletAddress && !startedFirstMessage) ? (
+          <>
+            <SideNavWrapper />
+            <div className="w-full flex flex-col h-screen overflow-auto">
+              {!loadingConversations && <HeaderDropdownWrapper />}
+              <ConversationList
+                hasRecipientEnteredValue={!!recipientEnteredValue}
+                setStartedFirstMessage={() => setStartedFirstMessage(true)}
+                isLoading={loadingConversations}
+                messages={
+                  conversations.size === 0 && recipientEnteredValue
+                    ? [<MessagePreviewCardWrapper key="default" />]
+                    : Array.from(conversations.values())
+                        .sort(orderByLatestMessage)
+                        .map((convo) => (
+                          <MessagePreviewCardWrapper
+                            key={getConversationId(convo)}
+                            convo={convo}
+                          />
+                        ))
+                }
+              />
+            </div>
+          </>
+        ) : null}
       </div>
       <div className="flex w-full flex-col h-screen">
         {!conversations.size &&
@@ -88,11 +104,22 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
         !startedFirstMessage ? (
           <LearnMore
             version={"replace"}
-            setStartedFirstMessage={setStartedFirstMessage}
+            setStartedFirstMessage={() => setStartedFirstMessage(true)}
           />
         ) : (
           <>
-            <AddressInputWrapper />
+            <div className="flex">
+              {size[0] < 700 ? (
+                <ChevronLeftIcon
+                  onClick={() => {
+                    setRecipientWalletAddress("");
+                    setStartedFirstMessage(false);
+                  }}
+                  width={32}
+                />
+              ) : null}
+              <AddressInputWrapper />
+            </div>
             <div className="h-[calc(100vh-8rem)] flex flex-col">
               <FullConversationWrapper />
             </div>
