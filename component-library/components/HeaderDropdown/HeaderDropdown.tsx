@@ -42,7 +42,7 @@ export const HeaderDropdown = ({
     <div
       data-modal-target="headerModalId"
       data-testId="conversation-list-header"
-      className="p-4 w-full border border-r border-gray-100">
+      className="p-4 w-full border border-r border-gray-100 h-16">
       <div className="flex justify-between items-center">
         <span className="flex" onClick={() => setIsOpen(!isOpen)}>
           <h1 className="font-bold text-lg mr-2">{currentlySelected}</h1>

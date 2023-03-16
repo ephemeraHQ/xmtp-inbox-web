@@ -56,7 +56,7 @@ export const FullMessage = ({
             <span className="font-bold ml-4">{`${from.displayAddress}`}</span>
           )}
           <div
-            className={`whitespace-pre-wrap p-2 rounded-tl-xl rounded-tr-xl my-1 ${
+            className={`whitespace-pre-wrap p-2 rounded-tl-xl rounded-tr-xl my-1 break-words ${
               isOutgoingMessage
                 ? outgoingMessageBackgroundStyles
                 : incomingMessageBackgroundStyles
