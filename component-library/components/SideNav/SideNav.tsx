@@ -142,10 +142,8 @@ const SideNav = ({
           </div>
         </div>
       </div>
-      <div className="flex justify-center items-center font-bold w-full pb-4">
-        <div className="pb-4" data-testid="icon">
-          {icon}
-        </div>
+      <div className="flex justify-center items-center font-bold w-full pb-8">
+        <div data-testid="icon">{icon}</div>
         {isOpen && (
           <button
             className="text-center ml-2"
