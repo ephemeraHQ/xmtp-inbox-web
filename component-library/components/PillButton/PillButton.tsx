@@ -102,7 +102,7 @@ export const PillButton = ({
         "rounded-full ",
         "m-4",
       )}
-      aria-label={srText}>
+      aria-label={srText || (label as string)}>
       <>
         <div className="flex justify-center items-center h-fit space-x-1">
           <div>{label}</div>

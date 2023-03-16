@@ -81,13 +81,13 @@ const SideNav = ({
           setCurrentIcon((event.target as HTMLElement).innerText);
           onSideNavBtnClick(icon.key as string);
         }}
-        aria-label={currentIcon as string}
+        aria-label={icon.key as string}
         className={classNames(
           currentIcon === icon.key ? "font-bold" : "",
           "hover:bg-gray-200",
           "p-2",
           "hover:text-black",
-          "text-gray-400",
+          "text-gray-500",
           "rounded-lg",
           "w-full",
           "flex",

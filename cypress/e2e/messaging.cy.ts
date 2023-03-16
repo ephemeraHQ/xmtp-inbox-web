@@ -37,7 +37,7 @@ describe(
     });
 
     it("Can send multiple messages to user in XMTP network", () => {
-      sendAndEnterMessage(testUserWithXmtpAccount, shortMessage, 6);
+      sendAndEnterMessage(testUserWithXmtpAccount, shortMessage, 7);
     });
 
     it("Displays messages in the correct order", () => {

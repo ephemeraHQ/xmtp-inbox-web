@@ -59,7 +59,7 @@ export const AddressInput = ({
   onTooltipClick,
   value,
 }: AddressInputProps) => {
-  const subtextColor = isError ? "text-red-400" : "text-gray-400";
+  const subtextColor = isError ? "text-red-600" : "text-gray-400";
   return (
     <div className="flex px-4 py-3 border border-gray-100 border-l-0 z-10 max-h-sm w-full">
       <form
@@ -85,7 +85,8 @@ export const AddressInput = ({
           ) : (
             <input
               data-testid="message-to-input"
-              className="text-gray-700 px-0 h-4 m-1 font-mono text-sm w-full leading-tight border-none focus:ring-0 cursor-text"
+              tabIndex={0}
+              className="text-gray-700 px-0 h-4 m-1 ml-0 font-mono text-sm w-full leading-tight border-none focus:ring-0 cursor-text"
               id="address"
               type="text"
               spellCheck="false"
@@ -96,6 +97,7 @@ export const AddressInput = ({
                 onChange && onChange((e.target as HTMLInputElement).value)
               }
               value={value}
+              aria-label="Address Input"
             />
           )}
           <p

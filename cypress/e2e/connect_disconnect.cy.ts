@@ -118,9 +118,7 @@ describe(
       checkElement("message-section-link").click();
       checkElement("message-to-input").type("a");
       checkMissingElement("empty-message-header");
-      cy.get(`[data-testid=conversations-list-panel]`)
-        .children()
-        .should("have.length", 1);
+      cy.get(`[data-testid=conversations-list-panel]`).should("have.length", 1);
     });
   },
 );
