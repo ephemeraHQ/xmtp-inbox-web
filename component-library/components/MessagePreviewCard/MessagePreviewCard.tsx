@@ -56,10 +56,17 @@ export const MessagePreviewCard = ({
   return (
     <div
       className={classNames(
-        "flex justify-between items-start border border-t-0 border-gray-100 p-4 h-min cursor-pointer",
-        isSelected ? "bg-gray-200" : "bg-gray-50",
+        "flex justify-between items-start border border-t-0 border-gray-300 p-4 h-min cursor-pointer",
+        isSelected ? "bg-gray-200" : "bg-white",
       )}
-      onClick={onClick}>
+      onClick={onClick}
+      onKeyUp={(e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          onClick?.();
+        }
+      }}
+      tabIndex={0}>
       <div className="mr-3 flex-none">
         <Avatar
           url={avatarUrl}
@@ -78,7 +85,7 @@ export const MessagePreviewCard = ({
         {isLoading ? (
           <ShortCopySkeletonLoader />
         ) : (
-          <span className="text-md text-gray-500 line-clamp-1 max-w-[90%] break-all">
+          <span className="text-md text-gray-600 line-clamp-1 max-w-[90%] break-all">
             {text ?? "New message"}
           </span>
         )}
@@ -86,7 +93,14 @@ export const MessagePreviewCard = ({
       {isLoading ? (
         <IconSkeletonLoader />
       ) : (
-        <div className="text-xs text-gray-400 w-1/4 text-right ml-4">
+        <div
+          className={classNames(
+            "text-xs",
+            "text-gray-600",
+            "w-1/4",
+            "text-right",
+            "ml-4",
+          )}>
           {datetime && `${formatDistanceToNow(datetime)} ago`}
         </div>
       )}
