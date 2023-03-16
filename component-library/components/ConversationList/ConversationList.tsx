@@ -32,7 +32,7 @@ export const ConversationList = ({
       {Array(12).fill(<MessagePreviewCard isLoading />)}
     </div>
   ) : !messages.length && !isLoading && !hasRecipientEnteredValue ? (
-    <div className="w-fit overflow-hidden sm:w-full p-8 border border-gray-100 h-screen">
+    <div className="w-fit overflow-hidden sm:w-full sm:p-4 md:p-8 border border-gray-100 h-screen">
       <EmptyMessage setStartedFirstMessage={setStartedFirstMessage} />
     </div>
   ) : (

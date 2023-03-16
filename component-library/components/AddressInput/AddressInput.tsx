@@ -85,7 +85,7 @@ export const AddressInput = ({
           ) : (
             <input
               data-testid="message-to-input"
-              className="text-gray-700 px-0 h-4 mb-1 font-mono text-sm w-full leading-tight border-none focus:ring-0 cursor-text"
+              className="text-gray-700 px-0 h-4 m-1 font-mono text-sm w-full leading-tight border-none focus:ring-0 cursor-text"
               id="address"
               type="text"
               spellCheck="false"
@@ -99,7 +99,7 @@ export const AddressInput = ({
             />
           )}
           <p
-            className={classNames("font-mono", "text-sm", subtextColor)}
+            className={classNames("font-mono", "text-sm", "ml-1", subtextColor)}
             data-testid="message-to-subtext">
             {subtext}
           </p>
