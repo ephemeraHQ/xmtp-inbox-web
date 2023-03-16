@@ -65,7 +65,7 @@ export const FullMessage = ({
             {text}
           </div>
           <div
-            className={`text-gray-300 w-full flex mb-4 ${
+            className={`text-gray-500 w-full flex mb-4 ${
               isOutgoingMessage ? "justify-end pr-4" : "justify-start pl-4"
             }`}>
             {format(datetime, "h:mm a")}

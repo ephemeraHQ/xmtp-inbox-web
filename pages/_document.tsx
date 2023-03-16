@@ -14,7 +14,7 @@ class AppDocument extends Document {
 
   render() {
     return (
-      <Html className="h-screen bg-white">
+      <Html className="h-screen bg-white" lang="en">
         <Head>
           <meta name="description" content="Chat via XMTP" />
           <link rel="icon" href="/favicon.ico" />
@@ -24,8 +24,10 @@ class AppDocument extends Document {
           />
         </Head>
         <body className="h-screen">
-          <Main />
-          <NextScript />
+          <main>
+            <Main />
+            <NextScript />
+          </main>
         </body>
       </Html>
     );

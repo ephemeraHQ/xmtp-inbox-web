@@ -30,7 +30,7 @@ export const FullConversation = ({
       className="w-full h-full flex flex-col-reverse p-4">
       {messages}
       <div
-        className="text-gray-300 font-bold text-sm w-full text-center"
+        className="text-gray-500 font-bold text-sm w-full text-center"
         data-testid="message-beginning-text">
         This is the beginning of the conversation
       </div>
