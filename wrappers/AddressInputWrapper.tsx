@@ -8,6 +8,7 @@ import {
 } from "../helpers";
 import useGetRecipientInputMode from "../hooks/useGetRecipientInputMode";
 import useWalletAddress from "../hooks/useWalletAddress";
+import useWindowSize from "../hooks/useWindowSize";
 import { address } from "../pages/inbox";
 import { useXmtpStore } from "../store/xmtp";
 
@@ -34,6 +35,8 @@ export const AddressInputWrapper = () => {
     address: recipientWalletAddress as address,
   });
 
+  const size = useWindowSize();
+
   return (
     <AddressInput
       isError={!isValid}
@@ -43,7 +46,10 @@ export const AddressInputWrapper = () => {
           : ""
       }
       resolvedAddress={{
-        displayAddress: ensName ?? shortAddress(recipientWalletAddress),
+        displayAddress:
+          ensName ?? size[0] < 700
+            ? shortAddress(recipientWalletAddress)
+            : recipientWalletAddress,
         walletAddress: ensName ? recipientWalletAddress : "",
       }}
       onChange={setRecipientEnteredValue}

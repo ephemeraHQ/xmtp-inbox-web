@@ -14,7 +14,7 @@ import useInitXmtpClient from "../hooks/useInitXmtpClient";
 import { LearnMore } from "../component-library/components/LearnMore/LearnMore";
 import router from "next/router";
 import useWindowSize from "../hooks/useWindowSize";
-import { ChevronLeftIcon } from "@heroicons/react/solid";
+import { ChevronLeftIcon } from "@heroicons/react/outline";
 
 export type address = "0x${string}";
 
@@ -73,36 +73,34 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   };
 
   return (
-    <div className="bg-white w-screen md:h-screen flex flex-col md:flex-row">
-      <div className="flex md:w-1/2">
-        {size[0] > 700 || (!recipientWalletAddress && !startedFirstMessage) ? (
-          <>
-            <SideNavWrapper />
-            <div className="h-screen w-full flex flex-col h-screen overflow-auto">
-              {!loadingConversations && <HeaderDropdownWrapper />}
-              <ConversationList
-                hasRecipientEnteredValue={!!recipientEnteredValue}
-                setStartedFirstMessage={() => setStartedFirstMessage(true)}
-                isLoading={loadingConversations}
-                messages={
-                  conversations.size === 0 && recipientEnteredValue
-                    ? [<MessagePreviewCardWrapper key="default" />]
-                    : Array.from(conversations.values())
-                        .sort(orderByLatestMessage)
-                        .map((convo) => (
-                          <MessagePreviewCardWrapper
-                            key={getConversationId(convo)}
-                            convo={convo}
-                          />
-                        ))
-                }
-              />
-            </div>
-          </>
-        ) : null}
-      </div>
+    <div className="bg-white w-full h-screen flex flex-col md:flex-row">
+      {size[0] > 700 || (!recipientWalletAddress && !startedFirstMessage) ? (
+        <div className="flex md:w-2/6 h-screen">
+          <SideNavWrapper />
+          <div className="flex flex-col h-screen w-full overflow-auto">
+            {!loadingConversations && <HeaderDropdownWrapper />}
+            <ConversationList
+              hasRecipientEnteredValue={!!recipientEnteredValue}
+              setStartedFirstMessage={() => setStartedFirstMessage(true)}
+              isLoading={loadingConversations}
+              messages={
+                conversations.size === 0 && recipientEnteredValue
+                  ? [<MessagePreviewCardWrapper key="default" />]
+                  : Array.from(conversations.values())
+                      .sort(orderByLatestMessage)
+                      .map((convo) => (
+                        <MessagePreviewCardWrapper
+                          key={getConversationId(convo)}
+                          convo={convo}
+                        />
+                      ))
+              }
+            />
+          </div>
+        </div>
+      ) : null}
       {size[0] > 700 || recipientWalletAddress || startedFirstMessage ? (
-        <div className="flex w-full flex-col h-screen">
+        <div className="flex md:w-4/6 overflow-visible md:overflow-hidden flex-col h-screen">
           {!conversations.size &&
           !loadingConversations &&
           !startedFirstMessage ? (
@@ -125,7 +123,10 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
                 ) : null}
                 <AddressInputWrapper />
               </div>
-              <div className="h-[calc(100vh-7rem)] flex flex-col">
+              <div
+                id="scrollableDiv"
+                tabIndex={0}
+                className="h-screen md:h-full w-full flex flex-col flex-col-reverse overflow-y-auto">
                 <FullConversationWrapper />
               </div>
               <MessageInputWrapper />
