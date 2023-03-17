@@ -58,16 +58,16 @@ export const OnboardingStep = ({
           </div>
         )}
         <div className="h-1/2">
-          <p className="pt-4">{step > 1 ? `Step ${step - 1} of 2` : null}</p>
+          {step > 1 ? <p className="pt-4">{`Step ${step - 1} of 2`}</p> : null}
           <h1
-            className="text-4xl font-bold p-4"
+            className="text-4xl font-bold p-4 pt-0"
             data-testid={step === 1 && "no-wallet-connected-header"}>
             {header}
           </h1>
           <p data-testid={step === 1 && "no-wallet-connected-subheader"}>
             {subheader}
           </p>
-          <div className="p-4">
+          <div className="p-2">
             {cta === ctaStep.ENABLE ? (
               <PillButton
                 label="Enable XMTP identity"

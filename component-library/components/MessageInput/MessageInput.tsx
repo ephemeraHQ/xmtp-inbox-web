@@ -51,7 +51,9 @@ export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
           "flex",
           value ? "items-end" : "items-center",
           "max-h-300",
-          "m-4",
+          "mx-4 my-2",
+          "h-10",
+          "bg-white",
           borderStyles,
         )}>
         <textarea
