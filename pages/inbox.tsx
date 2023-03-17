@@ -13,6 +13,8 @@ import { SideNavWrapper } from "../wrappers/SideNavWrapper";
 import useInitXmtpClient from "../hooks/useInitXmtpClient";
 import { LearnMore } from "../component-library/components/LearnMore/LearnMore";
 import router from "next/router";
+import useWindowSize from "../hooks/useWindowSize";
+import { ChevronLeftIcon } from "@heroicons/react/solid";
 
 export type address = "0x${string}";
 
@@ -22,9 +24,22 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   const client = useXmtpStore((state) => state.client);
   const conversations = useXmtpStore((state) => state.conversations);
 
+  const recipientWalletAddress = useXmtpStore(
+    (state) => state.recipientWalletAddress,
+  );
+
+  const setRecipientWalletAddress = useXmtpStore(
+    (state) => state.setRecipientWalletAddress,
+  );
+
+  const size = useWindowSize();
+
   const previewMessages = useXmtpStore((state) => state.previewMessages);
   const recipientEnteredValue = useXmtpStore(
     (state) => state.recipientEnteredValue,
+  );
+  const setRecipientEnteredValue = useXmtpStore(
+    (state) => state.setRecipientEnteredValue,
   );
 
   const loadingConversations = useXmtpStore(
@@ -58,51 +73,66 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   };
 
   return (
-    <div className="bg-white w-full h-screen flex flex-col md:flex-row">
-      <div className="flex md:w-1/3 md:min-w-fit h-screen md:h-full">
-        <SideNavWrapper />
-        <div className="flex flex-col h-screen md:h-full w-full overflow-auto">
-          {!loadingConversations && <HeaderDropdownWrapper />}
-          <ConversationList
-            hasRecipientEnteredValue={!!recipientEnteredValue}
-            setStartedFirstMessage={setStartedFirstMessage}
-            isLoading={loadingConversations}
-            messages={
-              conversations.size === 0 && recipientEnteredValue
-                ? [<MessagePreviewCardWrapper key="default" />]
-                : Array.from(conversations.values())
-                    .sort(orderByLatestMessage)
-                    .map((convo) => (
-                      <MessagePreviewCardWrapper
-                        key={getConversationId(convo)}
-                        convo={convo}
-                      />
-                    ))
-            }
-          />
-        </div>
-      </div>
-      <div className="flex w-full overflow-visible md:overflow-hidden flex-col h-screen md:h-full ">
-        {!conversations.size &&
-        !loadingConversations &&
-        !startedFirstMessage ? (
-          <LearnMore
-            version={"replace"}
-            setStartedFirstMessage={setStartedFirstMessage}
-          />
-        ) : (
+    <div className="bg-white w-screen md:h-screen flex flex-col md:flex-row">
+      <div className="flex md:w-1/2">
+        {size[0] > 700 || (!recipientWalletAddress && !startedFirstMessage) ? (
           <>
-            <AddressInputWrapper />
-            <div
-              id="scrollableDiv"
-              tabIndex={0}
-              className="h-screen md:h-full w-full flex flex-col flex-col-reverse overflow-y-auto">
-              <FullConversationWrapper />
+            <SideNavWrapper />
+            <div className="h-screen w-full flex flex-col h-screen overflow-auto">
+              {!loadingConversations && <HeaderDropdownWrapper />}
+              <ConversationList
+                hasRecipientEnteredValue={!!recipientEnteredValue}
+                setStartedFirstMessage={() => setStartedFirstMessage(true)}
+                isLoading={loadingConversations}
+                messages={
+                  conversations.size === 0 && recipientEnteredValue
+                    ? [<MessagePreviewCardWrapper key="default" />]
+                    : Array.from(conversations.values())
+                        .sort(orderByLatestMessage)
+                        .map((convo) => (
+                          <MessagePreviewCardWrapper
+                            key={getConversationId(convo)}
+                            convo={convo}
+                          />
+                        ))
+                }
+              />
             </div>
-            <MessageInputWrapper />
           </>
-        )}
+        ) : null}
       </div>
+      {size[0] > 700 || recipientWalletAddress || startedFirstMessage ? (
+        <div className="flex w-full flex-col h-screen">
+          {!conversations.size &&
+          !loadingConversations &&
+          !startedFirstMessage ? (
+            <LearnMore
+              version={"replace"}
+              setStartedFirstMessage={() => setStartedFirstMessage(true)}
+            />
+          ) : (
+            <>
+              <div className="flex">
+                {size[0] < 700 ? (
+                  <ChevronLeftIcon
+                    onClick={() => {
+                      setRecipientWalletAddress("");
+                      setStartedFirstMessage(false);
+                      setRecipientEnteredValue("");
+                    }}
+                    width={32}
+                  />
+                ) : null}
+                <AddressInputWrapper />
+              </div>
+              <div className="h-[calc(100vh-7rem)] flex flex-col">
+                <FullConversationWrapper />
+              </div>
+              <MessageInputWrapper />
+            </>
+          )}
+        </div>
+      ) : null}
     </div>
   );
 };

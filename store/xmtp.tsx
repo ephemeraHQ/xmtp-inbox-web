@@ -27,7 +27,7 @@ interface XmtpState {
   setRecipientEnteredValue: (recipientEnteredValue?: string) => void;
   resetXmtpState: () => void;
   startedFirstMessage: boolean;
-  setStartedFirstMessage: () => void;
+  setStartedFirstMessage: (startedFirstMessage: boolean) => void;
 }
 
 export const useXmtpStore = create<XmtpState>((set) => ({
@@ -87,5 +87,6 @@ export const useXmtpStore = create<XmtpState>((set) => ({
       };
     }),
   startedFirstMessage: false,
-  setStartedFirstMessage: () => set(() => ({ startedFirstMessage: true })),
+  setStartedFirstMessage: (startedFirstMessage) =>
+    set(() => ({ startedFirstMessage })),
 }));

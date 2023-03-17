@@ -48,14 +48,12 @@ export const FullMessage = ({
           "flex",
           "flex-col",
           "max-w-1/2",
-          "break-words",
           isOutgoingMessage ? "items-end" : "items-start",
         )}>
         <div
           className={classNames(
             "flex",
             "flex-col",
-            "break-words",
             isOutgoingMessage ? "items-end" : "items-start",
             "w-1/2",
           )}>
@@ -65,7 +63,7 @@ export const FullMessage = ({
             <span className="font-bold">{`${from.displayAddress}`}</span>
           )}
           <div
-            className={`whitespace-pre-wrap p-2 px-3 rounded-tl-xl rounded-tr-xl my-1 max-w-full ${
+            className={`whitespace-pre-wrap p-2 px-3 rounded-tl-xl rounded-tr-xl my-1 break-words ${
               isOutgoingMessage
                 ? outgoingMessageBackgroundStyles
                 : incomingMessageBackgroundStyles

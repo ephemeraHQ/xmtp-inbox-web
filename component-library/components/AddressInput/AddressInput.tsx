@@ -61,7 +61,7 @@ export const AddressInput = ({
 }: AddressInputProps) => {
   const subtextColor = isError ? "text-red-600" : "text-gray-400";
   return (
-    <div className="flex px-4 py-3 border-b border-gray-100 border-l-0 z-10 max-h-sm w-full">
+    <div className="flex sm:px-2 px-4 py-3 border-b border-gray-100 border-l-0 z-10 max-h-sm w-full">
       <form
         className="flex w-full items-center"
         onSubmit={(e) => e.preventDefault()}>
@@ -101,7 +101,7 @@ export const AddressInput = ({
             />
           )}
           <p
-            className={classNames("font-mono", "text-sm", subtextColor)}
+            className={classNames("font-mono", "text-sm", "ml-1", subtextColor)}
             data-testid="message-to-subtext">
             {subtext}
           </p>

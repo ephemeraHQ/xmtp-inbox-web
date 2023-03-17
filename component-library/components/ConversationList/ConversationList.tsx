@@ -28,16 +28,16 @@ export const ConversationList = ({
   hasRecipientEnteredValue,
 }: ConversationListProps) => {
   return !messages?.length && isLoading ? (
-    <div className="w-fit overflow-hidden h-full flex flex-col justify-start sm:w-full bg-gray-300">
+    <div className="w-fit overflow-hidden h-[calc[100vh - 4rem]] flex flex-col justify-start sm:w-full bg-gray-300">
       {Array(12).fill(<MessagePreviewCard isLoading />)}
     </div>
   ) : !messages.length && !isLoading && !hasRecipientEnteredValue ? (
-    <div className="w-full overflow-hidden sm:w-full p-8 border border-gray-100 h-full">
+    <div className="w-full overflow-hidden sm:w-full sm:p-4 md:p-8 border border-gray-100 h-[calc[100vh - 4rem]]">
       <EmptyMessage setStartedFirstMessage={setStartedFirstMessage} />
     </div>
   ) : (
     <div
-      className="w-full overflow-auto sm:w-full flex flex-col h-full bg-gray-100"
+      className="w-full overflow-auto sm:w-full flex flex-col h-[calc[100vh - 4rem]] bg-gray-100"
       data-testid="conversations-list-panel">
       {messages}
     </div>

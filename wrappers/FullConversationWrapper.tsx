@@ -45,13 +45,14 @@ export const FullConversationWrapper = () => {
     }
   }, [conversationId, hasMore, messages, endTime]);
 
-  useEffect(() => {
-    fetchNextMessages();
-  }, [hasMore]);
+  // useEffect(() => {
+  //   fetchNextMessages();
+  // }, [hasMore]);
 
   return (
     <InfiniteScroll
-      className="flex flex-col flex-col-reverse"
+      height={"83vh"}
+      className="flex flex-col-reverse overflow-y-auto"
       dataLength={messages.length}
       next={fetchNextMessages}
       endMessage={!messages?.length}

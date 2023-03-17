@@ -109,7 +109,7 @@ const SideNav = ({
   return (
     <div
       className={classNames(
-        "flex flex-col justify-between items-center h-full bg-gray-50 px-2 w-fit",
+        "flex flex-col justify-between items-center h-screen bg-gray-50 px-2 w-fit",
       )}>
       <div className="flex flex-col items-start space-y-4 w-full">
         <div className="py-4 flex">
@@ -142,10 +142,8 @@ const SideNav = ({
           </div>
         </div>
       </div>
-      <div className="flex justify-center items-center font-bold w-full pb-4">
-        <div className="pb-4" data-testid="icon">
-          {icon}
-        </div>
+      <div className="flex justify-center items-center font-bold w-full pb-8">
+        <div data-testid="icon">{icon}</div>
         {isOpen && (
           <button
             className="text-center ml-2"

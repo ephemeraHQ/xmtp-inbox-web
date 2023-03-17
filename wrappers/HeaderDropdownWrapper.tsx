@@ -25,7 +25,7 @@ export const HeaderDropdownWrapper = () => {
         setRecipientInputMode(RecipientInputMode.InvalidEntry);
         setConversationId();
         setRecipientEnteredValue("");
-        setStartedFirstMessage();
+        setStartedFirstMessage(true);
       }}
       disabled
     />
