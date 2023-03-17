@@ -109,7 +109,7 @@ const SideNav = ({
   return (
     <div
       className={classNames(
-        "flex flex-col justify-between items-center h-screen bg-gray-50 px-2 w-fit",
+        "flex flex-col justify-between items-center h-full bg-gray-50 px-2 w-fit",
       )}>
       <div className="flex flex-col items-start space-y-4 w-full">
         <div className="py-4 flex">

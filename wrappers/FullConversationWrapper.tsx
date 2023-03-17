@@ -1,12 +1,11 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { DateDivider } from "../component-library/components/DateDivider/DateDivider";
 import { FullConversation } from "../component-library/components/FullConversation/FullConversation";
-import { FullMessage } from "../component-library/components/FullMessage/FullMessage";
-import { isValidLongWalletAddress, shortAddress } from "../helpers";
 import useGetMessages from "../hooks/useGetMessages";
 import useGetRecipientInputMode from "../hooks/useGetRecipientInputMode";
 import { useXmtpStore } from "../store/xmtp";
+import { FullMessageWrapper } from "./FullMessageWrapper.";
 
 export const FullConversationWrapper = () => {
   let lastMessageDate: Date;
@@ -15,7 +14,6 @@ export const FullConversationWrapper = () => {
   const [endTime, setEndTime] = useState<Map<string, Date>>(new Map());
 
   // XMTP State
-  const client = useXmtpStore((state) => state.client);
   const loadingConversations = useXmtpStore(
     (state) => state.loadingConversations,
   );
@@ -47,16 +45,19 @@ export const FullConversationWrapper = () => {
     }
   }, [conversationId, hasMore, messages, endTime]);
 
+  useEffect(() => {
+    fetchNextMessages();
+  }, [hasMore]);
+
   return (
     <InfiniteScroll
-      height={"83vh"}
-      className="flex flex-col-reverse overflow-y-auto pl-4"
+      className="flex flex-col flex-col-reverse"
       dataLength={messages.length}
       next={fetchNextMessages}
       endMessage={!messages?.length}
       hasMore={hasMore}
       inverse
-      loader={false}>
+      loader={true}>
       <FullConversation
         isLoading={loadingConversations}
         messages={messages?.map((msg, index) => {
@@ -65,18 +66,12 @@ export const FullConversationWrapper = () => {
             : false;
           const messageDiv = (
             <div key={`${msg.id}_${index}`}>
-              <FullMessage
-                text={msg.content}
-                key={`${msg.id}_${index}`}
-                from={{
-                  displayAddress: isValidLongWalletAddress(msg.senderAddress)
-                    ? shortAddress(msg.senderAddress)
-                    : msg.senderAddress,
-                  isSelf: client?.address === msg.senderAddress,
-                }}
-                datetime={msg.sent}
-              />
-              {dateHasChanged ? <DateDivider date={lastMessageDate} /> : null}
+              {index === messages.length - 1 ? (
+                <DateDivider date={msg.sent} />
+              ) : dateHasChanged ? (
+                <DateDivider date={lastMessageDate} />
+              ) : null}
+              <FullMessageWrapper msg={msg} idx={index} />
             </div>
           );
           lastMessageDate = msg.sent;

@@ -18,7 +18,7 @@ export const LearnMore = ({
   version,
   setStartedFirstMessage,
 }: LearnMoreProps) => (
-  <div className="flex flex-col justify-center items-center max-w-xl p-4 md:h-screen m-0 m-auto">
+  <div className="flex flex-col justify-center items-center max-w-xl p-4 md:h-full m-0 m-auto">
     <div>
       <h1 className="text-4xl font-bold my-4" data-testId="learn-more-header">
         Learn more about the XMTP Universe

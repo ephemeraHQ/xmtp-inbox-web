@@ -58,10 +58,10 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   };
 
   return (
-    <div className="bg-white w-screen md:h-screen flex flex-col md:flex-row">
-      <div className="flex md:w-1/2">
+    <div className="bg-white w-full h-screen flex flex-col md:flex-row">
+      <div className="flex md:w-1/3 md:min-w-fit h-screen md:h-full">
         <SideNavWrapper />
-        <div className="w-full flex flex-col h-screen overflow-auto">
+        <div className="flex flex-col h-screen md:h-full w-full overflow-auto">
           {!loadingConversations && <HeaderDropdownWrapper />}
           <ConversationList
             hasRecipientEnteredValue={!!recipientEnteredValue}
@@ -82,7 +82,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
           />
         </div>
       </div>
-      <div className="flex w-full flex-col h-screen">
+      <div className="flex w-full overflow-visible md:overflow-hidden flex-col h-screen md:h-full ">
         {!conversations.size &&
         !loadingConversations &&
         !startedFirstMessage ? (
@@ -93,7 +93,10 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
         ) : (
           <>
             <AddressInputWrapper />
-            <div className="h-[calc(100vh-8rem)] flex flex-col">
+            <div
+              id="scrollableDiv"
+              tabIndex={0}
+              className="h-screen md:h-full w-full flex flex-col flex-col-reverse overflow-y-auto">
               <FullConversationWrapper />
             </div>
             <MessageInputWrapper />

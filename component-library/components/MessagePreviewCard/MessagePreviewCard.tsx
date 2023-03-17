@@ -56,8 +56,8 @@ export const MessagePreviewCard = ({
   return (
     <div
       className={classNames(
-        "flex justify-between items-start border border-t-0 border-gray-300 p-4 h-min cursor-pointer",
-        isSelected ? "bg-gray-200" : "bg-white",
+        "flex justify-between items-start border border-t-0 border-gray-200 p-4 h-min cursor-pointer",
+        isSelected ? "bg-gray-200" : "bg-gray-100",
       )}
       onClick={onClick}
       onKeyUp={(e) => {

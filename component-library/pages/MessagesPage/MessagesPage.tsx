@@ -48,12 +48,14 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
 
   if (type === "empty") {
     return (
-      <div className="w-screen md:h-screen flex flex-col md:flex-row">
-        <div className="flex md:w-1/2">
+      <div className="bg-white w-full h-screen flex flex-col md:flex-row">
+        <div className="flex md:w-1/3 md:min-w-fit h-screen md:h-full">
           <SideNav />
-          <ConversationList />
+          <div className="flex flex-col h-screen md:h-full w-full overflow-auto">
+            <ConversationList />
+          </div>
         </div>
-        <div className="flex flex-col w-full h-full">
+        <div className="flex w-full overflow-visible md:overflow-hidden flex-col h-screen md:h-full ">
           <LearnMore version="7" setStartedFirstMessage={() => {}} />
         </div>
       </div>
@@ -61,15 +63,15 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
   }
   if (type === "compose_new") {
     return (
-      <div className="w-screen md:h-screen flex flex-col md:flex-row">
-        <div className="flex md:w-1/2">
+      <div className="bg-white w-full h-screen flex flex-col md:flex-row">
+        <div className="flex md:w-1/3 md:min-w-fit h-screen md:h-full">
           <SideNav />
-          <div className="w-full flex flex-col h-screen overflow-auto">
+          <div className="flex flex-col h-screen md:h-full w-full overflow-auto">
             <HeaderDropdown />
             <ConversationList messages={[<MessagePreviewCard key={0} />]} />
           </div>
         </div>
-        <div className="flex flex-col w-full h-screen">
+        <div className="flex w-full overflow-visible md:overflow-hidden flex-col h-screen md:h-full ">
           <AddressInput />
           <FullConversation messages={[]} />
           <MessageInput />
@@ -79,15 +81,15 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
   }
   if (type === "finding_ens_no_messages") {
     return (
-      <div className="w-screen md:h-screen flex flex-col md:flex-row">
-        <div className="flex md:w-1/2">
+      <div className="bg-white w-full h-screen flex flex-col md:flex-row">
+        <div className="flex md:w-1/3 md:min-w-fit h-screen md:h-full">
           <SideNav />
-          <div className="w-full flex flex-col h-screen overflow-auto">
+          <div className="flex flex-col h-screen md:h-full w-full overflow-auto">
             <HeaderDropdown />
             <ConversationList messages={[<MessagePreviewCard key={0} />]} />
           </div>
         </div>
-        <div className="flex flex-col w-full h-screen">
+        <div className="flex w-full overflow-visible md:overflow-hidden flex-col h-screen md:h-full ">
           <AddressInput subtext="Finding ENS..." />
           <FullConversation messages={[]} />
           <MessageInput />
@@ -97,10 +99,10 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
   }
   if (type === "resolved_ens_no_messages") {
     return (
-      <div className="w-screen md:h-screen flex flex-col md:flex-row">
-        <div className="flex md:w-1/2">
+      <div className="bg-white w-full h-screen flex flex-col md:flex-row">
+        <div className="flex md:w-1/3 md:min-w-fit h-screen md:h-full">
           <SideNav />
-          <div className="w-full flex flex-col h-screen overflow-auto">
+          <div className="flex flex-col h-screen md:h-full w-full overflow-auto">
             <HeaderDropdown />
             <ConversationList
               messages={[
@@ -109,7 +111,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             />
           </div>
         </div>
-        <div className="flex flex-col w-full h-screen">
+        <div className="flex w-full overflow-visible md:overflow-hidden flex-col h-screen md:h-full ">
           <AddressInput
             resolvedAddress={{
               displayAddress: "hi.xmtp.eth",
@@ -125,10 +127,10 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
 
   if (type === "finding_ens_with_messages") {
     return (
-      <div className="w-screen md:h-screen flex flex-col md:flex-row">
-        <div className="h-screen flex md:w-1/2 md:min-w-fit overflow-y-auto">
+      <div className="bg-white w-full h-screen flex flex-col md:flex-row">
+        <div className="flex md:w-1/3 md:min-w-fit h-screen md:h-full">
           <SideNav />
-          <div className="w-full flex flex-col h-screen overflow-auto">
+          <div className="flex flex-col h-screen md:h-full w-full overflow-auto">
             <HeaderDropdown />
             <ConversationList
               messages={[
@@ -144,7 +146,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             />
           </div>
         </div>
-        <div className="h-screen flex flex-col w-full">
+        <div className="flex w-full overflow-visible md:overflow-hidden flex-col h-screen md:h-full ">
           <AddressInput subtext="Finding ENS..." />
           <FullConversation />
           <MessageInput />
@@ -155,10 +157,10 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
 
   if (type === "resolved_ens_with_messages") {
     return (
-      <div className="w-screen md:h-screen flex flex-col md:flex-row">
-        <div className="flex md:w-1/2 md:min-w-fit overflow-y-auto">
+      <div className="bg-white w-full h-screen flex flex-col md:flex-row">
+        <div className="flex md:w-1/3 md:min-w-fit h-screen md:h-full">
           <SideNav />
-          <div className="w-full flex flex-col h-screen overflow-auto">
+          <div className="flex flex-col h-screen md:h-full w-full overflow-auto">
             <HeaderDropdown />
             <ConversationList
               messages={[
@@ -177,7 +179,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             />
           </div>
         </div>
-        <div className="flex flex-col w-full h-screen">
+        <div className="flex w-full overflow-visible md:overflow-hidden flex-col h-screen md:h-full ">
           <AddressInput
             resolvedAddress={{
               displayAddress: "hi.xmtp.eth",
@@ -193,15 +195,10 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
 
   if (type === "left_nav") {
     return (
-      <div className="w-screen md:h-screen flex flex-col md:flex-row">
-        <div className="flex md:w-1/2 md:min-w-fit overflow-y-auto">
-          <SideNav
-            displayAddress="hi.xmtp.eth"
-            walletAddress={shortAddress(
-              "0x194c31cAe1418D5256E8c58e0d08Aee1046C6Ed0",
-            )}
-          />
-          <div className="w-full flex flex-col h-screen overflow-auto">
+      <div className="bg-white w-full h-screen flex flex-col md:flex-row">
+        <div className="flex md:w-1/3 md:min-w-fit h-screen md:h-full">
+          <SideNav displayAddress="hi.xmtp.eth" />
+          <div className="flex flex-col h-screen md:h-full w-full overflow-auto">
             <HeaderDropdown />
             <ConversationList
               messages={[
@@ -210,7 +207,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             />
           </div>
         </div>
-        <div className="flex flex-col w-full h-screen">
+        <div className="flex w-full overflow-visible md:overflow-hidden flex-col h-screen md:h-full ">
           <AddressInput
             resolvedAddress={{
               displayAddress: "hi.xmtp.eth",
@@ -226,10 +223,10 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
 
   if (type === "short_history") {
     return (
-      <div className="w-screen md:h-screen flex flex-col md:flex-row">
-        <div className="flex md:w-1/2 md:min-w-fit overflow-y-auto">
+      <div className="bg-white w-full h-screen flex flex-col md:flex-row">
+        <div className="flex md:w-1/3 md:min-w-fit h-screen md:h-full">
           <SideNav />
-          <div className="w-full flex flex-col h-screen overflow-auto">
+          <div className="flex flex-col h-screen md:h-full w-full overflow-auto">
             <HeaderDropdown />
             <ConversationList
               messages={Array(20).fill(
@@ -242,17 +239,19 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             />
           </div>
         </div>
-        <div className="flex flex-col w-full h-screen">
+        <div className="flex w-full overflow-visible md:overflow-hidden flex-col h-screen md:h-full ">
           <AddressInput
             resolvedAddress={{
               displayAddress: "hi.xmtp.eth",
               walletAddress: "0x194c31cAe1418D5256E8c58e0d08Aee1046C6Ed0",
             }}
           />
-          <div className="h-[calc(100vh-8rem)] flex flex-col">
+          <div
+            id="scrollableDiv"
+            tabIndex={0}
+            className="h-screen md:h-full w-full flex flex-col flex-col-reverse overflow-y-auto">
             <InfiniteScroll
-              height={"83vh"}
-              className="flex flex-col-reverse overflow-y-auto"
+              className="flex flex-col flex-col-reverse"
               dataLength={40}
               next={() => {}}
               endMessage={!40}
@@ -269,10 +268,10 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
 
   if (type === "long_history") {
     return (
-      <div className="w-screen md:h-screen flex flex-col md:flex-row">
-        <div className="flex md:w-1/2 md:min-w-fit">
+      <div className="bg-white w-full h-screen flex flex-col md:flex-row">
+        <div className="flex md:w-1/3 md:min-w-fit h-screen md:h-full">
           <SideNav />
-          <div className="w-full flex flex-col h-full overflow-auto">
+          <div className="flex flex-col h-screen md:h-full w-full overflow-auto">
             <HeaderDropdown />
             <ConversationList
               messages={Array(20).fill(
@@ -285,17 +284,19 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             />
           </div>
         </div>
-        <div className="flex flex-col w-full h-full">
+        <div className="flex w-full overflow-visible md:overflow-hidden flex-col h-screen md:h-full ">
           <AddressInput
             resolvedAddress={{
               displayAddress: "hi.xmtp.eth",
               walletAddress: "0x194c31cAe1418D5256E8c58e0d08Aee1046C6Ed0",
             }}
           />
-          <div className="h-[calc(100vh-8rem)] flex flex-col">
+          <div
+            id="scrollableDiv"
+            tabIndex={0}
+            className="h-screen md:h-full w-full flex flex-col flex-col-reverse overflow-y-auto">
             <InfiniteScroll
-              height={"80vh"}
-              className="flex flex-col-reverse overflow-y-auto"
+              className="flex flex-col flex-col-reverse"
               dataLength={20}
               next={() => {}}
               endMessage={!20}
@@ -312,10 +313,10 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
 
   if (type === "convo_loading") {
     return (
-      <div className="w-screen md:h-screen flex flex-col md:flex-row">
-        <div className="flex md:w-1/2 md:min-w-fit overflow-y-auto">
+      <div className="bg-white w-full h-screen flex flex-col md:flex-row">
+        <div className="flex md:w-1/3 md:min-w-fit h-screen md:h-full">
           <SideNav />
-          <div className="w-full flex flex-col h-screen overflow-auto">
+          <div className="flex flex-col h-screen md:h-full w-full overflow-auto">
             <HeaderDropdown />
             <ConversationList
               messages={Array(20).fill(
@@ -328,14 +329,27 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             />
           </div>
         </div>
-        <div className="flex flex-col w-full h-screen">
+        <div className="flex w-full overflow-visible md:overflow-hidden flex-col h-screen md:h-full ">
           <AddressInput
             resolvedAddress={{
               displayAddress: "hi.xmtp.eth",
               walletAddress: "0x194c31cAe1418D5256E8c58e0d08Aee1046C6Ed0",
             }}
           />
-          <FullConversation isLoading />
+          <div
+            id="scrollableDiv"
+            tabIndex={0}
+            className="h-screen md:h-full w-full flex flex-col flex-col-reverse overflow-y-auto">
+            <InfiniteScroll
+              className="flex flex-col flex-col-reverse"
+              dataLength={20}
+              next={() => {}}
+              endMessage={!20}
+              hasMore={false}
+              loader={false}>
+              <FullConversation isLoading={true} />
+            </InfiniteScroll>
+          </div>
           <MessageInput isDisabled />
         </div>
       </div>
@@ -344,13 +358,28 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
 
   if (type === "page_loading") {
     return (
-      <div className="w-screen md:h-screen flex flex-col md:flex-row">
-        <div className="flex md:w-1/2 md:min-w-fit overflow-y-auto">
+      <div className="bg-white w-full h-screen flex flex-col md:flex-row">
+        <div className="flex md:w-1/3 md:min-w-fit h-screen md:h-full">
           <SideNav />
-          <ConversationList isLoading />
+          <div className="flex flex-col h-screen md:h-full w-full overflow-auto">
+            <ConversationList isLoading />
+          </div>
         </div>
-        <div className="hidden md:flex flex-col w-full h-screen">
-          <FullConversation isLoading />
+        <div className="flex w-full overflow-visible md:overflow-hidden flex-col h-screen md:h-full ">
+          <div
+            id="scrollableDiv"
+            tabIndex={0}
+            className="h-screen md:h-full w-full flex flex-col flex-col-reverse overflow-y-auto">
+            <InfiniteScroll
+              className="flex flex-col flex-col-reverse"
+              dataLength={20}
+              next={() => {}}
+              endMessage={!20}
+              hasMore={false}
+              loader={false}>
+              <FullConversation isLoading={true} />
+            </InfiniteScroll>
+          </div>
         </div>
       </div>
     );
@@ -358,11 +387,11 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
 
   if (type === "profile_dropdown") {
     return (
-      <div className="flex w-screen md:h-screen flex-col md:flex-row">
-        <div className="min-w-fit flex overflow-y-auto">
+      <div className="bg-white w-full h-screen flex flex-col md:flex-row">
+        <div className="flex md:w-1/3 md:min-w-fit h-screen md:h-full">
           <SideNav />
           <ProfileDropdown isOpen addressCards={[]} />
-          <div className="flex flex-col h-screen overflow-auto">
+          <div className="flex flex-col h-screen md:h-full w-full overflow-auto">
             <HeaderDropdown />
             <ConversationList
               messages={Array(20).fill(
@@ -375,7 +404,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             />
           </div>
         </div>
-        <div className="flex flex-col w-full h-screen">
+        <div className="flex w-full overflow-visible md:overflow-hidden flex-col h-screen md:h-full ">
           <AddressInput
             resolvedAddress={{
               displayAddress: "hi.xmtp.eth",
@@ -391,10 +420,10 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
 
   if (type === "expanded_tooltip") {
     return (
-      <div className="flex w-screen md:h-screen flex-col md:flex-row">
-        <div className="min-w-fit flex overflow-y-auto">
+      <div className="bg-white w-full h-screen flex flex-col md:flex-row">
+        <div className="flex md:w-1/3 md:min-w-fit h-screen md:h-full">
           <SideNav />
-          <div className="flex flex-col h-screen overflow-auto">
+          <div className="flex flex-col h-screen md:h-full w-full overflow-auto">
             <HeaderDropdown />
             <ConversationList
               messages={Array(20).fill(
@@ -407,7 +436,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             />
           </div>
         </div>
-        <div className="flex flex-col w-full h-screen">
+        <div className="flex w-full overflow-visible md:overflow-hidden flex-col h-screen md:h-full ">
           <AddressInput
             resolvedAddress={{
               displayAddress: "hi.xmtp.eth",
