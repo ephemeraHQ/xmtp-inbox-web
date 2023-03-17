@@ -53,6 +53,7 @@ export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
           "max-h-300",
           "mx-4 my-2",
           "h-10",
+          "bg-white",
           borderStyles,
         )}>
         <textarea

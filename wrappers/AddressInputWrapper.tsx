@@ -47,9 +47,10 @@ export const AddressInputWrapper = () => {
       }
       resolvedAddress={{
         displayAddress:
-          ensName ?? size[0] < 700
+          ensName ??
+          (size[0] < 700
             ? shortAddress(recipientWalletAddress)
-            : recipientWalletAddress,
+            : recipientWalletAddress),
         walletAddress: ensName ? recipientWalletAddress : "",
       }}
       onChange={setRecipientEnteredValue}
