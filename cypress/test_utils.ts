@@ -45,9 +45,9 @@ const sendMessages = (
     // Enters message
     checkElement("message-input").type(message);
     checkElement("message-input-submit").click();
-    cy.get(`[data-testid=conversations-list-panel]`, { timeout: TIMEOUT })
-      .children()
-      .should("have.length", 1);
+    cy.get(`[data-testid=conversations-list-panel]`, {
+      timeout: TIMEOUT,
+    }).should("have.length", 1);
   }
 
   if (differentMessageText) {
@@ -97,8 +97,8 @@ export const sendAndEnterMessage = (
   if (checkDifferentMessages) {
     const differentMessage = "differentMessage";
     // Send additional different message, check that different message was returned in correct order
-    checkMostRecentMessageOutput(numberOfTimes, differentMessage);
+    checkMostRecentMessageOutput(numberOfTimes + 1, differentMessage);
   } else {
-    checkMessageOutput(numberOfTimes, message);
+    checkMessageOutput(numberOfTimes + 1, message);
   }
 };
