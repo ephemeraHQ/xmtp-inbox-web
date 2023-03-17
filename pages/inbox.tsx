@@ -123,10 +123,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
                 ) : null}
                 <AddressInputWrapper />
               </div>
-              <div
-                id="scrollableDiv"
-                tabIndex={0}
-                className="h-screen md:h-full w-full flex flex-col flex-col-reverse overflow-y-auto">
+              <div className="h-[calc(100vh-7rem)] flex flex-col">
                 <FullConversationWrapper />
               </div>
               <MessageInputWrapper />
