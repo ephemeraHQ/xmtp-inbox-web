@@ -26,7 +26,7 @@ export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
     textAreaRef?.current?.scrollHeight <= 32
       ? "max-h-8"
       : "max-h-40"
-  } min-h-8 outline-none border-none focus:ring-0 resize-none mr-0 mx-4 p-1 w-full text-md text-gray-900`;
+  } min-h-8 outline-none border-none focus:ring-0 resize-none mx-4 p-1 w-full text-md text-gray-900`;
 
   useLayoutEffect(() => {
     const MIN_TEXTAREA_HEIGHT = 32;
@@ -49,11 +49,14 @@ export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
       <div
         className={classNames(
           "flex",
-          value ? "items-end" : "items-center",
+          "items-center",
           "max-h-300",
           "mx-4 my-2",
-          "h-10",
           "bg-white",
+          "relative",
+          "no-scrollbar",
+          "z-10",
+          "p-1",
           borderStyles,
         )}>
         <textarea
@@ -76,7 +79,7 @@ export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
           value={value}
           disabled={isDisabled}
         />
-        <div className="flex items-center p-1">
+        <div className="flex items-end absolute bottom-1.5 right-1">
           <IconButton
             testId="message-input-submit"
             variant="secondary"
