@@ -13,7 +13,7 @@ export const checkLink = (testId: string, link: string) =>
   cy.get(`[data-testid=${testId}]`).should("have.attr", "href", link);
 
 export const disconnectWallet = () => {
-  checkElement("collapse-icon").click();
+  checkElement("icon").click();
   checkElement("disconnect-wallet-cta").click();
 };
 

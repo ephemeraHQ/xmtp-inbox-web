@@ -173,6 +173,7 @@ const SideNav = ({
               label="Disconnect Wallet"
               variant="secondary"
               size="small"
+              testId="disconnect-wallet-cta"
               icon={<DisconnectIcon />}
             />
           </div>
