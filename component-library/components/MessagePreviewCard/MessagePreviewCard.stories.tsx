@@ -21,6 +21,7 @@ export const MessagePreviewMessageDefault = Template.bind({});
 MessagePreviewMessageDefault.args = {
   text: "Hello there",
   displayAddress: "hi.xmtp.eth",
+  datetime: new Date(),
 };
 
 export const MessagePreviewMessageLoading = Template.bind({});

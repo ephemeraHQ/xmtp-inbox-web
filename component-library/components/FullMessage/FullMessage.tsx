@@ -35,7 +35,7 @@ export const FullMessage = ({
 }: FullMessageProps) => {
   const isOutgoingMessage = from.isSelf;
 
-  const incomingMessageBackgroundStyles = "bg-gray-200 rounded-br-lg pl-4";
+  const incomingMessageBackgroundStyles = "bg-gray-200 rounded-br-lg pl-2";
   const outgoingMessageBackgroundStyles =
     "bg-indigo-600 text-white rounded-bl-lg";
 
@@ -63,7 +63,7 @@ export const FullMessage = ({
             <span className="font-bold">{`${from.displayAddress}`}</span>
           )}
           <div
-            className={`whitespace-pre-wrap p-2 px-3 rounded-tl-xl rounded-tr-xl my-1 break-words max-w-full ${
+            className={`whitespace-pre-wrap p-2 px-3 rounded-tl-xl rounded-tr-xl my-1 max-w-full break-words ${
               isOutgoingMessage
                 ? outgoingMessageBackgroundStyles
                 : incomingMessageBackgroundStyles

@@ -61,7 +61,7 @@ export const AddressInput = ({
 }: AddressInputProps) => {
   const subtextColor = isError ? "text-red-600" : "text-gray-400";
   return (
-    <div className="flex sm:px-2 md:px-4 py-3 border-b border-gray-100 border-l-0 z-10 max-h-sm w-full">
+    <div className="flex px-4 py-3 border-b border-gray-100 border-l-0 z-10 max-h-sm w-full">
       <form
         className="flex w-full items-center"
         onSubmit={(e) => e.preventDefault()}>
@@ -70,9 +70,9 @@ export const AddressInput = ({
           {isLoading ? (
             <ShortCopySkeletonLoader lines={1} />
           ) : resolvedAddress?.displayAddress ? (
-            <div className="flex flex-col text-md">
+            <div className="flex flex-col text-md py-1">
               <span
-                className="font-bold h-4 m-2 ml-0"
+                className="font-bold h-4 mb-2 ml-0"
                 data-testid="recipient-wallet-address">
                 {resolvedAddress.displayAddress}
               </span>
@@ -101,7 +101,7 @@ export const AddressInput = ({
             />
           )}
           <p
-            className={classNames("font-mono", "text-sm", "ml-1", subtextColor)}
+            className={classNames("font-mono", "text-sm", subtextColor)}
             data-testid="message-to-subtext">
             {subtext}
           </p>
