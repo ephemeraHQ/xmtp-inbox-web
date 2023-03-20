@@ -36,6 +36,10 @@ interface MessagePreviewCard {
    * Is conversation selected?
    */
   isSelected?: boolean;
+  /**
+   * What is the app this conversation started on?
+   */
+  conversationDomain?: string;
   // To-do: Add error views once we have the designs
 }
 
@@ -47,6 +51,7 @@ export const MessagePreviewCard = ({
   isLoading = false,
   onClick,
   isSelected,
+  conversationDomain,
 }: MessagePreviewCard) => {
   const isFirstMessage = !text && !displayAddress;
 
@@ -56,8 +61,8 @@ export const MessagePreviewCard = ({
   return (
     <div
       className={classNames(
-        "flex justify-between items-start border border-t-0 border-gray-300 p-4 h-min cursor-pointer",
-        isSelected ? "bg-gray-200" : "bg-white",
+        "flex justify-between items-start border border-t-0 border-gray-200 outline-blue outline-b-0 p-4 h-min cursor-pointer",
+        isSelected ? "bg-gray-200" : "bg-gray-100",
       )}
       onClick={onClick}
       onKeyUp={(e) => {
@@ -75,6 +80,11 @@ export const MessagePreviewCard = ({
         />
       </div>
       <div className="flex flex-col items-start w-3/4">
+        {conversationDomain && (
+          <div className="text-sm mb-1 text-white px-2 rounded-lg bg-indigo-600">
+            {conversationDomain}
+          </div>
+        )}
         {isLoading ? (
           <ShortCopySkeletonLoader />
         ) : (
@@ -85,7 +95,7 @@ export const MessagePreviewCard = ({
         {isLoading ? (
           <ShortCopySkeletonLoader />
         ) : (
-          <span className="text-md text-gray-600 line-clamp-1 max-w-[90%] break-all">
+          <span className="text-md text-gray-600 line-clamp-1 max-w-[90%] break-all mt-1">
             {text ?? "New message"}
           </span>
         )}
@@ -100,6 +110,8 @@ export const MessagePreviewCard = ({
             "w-1/4",
             "text-right",
             "ml-4",
+            "h-full",
+            "p-1",
           )}>
           {datetime && `${formatDistanceToNow(datetime)} ago`}
         </div>

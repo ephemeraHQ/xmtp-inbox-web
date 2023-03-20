@@ -1,10 +1,15 @@
 import React from "react";
 import { useEnsAvatar } from "wagmi";
 import { AddressInput } from "../component-library/components/AddressInput/AddressInput";
-import { getRecipientInputSubtext, RecipientInputMode } from "../helpers";
+import {
+  getRecipientInputSubtext,
+  RecipientInputMode,
+  shortAddress,
+} from "../helpers";
 import useGetRecipientInputMode from "../hooks/useGetRecipientInputMode";
 import useWalletAddress from "../hooks/useWalletAddress";
 import { address } from "../pages/inbox";
+import useWindowSize from "../hooks/useWindowSize";
 import { useXmtpStore } from "../store/xmtp";
 
 export const AddressInputWrapper = () => {
@@ -30,6 +35,8 @@ export const AddressInputWrapper = () => {
     address: recipientWalletAddress as address,
   });
 
+  const size = useWindowSize();
+
   return (
     <AddressInput
       isError={!isValid}
@@ -39,7 +46,11 @@ export const AddressInputWrapper = () => {
           : ""
       }
       resolvedAddress={{
-        displayAddress: ensName ?? recipientWalletAddress,
+        displayAddress:
+          ensName ??
+          (size[0] < 700
+            ? shortAddress(recipientWalletAddress)
+            : recipientWalletAddress),
         walletAddress: ensName ? recipientWalletAddress : "",
       }}
       onChange={setRecipientEnteredValue}

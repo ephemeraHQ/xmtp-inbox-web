@@ -1,3 +1,5 @@
+import { Dialog, Transition } from "@headlessui/react";
+import React, { Fragment } from "react";
 import { ChatAlt2Icon, ChevronDoubleRightIcon } from "@heroicons/react/solid";
 import {
   ChevronDownIcon,
@@ -8,6 +10,8 @@ import { classNames, shortAddress } from "../../../helpers";
 import { XmtpIcon } from "../Icons/XmtpIcon";
 import { useState } from "react";
 import { Avatar } from "../Avatar/Avatar";
+import { GhostButton } from "../GhostButton/GhostButton";
+import { DisconnectIcon } from "../Icons/DisconnectIcon";
 
 interface SideNav {
   /**
@@ -41,9 +45,16 @@ const SideNav = ({
 }: SideNav) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   const onSideNavBtnClick = (key: string) => {
     if (key === "Collapse") setIsOpen(!isOpen);
   };
+
+  const onXmtpIconClick = () => {
+    setIsDialogOpen(!isDialogOpen);
+  };
+
   const icons = [
     <ChatAlt2Icon
       key="Messages"
@@ -142,19 +153,32 @@ const SideNav = ({
           </div>
         </div>
       </div>
-      <div className="flex justify-center items-center font-bold w-full pb-4">
-        <div className="pb-4" data-testid="icon">
+      <div className="flex justify-center items-center font-bold w-full pb-8">
+        <div
+          onClick={onXmtpIconClick}
+          className="cursor-pointer"
+          data-testid="icon">
           {icon}
         </div>
-        {isOpen && (
-          <button
-            className="text-center ml-2"
-            data-testid="disconnect-wallet-cta"
-            onClick={onDisconnect}>
-            Disconnect Wallet
-          </button>
-        )}
       </div>
+      <Transition.Root show={isDialogOpen} as={Fragment}>
+        <Dialog
+          as="div"
+          className="overflow-y-auto z-10"
+          onClose={onXmtpIconClick}>
+          <div className="bg-white w-fit rounded-lg absolute bottom-16 left-12">
+            <hr className="m-2" />
+            <GhostButton
+              onClick={onDisconnect}
+              label="Disconnect Wallet"
+              variant="secondary"
+              size="small"
+              testId="disconnect-wallet-cta"
+              icon={<DisconnectIcon />}
+            />
+          </div>
+        </Dialog>
+      </Transition.Root>
     </div>
   );
 };
