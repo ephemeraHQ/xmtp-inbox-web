@@ -90,10 +90,10 @@ describe(
         "Settings",
         "Collapse",
         "wallet-address",
-        "disconnect-wallet-cta",
       ];
       elements.forEach((element) => checkElement(element));
 
+      cy.get(`[data-testid="icon"]`).click();
       cy.get(`[data-testid="disconnect-wallet-cta"]`).click();
       checkElement("no-wallet-connected-header");
     });

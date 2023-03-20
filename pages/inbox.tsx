@@ -32,6 +32,8 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
     (state) => state.setRecipientWalletAddress,
   );
 
+  const setConversationId = useXmtpStore((state) => state.setConversationId);
+
   const size = useWindowSize();
 
   const previewMessages = useXmtpStore((state) => state.previewMessages);
@@ -117,6 +119,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
                   onClick={() => {
                     setRecipientWalletAddress("");
                     setStartedFirstMessage(false);
+                    setConversationId("");
                   }}
                   width={32}
                 />

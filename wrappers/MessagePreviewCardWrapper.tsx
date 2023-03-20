@@ -47,6 +47,8 @@ export const MessagePreviewCardWrapper = ({
     }
   };
 
+  const conversationDomain = convo?.context?.conversationId.split("/")[0] ?? "";
+
   return (
     <MessagePreviewCard
       isSelected={isSelected}
@@ -63,6 +65,7 @@ export const MessagePreviewCardWrapper = ({
       }}
       isLoading={convoAvatarLoading}
       avatarUrl={convoAvatarUrl || ""}
+      conversationDomain={conversationDomain}
     />
   );
 };
