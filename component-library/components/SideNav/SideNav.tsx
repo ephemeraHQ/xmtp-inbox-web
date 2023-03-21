@@ -10,6 +10,7 @@ import {
   CogIcon,
   SparklesIcon,
 } from "@heroicons/react/outline";
+import { CheckCircleIcon } from "@heroicons/react/solid";
 import { classNames, shortAddress } from "../../../helpers";
 import { XmtpIcon } from "../Icons/XmtpIcon";
 import { useState } from "react";
@@ -160,6 +161,8 @@ const SideNav = ({
       <div className="flex justify-center items-center font-bold w-full pb-8">
         <div
           onClick={onXmtpIconClick}
+          onKeyDown={onXmtpIconClick}
+          tabIndex={0}
           className="cursor-pointer"
           data-testid="icon">
           {icon}
@@ -171,9 +174,9 @@ const SideNav = ({
           className="overflow-y-auto z-10"
           onClose={onXmtpIconClick}>
           <div className="bg-white w-fit rounded-lg absolute bottom-16 left-12">
-            <div className="flex justify-between font-bold text-sm px-2 pt-2">
-              English (US)
-              <CheckCircleIcon className="text-g-300" width={16} />
+            <div className="flex p-2 justify-between">
+              <span className="font-bold text-sm">English (US)</span>
+              <CheckCircleIcon width="16" fill="limegreen" className="ml-4" />
             </div>
             <hr className="m-2" />
             <GhostButton

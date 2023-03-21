@@ -107,7 +107,7 @@ export const InfoCard = ({
               {header}
             </div>
             <p
-              className="text-gray-400 text-md"
+              className="text-gray-500 text-md"
               data-testid={`${testId}-subheader`}>
               {subtext}
             </p>
