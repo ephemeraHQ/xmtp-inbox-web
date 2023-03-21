@@ -10,7 +10,6 @@ import {
   CogIcon,
   SparklesIcon,
 } from "@heroicons/react/outline";
-import { CheckCircleIcon } from "@heroicons/react/solid";
 import { classNames, shortAddress } from "../../../helpers";
 import { XmtpIcon } from "../Icons/XmtpIcon";
 import { useState } from "react";
