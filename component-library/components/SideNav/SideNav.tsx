@@ -13,6 +13,7 @@ import { useState } from "react";
 import { Avatar } from "../Avatar/Avatar";
 import { GhostButton } from "../GhostButton/GhostButton";
 import { DisconnectIcon } from "../Icons/DisconnectIcon";
+import { useTranslation } from "react-i18next";
 
 interface SideNav {
   /**
@@ -45,11 +46,12 @@ const SideNav = ({
   onDisconnect,
 }: SideNav) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const onSideNavBtnClick = (key: string) => {
-    if (key === "Collapse") setIsOpen(!isOpen);
+    if (key === t("menu.collapse_header")) setIsOpen(!isOpen);
   };
 
   const onXmtpIconClick = () => {
@@ -58,25 +60,25 @@ const SideNav = ({
 
   const icons = [
     <ChatAlt2Icon
-      key="Messages"
+      key={t("menu.messages_header")}
       width={24}
       className={isOpen ? "mr-4" : ""}
       data-testid="messages-icon"
     />,
     <SparklesIcon
-      key="Gallery"
+      key={t("menu.gallery_header")}
       width={24}
       className={isOpen ? "mr-4" : ""}
       data-testid="gallery-icon"
     />,
     <CogIcon
-      key="Settings"
+      key={t("menu.settings_header")}
       width={24}
       className={isOpen ? "mr-4" : ""}
       data-testid="settings-icon"
     />,
     <ChevronDoubleRightIcon
-      key="Collapse"
+      key={t("menu.collapse_header")}
       width={24}
       className={isOpen ? "mr-4" : ""}
       data-testid="collapse-icon"
@@ -132,7 +134,7 @@ const SideNav = ({
               </div>
               {isOpen && (
                 <div className="flex items-center">
-                  <div className="flex flex-col px-2 justify-center`">
+                  <div className="flex flex-col px-2 justify-center">
                     <span className="font-bold" data-testid="wallet-address">
                       {shortAddress(displayAddress ?? "")}
                     </span>
@@ -154,7 +156,7 @@ const SideNav = ({
           </div>
         </div>
       </div>
-      <div className="flex justify-center items-center font-bold w-full pb-8">
+      <div className="flex justify-start items-center font-bold w-full pb-8">
         <div
           onClick={onXmtpIconClick}
           onKeyDown={onXmtpIconClick}
@@ -177,7 +179,7 @@ const SideNav = ({
             <hr className="m-2" />
             <GhostButton
               onClick={onDisconnect}
-              label="Disconnect Wallet"
+              label={t("common.disconnect")}
               variant="secondary"
               size="small"
               testId="disconnect-wallet-cta"

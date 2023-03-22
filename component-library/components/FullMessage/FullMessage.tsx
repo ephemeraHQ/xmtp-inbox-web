@@ -2,6 +2,7 @@ import React from "react";
 import { format } from "date-fns";
 import { DateDivider } from "../DateDivider/DateDivider";
 import { classNames } from "../../../helpers";
+import { useTranslation } from "react-i18next";
 
 interface MessageSender {
   displayAddress: string;
@@ -33,6 +34,7 @@ export const FullMessage = ({
   datetime,
   showDateDivider = false,
 }: FullMessageProps) => {
+  const { t } = useTranslation();
   const isOutgoingMessage = from.isSelf;
 
   const incomingMessageBackgroundStyles = "bg-gray-200 rounded-br-lg pl-2";
@@ -58,7 +60,9 @@ export const FullMessage = ({
             "w-1/2",
           )}>
           {isOutgoingMessage ? (
-            <span className="text-indigo-600 font-bold flex justify-end">{`${from.displayAddress} (you)`}</span>
+            <span className="text-indigo-600 font-bold flex justify-end">
+              {t("messages.you", { ADDRESS: from.displayAddress })}
+            </span>
           ) : (
             <span className="font-bold">{`${from.displayAddress}`}</span>
           )}
