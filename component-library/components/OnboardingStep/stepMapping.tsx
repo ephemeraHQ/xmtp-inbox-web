@@ -4,7 +4,7 @@ export const enum ctaStep {
   ENABLE = "ENABLE",
 }
 
-const stepMapping: Record<
+export const stepMapping: Record<
   number,
   {
     default: {
@@ -23,47 +23,41 @@ const stepMapping: Record<
 > = {
   1: {
     default: {
-      header: "Your interoperable web3 inbox",
-      subheader:
-        "You're just a few steps away from secure, wallet-to-wallet messaging",
+      header: "onboarding.intro_header",
+      subheader: "onboarding.intro_subheader",
       cta: ctaStep.CONNECT,
-      subtext: "No private keys will be shared",
+      subtext: "common.private_key_note",
     },
     loading: {
-      header: "Connecting to your wallet...",
-      subheader:
-        "Look for a signature dialog in the wallet you previously selected",
+      header: "onboarding.connect_header",
+      subheader: "onboarding.connect_subheader",
       cta: null,
-      subtext: "No private keys will be shared",
+      subtext: "common.private_key_note",
     },
   },
   2: {
     default: {
-      header: "Create your XMTP identity",
-      subheader:
-        "Now that your wallet is connected, we're going to create your XMTP identity on our network with a wallet signature.",
+      header: "onboarding.create_header",
+      subheader: "onboarding.create_subheader",
       cta: ctaStep.CREATE,
     },
     loading: {
-      header: "Creating your XMTP identity...",
-      subheader:
-        "Look for a confirmation dialog in the wallet you've selected.",
+      header: "onboarding.creating_header",
+      subheader: "onboarding.creating_subheader",
       cta: null,
       subtext: null,
     },
   },
   3: {
     default: {
-      header: "Enable messaging on XMTP",
-      subheader:
-        "You're activated on the XMTP network! Now let's enable your ability to start messaging and you can start messaging wallets right away.",
+      header: "onboarding.enable_header",
+      subheader: "onboarding.enable_subheader",
       cta: ctaStep.ENABLE,
       subtext: null,
     },
     loading: {
-      header: "Almost there! One more signature.",
-      subheader:
-        "Look for a confirmation dialog in the wallet you've selected.",
+      header: "onboarding.enabling_header",
+      subheader: "onboarding.enabling_subheader",
       cta: null,
       subtext: null,
     },

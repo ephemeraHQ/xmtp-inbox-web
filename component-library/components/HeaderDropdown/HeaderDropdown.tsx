@@ -4,6 +4,7 @@ import { CheckCircleIcon, PlusIcon } from "@heroicons/react/solid";
 import React, { Fragment, useState } from "react";
 import { classNames } from "../../../helpers";
 import { IconButton } from "../IconButton/IconButton";
+import { useTranslation } from "react-i18next";
 
 interface HeaderDropdownProps {
   /**
@@ -29,14 +30,18 @@ interface HeaderDropdownProps {
 }
 
 export const HeaderDropdown = ({
-  dropdownOptions = ["All messages", "Message requests"],
-  defaultSelected = "All messages",
+  dropdownOptions,
+  defaultSelected,
   onChange,
   onClick,
   disabled,
 }: HeaderDropdownProps) => {
+  const { t } = useTranslation();
+
   const [isOpen, setIsOpen] = useState(false);
-  const [currentlySelected, setCurrentlySelected] = useState(defaultSelected);
+  const [currentlySelected, setCurrentlySelected] = useState(
+    defaultSelected || t("messages.filter_none"),
+  );
 
   return (
     <div
@@ -53,7 +58,7 @@ export const HeaderDropdown = ({
           onClick={() => onClick?.()}
           label={<PlusIcon color="white" width="16" />}
           testId="new-message-icon-cta"
-          srText="Start new message"
+          srText={t("aria_labels.start_new_message") || ""}
         />
       </div>
 
@@ -67,7 +72,12 @@ export const HeaderDropdown = ({
               <div
                 id="headerModalId"
                 className="p-4 border border-gray-100 rounded-lg max-w-fit">
-                {dropdownOptions.map((item) => {
+                {(
+                  dropdownOptions || [
+                    t("messages.filter_none"),
+                    t("messages.filter_requests"),
+                  ]
+                ).map((item) => {
                   return (
                     <div key={item} className="flex w-full justify-between">
                       <div className="flex">

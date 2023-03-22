@@ -1,0 +1,66 @@
+{
+  "onboarding": {
+    "intro_headnote": "Try a demo",
+    "intro_header": "An interoperable web3 inbox",
+    "intro_subheader": "Access all of your XMTP DMs—no matter where you started them.",
+    "intro_button": "Connect your wallet",
+    "connect_header": "Connecting to your wallet...",
+    "connect_subheader": "Select a wallet account to use to create your XMTP identity. Then allow this app to connect to the account.",
+    "create_header": "Create your XMTP identity",
+    "create_subheader": "An XMTP identity is like a messaging account. You'll create your XMTP identity using a wallet signature.",
+    "create_button": "Create XMTP identity",
+    "creating_header": "Creating your XMTP identity...",
+    "creating_subheader": "Click <strong>Sign</strong> to create your XMTP identity. Your signature proves that you own and control your XMTP identity.",
+    "enable_header": "Enable your XMTP identity",
+    "enable_subheader": "Enabling your XMTP identity is like setting the password for your inbox.",
+    "enable_button": "Enable XMTP identity",
+    "enabling_header": "Enabling your XMTP identity...",
+    "enabling_subheader": "Click <strong>Sign</strong> to create your password. You'll be prompted to click <strong>Sign</strong> to provide it whenever you access your inbox."
+  },
+  "messages": {
+    "filter_none": "All messages",
+    "filter_requests": "Message requests",
+    "convos_empty_header": "No messages? No problem.",
+    "convos_empty_subheader": "Start a conversation to get going with DMs that you own and control.",
+    "convos_empty_button": "Send your first message",
+    "convos_empty_recipient_placeholder": "New recipient",
+    "convos_empty_text_placeholder": "New message",
+    "messages_empty_header": "Explore the XMTP universe",
+    "messages_empty_subheader": "Get started",
+    "messages_empty_cta_1_header": "Send a message",
+    "messages_empty_cta_1_subheader": "Message someone using their 0x wallet or .eth address",
+    "messages_empty_cta_2_header": "Find the perfect apps for you",
+    "messages_empty_cta_2_subheader": "Explore a showcase of apps built with XMTP—all giving you access to your interoperable inbox",
+    "messages_empty_cta_3_header": "Developer docs",
+    "messages_empty_cta_3_subheader": "Learn how to build an app with XMTP",
+    "address_field_prompt": "Enter a 0x wallet or .eth address",
+    "address_field_loading": "Finding address on the XMTP network...",
+    "address_field_invalid": "Please enter a valid 0x wallet or .eth address",
+    "address_field_not_on_network": "Sorry, we can't message this address because its owner hasn't used it with XMTP yet",
+    "message_field_prompt": "Write a message",
+    "conversation_start": "This is the beginning of the conversation",
+    "time_since_message": "{{TIME}} ago",
+    "you": "{{ADDRESS}} (you)"
+  },
+  "menu": {
+    "collapse_header": "Collapse",
+    "gallery_header": "Gallery",
+    "messages_header": "Messages",
+    "settings_header": "Settings"
+  },
+  "status_messaging": {
+    "error_1_header": "Sorry, the app encountered an error",
+    "error_1_subheader": "Not to worry. Let’s try again. If the error persists, <0>we're here to help!</0>",
+    "error_1_button": "Try again"
+  },
+  "common": {
+    "disconnect": "Disconnect wallet",
+    "private_key_note": "No private keys will be shared.",
+    "step_of_2": "Step {{NUM}} of 2"
+  },
+  "aria_labels": {
+    "address_input": "Address input",
+    "start_message": "Start new message",
+    "submit_message": "Submit message"
+  }
+}
