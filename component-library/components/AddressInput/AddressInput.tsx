@@ -3,7 +3,7 @@ import { Avatar } from "../Avatar/Avatar";
 import { InformationCircleIcon } from "@heroicons/react/outline";
 import { classNames } from "../../../helpers";
 import { ShortCopySkeletonLoader } from "../Loaders/SkeletonLoaders/ShortCopySkeletonLoader";
-import { useTranslation } from "react-i18next";
+
 interface AddressInputProps {
   /**
    * What, if any, resolved address is there?
@@ -59,7 +59,6 @@ export const AddressInput = ({
   onTooltipClick,
   value,
 }: AddressInputProps) => {
-  const { t } = useTranslation();
   const subtextColor = isError ? "text-red-600" : "text-gray-400";
   return (
     <div className="flex px-4 py-3 border-b border-gray-100 border-l-0 z-10 max-h-sm w-full">
@@ -91,20 +90,20 @@ export const AddressInput = ({
               id="address"
               type="text"
               spellCheck="false"
-              autoComplete="off"
+              autoComplete="false"
               autoCorrect="false"
               autoCapitalize="off"
               onChange={(e) =>
                 onChange && onChange((e.target as HTMLInputElement).value)
               }
               value={value}
-              aria-label={t("aria_labels.address_input") || ""}
+              aria-label="Address Input"
             />
           )}
           <p
             className={classNames("font-mono", "text-sm", subtextColor)}
             data-testid="message-to-subtext">
-            {t(subtext || "")}
+            {subtext}
           </p>
         </div>
       </form>

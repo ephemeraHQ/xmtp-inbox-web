@@ -46,12 +46,12 @@ const colorClassMapping = {
   primary: {
     backgroundColor: "white",
     fontColor:
-      "text-indigo-600 hover:text-indigo-800 focus:outline-none focus:ring-0 focus:text-indigo-800",
+      "text-indigo-600 hover:text-indigo-800 focus:outline-none focus:ring focus:ring-indigo-800",
   },
   secondary: {
     backgroundColor: "white",
     fontColor:
-      "text-red-600 hover:text-red-800 focus:outline-none focus:ring-0 hover:text-red-800",
+      "text-red-600 hover:text-red-800 focus:outline-none focus:ring focus:ring-red-800",
   },
 };
 
@@ -88,7 +88,6 @@ export const GhostButton = ({
   return (
     <button
       data-testid={testId}
-      tabIndex={0}
       type="button"
       onClick={onClick}
       disabled={isDisabled}

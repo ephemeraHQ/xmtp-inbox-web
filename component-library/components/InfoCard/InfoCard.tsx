@@ -72,7 +72,8 @@ export const InfoCard = ({
       className={classNames(
         "w-full",
         "flex",
-        "p-3",
+        "py-2",
+        "px-4",
         "flex",
         "items-center",
         "justify-between",

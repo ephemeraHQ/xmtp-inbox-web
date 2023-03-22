@@ -8,7 +8,6 @@ import { useAccount, useDisconnect } from "wagmi";
 import { useRouter } from "next/router";
 import { classNames, wipeKeys } from "../helpers";
 import { OnboardingStep } from "../component-library/components/OnboardingStep/OnboardingStep";
-import { useTranslation } from "react-i18next";
 
 const OnboardingPage: NextPage = () => {
   const client = useXmtpStore((state) => state.client);
@@ -19,7 +18,6 @@ const OnboardingPage: NextPage = () => {
   const { createXmtpIdentity, newAccount, connectToXmtp, isLoading } =
     useInitXmtpClient();
   const { disconnect: disconnectWagmi, reset: resetWagmi } = useDisconnect();
-  const { t } = useTranslation();
 
   const [loading, setLoading] = useState(isLoading);
   const router = useRouter();
@@ -57,7 +55,7 @@ const OnboardingPage: NextPage = () => {
           onClick={() => {
             window.open("https://demo.xmtp.chat", "_blank");
           }}>
-          {t("onboarding_intro.headnote")}
+          Try a demo
         </div>
       )}
       <OnboardingStep

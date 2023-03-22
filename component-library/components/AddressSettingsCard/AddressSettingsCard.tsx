@@ -39,9 +39,7 @@ export const AddressSettingsCard = ({
 }: AddressSettingsCardProps) => {
   return (
     <div
-      className={
-        "max-w-full bg-gray-50 flex p-2 flex items-center justify-between"
-      }>
+      className={`max-w-full bg-gray-50 flex p-2 flex items-center justify-between`}>
       <div className="flex items-center">
         {avatar}
         <div className="flex flex-col">

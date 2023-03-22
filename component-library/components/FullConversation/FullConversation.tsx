@@ -1,6 +1,5 @@
 import React from "react";
 import { MessageSkeletonLoader } from "../Loaders/SkeletonLoaders/MessageSkeletonLoader";
-import { useTranslation } from "react-i18next";
 
 interface FullConversationProps {
   messages?: Array<JSX.Element>;
@@ -11,7 +10,6 @@ export const FullConversation = ({
   messages = [],
   isLoading = false,
 }: FullConversationProps) => {
-  const { t } = useTranslation();
   if (isLoading) {
     const alternatingMessages = (
       <>
@@ -33,7 +31,7 @@ export const FullConversation = ({
       <div
         className="text-gray-500 font-bold text-sm w-full py-2 text-center"
         data-testid="message-beginning-text">
-        {t("messages.conversation_start")}
+        This is the beginning of the conversation
       </div>
     </div>
   );

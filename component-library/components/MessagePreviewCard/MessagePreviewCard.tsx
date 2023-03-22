@@ -6,7 +6,6 @@ import { ShortCopySkeletonLoader } from "../Loaders/SkeletonLoaders/ShortCopySke
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { classNames } from "../../../helpers";
 import { Avatar } from "../Avatar/Avatar";
-import { useTranslation } from "react-i18next";
 
 interface MessagePreviewCard {
   /**
@@ -55,7 +54,6 @@ export const MessagePreviewCard = ({
   conversationDomain,
 }: MessagePreviewCard) => {
   const isFirstMessage = !text && !displayAddress;
-  const { t } = useTranslation();
 
   if (!text && !isFirstMessage && !isLoading) {
     return null;
@@ -63,9 +61,8 @@ export const MessagePreviewCard = ({
   return (
     <div
       className={classNames(
-        "flex justify-between items-center border border-t-0 border-gray-200 outline-blue outline-b-0 h-min cursor-pointer",
+        "flex justify-between items-start border border-t-0 border-gray-200 outline-blue outline-b-0 p-4 h-min cursor-pointer",
         isSelected ? "bg-gray-200" : "bg-gray-100",
-        isLoading ? "px-4 py-2" : "p-4",
       )}
       onClick={onClick}
       onKeyUp={(e) => {
@@ -75,7 +72,7 @@ export const MessagePreviewCard = ({
         }
       }}
       tabIndex={0}>
-      <div className="mr-3">
+      <div className="mr-3 flex-none">
         <Avatar
           url={avatarUrl}
           address={displayAddress}
@@ -92,14 +89,14 @@ export const MessagePreviewCard = ({
           <ShortCopySkeletonLoader />
         ) : (
           <span className="text-md font-bold">
-            {displayAddress ?? t("messages.convos_empty_recipient_placeholder")}
+            {displayAddress ?? "New recipient"}
           </span>
         )}
         {isLoading ? (
           <ShortCopySkeletonLoader />
         ) : (
-          <span className="text-md text-gray-600 line-clamp-1 max-w-[90%] break-all">
-            {text ?? t("messages.convos_empty_text_placeholder")}
+          <span className="text-md text-gray-600 line-clamp-1 max-w-[90%] break-all mt-1">
+            {text ?? "New message"}
           </span>
         )}
       </div>
@@ -114,11 +111,9 @@ export const MessagePreviewCard = ({
             "text-right",
             "ml-4",
             "h-full",
+            "p-1",
           )}>
-          {datetime &&
-            t("messages.time_since_message", {
-              TIME: formatDistanceToNow(datetime),
-            })}
+          {datetime && `${formatDistanceToNow(datetime)} ago`}
         </div>
       )}
     </div>
