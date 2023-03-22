@@ -1,10 +1,12 @@
 import React from "react";
 import { Spinner } from "../Loaders/Spinner";
-import stepMapping, { ctaStep } from "./stepMapping";
+import { ctaStep, stepMapping } from "./stepMapping";
 import { GhostButton } from "../GhostButton/GhostButton";
 import { DisconnectIcon } from "../Icons/DisconnectIcon";
 import { logoSvg as Logo } from "./logo";
 import { PillButton } from "../PillButton/PillButton";
+import { useTranslation } from "react-i18next";
+import { Trans } from "react-i18next";
 
 interface OnboardingStepProps {
   /**
@@ -41,6 +43,8 @@ export const OnboardingStep = ({
   onEnable,
   onDisconnect,
 }: OnboardingStepProps) => {
+  const { t } = useTranslation();
+
   const stepInfo = isLoading
     ? stepMapping[step]?.loading
     : stepMapping[step]?.default;
@@ -49,7 +53,7 @@ export const OnboardingStep = ({
     const { header, subheader, cta, subtext } = stepInfo;
 
     return (
-      <div className="bg-white flex flex-col justify-center items-center max-w-sm text-center m-auto w-screen p-4 h-full">
+      <div className="bg-white flex flex-col justify-center items-center max-w-sm text-center m-auto w-screen p-4 h-screen">
         {isLoading ? (
           <Spinner />
         ) : (
@@ -57,32 +61,34 @@ export const OnboardingStep = ({
             <Logo />
           </div>
         )}
-        <div className="h-1/2">
-          {step > 1 ? <p className="pt-4">{`Step ${step - 1} of 2`}</p> : null}
+        <div className="mt-8">
+          {step > 1 ? (
+            <p className="pt-4">{t("common.step_of_2", { NUM: step - 1 })}</p>
+          ) : null}
           <h1
             className="text-4xl font-bold p-4 pt-0"
             data-testid={step === 1 && "no-wallet-connected-header"}>
-            {header}
+            {t(header)}
           </h1>
           <p data-testid={step === 1 && "no-wallet-connected-subheader"}>
-            {subheader}
+            <Trans i18nKey={subheader} />
           </p>
           <div className="p-2">
             {cta === ctaStep.ENABLE ? (
               <PillButton
-                label="Enable XMTP identity"
+                label={t("onboarding.enable_button")}
                 onClick={onEnable}
                 testId="enable-xmtp-identity-cta"
               />
             ) : cta === ctaStep.CREATE ? (
               <PillButton
-                label="Create XMTP identity"
+                label={t("onboarding.create_button")}
                 onClick={onCreate}
                 testId="create-xmtp-identity-cta"
               />
             ) : cta === ctaStep.CONNECT ? (
               <PillButton
-                label="Connect your wallet"
+                label={t("onboarding.intro_button")}
                 onClick={onConnect}
                 testId="no-wallet-connected-cta"
               />
@@ -92,12 +98,12 @@ export const OnboardingStep = ({
             <p
               className="font-bold text-md text-gray-500"
               data-testid={step === 1 && "no-wallet-connected-subtext"}>
-              {subtext}
+              {t(subtext)}
             </p>
           ) : (
             <GhostButton
               onClick={onDisconnect}
-              label="Disconnect Wallet"
+              label={t("common.disconnect")}
               variant="secondary"
               icon={<DisconnectIcon />}
             />

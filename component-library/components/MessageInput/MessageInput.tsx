@@ -2,6 +2,7 @@ import React, { ChangeEvent, useLayoutEffect, useRef } from "react";
 import { ArrowUpIcon } from "@heroicons/react/solid";
 import { IconButton } from "../IconButton/IconButton";
 import { classNames } from "../../../helpers";
+import { useTranslation } from "react-i18next";
 
 interface InputProps {
   /**
@@ -15,6 +16,7 @@ interface InputProps {
 }
 
 export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
+  const { t } = useTranslation();
   let textAreaRef = useRef<HTMLTextAreaElement>(null);
   const [value, setValue] = React.useState("");
   const onChange = (event: ChangeEvent<HTMLTextAreaElement>) =>
@@ -44,7 +46,7 @@ export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
   return (
     <form>
       <label htmlFor="chat" className="sr-only">
-        Type something...
+        {t("messages.message_field_prompt")}
       </label>
       <div
         className={classNames(
@@ -75,7 +77,7 @@ export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
           ref={textAreaRef}
           rows={1}
           className={textAreaStyles}
-          placeholder="Type something..."
+          placeholder={t("messages.message_field_prompt") || ""}
           value={value}
           disabled={isDisabled}
         />
@@ -84,7 +86,7 @@ export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
             testId="message-input-submit"
             variant="secondary"
             label={<ArrowUpIcon color="white" width="12" />}
-            srText="Submit Message"
+            srText={t("aria_labels.submit_message") || ""}
             onClick={() => {
               if (value) {
                 onSubmit?.(value);
