@@ -89,7 +89,8 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
                 setStartedFirstMessage={() => setStartedFirstMessage(true)}
                 isLoading={loadingConversations}
                 messages={
-                  conversations.size === 0 && recipientEnteredValue
+                  (conversations.size === 0 || previewMessages.size === 0) &&
+                  recipientEnteredValue
                     ? [<MessagePreviewCardWrapper key="default" />]
                     : Array.from(conversations.values())
                         .sort(orderByLatestMessage)
