@@ -15,10 +15,12 @@ import { LearnMore } from "../component-library/components/LearnMore/LearnMore";
 import router from "next/router";
 import useWindowSize from "../hooks/useWindowSize";
 import { ChevronLeftIcon } from "@heroicons/react/solid";
+import useHandleConnect from "../hooks/useHandleConnect";
 
 export type address = "0x${string}";
 
 const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
+  useHandleConnect();
   useInitXmtpClient();
   // XMTP Store
   const client = useXmtpStore((state) => state.client);
@@ -103,36 +105,39 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
           </>
         ) : null}
       </div>
-      <div className="flex w-full flex-col h-screen overflow-hidden">
-        {!conversations.size &&
-        !loadingConversations &&
-        !startedFirstMessage ? (
-          <LearnMore
-            version={"replace"}
-            setStartedFirstMessage={() => setStartedFirstMessage(true)}
-          />
-        ) : (
-          <>
-            <div className="flex">
-              {size[0] < 700 ? (
-                <ChevronLeftIcon
-                  onClick={() => {
-                    setRecipientWalletAddress("");
-                    setStartedFirstMessage(false);
-                    setConversationId("");
-                  }}
-                  width={32}
-                />
-              ) : null}
-              <AddressInputWrapper />
-            </div>
-            <div className="h-full overflow-auto flex flex-col">
-              <FullConversationWrapper />
-            </div>
-            <MessageInputWrapper />
-          </>
-        )}
-      </div>
+      {size[0] > 700 || recipientWalletAddress || startedFirstMessage ? (
+        <div className="flex w-full flex-col h-screen overflow-hidden">
+          {!conversations.size &&
+          !loadingConversations &&
+          !startedFirstMessage ? (
+            <LearnMore
+              version={"replace"}
+              setStartedFirstMessage={() => setStartedFirstMessage(true)}
+            />
+          ) : (
+            <>
+              <div className="flex">
+                {size[0] < 700 ? (
+                  <ChevronLeftIcon
+                    onClick={() => {
+                      setRecipientEnteredValue("");
+                      setRecipientWalletAddress("");
+                      setStartedFirstMessage(false);
+                      setConversationId("");
+                    }}
+                    width={32}
+                  />
+                ) : null}
+                <AddressInputWrapper />
+              </div>
+              <div className="h-full overflow-auto flex flex-col">
+                <FullConversationWrapper />
+              </div>
+              <MessageInputWrapper />
+            </>
+          )}
+        </div>
+      ) : null}
     </div>
   );
 };

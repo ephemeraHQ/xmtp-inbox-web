@@ -42,23 +42,20 @@ export const FullMessage = ({
     "bg-indigo-600 text-white rounded-bl-lg";
 
   return (
-    <div className="flex flex-col w-full">
-      {showDateDivider && <DateDivider date={datetime} />}
+    <div
+      className={classNames(
+        "flex flex-col w-full",
+        isOutgoingMessage ? "items-end" : "items-start",
+      )}>
       <div
         className={classNames(
           "text-sm",
           "flex",
           "flex-col",
-          "max-w-1/2",
-          isOutgoingMessage ? "items-end" : "items-start",
+          "sm:max-w-[75%]",
+          "md:max-w-[50%]",
         )}>
-        <div
-          className={classNames(
-            "flex",
-            "flex-col",
-            isOutgoingMessage ? "items-end" : "items-start",
-            "w-1/2",
-          )}>
+        <div className={classNames("flex", "flex-col", "max-w-full")}>
           {isOutgoingMessage ? (
             <span className="text-indigo-600 font-bold flex justify-end">
               {t("messages.you", { ADDRESS: from.displayAddress })}
@@ -67,7 +64,7 @@ export const FullMessage = ({
             <span className="font-bold">{`${from.displayAddress}`}</span>
           )}
           <div
-            className={`whitespace-pre-wrap p-2 px-3 rounded-tl-xl rounded-tr-xl my-1 max-w-full break-words ${
+            className={`whitespace-pre-wrap p-2 px-3 rounded-tl-xl rounded-tr-xl my-1 max-w-full break-words text-md ${
               isOutgoingMessage
                 ? outgoingMessageBackgroundStyles
                 : incomingMessageBackgroundStyles
@@ -83,6 +80,7 @@ export const FullMessage = ({
           </div>
         </div>
       </div>
+      {showDateDivider && <DateDivider date={datetime} />}
     </div>
   );
 };

@@ -1,12 +1,15 @@
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment } from "react";
-import { ChatAlt2Icon, ChevronDoubleRightIcon } from "@heroicons/react/solid";
+import {
+  ChatAlt2Icon,
+  CheckCircleIcon,
+  ChevronDoubleRightIcon,
+} from "@heroicons/react/solid";
 import {
   ChevronDownIcon,
   CogIcon,
   SparklesIcon,
 } from "@heroicons/react/outline";
-import { CheckCircleIcon } from "@heroicons/react/solid";
 import { classNames, shortAddress } from "../../../helpers";
 import { XmtpIcon } from "../Icons/XmtpIcon";
 import { useState } from "react";
@@ -171,7 +174,7 @@ const SideNav = ({
           as="div"
           className="overflow-y-auto z-10"
           onClose={onXmtpIconClick}>
-          <div className="bg-white w-fit rounded-lg absolute bottom-16 left-12">
+          <div className="bg-white w-fit rounded-lg absolute bottom-16 left-12 p-2">
             <div className="flex p-2 justify-between">
               <span className="font-bold text-sm">English (US)</span>
               <CheckCircleIcon width="16" fill="limegreen" className="ml-4" />
