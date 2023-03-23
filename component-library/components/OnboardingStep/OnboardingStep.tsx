@@ -7,6 +7,7 @@ import { logoSvg as Logo } from "./logo";
 import { PillButton } from "../PillButton/PillButton";
 import { useTranslation } from "react-i18next";
 import { Trans } from "react-i18next";
+import { ExclamationIcon } from "@heroicons/react/solid";
 
 interface OnboardingStepProps {
   /**
@@ -17,6 +18,10 @@ interface OnboardingStepProps {
    * Is the message content loading?
    */
   isLoading?: boolean;
+  /**
+   * Is there an error occured?
+   */
+  isError?: boolean;
   /**
    * What function should be run to connect to a wallet?
    */
@@ -38,6 +43,7 @@ interface OnboardingStepProps {
 export const OnboardingStep = ({
   step,
   isLoading,
+  isError,
   onConnect,
   onCreate,
   onEnable,
@@ -54,27 +60,36 @@ export const OnboardingStep = ({
 
     return (
       <div className="bg-white flex flex-col justify-center items-center max-w-sm text-center m-auto w-screen p-4 h-screen">
-        {isLoading ? (
+        {isError ? (
+          <ExclamationIcon className="text-red-600" width={82} />
+        ) : isLoading ? (
           <Spinner />
         ) : (
           <div data-testid="xmtp-logo" className="h-1/2">
             <Logo />
           </div>
         )}
-        <div className="mt-8">
+        <div className="mt-2">
           {step > 1 ? (
             <p className="pt-4">{t("common.step_of_2", { NUM: step - 1 })}</p>
           ) : null}
           <h1
             className="text-4xl font-bold p-4 pt-0"
             data-testid={step === 1 && "no-wallet-connected-header"}>
-            {t(header)}
+            {header ? t(header) : ""}
           </h1>
           <p data-testid={step === 1 && "no-wallet-connected-subheader"}>
-            <Trans i18nKey={subheader} />
+            <Trans i18nKey={subheader ? subheader : ""} />
           </p>
           <div className="p-2">
-            {cta === ctaStep.ENABLE ? (
+            {cta === ctaStep.CONNECT_AGAIN ? (
+              <PillButton
+                variant="secondary"
+                label={t("onboarding.connect_again_button")}
+                onClick={onConnect}
+                testId="enable-xmtp-identity-cta"
+              />
+            ) : cta === ctaStep.ENABLE ? (
               <PillButton
                 label={t("onboarding.enable_button")}
                 onClick={onEnable}
