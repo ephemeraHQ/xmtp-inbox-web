@@ -41,8 +41,8 @@ export const AddressInputWrapper = () => {
     <AddressInput
       isError={!isValid}
       subtext={
-        !loadingConversations && recipientEnteredValue
-          ? getRecipientInputSubtext(recipientInputMode)
+        !loadingConversations
+          ? getRecipientInputSubtext(recipientInputMode, recipientEnteredValue)
           : ""
       }
       resolvedAddress={{

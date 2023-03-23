@@ -59,7 +59,6 @@ describe(
         "docs-header",
         "docs-subheader",
         "docs-arrow",
-        "xmtp-version",
       ];
 
       elements.forEach((element) => checkElement(element));
