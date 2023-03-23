@@ -67,12 +67,12 @@ export const FullConversationWrapper = () => {
               : false;
             const messageDiv = (
               <div key={`${msg.id}_${index}`}>
-                <FullMessageWrapper msg={msg} idx={index} />
-                {index === messages.length - 1 ? (
+                {(messages.length === 1 || index === messages.length - 1) &&
+                !dateHasChanged ? (
                   <DateDivider date={msg.sent} />
-                ) : dateHasChanged ? (
-                  <DateDivider date={lastMessageDate} />
                 ) : null}
+                <FullMessageWrapper msg={msg} idx={index} />
+                {dateHasChanged ? <DateDivider date={lastMessageDate} /> : null}
               </div>
             );
             lastMessageDate = msg.sent;
