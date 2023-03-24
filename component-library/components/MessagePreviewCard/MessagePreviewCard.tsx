@@ -3,10 +3,10 @@ import React from "react";
 import { IconSkeletonLoader } from "../Loaders/SkeletonLoaders/IconSkeletonLoader";
 import { ShortCopySkeletonLoader } from "../Loaders/SkeletonLoaders/ShortCopySkeletonLoader";
 
-import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { classNames } from "../../../helpers";
 import { Avatar } from "../Avatar/Avatar";
 import { useTranslation } from "react-i18next";
+import { formatDistanceToNowStrict } from "date-fns";
 
 interface MessagePreviewCard {
   /**
@@ -98,7 +98,7 @@ export const MessagePreviewCard = ({
         {isLoading ? (
           <ShortCopySkeletonLoader />
         ) : (
-          <span className="text-md text-gray-600 line-clamp-1 max-w-[90%] break-all">
+          <span className="text-md text-gray-600 line-clamp-1 w-full break-all">
             {text ?? t("messages.convos_empty_text_placeholder")}
           </span>
         )}
@@ -110,14 +110,14 @@ export const MessagePreviewCard = ({
           className={classNames(
             "text-xs",
             "text-gray-600",
-            "w-1/4",
+            "w-1/3",
             "text-right",
             "ml-4",
             "h-full",
           )}>
           {datetime &&
             t("messages.time_since_message", {
-              TIME: formatDistanceToNow(datetime),
+              TIME: formatDistanceToNowStrict(datetime),
             })}
         </div>
       )}

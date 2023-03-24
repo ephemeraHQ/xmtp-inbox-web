@@ -22,7 +22,7 @@ export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
   const onChange = (event: ChangeEvent<HTMLTextAreaElement>) =>
     setValue(event.target.value);
   const borderStyles =
-    "border border-gray-300 focus-within:border-1 focus-within:border-indigo-600 rounded-tl-full rounded-bl-full rounded-tr-full";
+    "border border-gray-300 focus-within:border-1 focus-within:border-indigo-600 rounded-tl-2xl rounded-bl-2xl rounded-tr-2xl";
   const textAreaStyles = `${
     textAreaRef?.current?.scrollHeight &&
     textAreaRef?.current?.scrollHeight <= 32
