@@ -93,7 +93,7 @@ export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
                 setValue("");
               }
             }}
-            isDisabled={isDisabled}
+            isDisabled={!value || isDisabled}
           />
         </div>
       </div>

@@ -57,7 +57,7 @@ export const OnboardingStep = ({
         {isLoading ? (
           <Spinner />
         ) : (
-          <div data-testid="xmtp-logo" className="h-1/2">
+          <div data-testid="xmtp-logo" className="h-1/2 scale-[2]">
             <Logo />
           </div>
         )}

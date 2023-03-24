@@ -49,17 +49,7 @@ const OnboardingPage: NextPage = () => {
   }, [client, isConnecting, isDisconnected, newAccount]);
 
   return (
-    <div
-      className={classNames("bg-white", "h-screen", "w-full", "overflow-auto")}>
-      {!address && !client && (
-        <div
-          className="flex justify-end text-sm font-bold text-p-500 underline cursor-pointer absolute right-4 top-4"
-          onClick={() => {
-            window.open("https://demo.xmtp.chat", "_blank");
-          }}>
-          {t("onboarding.intro_headnote")}
-        </div>
-      )}
+    <div className={classNames("h-screen", "w-full", "overflow-auto")}>
       <OnboardingStep
         step={step}
         isLoading={isLoading}
