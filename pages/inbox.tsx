@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import useListConversations from "../hooks/useListConversations";
 import { useXmtpStore } from "../store/xmtp";
-import { getConversationId } from "../helpers";
+import { getConversationId, RecipientInputMode } from "../helpers";
 import { ConversationList } from "../component-library/components/ConversationList/ConversationList";
 import { Conversation } from "@xmtp/xmtp-js";
 import { MessagePreviewCardWrapper } from "../wrappers/MessagePreviewCardWrapper";
@@ -44,6 +44,10 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   );
   const setRecipientEnteredValue = useXmtpStore(
     (state) => state.setRecipientEnteredValue,
+  );
+
+  const setRecipientInputMode = useXmtpStore(
+    (state) => state.setRecipientInputMode,
   );
 
   const loadingConversations = useXmtpStore(
@@ -126,6 +130,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
                       setRecipientWalletAddress("");
                       setStartedFirstMessage(false);
                       setConversationId("");
+                      setRecipientInputMode(RecipientInputMode.InvalidEntry);
                     }}
                     width={32}
                   />
