@@ -32,12 +32,7 @@ export const isEnsAddress = (address: string): boolean => {
     return false;
   }
 
-  for (const suffix of ALLOWED_ENS_SUFFIXES) {
-    if (address.endsWith(suffix)) {
-      return true;
-    }
-  }
-  return false;
+  return ALLOWED_ENS_SUFFIXES.some((suffix) => address.endsWith(suffix));
 };
 
 export const isValidRecipientAddressFormat = (
