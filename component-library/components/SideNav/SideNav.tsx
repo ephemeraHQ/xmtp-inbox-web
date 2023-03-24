@@ -117,6 +117,7 @@ const SideNav = ({
           "h-fit",
           "rounded",
           "cursor-pointer",
+          isOpen ? "w-[300px]" : "",
         )}>
         <>
           <div className="flex justify-center items-center h-fit">
@@ -131,7 +132,7 @@ const SideNav = ({
   return (
     <div
       className={classNames(
-        "flex flex-col justify-between items-center h-screen bg-gray-50 px-2 w-fit",
+        "flex flex-col justify-between items-center h-screen bg-gray-50 px-2 w-fit z-2",
       )}>
       <div className="flex flex-col items-start space-y-4 w-full">
         <div className="py-4 flex">
