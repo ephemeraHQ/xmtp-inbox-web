@@ -22,7 +22,7 @@ export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
   const onChange = (event: ChangeEvent<HTMLTextAreaElement>) =>
     setValue(event.target.value);
   const borderStyles =
-    "border border-gray-300 focus-within:border-1 focus-within:border-indigo-600 rounded-tl-2xl rounded-bl-2xl rounded-tr-2xl";
+    "border border-gray-300 focus-within:border-1 focus-within:border-indigo-600 rounded-tl-3xl rounded-bl-3xl rounded-tr-3xl";
   const textAreaStyles = `${
     textAreaRef?.current?.scrollHeight &&
     textAreaRef?.current?.scrollHeight <= 32
@@ -85,7 +85,7 @@ export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
           <IconButton
             testId="message-input-submit"
             variant="secondary"
-            label={<ArrowUpIcon color="white" width="12" />}
+            label={<ArrowUpIcon color="white" width="20" />}
             srText={t("aria_labels.submit_message") || ""}
             onClick={() => {
               if (value) {

@@ -55,7 +55,7 @@ export const HeaderDropdown = ({
         </span>
         <IconButton
           onClick={() => onClick?.()}
-          label={<PlusIcon color="white" width="16" />}
+          label={<PlusIcon color="white" width="20" />}
           testId="new-message-icon-cta"
           srText={t("aria_labels.start_new_message") || ""}
         />
