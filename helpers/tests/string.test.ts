@@ -70,6 +70,9 @@ describe("isEnsAddress", () => {
   it("should return false if invalid address", () => {
     expect(isEnsAddress("")).toBe(false);
   });
+  it("should return true for cb.id addresses", () => {
+    expect(isEnsAddress("test.cb.id")).toBe(true);
+  });
 
   describe("shortAddress", () => {
     it("should return properly formatted address with long addresses that start with 0x", () => {
