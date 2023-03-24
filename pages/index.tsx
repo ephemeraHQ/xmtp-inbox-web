@@ -28,11 +28,11 @@ const OnboardingPage: NextPage = () => {
     watchAccount(() => resetXmtpState());
   }, []);
 
-  // useEffect(() => {
-  //   if (address && !newAccount && client) {
-  //     router.push("/inbox");
-  //   }
-  // }, [client, address, newAccount]);
+  useEffect(() => {
+    if (address && !newAccount && client) {
+      router.push("/inbox");
+    }
+  }, [client, address, newAccount]);
 
   useEffect(() => {
     if (isDisconnected) {
