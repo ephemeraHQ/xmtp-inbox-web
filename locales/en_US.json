@@ -15,10 +15,7 @@
     "enable_subheader": "Enabling your XMTP identity is like setting the password for your inbox.",
     "enable_button": "Enable XMTP identity",
     "enabling_header": "Enabling your XMTP identity...",
-    "enabling_subheader": "Click <strong>Sign</strong> to create your password. You'll be prompted to click <strong>Sign</strong> to provide it whenever you access your inbox.",
-    "error_header": "Something went wrong...",
-    "error_subheader": "A properly detailed error message describing the error goes here.",
-    "connect_again_button": "Connect again"
+    "enabling_subheader": "Click <strong>Sign</strong> to create your password. You'll be prompted to click <strong>Sign</strong> to provide it whenever you access your inbox."
   },
   "messages": {
     "filter_none": "All messages",
@@ -60,6 +57,10 @@
     "disconnect": "Disconnect wallet",
     "private_key_note": "No private keys will be shared.",
     "step_of_2": "Step {{NUM}} of 2"
+  },
+  "error": {
+    "header": "Something went wrong...",
+    "connect_again_button": "Connect again"
   },
   "aria_labels": {
     "address_input": "Address input",
