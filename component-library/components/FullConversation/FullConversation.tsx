@@ -31,7 +31,7 @@ export const FullConversation = ({
       className="w-full h-full flex flex-col-reverse pt-8 px-4 md:px-8">
       {messages}
       <div
-        className="text-gray-500 font-bold text-sm w-full py-2 text-center"
+        className="text-gray-400 font-regular text-sm w-full py-2 text-center"
         data-testid="message-beginning-text">
         {t("messages.conversation_start")}
       </div>

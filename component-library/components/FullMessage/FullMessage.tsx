@@ -59,7 +59,7 @@ export const FullMessage = ({
         )}>
         <div className={classNames("flex", "flex-col", "max-w-full")}>
           <div
-            className={`whitespace-pre-wrap p-2 px-3 rounded-tl-xl rounded-tr-xl my-1 max-w-full break-words text-md ${
+            className={`whitespace-pre-wrap p-2 px-3 rounded-tl-xl rounded-tr-xl my-1 max-w-full break-words text-md pl-3 ${
               isOutgoingMessage
                 ? outgoingMessageBackgroundStyles
                 : incomingMessageBackgroundStyles

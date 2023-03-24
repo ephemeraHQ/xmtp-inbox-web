@@ -22,13 +22,13 @@ export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
   const onChange = (event: ChangeEvent<HTMLTextAreaElement>) =>
     setValue(event.target.value);
   const borderStyles =
-    "border border-gray-300 focus-within:border-1 focus-within:border-indigo-600 rounded-tl-2xl rounded-bl-2xl rounded-tr-2xl";
+    "border border-gray-300 focus-within:border-1 focus-within:border-indigo-600 rounded-tl-full rounded-bl-full rounded-tr-full";
   const textAreaStyles = `${
     textAreaRef?.current?.scrollHeight &&
     textAreaRef?.current?.scrollHeight <= 32
       ? "max-h-8"
       : "max-h-40"
-  } min-h-8 outline-none border-none focus:ring-0 resize-none mx-4 p-1 w-full text-md text-gray-900`;
+  } min-h-8 outline-none border-none focus:ring-0 resize-none mx-2 p-1 w-full text-md text-gray-900`;
 
   useLayoutEffect(() => {
     const MIN_TEXTAREA_HEIGHT = 32;
@@ -53,7 +53,7 @@ export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
           "flex",
           "items-center",
           "max-h-300",
-          "mx-4 my-2",
+          "mx-4 my-2 mb-6",
           "bg-white",
           "relative",
           "no-scrollbar",

@@ -37,7 +37,7 @@ export const ConversationList = ({
     </div>
   ) : (
     <div
-      className="w-full overflow-auto sm:w-full flex flex-col h-full bg-gray-100"
+      className="w-full overflow-auto sm:w-full flex flex-col h-full bg-gray-100 border-x"
       data-testid="conversations-list-panel">
       {messages}
     </div>

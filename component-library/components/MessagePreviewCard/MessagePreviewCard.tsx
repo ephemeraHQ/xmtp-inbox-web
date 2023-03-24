@@ -63,7 +63,7 @@ export const MessagePreviewCard = ({
   return (
     <div
       className={classNames(
-        "flex justify-between items-center border border-t-0 border-gray-200 outline-blue outline-b-0 h-min cursor-pointer",
+        "flex justify-between items-center border-0 border-b border-gray-200 outline-blue outline-b-0 h-min cursor-pointer",
         isSelected ? "bg-gray-200" : "bg-gray-100",
         isLoading ? "px-4 py-2" : "p-4",
       )}
