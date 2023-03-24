@@ -1,4 +1,5 @@
 import { Conversation } from "@xmtp/xmtp-js";
+import { ALLOWED_ENS_SUFFIXES } from "./constants";
 
 export const truncate = (str: string | undefined, length: number): string => {
   if (!str) {
@@ -25,11 +26,25 @@ export const formatTime = (d: Date | undefined): string =>
         .replace(/\u202f|\u2009/g, " ")
     : "";
 
+export const isEnsAddress = (address: string): boolean => {
+  // Bail out early if empty string or a string without any dots
+  if (!address || !address.includes(".")) {
+    return false;
+  }
+
+  for (const suffix of ALLOWED_ENS_SUFFIXES) {
+    if (address.endsWith(suffix)) {
+      return true;
+    }
+  }
+  return false;
+};
+
 export const isValidRecipientAddressFormat = (
   recipientWalletAddress: string,
 ) => {
   return (
-    recipientWalletAddress?.endsWith(".eth") ||
+    isEnsAddress(recipientWalletAddress) ||
     (recipientWalletAddress?.startsWith("0x") &&
       recipientWalletAddress?.length === 42)
   );
@@ -40,10 +55,6 @@ export const isValidLongWalletAddress = (recipientWalletAddress: string) => {
     recipientWalletAddress?.startsWith("0x") &&
     recipientWalletAddress?.length === 42
   );
-};
-
-export const isEnsAddress = (address: string): boolean => {
-  return address.endsWith(".eth");
 };
 
 export const shortAddress = (addr: string): string =>

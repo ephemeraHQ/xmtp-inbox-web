@@ -13,3 +13,5 @@ export const RecipientInputMode = {
 };
 
 export const CONVERSATION_CACHE_VERSION = 1;
+
+export const ALLOWED_ENS_SUFFIXES = [".eth", ".cb.id"];
