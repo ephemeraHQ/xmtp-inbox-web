@@ -62,7 +62,7 @@ export const AddressInput = ({
   const { t } = useTranslation();
   const subtextColor = isError ? "text-red-600" : "text-gray-400";
   return (
-    <div className="flex px-2 md:px-4 py-3 border-b border-gray-100 border-l-0 z-10 max-h-sm w-full">
+    <div className="flex px-2 md:px-4 py-3 border-b border-gray-100 border-l-0 z-10 max-h-sm w-full h-16">
       <form
         className="flex w-full items-center"
         onSubmit={(e) => e.preventDefault()}>
