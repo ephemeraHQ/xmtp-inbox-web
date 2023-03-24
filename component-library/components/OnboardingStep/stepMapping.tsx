@@ -2,7 +2,6 @@ export const enum ctaStep {
   CONNECT = "CONNECT",
   CREATE = "CREATE",
   ENABLE = "ENABLE",
-  CONNECT_AGAIN = "CONNECT AGAIN",
 }
 
 export const stepMapping: Record<
