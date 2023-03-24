@@ -52,10 +52,9 @@ export const FullMessage = ({
           "text-sm",
           "flex",
           "flex-col",
-          "max-w-[75%]",
+          "max-w-[80%]",
           "md:max-w-[50%]",
-          "w-[75%]",
-          "md:w-[50%]",
+          "w-fit",
         )}>
         <div className={classNames("flex", "flex-col", "max-w-full")}>
           <div
