@@ -173,11 +173,8 @@ const SideNav = ({
         </div>
       </div>
       <Transition.Root show={isDialogOpen} as={Fragment}>
-        <Dialog
-          as="div"
-          className="overflow-y-auto z-10"
-          onClose={onXmtpIconClick}>
-          <div className="bg-white w-fit rounded-lg absolute bottom-16 left-12 p-2">
+        <Dialog as="div" className="overflow-y-auto" onClose={onXmtpIconClick}>
+          <div className="bg-white w-fit rounded-lg absolute bottom-16 left-12 p-2 z-20">
             <div className="flex p-2 justify-between">
               <span className="font-bold text-sm">English (US)</span>
               <CheckCircleIcon width="16" fill="limegreen" className="ml-4" />
