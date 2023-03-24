@@ -3,7 +3,6 @@ import React from "react";
 import { IconSkeletonLoader } from "../Loaders/SkeletonLoaders/IconSkeletonLoader";
 import { ShortCopySkeletonLoader } from "../Loaders/SkeletonLoaders/ShortCopySkeletonLoader";
 
-import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { classNames } from "../../../helpers";
 import { Avatar } from "../Avatar/Avatar";
 import { useTranslation } from "react-i18next";
@@ -115,10 +114,7 @@ export const MessagePreviewCard = ({
             "ml-4",
             "h-full",
           )}>
-          {datetime &&
-            t("messages.time_since_message", {
-              TIME: formatDistanceToNow(datetime),
-            })}
+          {datetime && t("{{datetime, ago}}", { datetime })}
         </div>
       )}
     </div>

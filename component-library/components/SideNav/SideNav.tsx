@@ -1,5 +1,5 @@
 import { Dialog, Transition } from "@headlessui/react";
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import { ChatAlt2Icon, ChevronDoubleRightIcon } from "@heroicons/react/solid";
 import {
   ChevronDownIcon,
@@ -14,6 +14,7 @@ import { Avatar } from "../Avatar/Avatar";
 import { GhostButton } from "../GhostButton/GhostButton";
 import { DisconnectIcon } from "../Icons/DisconnectIcon";
 import { useTranslation } from "react-i18next";
+import i18next, { resourceMap } from "../../../i18n";
 
 interface SideNav {
   /**
@@ -45,6 +46,26 @@ const SideNav = ({
   avatarUrl,
   onDisconnect,
 }: SideNav) => {
+  const [mappedLangs, setMappedLangs]: [
+    Array<{ displayText?: string; isSelected?: boolean; lang?: string }>,
+    Function,
+  ] = useState([]);
+  // When language changes, change the modal text to render the corresponding locale selector within that language
+  useEffect(() => {
+    const mappedLangs = Object.keys(resourceMap).map((lang: string) => {
+      let languageNames = new Intl.DisplayNames([i18next.language], {
+        type: "language",
+      });
+
+      return {
+        displayText: languageNames.of(lang) || languageNames.of("en"),
+        isSelected: i18next.language === lang,
+        lang,
+      };
+    });
+    setMappedLangs(mappedLangs);
+  }, [i18next.language]);
+
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
 
@@ -170,11 +191,35 @@ const SideNav = ({
         <Dialog
           as="div"
           className="overflow-y-auto z-10"
+          aria-modal={true}
           onClose={onXmtpIconClick}>
           <div className="bg-white w-fit rounded-lg absolute bottom-16 left-12">
-            <div className="flex p-2 justify-between">
-              <span className="font-bold text-sm">English (US)</span>
-              <CheckCircleIcon width="16" fill="limegreen" className="ml-4" />
+            <div className="max-h-80 overflow-auto">
+              {mappedLangs.map(({ displayText, isSelected, lang }) => {
+                return (
+                  <div className="flex p-2 justify-between">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        i18next.changeLanguage(lang);
+                        onXmtpIconClick();
+                      }}
+                      className={classNames(
+                        "text-sm",
+                        isSelected ? "font-bold" : "",
+                      )}>
+                      {displayText}
+                    </button>
+                    {isSelected && (
+                      <CheckCircleIcon
+                        width="16"
+                        fill="limegreen"
+                        className="ml-4"
+                      />
+                    )}
+                  </div>
+                );
+              })}
             </div>
             <hr className="m-2" />
             <GhostButton

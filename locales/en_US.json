@@ -38,9 +38,7 @@
     "address_field_invalid": "Please enter a valid 0x wallet or .eth address",
     "address_field_not_on_network": "Sorry, we can't message this address because its owner hasn't used it with XMTP yet",
     "message_field_prompt": "Write a message",
-    "conversation_start": "This is the beginning of the conversation",
-    "time_since_message": "{{TIME}} ago",
-    "you": "{{ADDRESS}} (you)"
+    "conversation_start": "This is the beginning of the conversation"
   },
   "menu": {
     "collapse_header": "Collapse",
