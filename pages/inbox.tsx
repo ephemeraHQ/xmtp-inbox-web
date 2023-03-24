@@ -1,7 +1,11 @@
 import React, { useEffect } from "react";
 import useListConversations from "../hooks/useListConversations";
 import { useXmtpStore } from "../store/xmtp";
-import { getConversationId, RecipientInputMode } from "../helpers";
+import {
+  getConversationId,
+  RecipientInputMode,
+  TAILWIND_MD_BREAKPOINT,
+} from "../helpers";
 import { ConversationList } from "../component-library/components/ConversationList/ConversationList";
 import { Conversation } from "@xmtp/xmtp-js";
 import { MessagePreviewCardWrapper } from "../wrappers/MessagePreviewCardWrapper";
@@ -83,7 +87,8 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   return (
     <div className="bg-white w-full md:h-full overflow-auto flex flex-col md:flex-row">
       <div className="flex w-[100%] md:w-[30%]">
-        {size[0] > 700 || (!recipientWalletAddress && !startedFirstMessage) ? (
+        {size[0] > TAILWIND_MD_BREAKPOINT ||
+        (!recipientWalletAddress && !startedFirstMessage) ? (
           <>
             <SideNavWrapper />
             <div className="flex flex-col h-screen overflow-auto fixed left-[3.5rem] w-[calc(100% - 3.5rem)] md:w-[30%]">
@@ -111,7 +116,9 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
           </>
         ) : null}
       </div>
-      {size[0] > 700 || recipientWalletAddress || startedFirstMessage ? (
+      {size[0] > TAILWIND_MD_BREAKPOINT ||
+      recipientWalletAddress ||
+      startedFirstMessage ? (
         <div className="flex w-[100%] md:w-[70%] md:ml-[5rem]  flex-col h-screen overflow-hidden">
           {!conversations.size &&
           !loadingConversations &&
@@ -123,7 +130,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
           ) : (
             <>
               <div className="flex">
-                {size[0] < 700 ? (
+                {size[0] <= TAILWIND_MD_BREAKPOINT ? (
                   <ChevronLeftIcon
                     onClick={() => {
                       setRecipientEnteredValue("");
