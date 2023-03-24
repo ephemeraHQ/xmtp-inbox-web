@@ -28,11 +28,11 @@ const OnboardingPage: NextPage = () => {
     watchAccount(() => resetXmtpState());
   }, []);
 
-  // useEffect(() => {
-  //   if (address && !newAccount && client) {
-  //     router.push("/inbox");
-  //   }
-  // }, [client, address, newAccount]);
+  useEffect(() => {
+    if (address && !newAccount && client) {
+      router.push("/inbox");
+    }
+  }, [client, address, newAccount]);
 
   useEffect(() => {
     if (isDisconnected) {
@@ -50,15 +50,6 @@ const OnboardingPage: NextPage = () => {
 
   return (
     <div className={classNames("h-screen", "w-full", "overflow-auto")}>
-      {!address && !client && (
-        <div
-          className="flex justify-end text-sm font-bold text-p-500 underline cursor-pointer absolute right-4 top-4"
-          onClick={() => {
-            window.open("https://demo.xmtp.chat", "_blank");
-          }}>
-          {t("onboarding.intro_headnote")}
-        </div>
-      )}
       <OnboardingStep
         step={step}
         isLoading={isLoading}

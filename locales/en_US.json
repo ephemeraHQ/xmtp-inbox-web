@@ -1,6 +1,5 @@
 {
   "onboarding": {
-    "intro_headnote": "Try a demo",
     "intro_header": "An interoperable web3 inbox",
     "intro_subheader": "Access all of your XMTP DMs—no matter where you started them.",
     "intro_button": "Connect your wallet",
@@ -45,7 +44,8 @@
     "collapse_header": "Collapse",
     "gallery_header": "Gallery",
     "messages_header": "Messages",
-    "settings_header": "Settings"
+    "settings_header": "Settings",
+    "coming_soon": "Coming soon"
   },
   "status_messaging": {
     "error_1_header": "Sorry, the app encountered an error",

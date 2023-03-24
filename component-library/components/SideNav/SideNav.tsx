@@ -92,6 +92,11 @@ const SideNav = ({
   const mappedButtons = icons.map((icon) => {
     return (
       <button
+        title={
+          icon.key === "Messages" || icon.key === "Collapse"
+            ? (icon.key as string)
+            : (t("menu.coming_soon") as string)
+        }
         key={icon.key}
         type="button"
         onClick={(event) => {
@@ -146,9 +151,6 @@ const SideNav = ({
                         {shortAddress(walletAddress)}
                       </span>
                     )}
-                  </div>
-                  <div>
-                    <ChevronDownIcon width={16} />
                   </div>
                 </div>
               )}

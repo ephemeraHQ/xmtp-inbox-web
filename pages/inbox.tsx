@@ -90,7 +90,8 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
                 isLoading={loadingConversations}
                 messages={
                   (conversations.size === 0 || previewMessages.size === 0) &&
-                  recipientEnteredValue
+                  recipientEnteredValue &&
+                  !loadingConversations
                     ? [<MessagePreviewCardWrapper key="default" />]
                     : Array.from(conversations.values())
                         .sort(orderByLatestMessage)
