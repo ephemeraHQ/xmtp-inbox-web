@@ -56,13 +56,6 @@ export const FullMessage = ({
           "md:max-w-[50%]",
         )}>
         <div className={classNames("flex", "flex-col", "max-w-full")}>
-          {isOutgoingMessage ? (
-            <span className="text-indigo-600 font-bold flex justify-end">
-              {t("messages.you", { ADDRESS: from.displayAddress })}
-            </span>
-          ) : (
-            <span className="font-bold">{`${from.displayAddress}`}</span>
-          )}
           <div
             className={`whitespace-pre-wrap p-2 px-3 rounded-tl-xl rounded-tr-xl my-1 max-w-full break-words text-md ${
               isOutgoingMessage
@@ -73,7 +66,7 @@ export const FullMessage = ({
             {text}
           </div>
           <div
-            className={`text-gray-500 w-full flex mb-4 ${
+            className={`text-xs text-gray-500 w-full flex mb-4 ${
               isOutgoingMessage ? "justify-end" : "justify-start"
             }`}>
             {format(datetime, "h:mm a")}
