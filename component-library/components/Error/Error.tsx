@@ -22,14 +22,20 @@ export const Error = ({ errorText, onConnect }: ErrorProps) => {
     <div className="bg-white flex flex-col justify-center items-center max-w-sm text-center m-auto w-screen p-4 h-screen">
       <ExclamationIcon className="text-red-600" width={82} />
       <div className="mt-2">
-        <h1 className="text-4xl font-bold p-4 pt-0">{t("error.header")}</h1>
+        <h1 className="text-4xl font-bold p-4 pt-0">
+          {t("status_messaging.error_1_header")}
+        </h1>
         <p>
-          <Trans i18nKey={errorText ? errorText : ""} />
+          <Trans
+            i18nKey={
+              errorText ? errorText : "status_messaging.error_1_subheader"
+            }
+          />
         </p>
         <div className="p-2">
           <PillButton
             variant="secondary"
-            label={t("error.connect_again_button")}
+            label={t("status_messaging.error_1_button")}
             onClick={onConnect}
             testId="enable-xmtp-identity-cta"
           />

@@ -58,10 +58,6 @@
     "private_key_note": "No private keys will be shared.",
     "step_of_2": "Step {{NUM}} of 2"
   },
-  "error": {
-    "header": "Something went wrong...",
-    "connect_again_button": "Connect again"
-  },
   "aria_labels": {
     "address_input": "Address input",
     "start_message": "Start new message",
