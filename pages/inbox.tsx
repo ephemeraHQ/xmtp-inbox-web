@@ -86,12 +86,12 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
 
   return (
     <div className="bg-white w-full md:h-full overflow-auto flex flex-col md:flex-row">
-      <div className="flex w-[100%] md:w-[30%]">
+      <div className="flex md:min-w-1/3 md:max-w-md">
         {size[0] > TAILWIND_MD_BREAKPOINT ||
         (!recipientWalletAddress && !startedFirstMessage) ? (
           <>
             <SideNavWrapper />
-            <div className="flex flex-col h-screen overflow-auto fixed left-[3.5rem] w-[calc(100% - 3.5rem)] md:w-[30%]">
+            <div className="flex flex-col w-full h-screen overflow-auto">
               {!loadingConversations && <HeaderDropdownWrapper />}
               <ConversationList
                 hasRecipientEnteredValue={!!recipientEnteredValue}
@@ -119,7 +119,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
       {size[0] > TAILWIND_MD_BREAKPOINT ||
       recipientWalletAddress ||
       startedFirstMessage ? (
-        <div className="flex w-[100%] md:w-[70%] md:ml-[5rem]  flex-col h-screen overflow-hidden">
+        <div className="flex w-full flex-col h-screen overflow-hidden">
           {!conversations.size &&
           !loadingConversations &&
           !startedFirstMessage ? (

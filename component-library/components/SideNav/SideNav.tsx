@@ -5,11 +5,7 @@ import {
   CheckCircleIcon,
   ChevronDoubleRightIcon,
 } from "@heroicons/react/solid";
-import {
-  ChevronDownIcon,
-  CogIcon,
-  SparklesIcon,
-} from "@heroicons/react/outline";
+import { CogIcon, SparklesIcon } from "@heroicons/react/outline";
 import { classNames, shortAddress } from "../../../helpers";
 import { XmtpIcon } from "../Icons/XmtpIcon";
 import { useState } from "react";
@@ -132,7 +128,7 @@ const SideNav = ({
   return (
     <div
       className={classNames(
-        "flex flex-col justify-between items-center h-screen bg-gray-50 px-3 w-fit z-10",
+        "flex flex-col justify-between items-center h-screen bg-gray-50 px-3 absolute z-10",
       )}>
       <div className="flex flex-col items-start space-y-4 w-full">
         <div className="py-4 flex">
@@ -162,7 +158,7 @@ const SideNav = ({
           </div>
         </div>
       </div>
-      <div className="flex justify-start items-center font-bold w-full pb-8">
+      <div className="flex justify-center items-center font-bold w-full pb-8">
         <div
           onClick={onXmtpIconClick}
           onKeyDown={onXmtpIconClick}

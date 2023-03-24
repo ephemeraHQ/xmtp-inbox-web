@@ -70,7 +70,9 @@ export const OnboardingStep = ({
             data-testid={step === 1 && "no-wallet-connected-header"}>
             {t(header)}
           </h1>
-          <p className="text-lg" data-testid={step === 1 && "no-wallet-connected-subheader"}>
+          <p
+            className="text-lg"
+            data-testid={step === 1 && "no-wallet-connected-subheader"}>
             <Trans i18nKey={subheader} />
           </p>
           <div className="p-2">
