@@ -1,12 +1,11 @@
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, useEffect } from "react";
-import { ChatAlt2Icon, ChevronDoubleRightIcon } from "@heroicons/react/solid";
 import {
-  ChevronDownIcon,
-  CogIcon,
-  SparklesIcon,
-} from "@heroicons/react/outline";
-import { CheckCircleIcon } from "@heroicons/react/solid";
+  ChatAlt2Icon,
+  CheckCircleIcon,
+  ChevronDoubleRightIcon,
+} from "@heroicons/react/solid";
+import { CogIcon, SparklesIcon } from "@heroicons/react/outline";
 import { classNames, shortAddress } from "../../../helpers";
 import { XmtpIcon } from "../Icons/XmtpIcon";
 import { useState } from "react";
@@ -110,6 +109,11 @@ const SideNav = ({
   const mappedButtons = icons.map((icon) => {
     return (
       <button
+        title={
+          icon.key === "Messages" || icon.key === "Collapse"
+            ? (icon.key as string)
+            : (t("menu.coming_soon") as string)
+        }
         key={icon.key}
         type="button"
         onClick={(event) => {
@@ -130,6 +134,7 @@ const SideNav = ({
           "h-fit",
           "rounded",
           "cursor-pointer",
+          isOpen ? "w-[300px]" : "",
         )}>
         <>
           <div className="flex justify-center items-center h-fit">
@@ -144,7 +149,7 @@ const SideNav = ({
   return (
     <div
       className={classNames(
-        "flex flex-col justify-between items-center h-screen bg-gray-50 px-2 w-fit",
+        "flex flex-col justify-between items-center h-screen bg-gray-50 px-3 absolute z-10 border-r border-gray-200",
       )}>
       <div className="flex flex-col items-start space-y-4 w-full">
         <div className="py-4 flex">
@@ -165,9 +170,6 @@ const SideNav = ({
                       </span>
                     )}
                   </div>
-                  <div>
-                    <ChevronDownIcon width={16} />
-                  </div>
                 </div>
               )}
             </div>
@@ -177,7 +179,7 @@ const SideNav = ({
           </div>
         </div>
       </div>
-      <div className="flex justify-start items-center font-bold w-full pb-8">
+      <div className="flex justify-center items-center font-bold w-full pb-8">
         <div
           onClick={onXmtpIconClick}
           onKeyDown={onXmtpIconClick}
@@ -190,10 +192,10 @@ const SideNav = ({
       <Transition.Root show={isDialogOpen} as={Fragment}>
         <Dialog
           as="div"
-          className="overflow-y-auto z-10"
-          aria-modal={true}
-          onClose={onXmtpIconClick}>
-          <div className="bg-white w-fit rounded-lg absolute bottom-16 left-12">
+          className="overflow-y-auto"
+          onClose={onXmtpIconClick}
+          aria-label={t("menu.settings") || ""}>
+          <div className="bg-white w-fit rounded-lg absolute bottom-16 left-12 p-2 z-20">
             <div className="max-h-80 overflow-auto">
               {mappedLangs.map(({ displayText, isSelected, lang }) => {
                 return (

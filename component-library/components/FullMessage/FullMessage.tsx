@@ -41,24 +41,22 @@ export const FullMessage = ({
     "bg-indigo-600 text-white rounded-bl-lg";
 
   return (
-    <div className="flex flex-col w-full">
-      {showDateDivider && <DateDivider date={datetime} />}
+    <div
+      className={classNames(
+        "flex flex-col w-full",
+        isOutgoingMessage ? "items-end" : "items-start",
+      )}>
       <div
         className={classNames(
           "flex",
           "flex-col",
-          "max-w-1/2",
-          isOutgoingMessage ? "items-end" : "items-start",
+          "max-w-[80%]",
+          "md:max-w-[50%]",
+          "w-fit",
         )}>
-        <div
-          className={classNames(
-            "flex",
-            "flex-col",
-            isOutgoingMessage ? "items-end" : "items-start",
-            "w-1/2",
-          )}>
+        <div className={classNames("flex", "flex-col", "max-w-full")}>
           <div
-            className={`whitespace-pre-wrap p-2 px-3 rounded-tl-xl rounded-tr-xl my-1 max-w-full break-words ${
+            className={`whitespace-pre-wrap p-2 px-3 rounded-tl-xl rounded-tr-xl my-1 max-w-full break-words text-md pl-3 ${
               isOutgoingMessage
                 ? outgoingMessageBackgroundStyles
                 : incomingMessageBackgroundStyles
@@ -74,6 +72,7 @@ export const FullMessage = ({
           </div>
         </div>
       </div>
+      {showDateDivider && <DateDivider date={datetime} />}
     </div>
   );
 };

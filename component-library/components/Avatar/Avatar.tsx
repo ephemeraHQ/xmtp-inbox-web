@@ -20,7 +20,7 @@ export const Avatar = ({ url, isLoading, address }: AvatarProps) => {
   if (isLoading) {
     return (
       <div className="animate-pulse flex">
-        <div className="rounded-full bg-gray-200 h-10 w-10" />
+        <div className="rounded-full bg-gray-200 h-12 w-12" />
       </div>
     );
   }
@@ -28,9 +28,9 @@ export const Avatar = ({ url, isLoading, address }: AvatarProps) => {
   if (url) {
     return (
       <div data-testid="avatar">
-        <div className="w-10 h-10 rounded-full border border-n-80" />
+        <div className="w-12 h-12 rounded-full border border-n-80" />
         <img
-          className="w-10 h-10 rounded-full z-10 -mt-10"
+          className="w-12 h-12 rounded-full z-10 -mt-10"
           src={url}
           alt={address}
         />

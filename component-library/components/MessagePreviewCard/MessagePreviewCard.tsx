@@ -6,6 +6,7 @@ import { ShortCopySkeletonLoader } from "../Loaders/SkeletonLoaders/ShortCopySke
 import { classNames } from "../../../helpers";
 import { Avatar } from "../Avatar/Avatar";
 import { useTranslation } from "react-i18next";
+import { formatDistanceToNowStrict } from "date-fns";
 
 interface MessagePreviewCard {
   /**
@@ -62,7 +63,7 @@ export const MessagePreviewCard = ({
   return (
     <div
       className={classNames(
-        "flex justify-between items-center border border-t-0 border-gray-200 outline-blue outline-b-0 h-min cursor-pointer",
+        "flex justify-between items-center border-0 border-b border-gray-200 outline-blue outline-b-0 h-min cursor-pointer",
         isSelected ? "bg-gray-200" : "bg-gray-100",
         isLoading ? "px-4 py-2" : "p-4",
       )}
@@ -97,7 +98,7 @@ export const MessagePreviewCard = ({
         {isLoading ? (
           <ShortCopySkeletonLoader />
         ) : (
-          <span className="text-md text-gray-600 line-clamp-1 max-w-[90%] break-all">
+          <span className="text-md text-gray-600 line-clamp-1 w-full break-all">
             {text ?? t("messages.convos_empty_text_placeholder")}
           </span>
         )}
@@ -109,7 +110,7 @@ export const MessagePreviewCard = ({
           className={classNames(
             "text-xs",
             "text-gray-600",
-            "w-1/4",
+            "w-1/3",
             "text-right",
             "ml-4",
             "h-full",

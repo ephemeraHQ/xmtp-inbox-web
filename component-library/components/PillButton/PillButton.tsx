@@ -56,7 +56,7 @@ const colorClassMapping = {
 };
 
 const sizeClassMapping = {
-  large: "text-lg h-12 px-6 py-4",
+  large: "h-12 px-6 py-4",
   small: "text-sm h-8 px-4 py-2",
 };
 

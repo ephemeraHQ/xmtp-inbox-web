@@ -13,7 +13,7 @@ interface EmptyMessageProps {
 export const EmptyMessage = ({ setStartedFirstMessage }: EmptyMessageProps) => {
   const { t } = useTranslation();
   return (
-    <div className="flex flex-col justify-center items-center h-full text-center">
+    <div className="flex flex-col justify-center items-center h-full text-center md:pl-16">
       <span data-testid="empty-message-icon">{emptyMessageSvg} </span>
       <h2 className="text-xl font-bold mt-4" data-testid="empty-message-header">
         {t("messages.convos_empty_header")}

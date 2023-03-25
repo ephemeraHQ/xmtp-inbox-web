@@ -1,7 +1,11 @@
 import React, { useEffect } from "react";
 import useListConversations from "../hooks/useListConversations";
 import { useXmtpStore } from "../store/xmtp";
-import { getConversationId } from "../helpers";
+import {
+  getConversationId,
+  RecipientInputMode,
+  TAILWIND_MD_BREAKPOINT,
+} from "../helpers";
 import { ConversationList } from "../component-library/components/ConversationList/ConversationList";
 import { Conversation } from "@xmtp/xmtp-js";
 import { MessagePreviewCardWrapper } from "../wrappers/MessagePreviewCardWrapper";
@@ -15,10 +19,12 @@ import { LearnMore } from "../component-library/components/LearnMore/LearnMore";
 import router from "next/router";
 import useWindowSize from "../hooks/useWindowSize";
 import { ChevronLeftIcon } from "@heroicons/react/solid";
+import useHandleConnect from "../hooks/useHandleConnect";
 
 export type address = "0x${string}";
 
 const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
+  useHandleConnect();
   useInitXmtpClient();
   // XMTP Store
   const client = useXmtpStore((state) => state.client);
@@ -42,6 +48,10 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   );
   const setRecipientEnteredValue = useXmtpStore(
     (state) => state.setRecipientEnteredValue,
+  );
+
+  const setRecipientInputMode = useXmtpStore(
+    (state) => state.setRecipientInputMode,
   );
 
   const loadingConversations = useXmtpStore(
@@ -76,18 +86,21 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
 
   return (
     <div className="bg-white w-full md:h-full overflow-auto flex flex-col md:flex-row">
-      <div className="flex w-full xl:w-1/3">
-        {size[0] > 700 || (!recipientWalletAddress && !startedFirstMessage) ? (
+      <div className="flex md:w-1/2 md:max-w-md">
+        {size[0] > TAILWIND_MD_BREAKPOINT ||
+        (!recipientWalletAddress && !startedFirstMessage) ? (
           <>
             <SideNavWrapper />
-            <div className="w-full flex flex-col h-screen overflow-auto">
+            <div className="flex flex-col w-full h-screen overflow-auto">
               {!loadingConversations && <HeaderDropdownWrapper />}
               <ConversationList
                 hasRecipientEnteredValue={!!recipientEnteredValue}
                 setStartedFirstMessage={() => setStartedFirstMessage(true)}
                 isLoading={loadingConversations}
                 messages={
-                  conversations.size === 0 && recipientEnteredValue
+                  (conversations.size === 0 || previewMessages.size === 0) &&
+                  recipientEnteredValue &&
+                  !loadingConversations
                     ? [<MessagePreviewCardWrapper key="default" />]
                     : Array.from(conversations.values())
                         .sort(orderByLatestMessage)
@@ -103,36 +116,42 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
           </>
         ) : null}
       </div>
-      <div className="flex w-full flex-col h-screen overflow-hidden">
-        {!conversations.size &&
-        !loadingConversations &&
-        !startedFirstMessage ? (
-          <LearnMore
-            version={"replace"}
-            setStartedFirstMessage={() => setStartedFirstMessage(true)}
-          />
-        ) : (
-          <>
-            <div className="flex">
-              {size[0] < 700 ? (
-                <ChevronLeftIcon
-                  onClick={() => {
-                    setRecipientWalletAddress("");
-                    setStartedFirstMessage(false);
-                    setConversationId("");
-                  }}
-                  width={32}
-                />
-              ) : null}
-              <AddressInputWrapper />
-            </div>
-            <div className="h-full overflow-auto flex flex-col">
-              <FullConversationWrapper />
-            </div>
-            <MessageInputWrapper />
-          </>
-        )}
-      </div>
+      {size[0] > TAILWIND_MD_BREAKPOINT ||
+      recipientWalletAddress ||
+      startedFirstMessage ? (
+        <div className="flex w-full flex-col h-screen overflow-hidden">
+          {!conversations.size &&
+          !loadingConversations &&
+          !startedFirstMessage ? (
+            <LearnMore
+              version={"replace"}
+              setStartedFirstMessage={() => setStartedFirstMessage(true)}
+            />
+          ) : (
+            <>
+              <div className="flex">
+                {size[0] <= TAILWIND_MD_BREAKPOINT ? (
+                  <ChevronLeftIcon
+                    onClick={() => {
+                      setRecipientEnteredValue("");
+                      setRecipientWalletAddress("");
+                      setStartedFirstMessage(false);
+                      setConversationId("");
+                      setRecipientInputMode(RecipientInputMode.InvalidEntry);
+                    }}
+                    width={32}
+                  />
+                ) : null}
+                <AddressInputWrapper />
+              </div>
+              <div className="h-full overflow-auto flex flex-col">
+                <FullConversationWrapper />
+              </div>
+              <MessageInputWrapper />
+            </>
+          )}
+        </div>
+      ) : null}
     </div>
   );
 };
