@@ -199,7 +199,7 @@ const SideNav = ({
             <div className="max-h-80 overflow-auto">
               {mappedLangs.map(({ displayText, isSelected, lang }) => {
                 return (
-                  <div className="flex p-2 justify-between">
+                  <div className="flex p-2 justify-between" key={lang}>
                     <button
                       type="button"
                       onClick={() => {

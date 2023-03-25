@@ -2,9 +2,6 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { InfoCard } from "./InfoCard";
 import { InfoCardIcon } from "./iconMapping";
-import { useTranslation } from "react-i18next";
-
-const { t } = useTranslation();
 
 export default {
   title: "InfoCard",
@@ -34,16 +31,18 @@ const Template: ComponentStory<typeof InfoCard> = (args) => (
 export const InfoCardNoArrow = Template.bind({});
 InfoCardNoArrow.args = {
   leftIcon: InfoCardIcon.NEW_MESSAGE,
-  header: t("messages.messages_empty_cta_1_header"),
-  subtext: t("messages.messages_empty_cta_1_subheader"),
+  header: "Send a new message",
+  subtext:
+    "Find an existing contact or message someone using their wallet address or ENS address",
   onClick: undefined,
 };
 
 export const InfoCardWithArrow = Template.bind({});
 InfoCardWithArrow.args = {
   leftIcon: InfoCardIcon.NEW_MESSAGE,
-  header: t("messages.messages_empty_cta_1_header"),
-  subtext: t("messages.messages_empty_cta_1_subheader"),
+  header: "Send a new message",
+  subtext:
+    "Find an existing contact or message someone using their wallet address or ENS address",
   onClick: () => {},
 };
 

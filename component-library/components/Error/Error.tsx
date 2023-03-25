@@ -3,13 +3,12 @@ import { PillButton } from "../PillButton/PillButton";
 import { useTranslation } from "react-i18next";
 import { Trans } from "react-i18next";
 import { ExclamationIcon } from "@heroicons/react/solid";
-import { DefaultTFuncReturn } from "i18next";
 
 interface ErrorProps {
   /**
    * What is the error?
    */
-  errorText?: DefaultTFuncReturn | string;
+  errorText?: string;
   /**
    * What function should be run to connect to a wallet?
    */

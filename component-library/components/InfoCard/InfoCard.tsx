@@ -4,17 +4,16 @@ import { classNames } from "../../../helpers";
 import { ShortCopySkeletonLoader } from "../Loaders/SkeletonLoaders/ShortCopySkeletonLoader";
 import { IconSkeletonLoader } from "../Loaders/SkeletonLoaders/IconSkeletonLoader";
 import { iconMapping, InfoCardIcon } from "./iconMapping";
-import { DefaultTFuncReturn } from "i18next";
 
 interface InfoCardProps {
   /**
    * What is the header text?
    */
-  header: DefaultTFuncReturn | string;
+  header: string;
   /**
    * What is the optional subtext?
    */
-  subtext?: DefaultTFuncReturn | string;
+  subtext?: string;
   /**
    * What enum for the left icon should we use to map to its corresponding icon?
    */

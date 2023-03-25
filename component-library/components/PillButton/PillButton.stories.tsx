@@ -1,15 +1,12 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { PillButton } from "./PillButton";
-import { useTranslation } from "react-i18next";
-
-const { t } = useTranslation();
 
 export default {
   title: "PillButton",
   component: PillButton,
   argTypes: {
-    label: { control: "text", defaultValue: t("onboarding.intro_button") },
+    label: { control: "text", defaultValue: "Connect your wallet" },
     icon: { control: false },
     variant: { control: false },
   },

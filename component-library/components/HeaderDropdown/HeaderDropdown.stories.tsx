@@ -2,9 +2,6 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { HeaderDropdown } from "./HeaderDropdown";
-import { useTranslation } from "react-i18next";
-
-const { t } = useTranslation();
 
 export default {
   title: "HeaderDropdown",
@@ -28,6 +25,6 @@ HeaderDropdownOpenDefault.args = {
 
 export const HeaderDropdownDifferentOption = Template.bind({});
 HeaderDropdownDifferentOption.args = {
-  defaultSelected: t("messages.filter_requests"),
+  defaultSelected: "Message requests",
   onChange: () => {},
 };

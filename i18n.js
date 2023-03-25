@@ -3,7 +3,7 @@ import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import backend from "i18next-http-backend";
 
-import { format as formatDate, isDate, formatDistance } from "date-fns";
+import { format as formatDate, isDate, formatDistanceStrict } from "date-fns";
 import * as locales from "date-fns/locale"; // import all locales we need
 
 // Get translated JSON files from locales folder so we don't need to import here individually
@@ -44,7 +44,7 @@ i18next
             return formatDate(value, "h:mm a", { locale });
           }
           if (format === "ago")
-            return formatDistance(value, new Date(), {
+            return formatDistanceStrict(value, new Date(), {
               locale,
               addSuffix: true,
             });

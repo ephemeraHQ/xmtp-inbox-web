@@ -2,9 +2,6 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { AddressInput } from "./AddressInput";
-import { useTranslation } from "react-i18next";
-
-const { t } = useTranslation();
 
 export default {
   title: "AddressInput",
@@ -23,7 +20,7 @@ const Template: ComponentStory<typeof AddressInput> = (args) => (
 
 export const AddressInputDefault = Template.bind({});
 AddressInputDefault.args = {
-  subtext: t("messages.address_field_invalid"),
+  subtext: "Please enter a valid wallet address",
 };
 
 export const AddressInputResolvedAddress = Template.bind({});
@@ -36,12 +33,12 @@ AddressInputResolvedAddress.args = {
 
 export const AddressInputLoading = Template.bind({});
 AddressInputLoading.args = {
-  subtext: t("messages.address_field_loading"),
+  subtext: "Fetching ENS address...",
   isLoading: true,
 };
 
 export const AddressInputError = Template.bind({});
 AddressInputError.args = {
-  subtext: t("messages.address_field_not_on_network"),
+  subtext: "Error fetching address",
   isError: true,
 };

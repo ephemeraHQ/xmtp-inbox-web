@@ -48,6 +48,7 @@ export const FullMessage = ({
       )}>
       <div
         className={classNames(
+          "text-sm",
           "flex",
           "flex-col",
           "max-w-[80%]",

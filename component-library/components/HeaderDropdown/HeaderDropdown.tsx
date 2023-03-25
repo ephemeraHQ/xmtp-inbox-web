@@ -5,7 +5,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { classNames } from "../../../helpers";
 import { IconButton } from "../IconButton/IconButton";
 import { useTranslation } from "react-i18next";
-import i18next, { DefaultTFuncReturn } from "i18next";
+import i18next from "i18next";
 
 interface HeaderDropdownProps {
   /**
@@ -15,7 +15,7 @@ interface HeaderDropdownProps {
   /**
    * What is currently selected?
    */
-  defaultSelected?: DefaultTFuncReturn | string;
+  defaultSelected?: string;
   /**
    * What happens on change?
    */

@@ -1,15 +1,12 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { GhostButton } from "./GhostButton";
-import { useTranslation } from "react-i18next";
-
-const { t } = useTranslation();
 
 export default {
   title: "GhostButton",
   component: GhostButton,
   argTypes: {
-    label: { control: "text", defaultValue: t("common.disconnect") },
+    label: { control: "text", defaultValue: "Disconnect wallet" },
     icon: { control: false },
     variant: { control: false },
   },
