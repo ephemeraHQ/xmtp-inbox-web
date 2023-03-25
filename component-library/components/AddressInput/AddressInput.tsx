@@ -4,6 +4,7 @@ import { InformationCircleIcon } from "@heroicons/react/outline";
 import { classNames } from "../../../helpers";
 import { ShortCopySkeletonLoader } from "../Loaders/SkeletonLoaders/ShortCopySkeletonLoader";
 import { useTranslation } from "react-i18next";
+import { DefaultTFuncReturn } from "i18next";
 interface AddressInputProps {
   /**
    * What, if any, resolved address is there?
@@ -15,7 +16,7 @@ interface AddressInputProps {
   /**
    * What, if any, subtext is there?
    */
-  subtext?: string;
+  subtext?: DefaultTFuncReturn | string;
   /**
    * What are the props associated with the avatar?
    */
