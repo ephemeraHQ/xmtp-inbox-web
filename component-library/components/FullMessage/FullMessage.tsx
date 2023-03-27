@@ -1,5 +1,4 @@
 import React from "react";
-import { format } from "date-fns";
 import { DateDivider } from "../DateDivider/DateDivider";
 import { classNames } from "../../../helpers";
 import { useTranslation } from "react-i18next";
@@ -70,7 +69,7 @@ export const FullMessage = ({
             className={`text-xs text-gray-500 w-full flex mb-4 ${
               isOutgoingMessage ? "justify-end" : "justify-start"
             }`}>
-            {format(datetime, "h:mm a")}
+            {t("{{datetime, time}}", { datetime })}
           </div>
         </div>
       </div>

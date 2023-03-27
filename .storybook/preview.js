@@ -2,6 +2,7 @@ import "../styles/globals.css";
 import i18n from "../i18n";
 import React, { Suspense, useEffect } from "react";
 import { I18nextProvider } from "react-i18next";
+import { resourceMap } from "../i18n";
 
 const withI18next = (Story, context) => {
   const { locale } = context.globals;
@@ -27,7 +28,13 @@ export const globalTypes = {
     description: "Internationalization locale",
     toolbar: {
       icon: "globe",
-      items: [{ value: "en", title: "English" }],
+      items: Object.keys(resourceMap).map((lang) => {
+        return {
+          value: lang,
+          title: new Intl.DisplayNames(["en"], { type: "language" }).of(lang),
+        };
+      }),
+
       showName: true,
     },
   },

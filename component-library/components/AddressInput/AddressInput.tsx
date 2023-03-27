@@ -4,6 +4,7 @@ import { InformationCircleIcon } from "@heroicons/react/outline";
 import { classNames } from "../../../helpers";
 import { ShortCopySkeletonLoader } from "../Loaders/SkeletonLoaders/ShortCopySkeletonLoader";
 import { useTranslation } from "react-i18next";
+
 interface AddressInputProps {
   /**
    * What, if any, resolved address is there?

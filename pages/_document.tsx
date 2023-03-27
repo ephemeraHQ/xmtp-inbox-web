@@ -1,3 +1,4 @@
+import i18next from "../i18n";
 import Document, {
   Html,
   Head,
@@ -14,7 +15,7 @@ class AppDocument extends Document {
 
   render() {
     return (
-      <Html className="h-screen w-screen bg-white" lang="en">
+      <Html className="h-screen w-screen bg-white" lang={i18next.language}>
         <Head>
           <meta name="description" content="Chat via XMTP" />
           <link rel="icon" href="/favicon.ico" />
