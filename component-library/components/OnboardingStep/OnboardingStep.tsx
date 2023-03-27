@@ -57,11 +57,11 @@ export const OnboardingStep = ({
         {isLoading ? (
           <Spinner />
         ) : (
-          <div data-testid="xmtp-logo" className="h-1/2 scale-[2]">
+          <div data-testid="xmtp-logo" className="h-1/2 md:scale-[2]">
             <Logo />
           </div>
         )}
-        <div className="mt-0 z-50">
+        <div className="mt-[-100px] md:mt-0 z-50">
           {step > 1 ? (
             <p className="pt-4">{t("common.step_of_2", { NUM: step - 1 })}</p>
           ) : null}
