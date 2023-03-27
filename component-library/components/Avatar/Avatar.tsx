@@ -28,12 +28,7 @@ export const Avatar = ({ url, isLoading, address }: AvatarProps) => {
   if (url) {
     return (
       <div data-testid="avatar">
-        <div className="w-12 h-12 rounded-full border border-n-80" />
-        <img
-          className="w-12 h-12 rounded-full z-10 -mt-10"
-          src={url}
-          alt={address}
-        />
+        <img className="w-[60px] rounded-full" src={url} alt={address} />
       </div>
     );
   }
