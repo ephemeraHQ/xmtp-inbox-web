@@ -83,7 +83,7 @@ export const MessagePreviewCard = ({
         />
       </div>
       <div className="flex flex-col items-start w-3/4">
-        {conversationDomain && (
+        {!isLoading && conversationDomain && (
           <div className="text-sm mb-1 text-white px-2 rounded-lg bg-indigo-600">
             {conversationDomain}
           </div>
