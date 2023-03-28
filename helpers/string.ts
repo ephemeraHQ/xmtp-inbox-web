@@ -1,4 +1,5 @@
 import { Conversation } from "@xmtp/xmtp-js";
+import { ALLOWED_ENS_SUFFIXES } from "./constants";
 
 export const truncate = (str: string | undefined, length: number): string => {
   if (!str) {
@@ -10,11 +11,36 @@ export const truncate = (str: string | undefined, length: number): string => {
   return str;
 };
 
+
+export const formatDate = (d: Date | undefined): string =>
+  d ? d.toLocaleDateString("en-US") : "";
+
+export const formatTime = (d: Date | undefined): string =>
+  d
+    ? d
+        .toLocaleTimeString(undefined, {
+          hour12: true,
+          hour: "numeric",
+          minute: "2-digit",
+        })
+        // ICU 72.1 may use different unicode space characters
+        .replace(/\u202f|\u2009/g, " ")
+    : "";
+
+export const isEnsAddress = (address: string): boolean => {
+  // Bail out early if empty string or a string without any dots
+  if (!address || !address.includes(".")) {
+    return false;
+  }
+
+  return ALLOWED_ENS_SUFFIXES.some((suffix) => address.endsWith(suffix));
+};
+
 export const isValidRecipientAddressFormat = (
   recipientWalletAddress: string,
 ) => {
   return (
-    recipientWalletAddress?.endsWith(".eth") ||
+    isEnsAddress(recipientWalletAddress) ||
     (recipientWalletAddress?.startsWith("0x") &&
       recipientWalletAddress?.length === 42)
   );
@@ -25,10 +51,6 @@ export const isValidLongWalletAddress = (recipientWalletAddress: string) => {
     recipientWalletAddress?.startsWith("0x") &&
     recipientWalletAddress?.length === 42
   );
-};
-
-export const isEnsAddress = (address: string): boolean => {
-  return address.endsWith(".eth");
 };
 
 export const shortAddress = (addr: string): string =>
