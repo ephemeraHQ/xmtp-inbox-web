@@ -76,6 +76,16 @@ Specifically, the user must provide two signatures using their connected blockch
 
 The XMTP Inbox app uses the `xmtp-js` [Conversations](https://github.com/xmtp/xmtp-js#conversations) abstraction to list the available conversations for a connected wallet and to listen for or create new conversations. For each conversation, the app gets existing messages and listens for or creates new messages. Conversations and messages are kept in a lightweight store and made available through `XmtpProvider`.
 
+### Accessibility
+
+XMTP Inbox is built with Web Content Accessibility Guidelines (WCAG) AA compliance guidelines in mind.
+
+To learn more about WCAG and building accessible web apps, see [WCAG 2 Overview](https://www.w3.org/WAI/standards-guidelines/wcag/).
+
+### Localization
+
+XMTP Inbox supports localization. If you'd like to contribute a translation of XMTP Inbox UI text, use the existing JSON files in the [`locales` folder](locales) as a starting point. Then, add your translated JSON file to the `locales` folder.
+
 ### Tests
 
 Tests will be run with any pull request. To run tests locally, you may use the following commands:
