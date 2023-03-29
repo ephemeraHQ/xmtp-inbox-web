@@ -53,7 +53,7 @@ export const OnboardingStep = ({
     const { header, subheader, cta, subtext } = stepInfo;
 
     return (
-      <div className="bg-white flex flex-col justify-center items-center max-w-sm text-center m-auto w-screen p-4 h-screen">
+      <div className="bg-white flex flex-col justify-center items-center max-w-lg text-center m-auto w-screen p-4 h-screen">
         {isLoading ? (
           <Spinner />
         ) : (
@@ -75,7 +75,7 @@ export const OnboardingStep = ({
             data-testid={step === 1 && "no-wallet-connected-subheader"}>
             <Trans i18nKey={subheader} />
           </p>
-          <div className="p-2">
+          <div>
             {cta === ctaStep.ENABLE ? (
               <PillButton
                 label={t("onboarding.enable_button")}
@@ -96,20 +96,21 @@ export const OnboardingStep = ({
               />
             ) : null}
           </div>
-          {subtext ? (
-            <p
-              className="font-bold text-md text-gray-500"
-              data-testid={step === 1 && "no-wallet-connected-subtext"}>
-              {t(subtext)}
-            </p>
-          ) : (
+          {step > 1 ? (
             <GhostButton
               onClick={onDisconnect}
               label={t("common.disconnect")}
               variant="secondary"
               icon={<DisconnectIcon />}
             />
-          )}
+          ) : null}
+          {subtext ? (
+            <p
+              className="font-bold text-md text-gray-500"
+              data-testid={step === 1 && "no-wallet-connected-subtext"}>
+              {t(subtext)}
+            </p>
+          ) : null}
         </div>
       </div>
     );
