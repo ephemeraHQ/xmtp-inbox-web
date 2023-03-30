@@ -53,7 +53,7 @@ export const OnboardingStep = ({
     const { header, subheader, cta, subtext } = stepInfo;
 
     return (
-      <div className="bg-white flex flex-col justify-center items-center max-w-lg text-center m-auto w-screen p-4 h-screen">
+      <div className="bg-white flex flex-col justify-center items-center max-w-sm text-center m-auto w-screen p-4 h-screen">
         {isLoading ? (
           <Spinner />
         ) : (
