@@ -12,12 +12,14 @@ export const stepMapping: Record<
       subheader: string;
       cta: ctaStep;
       subtext?: string | null;
+      disconnect_tip?: string | null;
     };
     loading: {
       header: string;
       subheader: string;
       cta: ctaStep | null;
       subtext?: string | null;
+      disconnect_tip?: string | null;
     };
   }
 > = {
@@ -40,13 +42,15 @@ export const stepMapping: Record<
       header: "onboarding.create_header",
       subheader: "onboarding.create_subheader",
       cta: ctaStep.CREATE,
-      subtext: "common.disconnect_tip",
+      subtext: null,
+      disconnect_tip: "common.disconnect_tip",
     },
     loading: {
       header: "onboarding.creating_header",
       subheader: "onboarding.creating_subheader",
       cta: null,
-      subtext: "common.disconnect_tip",
+      subtext: null,
+      disconnect_tip: "common.disconnect_tip",
     },
   },
   3: {
@@ -54,13 +58,15 @@ export const stepMapping: Record<
       header: "onboarding.enable_header",
       subheader: "onboarding.enable_subheader",
       cta: ctaStep.ENABLE,
-      subtext: "common.disconnect_tip",
+      subtext: null,
+      disconnect_tip: "common.disconnect_tip",
     },
     loading: {
       header: "onboarding.enabling_header",
       subheader: "onboarding.enabling_subheader",
       cta: null,
-      subtext: "common.disconnect_tip",
+      subtext: null,
+      disconnect_tip: "common.disconnect_tip",
     },
   },
 };

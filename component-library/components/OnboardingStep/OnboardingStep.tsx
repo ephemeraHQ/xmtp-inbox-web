@@ -5,8 +5,7 @@ import { GhostButton } from "../GhostButton/GhostButton";
 import { DisconnectIcon } from "../Icons/DisconnectIcon";
 import { logoSvg as Logo } from "./logo";
 import { PillButton } from "../PillButton/PillButton";
-import { useTranslation } from "react-i18next";
-import { Trans } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 
 interface OnboardingStepProps {
   /**
@@ -50,7 +49,7 @@ export const OnboardingStep = ({
     : stepMapping[step]?.default;
 
   if (stepInfo) {
-    const { header, subheader, cta, subtext } = stepInfo;
+    const { header, subheader, cta, subtext, disconnect_tip } = stepInfo;
 
     return (
       <div className="bg-white flex flex-col justify-center items-center max-w-sm text-center m-auto w-screen p-4 h-screen">
@@ -112,6 +111,13 @@ export const OnboardingStep = ({
             </p>
           ) : null}
         </div>
+        {disconnect_tip ? (
+          <div className="text-md mt-2">
+            <Trans data-testid={step === 1 && "disconnect_tip"}>
+              {t(disconnect_tip)}
+            </Trans>
+          </div>
+        ) : null}
       </div>
     );
   } else {
