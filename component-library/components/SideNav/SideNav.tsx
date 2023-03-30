@@ -100,7 +100,7 @@ const SideNav = ({
     <ChevronDoubleRightIcon
       key={t("menu.collapse_header")}
       width={24}
-      className={isOpen ? "mr-4" : ""}
+      className={isOpen ? "mr-4 rotate-180" : ""}
       data-testid="collapse-icon"
     />,
   ];
@@ -141,8 +141,11 @@ const SideNav = ({
         {(icon.key === t("menu.gallery_header") ||
           icon.key === t("menu.settings_header")) && (
           <div
-            className="group-hover:opacity-100 w-max transition-opacity bg-gray-800 p-2 text-sm text-gray-100 rounded-md absolute left-[80px]
-    -translate-x-1/2 translate-y-full opacity-0 m-4 mx-auto z-[100]">
+            role="tooltip"
+            className={classNames(
+              "group-hover:opacity-100 w-max transition-opacity bg-gray-800 p-2 text-sm text-gray-100 rounded-md absolute opacity-0 m-4 mx-auto z-20",
+              isOpen ? "left-32" : "left-10",
+            )}>
             {t("menu.coming_soon")}
           </div>
         )}
@@ -164,7 +167,7 @@ const SideNav = ({
         "z-10",
         "border-r",
         "border-gray-200",
-        !isOpen ? "w-[60px] overflow-hidden" : "",
+        !isOpen ? "w-[64px]" : "",
       )}>
       <div className="flex flex-col items-start space-y-4 w-fit">
         <div className="py-4 flex">
