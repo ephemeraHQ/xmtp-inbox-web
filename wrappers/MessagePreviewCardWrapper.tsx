@@ -3,9 +3,9 @@ import React from "react";
 import { useEnsAvatar, useEnsName } from "wagmi";
 import { MessagePreviewCard } from "../component-library/components/MessagePreviewCard/MessagePreviewCard";
 import { getConversationId, shortAddress } from "../helpers";
-import useGetRecipientInputMode from "../hooks/useGetRecipientInputMode";
 import { address } from "../pages/inbox";
 import { useXmtpStore } from "../store/xmtp";
+import useGetConversationId from "../hooks/useGetConversationId";
 
 interface MessagePreviewCardWrapperProps {
   convo?: Conversation;
@@ -25,7 +25,7 @@ export const MessagePreviewCardWrapper = ({
   const previewMessage = previewMessages.get(getConversationId(convo));
 
   // XMTP Hooks
-  const { conversationId } = useGetRecipientInputMode();
+  const { conversationId } = useGetConversationId();
 
   // Get ENS name and avatar from Wagmi
   const { data: previewEnsName } = useEnsName({
