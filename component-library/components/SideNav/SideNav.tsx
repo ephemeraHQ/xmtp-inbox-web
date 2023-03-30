@@ -100,7 +100,7 @@ const SideNav = ({
     <ChevronDoubleRightIcon
       key={t("menu.collapse_header")}
       width={24}
-      className={isOpen ? "mr-4" : ""}
+      className={isOpen ? "mr-4 rotate-180" : ""}
       data-testid="collapse-icon"
     />,
   ];
@@ -108,42 +108,48 @@ const SideNav = ({
 
   const mappedButtons = icons.map((icon) => {
     return (
-      <button
-        title={
-          icon.key === t("menu.messages_header") ||
-          icon.key === t("menu.collapse_header")
-            ? (icon.key as string)
-            : (t("menu.coming_soon") as string)
-        }
-        key={icon.key}
-        type="button"
-        onClick={(event) => {
-          setCurrentIcon((event.target as HTMLElement).innerText);
-          onSideNavBtnClick(icon.key as string);
-        }}
-        aria-label={icon.key as string}
-        className={classNames(
-          currentIcon === icon.key ? "font-bold" : "",
-          "hover:bg-gray-200",
-          "p-2",
-          "hover:text-black",
-          "text-gray-500",
-          "rounded-lg",
-          "w-full",
-          "flex",
-          "item-center",
-          "h-fit",
-          "rounded",
-          "cursor-pointer",
-          isOpen ? "w-[300px]" : "",
-        )}>
-        <>
-          <div className="flex justify-center items-center h-fit">
-            {icon}
-            <span data-testId={icon.key}>{isOpen && icon.key}</span>
+      <div className="group flex relative" key={icon.key}>
+        <button
+          type="button"
+          onClick={(event) => {
+            setCurrentIcon((event.target as HTMLElement).innerText);
+            onSideNavBtnClick(icon.key as string);
+          }}
+          aria-label={icon.key as string}
+          className={classNames(
+            currentIcon === icon.key ? "font-bold" : "",
+            "hover:bg-gray-200",
+            "p-2",
+            "hover:text-black",
+            "text-gray-500",
+            "rounded-lg",
+            "w-full",
+            "flex",
+            "item-center",
+            "h-fit",
+            "rounded",
+            "cursor-pointer",
+            isOpen ? "w-[300px]" : "",
+          )}>
+          <>
+            <div className="flex justify-center items-center h-fit">
+              {icon}
+              <span data-testId={icon.key}>{isOpen && icon.key}</span>
+            </div>
+          </>
+        </button>
+        {(icon.key === t("menu.gallery_header") ||
+          icon.key === t("menu.settings_header")) && (
+          <div
+            role="tooltip"
+            className={classNames(
+              "group-hover:opacity-100 w-max transition-opacity bg-gray-800 p-2 text-sm text-gray-100 rounded-md absolute opacity-0 m-4 mx-auto z-20",
+              isOpen ? "left-32" : "left-10",
+            )}>
+            {t("menu.coming_soon")}
           </div>
-        </>
-      </button>
+        )}
+      </div>
     );
   });
 
@@ -161,7 +167,7 @@ const SideNav = ({
         "z-10",
         "border-r",
         "border-gray-200",
-        !isOpen ? "w-[60px] overflow-hidden" : "",
+        !isOpen ? "w-[64px]" : "",
       )}>
       <div className="flex flex-col items-start space-y-4 w-fit">
         <div className="py-4 flex">
