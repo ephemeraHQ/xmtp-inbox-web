@@ -2,6 +2,7 @@ import React, { ChangeEvent, useLayoutEffect, useRef } from "react";
 import { ArrowUpIcon } from "@heroicons/react/solid";
 import { IconButton } from "../IconButton/IconButton";
 import { classNames } from "../../../helpers";
+import { useTranslation } from "react-i18next";
 
 interface InputProps {
   /**
@@ -15,18 +16,19 @@ interface InputProps {
 }
 
 export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
+  const { t } = useTranslation();
   let textAreaRef = useRef<HTMLTextAreaElement>(null);
   const [value, setValue] = React.useState("");
   const onChange = (event: ChangeEvent<HTMLTextAreaElement>) =>
     setValue(event.target.value);
   const borderStyles =
-    "border border-gray-300 focus-within:border-1 focus-within:border-indigo-600 rounded-tl-2xl rounded-bl-2xl rounded-tr-2xl";
+    "border border-gray-300 focus-within:border-1 focus-within:border-indigo-600 rounded-tl-3xl rounded-bl-3xl rounded-tr-3xl";
   const textAreaStyles = `${
     textAreaRef?.current?.scrollHeight &&
     textAreaRef?.current?.scrollHeight <= 32
       ? "max-h-8"
       : "max-h-40"
-  } min-h-8 outline-none border-none focus:ring-0 resize-none mr-0 mx-4 p-1 w-full text-md text-gray-900`;
+  } min-h-8 outline-none border-none focus:ring-0 resize-none mx-2 p-1 w-full text-md text-gray-900`;
 
   useLayoutEffect(() => {
     const MIN_TEXTAREA_HEIGHT = 32;
@@ -44,18 +46,24 @@ export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
   return (
     <form>
       <label htmlFor="chat" className="sr-only">
-        Type something...
+        {t("messages.message_field_prompt")}
       </label>
       <div
         className={classNames(
           "flex",
-          value ? "items-end" : "items-center",
+          "items-center",
           "max-h-300",
-          "m-4",
+          "mx-4 my-2 mb-6",
+          "bg-white",
+          "relative",
+          "no-scrollbar",
+          "z-10",
+          "p-1",
           borderStyles,
         )}>
         <textarea
           id="chat"
+          data-testid="message-input"
           onChange={onChange}
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey) {
@@ -69,22 +77,23 @@ export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
           ref={textAreaRef}
           rows={1}
           className={textAreaStyles}
-          placeholder="Type something..."
+          placeholder={t("messages.message_field_prompt") || ""}
           value={value}
           disabled={isDisabled}
         />
-        <div className="flex items-center p-1">
+        <div className="flex items-end absolute bottom-1.5 right-1">
           <IconButton
+            testId="message-input-submit"
             variant="secondary"
-            label={<ArrowUpIcon color="white" width="12" />}
-            srText="Submit Message"
+            label={<ArrowUpIcon color="white" width="20" />}
+            srText={t("aria_labels.submit_message") || ""}
             onClick={() => {
               if (value) {
                 onSubmit?.(value);
                 setValue("");
               }
             }}
-            isDisabled={isDisabled}
+            isDisabled={!value || isDisabled}
           />
         </div>
       </div>

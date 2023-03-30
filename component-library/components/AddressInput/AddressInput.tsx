@@ -3,6 +3,7 @@ import { Avatar } from "../Avatar/Avatar";
 import { InformationCircleIcon } from "@heroicons/react/outline";
 import { classNames } from "../../../helpers";
 import { ShortCopySkeletonLoader } from "../Loaders/SkeletonLoaders/ShortCopySkeletonLoader";
+import { useTranslation } from "react-i18next";
 
 interface AddressInputProps {
   /**
@@ -59,19 +60,22 @@ export const AddressInput = ({
   onTooltipClick,
   value,
 }: AddressInputProps) => {
-  const subtextColor = isError ? "text-red-400" : "text-gray-400";
+  const { t } = useTranslation();
+  const subtextColor = isError ? "text-red-600" : "text-gray-400";
   return (
-    <div className="flex px-4 py-3 border border-gray-100 border-l-0 z-10 max-h-sm w-full">
+    <div className="flex px-2 md:px-4 py-3 border-b border-gray-100 border-l-0 z-10 max-h-sm w-full h-16">
       <form
         className="flex w-full items-center"
         onSubmit={(e) => e.preventDefault()}>
         <Avatar {...avatarUrlProps} />
-        <div className="ml-4 flex flex-col justify-center">
+        <div className="ml-2 md:ml-4 flex flex-col justify-center">
           {isLoading ? (
             <ShortCopySkeletonLoader lines={1} />
           ) : resolvedAddress?.displayAddress ? (
-            <div className="flex flex-col text-md">
-              <span className="font-bold h-4 m-1">
+            <div className="flex flex-col text-md py-1">
+              <span
+                className="font-bold h-4 mb-2 ml-0"
+                data-testid="recipient-wallet-address">
                 {resolvedAddress.displayAddress}
               </span>
               {resolvedAddress.walletAddress && (
@@ -82,21 +86,26 @@ export const AddressInput = ({
             </div>
           ) : (
             <input
-              className="text-gray-700 h-4 m-1 font-mono text-sm w-full leading-tight border-none focus:ring-0 cursor-text"
+              data-testid="message-to-input"
+              tabIndex={0}
+              className="text-gray-700 px-0 h-4 m-2 ml-0 font-mono text-sm w-full leading-tight border-none focus:ring-0 cursor-text"
               id="address"
-              type="text"
+              type="search"
               spellCheck="false"
-              autoComplete="false"
+              autoComplete="off"
               autoCorrect="false"
               autoCapitalize="off"
               onChange={(e) =>
                 onChange && onChange((e.target as HTMLInputElement).value)
               }
               value={value}
+              aria-label={t("aria_labels.address_input") || ""}
             />
           )}
-          <p className={classNames("font-mono", "text-sm", subtextColor)}>
-            {subtext}
+          <p
+            className={classNames("font-mono", "text-sm", subtextColor)}
+            data-testid="message-to-subtext">
+            {t(subtext || "")}
           </p>
         </div>
       </form>
