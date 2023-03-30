@@ -110,7 +110,8 @@ const SideNav = ({
     return (
       <button
         title={
-          icon.key === "Messages" || icon.key === "Collapse"
+          icon.key === t("menu.messages_header") ||
+          icon.key === t("menu.collapse_header")
             ? (icon.key as string)
             : (t("menu.coming_soon") as string)
         }
