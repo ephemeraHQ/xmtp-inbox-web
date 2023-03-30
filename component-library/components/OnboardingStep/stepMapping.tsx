@@ -44,6 +44,7 @@ export const stepMapping: Record<
       cta: ctaStep.CREATE,
       subtext: null,
       disconnect_tip: "common.disconnect_tip",
+      subtext: "common.disconnect_tip",
     },
     loading: {
       header: "onboarding.creating_header",
