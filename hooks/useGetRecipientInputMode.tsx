@@ -1,5 +1,5 @@
 import { fetchEnsAddress } from "@wagmi/core";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   getConversationId,
   isEnsAddress,
@@ -8,7 +8,7 @@ import {
 } from "../helpers";
 import { address } from "../pages/inbox";
 import { useXmtpStore } from "../store/xmtp";
-import useWalletAddress from "./useWalletAddress";
+import useGetConversationId from "./useGetConversationId";
 
 const useGetRecipientInputMode = () => {
   const client = useXmtpStore((state) => state.client);
@@ -18,8 +18,7 @@ const useGetRecipientInputMode = () => {
   const setRecipientWalletAddress = useXmtpStore(
     (state) => state.setRecipientWalletAddress,
   );
-  const storeConversationId =
-    useXmtpStore((state) => state.conversationId) || "";
+  const { conversationId } = useGetConversationId();
 
   const recipientInputMode = useXmtpStore((state) => state.recipientInputMode);
   const setRecipientInputMode = useXmtpStore(
@@ -41,10 +40,6 @@ const useGetRecipientInputMode = () => {
   //   // Current conversation by conversation ID
   //   // Since conversationId can be set to an ENS name, we reset it below for those cases to pull from the ENS address
   //   // Resolves bug where entering an existing conversation with ENS name in "new message" doesn't retrieve conversations
-  const { ensAddress } = useWalletAddress();
-  const conversationId = isEnsAddress(storeConversationId)
-    ? ensAddress
-    : storeConversationId;
 
   const checkIfOnNetwork = async (address: string) => {
     let canMessage;

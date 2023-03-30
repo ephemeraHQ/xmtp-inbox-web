@@ -3,9 +3,9 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { DateDivider } from "../component-library/components/DateDivider/DateDivider";
 import { FullConversation } from "../component-library/components/FullConversation/FullConversation";
 import useGetMessages from "../hooks/useGetMessages";
-import useGetRecipientInputMode from "../hooks/useGetRecipientInputMode";
 import { useXmtpStore } from "../store/xmtp";
 import { FullMessageWrapper } from "./FullMessageWrapper.";
+import useGetConversationId from "../hooks/useGetConversationId";
 
 export const FullConversationWrapper = () => {
   let lastMessageDate: Date;
@@ -19,7 +19,7 @@ export const FullConversationWrapper = () => {
   );
 
   // XMTP Hooks
-  const { conversationId } = useGetRecipientInputMode();
+  const { conversationId } = useGetConversationId();
   const { convoMessages: messages = [], hasMore } = useGetMessages(
     conversationId as string,
     endTime.get(conversationId as string),
