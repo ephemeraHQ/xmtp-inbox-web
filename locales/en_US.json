@@ -55,7 +55,7 @@
     "disconnect": "Disconnect wallet",
     "private_key_note": "No private keys will be shared.",
     "step_of_2": "Step {{NUM}} of 2",
-    "disconnect_tip": "Tip: If clicking Disconnect wallet doesn't disconnect your wallet, please use your wallet extension directly to disconnect from this app. For security reasons, some wallet extensions don't allow third-party apps to disconnect your wallet."
+    "disconnect_tip": "Tip: If clicking Disconnect wallet doesn’t disconnect your wallet, please use your wallet extension directly to disconnect from this app."
   },
   "aria_labels": {
     "address_input": "Address input",
