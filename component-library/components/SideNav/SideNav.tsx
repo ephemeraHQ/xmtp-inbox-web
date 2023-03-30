@@ -108,42 +108,45 @@ const SideNav = ({
 
   const mappedButtons = icons.map((icon) => {
     return (
-      <button
-        title={
-          icon.key === t("menu.messages_header") ||
-          icon.key === t("menu.collapse_header")
-            ? (icon.key as string)
-            : (t("menu.coming_soon") as string)
-        }
-        key={icon.key}
-        type="button"
-        onClick={(event) => {
-          setCurrentIcon((event.target as HTMLElement).innerText);
-          onSideNavBtnClick(icon.key as string);
-        }}
-        aria-label={icon.key as string}
-        className={classNames(
-          currentIcon === icon.key ? "font-bold" : "",
-          "hover:bg-gray-200",
-          "p-2",
-          "hover:text-black",
-          "text-gray-500",
-          "rounded-lg",
-          "w-full",
-          "flex",
-          "item-center",
-          "h-fit",
-          "rounded",
-          "cursor-pointer",
-          isOpen ? "w-[300px]" : "",
-        )}>
-        <>
-          <div className="flex justify-center items-center h-fit">
-            {icon}
-            <span data-testId={icon.key}>{isOpen && icon.key}</span>
+      <div className="group flex relative" key={icon.key}>
+        <button
+          type="button"
+          onClick={(event) => {
+            setCurrentIcon((event.target as HTMLElement).innerText);
+            onSideNavBtnClick(icon.key as string);
+          }}
+          aria-label={icon.key as string}
+          className={classNames(
+            currentIcon === icon.key ? "font-bold" : "",
+            "hover:bg-gray-200",
+            "p-2",
+            "hover:text-black",
+            "text-gray-500",
+            "rounded-lg",
+            "w-full",
+            "flex",
+            "item-center",
+            "h-fit",
+            "rounded",
+            "cursor-pointer",
+            isOpen ? "w-[300px]" : "",
+          )}>
+          <>
+            <div className="flex justify-center items-center h-fit">
+              {icon}
+              <span data-testId={icon.key}>{isOpen && icon.key}</span>
+            </div>
+          </>
+        </button>
+        {(icon.key === t("menu.gallery_header") ||
+          icon.key === t("menu.settings_header")) && (
+          <div
+            className="group-hover:opacity-100 w-max transition-opacity bg-gray-800 p-2 text-sm text-gray-100 rounded-md absolute left-[80px]
+    -translate-x-1/2 translate-y-full opacity-0 m-4 mx-auto z-[100]">
+            {t("menu.coming_soon")}
           </div>
-        </>
-      </button>
+        )}
+      </div>
     );
   });
 
