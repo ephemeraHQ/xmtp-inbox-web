@@ -161,9 +161,9 @@ const SideNav = ({
         "z-10",
         "border-r",
         "border-gray-200",
-        !isOpen ? "min-w-[60px] overflow-hidden" : "",
+        !isOpen ? "w-[60px] overflow-hidden" : "",
       )}>
-      <div className="flex flex-col items-start space-y-4 w-full">
+      <div className="flex flex-col items-start space-y-4 w-fit">
         <div className="py-4 flex">
           <div>
             <div className="flex mb-12">
