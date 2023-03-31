@@ -32,6 +32,10 @@ interface IconButtonProps {
    * What should the screen reader text show?
    */
   srText?: string;
+  /**
+   * What is the test id associated with this button?
+   */
+  testId?: string;
 }
 
 const colorClassMapping = {
@@ -59,6 +63,7 @@ export const IconButton = ({
   size = "large",
   srText,
   onClick,
+  testId,
 }: IconButtonProps) => {
   const disabled = isDisabled ? "opacity-50 cursor-not-allowed" : "";
   const sizeClass = sizeClassMapping[size];
@@ -69,6 +74,7 @@ export const IconButton = ({
 
   return (
     <button
+      data-testid={testId}
       type="button"
       onClick={onClick}
       disabled={isDisabled}
@@ -89,7 +95,7 @@ export const IconButton = ({
           className={classNames(
             "bg-indigo-600",
             "hover:bg-indigo-800",
-            size === "small" ? "p-1 min-h-20" : "p-2 min-h-24",
+            size === "small" ? "p-1 min-h-20" : "p-1 min-h-24",
             shape,
           )}>
           {isLoading ? <ButtonLoader color={"primary"} size={size} /> : label}

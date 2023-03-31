@@ -1,20 +1,41 @@
 import { Client } from "@xmtp/xmtp-js";
 import { useEffect, useState } from "react";
-import { useAccount, useSigner } from "wagmi";
-import { address } from "../components/Address";
+import { useSigner } from "wagmi";
 import { getAppVersion, getEnv, loadKeys, storeKeys } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
 
 const useInitXmtpClient = () => {
   const { data: signer } = useSigner();
-  const { address } = useAccount();
   const client = useXmtpStore((state) => state.client);
   const setClient = useXmtpStore((state) => state.setClient);
   const [isRequestPending, setIsRequestPending] = useState(false);
+  const [newAccount, setNewAccount] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const initClient = async () => {
-    if (signer && !client) {
+  const createXmtpIdentity = async () => {
+    try {
+      if (signer) {
+        setIsLoading(true);
+        const address = await signer.getAddress();
+        const keys = await Client.getKeys(signer, {
+          env: getEnv(),
+          appVersion: getAppVersion(),
+        });
+        storeKeys(address, keys);
+        setNewAccount(false);
+        setIsLoading(false);
+      }
+    } catch (e) {
+      console.error(e);
+      setNewAccount(false);
+      setIsLoading(false);
+    }
+  };
+
+  const connectToXmtp = async () => {
+    if (signer) {
       try {
+        setIsLoading(true);
         const address = await signer.getAddress();
         setIsRequestPending(true);
         let keys = loadKeys(address);
@@ -39,10 +60,33 @@ const useInitXmtpClient = () => {
         });
         setClient(xmtp);
         setIsRequestPending(false);
+        setIsLoading(false);
       } catch (e) {
         console.error(e);
         setClient(null);
         setIsRequestPending(false);
+        setIsLoading(false);
+      }
+    }
+  };
+
+  const initClient = async () => {
+    if (signer && !client) {
+      const address = await signer.getAddress();
+      try {
+        setIsLoading(true);
+        const canMessage = await Client.canMessage(address);
+        if (canMessage) {
+          setNewAccount(false);
+          connectToXmtp();
+        } else {
+          setNewAccount(true);
+        }
+      } catch (e) {
+        console.error(e);
+        setNewAccount(true);
+      } finally {
+        setIsLoading(false);
       }
     }
   };
@@ -55,6 +99,10 @@ const useInitXmtpClient = () => {
 
   return {
     initClient,
+    createXmtpIdentity,
+    newAccount,
+    connectToXmtp,
+    isLoading,
   };
 };
 

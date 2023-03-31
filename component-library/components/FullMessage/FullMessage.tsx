@@ -1,7 +1,7 @@
 import React from "react";
-import { format } from "date-fns";
 import { DateDivider } from "../DateDivider/DateDivider";
 import { classNames } from "../../../helpers";
+import { useTranslation } from "react-i18next";
 
 interface MessageSender {
   displayAddress: string;
@@ -33,44 +33,47 @@ export const FullMessage = ({
   datetime,
   showDateDivider = false,
 }: FullMessageProps) => {
+  const { t } = useTranslation();
   const isOutgoingMessage = from.isSelf;
 
-  const incomingMessageBackgroundStyles = "bg-gray-200 rounded-br-lg";
+  const incomingMessageBackgroundStyles = "bg-gray-200 rounded-br-lg pl-2";
   const outgoingMessageBackgroundStyles =
     "bg-indigo-600 text-white rounded-bl-lg";
 
   return (
-    <div className="flex flex-col">
-      {showDateDivider && <DateDivider date={datetime} />}
+    <div
+      className={classNames(
+        "flex flex-col w-full",
+        isOutgoingMessage ? "items-end" : "items-start",
+      )}>
       <div
         className={classNames(
           "text-sm",
           "flex",
           "flex-col",
-          isOutgoingMessage ? "items-end" : "items-start",
+          "max-w-[80%]",
+          "md:max-w-[50%]",
+          "w-fit",
         )}>
-        <div className="w-1/2">
-          {isOutgoingMessage ? (
-            <span className="text-indigo-600 font-bold flex justify-end pr-4">{`${from.displayAddress} (you)`}</span>
-          ) : (
-            <span className="font-bold ml-4">{`${from.displayAddress}`}</span>
-          )}
+        <div className={classNames("flex", "flex-col", "max-w-full")}>
           <div
-            className={`whitespace-pre-wrap p-2 rounded-tl-xl rounded-tr-xl my-1 ${
+            className={`whitespace-pre-wrap p-2 px-3 rounded-tl-xl rounded-tr-xl my-1 max-w-full break-words text-md pl-3 ${
               isOutgoingMessage
                 ? outgoingMessageBackgroundStyles
                 : incomingMessageBackgroundStyles
-            }`}>
+            }`}
+            data-testid="message-tile-text">
             {text}
           </div>
           <div
-            className={`text-gray-300 w-full flex mb-4 ${
-              isOutgoingMessage ? "justify-end pr-4" : "justify-start pl-4"
+            className={`text-xs text-gray-500 w-full flex mb-4 ${
+              isOutgoingMessage ? "justify-end" : "justify-start"
             }`}>
-            {format(datetime, "h:mm a")}
+            {t("{{datetime, time}}", { datetime })}
           </div>
         </div>
       </div>
+      {showDateDivider && <DateDivider date={datetime} />}
     </div>
   );
 };

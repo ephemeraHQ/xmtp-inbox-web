@@ -20,26 +20,21 @@ export const Avatar = ({ url, isLoading, address }: AvatarProps) => {
   if (isLoading) {
     return (
       <div className="animate-pulse flex">
-        <div className="rounded-full bg-gray-200 h-10 w-10" />
+        <div className="rounded-full bg-gray-200 h-12 w-12" />
       </div>
     );
   }
 
   if (url) {
     return (
-      <div>
-        <div className="w-10 h-10 rounded-full border border-n-80" />
-        <img
-          className="w-10 h-10 rounded-full z-10 -mt-10"
-          src={url}
-          alt={address}
-        />
+      <div data-testid="avatar">
+        <img className="w-[60px] rounded-full" src={url} alt={address} />
       </div>
     );
   }
 
   return (
-    <div data-testid="connected-footer-image">
+    <div data-testid="avatar">
       <Blockies
         seed={address?.toLowerCase() || ""}
         scale={5}

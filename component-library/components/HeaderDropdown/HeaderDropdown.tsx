@@ -1,9 +1,11 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { ChevronDownIcon, CogIcon } from "@heroicons/react/outline";
 import { CheckCircleIcon, PlusIcon } from "@heroicons/react/solid";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { classNames } from "../../../helpers";
 import { IconButton } from "../IconButton/IconButton";
+import { useTranslation } from "react-i18next";
+import i18next from "i18next";
 
 interface HeaderDropdownProps {
   /**
@@ -29,19 +31,28 @@ interface HeaderDropdownProps {
 }
 
 export const HeaderDropdown = ({
-  dropdownOptions = ["All messages", "Message requests"],
-  defaultSelected = "All messages",
+  dropdownOptions,
+  defaultSelected,
   onChange,
   onClick,
   disabled,
 }: HeaderDropdownProps) => {
+  const { t } = useTranslation();
+
   const [isOpen, setIsOpen] = useState(false);
-  const [currentlySelected, setCurrentlySelected] = useState(defaultSelected);
+  const [currentlySelected, setCurrentlySelected] = useState(
+    defaultSelected || t("messages.filter_none"),
+  );
+
+  useEffect(() => {
+    setCurrentlySelected(defaultSelected || t("messages.filter_none"));
+  }, [i18next.language]);
 
   return (
     <div
       data-modal-target="headerModalId"
-      className="p-4 w-full border border-r border-gray-100">
+      data-testId="conversation-list-header"
+      className="border-l border-r border-b border-gray-200 bg-gray-100 h-16 p-4 pl-20 pt-5">
       <div className="flex justify-between items-center">
         <span className="flex" onClick={() => setIsOpen(!isOpen)}>
           <h1 className="font-bold text-lg mr-2">{currentlySelected}</h1>
@@ -49,7 +60,9 @@ export const HeaderDropdown = ({
         </span>
         <IconButton
           onClick={() => onClick?.()}
-          label={<PlusIcon color="white" width="16" />}
+          label={<PlusIcon color="white" width="20" />}
+          testId="new-message-icon-cta"
+          srText={t("aria_labels.start_new_message") || ""}
         />
       </div>
 
@@ -63,7 +76,12 @@ export const HeaderDropdown = ({
               <div
                 id="headerModalId"
                 className="p-4 border border-gray-100 rounded-lg max-w-fit">
-                {dropdownOptions.map((item) => {
+                {(
+                  dropdownOptions || [
+                    t("messages.filter_none"),
+                    t("messages.filter_requests"),
+                  ]
+                ).map((item) => {
                   return (
                     <div key={item} className="flex w-full justify-between">
                       <div className="flex">
