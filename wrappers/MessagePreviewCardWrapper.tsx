@@ -65,7 +65,7 @@ export const MessagePreviewCardWrapper = ({
       }}
       isLoading={convoAvatarLoading}
       avatarUrl={convoAvatarUrl || ""}
-      conversationDomain={conversationDomain}
+      conversationDomain={shortAddress(conversationDomain)}
       address={convo?.peerAddress}
     />
   );

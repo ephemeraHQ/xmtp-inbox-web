@@ -62,7 +62,9 @@ const useGetRecipientInputMode = () => {
     const setLookupValue = async () => {
       if (isValidLongWalletAddress(recipientWalletAddress)) {
         const conversation =
-          conversationKey && conversationKey !== recipientWalletAddress
+          conversationKey &&
+          conversationKey.split(recipientWalletAddress).length <= 2 &&
+          conversationKey !== recipientWalletAddress
             ? await client?.conversations?.newConversation(
                 recipientWalletAddress,
                 {
