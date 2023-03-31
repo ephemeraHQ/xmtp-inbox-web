@@ -66,6 +66,7 @@ export const MessagePreviewCardWrapper = ({
       isLoading={convoAvatarLoading}
       avatarUrl={convoAvatarUrl || ""}
       conversationDomain={conversationDomain}
+      address={convo?.peerAddress}
     />
   );
 };
