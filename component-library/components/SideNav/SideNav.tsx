@@ -173,9 +173,7 @@ const SideNav = ({
         <div className="py-4 flex">
           <div>
             <div className="flex mb-12">
-              <div className="w-[40px]">
-                <Avatar url={avatarUrl} address={walletAddress} />
-              </div>
+              <Avatar url={avatarUrl} address={walletAddress} />
               {isOpen && (
                 <div className="flex items-center">
                   <div className="flex flex-col px-2 justify-center">

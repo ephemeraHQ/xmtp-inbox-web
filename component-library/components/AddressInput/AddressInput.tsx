@@ -67,9 +67,7 @@ export const AddressInput = ({
       <form
         className="flex w-full items-center"
         onSubmit={(e) => e.preventDefault()}>
-        <div className="w-[40px]">
-          <Avatar {...avatarUrlProps} />
-        </div>
+        <Avatar {...avatarUrlProps} />
         <div className="ml-2 md:ml-4 flex flex-col justify-center">
           {isLoading ? (
             <ShortCopySkeletonLoader lines={1} />

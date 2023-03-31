@@ -30,7 +30,7 @@ export const Avatar = ({ url, isLoading, address }: AvatarProps) => {
       <>
         <img
           data-testid="avatar"
-          className="rounded-full"
+          className="w-[40px] h-[40px] rounded-full"
           src={url}
           alt={address}
         />
