@@ -8,7 +8,7 @@ import {
 } from "../helpers";
 import { address } from "../pages/inbox";
 import { useXmtpStore } from "../store/xmtp";
-import useGetConversationId from "./useGetConversationId";
+import useGetConversationKey from "./useGetConversationKey";
 
 const useGetRecipientInputMode = () => {
   const client = useXmtpStore((state) => state.client);
@@ -18,7 +18,7 @@ const useGetRecipientInputMode = () => {
   const setRecipientWalletAddress = useXmtpStore(
     (state) => state.setRecipientWalletAddress,
   );
-  const { conversationId } = useGetConversationId();
+  const { conversationKey } = useGetConversationKey();
 
   const recipientInputMode = useXmtpStore((state) => state.recipientInputMode);
   const setRecipientInputMode = useXmtpStore(
@@ -62,11 +62,11 @@ const useGetRecipientInputMode = () => {
     const setLookupValue = async () => {
       if (isValidLongWalletAddress(recipientWalletAddress)) {
         const conversation =
-          conversationId && conversationId !== recipientWalletAddress
+          conversationKey && conversationKey !== recipientWalletAddress
             ? await client?.conversations?.newConversation(
                 recipientWalletAddress,
                 {
-                  conversationId,
+                  conversationId: conversationKey,
                   metadata: {},
                 },
               )
@@ -118,7 +118,7 @@ const useGetRecipientInputMode = () => {
     setRecipientInputMode,
     recipientEnteredValue,
     setRecipientEnteredValue,
-    conversationId,
+    conversationKey,
   };
 };
 
