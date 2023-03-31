@@ -75,14 +75,14 @@ export const MessagePreviewCard = ({
         }
       }}
       tabIndex={0}>
-      <div className="mr-3">
+      <div className="w-[60px] h-[40px]">
         <Avatar
           url={avatarUrl}
           address={displayAddress}
           isLoading={isLoading}
         />
       </div>
-      <div className="flex flex-col items-start w-3/4">
+      <div className="flex flex-col items-start w-3/4 ml-3">
         {!isLoading && conversationDomain && (
           <div className="text-sm mb-1 text-white px-2 rounded-lg bg-indigo-600">
             {conversationDomain}
