@@ -61,14 +61,20 @@ const useGetRecipientInputMode = () => {
   useEffect(() => {
     const setLookupValue = async () => {
       if (isValidLongWalletAddress(recipientWalletAddress)) {
+        const conversationId = conversationKey?.replace(
+          recipientWalletAddress + "/",
+          "",
+        );
         const conversation =
-          conversationKey &&
-          conversationKey.split(recipientWalletAddress).length <= 2 &&
-          conversationKey !== recipientWalletAddress
+          conversationId &&
+          // the line below is to check if the conversation id is valid
+          // and a new conversation is not created for a invalid conversation Id
+          !conversationId.includes(recipientWalletAddress) &&
+          conversationId !== recipientWalletAddress
             ? await client?.conversations?.newConversation(
                 recipientWalletAddress,
                 {
-                  conversationId: conversationKey,
+                  conversationId,
                   metadata: {},
                 },
               )
