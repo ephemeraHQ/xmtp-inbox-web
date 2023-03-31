@@ -1,22 +1,16 @@
 import { Client } from "@xmtp/xmtp-js";
 import { useEffect, useState } from "react";
-import { useAccount, useSigner } from "wagmi";
+import { useSigner } from "wagmi";
 import { getAppVersion, getEnv, loadKeys, storeKeys } from "../helpers";
-import { useConversationCache } from "../store/conversationCache";
 import { useXmtpStore } from "../store/xmtp";
-import { address } from "../pages/inbox";
 
 const useInitXmtpClient = () => {
   const { data: signer } = useSigner();
-  const { address } = useAccount();
   const client = useXmtpStore((state) => state.client);
   const setClient = useXmtpStore((state) => state.setClient);
   const [isRequestPending, setIsRequestPending] = useState(false);
   const [newAccount, setNewAccount] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const conversationExports = useConversationCache(
-    (state) => state.conversations[address as address],
-  );
 
   const createXmtpIdentity = async () => {
     try {
@@ -46,31 +40,27 @@ const useInitXmtpClient = () => {
         setIsRequestPending(true);
         let keys = loadKeys(address);
         if (!keys) {
-          await createXmtpIdentity();
-          keys = loadKeys(address);
-        }
-        if (keys) {
-          const xmtp = await Client.create(null, {
+          keys = await Client.getKeys(signer, {
             env: getEnv(),
             appVersion: getAppVersion(),
-            privateKeyOverride: keys,
+            // We don't need to publish the contact here since it
+            // will happen on the `Client.create(...)` below
+            skipContactPublishing: true,
+            // We can skip persistence on the keystore for this short-lived
+            // instance
+            persistConversations: false,
           });
-          setClient(xmtp);
-          setIsRequestPending(false);
-          setNewAccount(false);
-          setIsLoading(false);
+          storeKeys(address, keys);
         }
         const xmtp = await Client.create(null, {
           env: getEnv(),
           appVersion: getAppVersion(),
-          privateKeyOverride: keys || undefined,
+          persistConversations: true,
+          privateKeyOverride: keys,
         });
-        if (conversationExports && conversationExports.length) {
-          // Preload the client with conversations from the cache
-          await xmtp.conversations.import(conversationExports);
-        }
         setClient(xmtp);
         setIsRequestPending(false);
+        setIsLoading(false);
       } catch (e) {
         console.error(e);
         setClient(null);
