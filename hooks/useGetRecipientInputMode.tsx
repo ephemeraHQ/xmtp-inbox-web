@@ -8,7 +8,7 @@ import {
 } from "../helpers";
 import { address } from "../pages/inbox";
 import { useXmtpStore } from "../store/xmtp";
-import useGetConversationId from "./useGetConversationId";
+import useGetConversationKey from "./useGetConversationKey";
 
 const useGetRecipientInputMode = () => {
   const client = useXmtpStore((state) => state.client);
@@ -18,7 +18,7 @@ const useGetRecipientInputMode = () => {
   const setRecipientWalletAddress = useXmtpStore(
     (state) => state.setRecipientWalletAddress,
   );
-  const { conversationId } = useGetConversationId();
+  const { conversationKey } = useGetConversationKey();
 
   const recipientInputMode = useXmtpStore((state) => state.recipientInputMode);
   const setRecipientInputMode = useXmtpStore(
@@ -61,8 +61,16 @@ const useGetRecipientInputMode = () => {
   useEffect(() => {
     const setLookupValue = async () => {
       if (isValidLongWalletAddress(recipientWalletAddress)) {
+        const conversationId = conversationKey?.replace(
+          recipientWalletAddress + "/",
+          "",
+        );
         const conversation =
-          conversationId && conversationId !== recipientWalletAddress
+          conversationId &&
+          // the line below is to check if the conversation id is valid
+          // and a new conversation is not created for a invalid conversation Id
+          !conversationId.includes(recipientWalletAddress) &&
+          conversationId !== recipientWalletAddress
             ? await client?.conversations?.newConversation(
                 recipientWalletAddress,
                 {
@@ -118,7 +126,7 @@ const useGetRecipientInputMode = () => {
     setRecipientInputMode,
     recipientEnteredValue,
     setRecipientEnteredValue,
-    conversationId,
+    conversationKey,
   };
 };
 

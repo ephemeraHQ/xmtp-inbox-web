@@ -22,6 +22,10 @@ interface MessagePreviewCard {
    */
   displayAddress?: string;
   /**
+   * What is the wallet address associated with the message?
+   */
+  address?: string;
+  /**
    * What is the datetime of the message
    */
   datetime?: Date;
@@ -48,6 +52,7 @@ export const MessagePreviewCard = ({
   avatarUrl,
   text,
   displayAddress,
+  address,
   datetime,
   isLoading = false,
   onClick,
@@ -75,14 +80,8 @@ export const MessagePreviewCard = ({
         }
       }}
       tabIndex={0}>
-      <div className="mr-3">
-        <Avatar
-          url={avatarUrl}
-          address={displayAddress}
-          isLoading={isLoading}
-        />
-      </div>
-      <div className="flex flex-col items-start w-3/4">
+      <Avatar url={avatarUrl} address={address} isLoading={isLoading} />
+      <div className="flex flex-col items-start w-3/4 ml-3">
         {!isLoading && conversationDomain && (
           <div className="text-sm mb-1 text-white px-2 rounded-lg bg-indigo-600">
             {conversationDomain}

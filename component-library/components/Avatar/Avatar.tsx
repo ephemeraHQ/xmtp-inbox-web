@@ -27,15 +27,21 @@ export const Avatar = ({ url, isLoading, address }: AvatarProps) => {
 
   if (url) {
     return (
-      <div data-testid="avatar">
-        <img className="w-[60px] rounded-full" src={url} alt={address} />
-      </div>
+      <>
+        <img
+          data-testid="avatar"
+          className="w-[40px] h-[40px] rounded-full"
+          src={url}
+          alt={address}
+        />
+      </>
     );
   }
 
   return (
     <div data-testid="avatar">
       <Blockies
+        data-testid="avatar"
         seed={address?.toLowerCase() || ""}
         scale={5}
         size={8}

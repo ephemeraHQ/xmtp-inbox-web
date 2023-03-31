@@ -60,7 +60,7 @@ export const AddressInputWrapper = () => {
       }
       value={recipientEnteredValue}
       avatarUrlProps={{
-        avatarUrl: recipientAvatarUrl || "",
+        url: recipientAvatarUrl || "",
         isLoading: avatarLoading || loadingConversations,
         address: recipientWalletAddress,
       }}
