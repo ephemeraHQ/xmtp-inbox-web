@@ -39,12 +39,14 @@ export const Avatar = ({ url, isLoading, address }: AvatarProps) => {
   }
 
   return (
-    <Blockies
-      data-testid="avatar"
-      seed={address?.toLowerCase() || ""}
-      scale={5}
-      size={8}
-      className="rounded-full"
-    />
+    <div data-testid="avatar">
+      <Blockies
+        data-testid="avatar"
+        seed={address?.toLowerCase() || ""}
+        scale={5}
+        size={8}
+        className="rounded-full"
+      />
+    </div>
   );
 };
