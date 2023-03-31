@@ -91,7 +91,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
         (!recipientWalletAddress && !startedFirstMessage) ? (
           <>
             <SideNavWrapper />
-            <div className="flex flex-col w-full h-screen overflow-auto">
+            <div className="flex flex-col w-full h-screen overflow-y-auto">
               {!loadingConversations && <HeaderDropdownWrapper />}
               <ConversationList
                 hasRecipientEnteredValue={!!recipientEnteredValue}

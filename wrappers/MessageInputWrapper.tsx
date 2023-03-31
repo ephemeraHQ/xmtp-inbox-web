@@ -3,13 +3,13 @@ import { MessageInput } from "../component-library/components/MessageInput/Messa
 import { RecipientInputMode } from "../helpers";
 import useGetRecipientInputMode from "../hooks/useGetRecipientInputMode";
 import useSendMessage from "../hooks/useSendMessage";
-import useGetConversationId from "../hooks/useGetConversationId";
+import useGetConversationKey from "../hooks/useGetConversationKey";
 
 export const MessageInputWrapper = () => {
   // XMTP Hooks
   const { recipientInputMode } = useGetRecipientInputMode();
-  const { conversationId } = useGetConversationId();
-  const { sendMessage } = useSendMessage(conversationId as string);
+  const { conversationKey } = useGetConversationKey();
+  const { sendMessage } = useSendMessage(conversationKey as string);
 
   return (
     <MessageInput

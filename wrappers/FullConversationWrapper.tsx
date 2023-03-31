@@ -5,7 +5,7 @@ import { FullConversation } from "../component-library/components/FullConversati
 import useGetMessages from "../hooks/useGetMessages";
 import { useXmtpStore } from "../store/xmtp";
 import { FullMessageWrapper } from "./FullMessageWrapper.";
-import useGetConversationId from "../hooks/useGetConversationId";
+import useGetConversationKey from "../hooks/useGetConversationKey";
 
 export const FullConversationWrapper = () => {
   let lastMessageDate: Date;
@@ -19,10 +19,10 @@ export const FullConversationWrapper = () => {
   );
 
   // XMTP Hooks
-  const { conversationId } = useGetConversationId();
+  const { conversationKey } = useGetConversationKey();
   const { convoMessages: messages = [], hasMore } = useGetMessages(
-    conversationId as string,
-    endTime.get(conversationId as string),
+    conversationKey as string,
+    endTime.get(conversationKey as string),
   );
 
   const isOnSameDay = (d1?: Date, d2?: Date): boolean => {
@@ -34,16 +34,16 @@ export const FullConversationWrapper = () => {
       hasMore &&
       Array.isArray(messages) &&
       messages.length > 0 &&
-      conversationId
+      conversationKey
     ) {
       const lastMsgDate = messages[messages.length - 1].sent;
-      const currentEndTime = endTime.get(conversationId);
+      const currentEndTime = endTime.get(conversationKey);
       if (!currentEndTime || lastMsgDate <= currentEndTime) {
-        endTime.set(conversationId, lastMsgDate);
+        endTime.set(conversationKey, lastMsgDate);
         setEndTime(new Map(endTime));
       }
     }
-  }, [conversationId, hasMore, messages, endTime]);
+  }, [conversationKey, hasMore, messages, endTime]);
 
   return (
     <div
