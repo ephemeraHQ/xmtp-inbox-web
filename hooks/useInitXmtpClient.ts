@@ -75,7 +75,7 @@ const useInitXmtpClient = () => {
       const address = await signer.getAddress();
       try {
         setIsLoading(true);
-        const canMessage = await Client.canMessage(address);
+        const canMessage = await Client.canMessage(address, { env: getEnv() });
         if (canMessage) {
           setNewAccount(false);
           connectToXmtp();
