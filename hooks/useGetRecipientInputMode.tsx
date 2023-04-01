@@ -60,7 +60,11 @@ const useGetRecipientInputMode = () => {
   };
   useEffect(() => {
     const setLookupValue = async () => {
-      if (isValidLongWalletAddress(recipientWalletAddress)) {
+      if (
+        isValidLongWalletAddress(recipientWalletAddress) &&
+        !conversations.has(recipientWalletAddress) &&
+        !conversations.has(conversationKey ?? "")
+      ) {
         const conversationId = conversationKey?.replace(
           recipientWalletAddress + "/",
           "",
