@@ -20,6 +20,16 @@ export const AddressInputWrapper = () => {
   const loadingConversations = useXmtpStore(
     (state) => state.loadingConversations,
   );
+  const setRecipientWalletAddress = useXmtpStore(
+    (state) => state.setRecipientWalletAddress,
+  );
+  const setStartedFirstMessage = useXmtpStore(
+    (state) => state.setStartedFirstMessage,
+  );
+  const setConversationId = useXmtpStore((state) => state.setConversationId);
+  const setRecipientInputMode = useXmtpStore(
+    (state) => state.setRecipientInputMode,
+  );
 
   // XMTP Hooks
   const {
@@ -63,6 +73,13 @@ export const AddressInputWrapper = () => {
         url: recipientAvatarUrl || "",
         isLoading: avatarLoading || loadingConversations,
         address: recipientWalletAddress,
+      }}
+      onLeftIconClick={() => {
+        setRecipientEnteredValue("");
+        setRecipientWalletAddress("");
+        setStartedFirstMessage(false);
+        setConversationId("");
+        setRecipientInputMode(RecipientInputMode.InvalidEntry);
       }}
     />
   );
