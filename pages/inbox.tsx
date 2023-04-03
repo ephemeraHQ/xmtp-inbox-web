@@ -1,11 +1,7 @@
 import React, { useEffect } from "react";
 import useListConversations from "../hooks/useListConversations";
 import { useXmtpStore } from "../store/xmtp";
-import {
-  getConversationId,
-  RecipientInputMode,
-  TAILWIND_MD_BREAKPOINT,
-} from "../helpers";
+import { getConversationId, TAILWIND_MD_BREAKPOINT } from "../helpers";
 import { ConversationList } from "../component-library/components/ConversationList/ConversationList";
 import { Conversation } from "@xmtp/xmtp-js";
 import { MessagePreviewCardWrapper } from "../wrappers/MessagePreviewCardWrapper";
@@ -18,7 +14,6 @@ import useInitXmtpClient from "../hooks/useInitXmtpClient";
 import { LearnMore } from "../component-library/components/LearnMore/LearnMore";
 import router from "next/router";
 import useWindowSize from "../hooks/useWindowSize";
-import { ChevronLeftIcon } from "@heroicons/react/solid";
 import useHandleConnect from "../hooks/useHandleConnect";
 
 export type address = "0x${string}";
@@ -34,24 +29,11 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
     (state) => state.recipientWalletAddress,
   );
 
-  const setRecipientWalletAddress = useXmtpStore(
-    (state) => state.setRecipientWalletAddress,
-  );
-
-  const setConversationId = useXmtpStore((state) => state.setConversationId);
-
   const size = useWindowSize();
 
   const previewMessages = useXmtpStore((state) => state.previewMessages);
   const recipientEnteredValue = useXmtpStore(
     (state) => state.recipientEnteredValue,
-  );
-  const setRecipientEnteredValue = useXmtpStore(
-    (state) => state.setRecipientEnteredValue,
-  );
-
-  const setRecipientInputMode = useXmtpStore(
-    (state) => state.setRecipientInputMode,
   );
 
   const loadingConversations = useXmtpStore(
@@ -130,19 +112,6 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
           ) : (
             <>
               <div className="flex">
-                {size[0] <= TAILWIND_MD_BREAKPOINT ? (
-                  <ChevronLeftIcon
-                    onClick={() => {
-                      setRecipientEnteredValue("");
-                      setRecipientWalletAddress("");
-                      setStartedFirstMessage(false);
-                      setConversationId("");
-                      setRecipientInputMode(RecipientInputMode.InvalidEntry);
-                    }}
-                    width={32}
-                    className="bg-indigo-50 border-b border-indigo-500"
-                  />
-                ) : null}
                 <AddressInputWrapper />
               </div>
               <div className="h-full overflow-auto flex flex-col">
