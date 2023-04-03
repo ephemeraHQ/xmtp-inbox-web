@@ -96,6 +96,7 @@ export const AddressInput = ({
               autoComplete="off"
               autoCorrect="false"
               autoCapitalize="off"
+              autoFocus={true}
               onChange={(e) =>
                 onChange && onChange((e.target as HTMLInputElement).value)
               }
