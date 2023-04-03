@@ -67,6 +67,7 @@ export const AddressInput = ({
       <form
         className="flex w-full items-center"
         onSubmit={(e) => e.preventDefault()}>
+        <div className="mr-2 font-bold text-sm">{t("common.input_label")}:</div>
         <Avatar {...avatarUrlProps} />
         <div className="ml-2 md:ml-4 flex flex-col justify-center">
           {isLoading ? (
@@ -85,25 +86,22 @@ export const AddressInput = ({
               )}
             </div>
           ) : (
-            <div className="flex items-center text-sm">
-              <div className="mr-2">{t("common.input_label")}:</div>
-              <input
-                data-testid="message-to-input"
-                tabIndex={0}
-                className="text-gray-700 px-0 h-4 m-1 ml-0 font-mono text-sm w-full leading-tight border-none focus:ring-0 cursor-text"
-                id="address"
-                type="search"
-                spellCheck="false"
-                autoComplete="off"
-                autoCorrect="false"
-                autoCapitalize="off"
-                onChange={(e) =>
-                  onChange && onChange((e.target as HTMLInputElement).value)
-                }
-                value={value}
-                aria-label={t("aria_labels.address_input") || ""}
-              />
-            </div>
+            <input
+              data-testid="message-to-input"
+              tabIndex={0}
+              className="text-gray-700 px-0 h-4 m-1 ml-0 font-mono text-sm w-full leading-tight border-none focus:ring-0 cursor-text"
+              id="address"
+              type="search"
+              spellCheck="false"
+              autoComplete="off"
+              autoCorrect="false"
+              autoCapitalize="off"
+              onChange={(e) =>
+                onChange && onChange((e.target as HTMLInputElement).value)
+              }
+              value={value}
+              aria-label={t("aria_labels.address_input") || ""}
+            />
           )}
           <p
             className={classNames("font-mono", "text-sm", subtextColor)}
