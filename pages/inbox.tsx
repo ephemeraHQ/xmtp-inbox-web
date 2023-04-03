@@ -140,6 +140,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
                       setRecipientInputMode(RecipientInputMode.InvalidEntry);
                     }}
                     width={32}
+                    className="bg-indigo-50 border-b border-indigo-500"
                   />
                 ) : null}
                 <AddressInputWrapper />
