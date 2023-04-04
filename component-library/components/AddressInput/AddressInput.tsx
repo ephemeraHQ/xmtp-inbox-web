@@ -1,6 +1,9 @@
 import React from "react";
 import { Avatar } from "../Avatar/Avatar";
-import { InformationCircleIcon } from "@heroicons/react/outline";
+import {
+  ChevronLeftIcon,
+  InformationCircleIcon,
+} from "@heroicons/react/outline";
 import { classNames } from "../../../helpers";
 import { ShortCopySkeletonLoader } from "../Loaders/SkeletonLoaders/ShortCopySkeletonLoader";
 import { useTranslation } from "react-i18next";
@@ -48,6 +51,10 @@ interface AddressInputProps {
    * Input Value
    */
   value?: string;
+  /**
+   * Is there a left icon click event that needs to be handled?
+   */
+  onLeftIconClick?: () => void;
 }
 
 export const AddressInput = ({
@@ -59,11 +66,21 @@ export const AddressInput = ({
   isLoading,
   onTooltipClick,
   value,
+  onLeftIconClick,
 }: AddressInputProps) => {
   const { t } = useTranslation();
-  const subtextColor = isError ? "text-red-600" : "text-gray-400";
+  const subtextColor = isError ? "text-red-600" : "text-gray-500";
   return (
-    <div className="flex px-2 md:px-4 py-3 border-b border-gray-100 border-l-0 z-10 max-h-sm w-full h-16">
+    <div
+      className={classNames(
+        !resolvedAddress?.displayAddress
+          ? "bg-indigo-50 border-b border-indigo-500"
+          : "border-b border-gray-200",
+        "flex items-center px-2 md:px-4 py-3 border-l-0 z-10 max-md:h-fit md:max-h-sm w-full h-16",
+      )}>
+      <div className="max-md:w-fit md:hidden flex w-24 p-0 justify-start">
+        <ChevronLeftIcon onClick={onLeftIconClick} width={24} />
+      </div>
       <form
         className="flex w-full items-center"
         onSubmit={(e) => e.preventDefault()}>
@@ -80,7 +97,7 @@ export const AddressInput = ({
                 {resolvedAddress.displayAddress}
               </span>
               {resolvedAddress.walletAddress && (
-                <span className="text-sm font-mono">
+                <span className="text-sm max-md:text-xs font-mono">
                   {resolvedAddress.walletAddress}
                 </span>
               )}
@@ -89,7 +106,7 @@ export const AddressInput = ({
             <input
               data-testid="message-to-input"
               tabIndex={0}
-              className="text-gray-700 px-0 h-4 m-1 ml-0 font-mono text-sm w-full leading-tight border-none focus:ring-0 cursor-text"
+              className="bg-transparent text-gray-900 px-0 h-4 m-1 ml-0 font-mono max-md:text-[16px] md:text-sm w-full leading-tight border border-2 border-transparent focus:border-transparent focus:ring-0 cursor-text"
               id="address"
               type="search"
               spellCheck="false"
