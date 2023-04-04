@@ -1,7 +1,13 @@
 import { Client } from "@xmtp/xmtp-js";
 import { useEffect, useState } from "react";
 import { useSigner } from "wagmi";
-import { getAppVersion, getEnv, loadKeys, storeKeys } from "../helpers";
+import {
+  getAppVersion,
+  getEnv,
+  isAppEnvDemo,
+  loadKeys,
+  storeKeys,
+} from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
 
 const useInitXmtpClient = () => {
@@ -22,6 +28,17 @@ const useInitXmtpClient = () => {
           appVersion: getAppVersion(),
         });
         storeKeys(address, keys);
+        if (keys && isAppEnvDemo()) {
+          setIsRequestPending(true);
+          const xmtp = await Client.create(null, {
+            env: getEnv(),
+            appVersion: getAppVersion(),
+            persistConversations: true,
+            privateKeyOverride: keys,
+          });
+          setClient(xmtp);
+          setIsRequestPending(false);
+        }
         setNewAccount(false);
         setIsLoading(false);
       }
@@ -29,6 +46,7 @@ const useInitXmtpClient = () => {
       console.error(e);
       setNewAccount(false);
       setIsLoading(false);
+      setIsRequestPending(false);
     }
   };
 
@@ -75,6 +93,7 @@ const useInitXmtpClient = () => {
       const address = await signer.getAddress();
       try {
         setIsLoading(true);
+        setIsRequestPending(true);
         const canMessage = await Client.canMessage(address, { env: getEnv() });
         if (canMessage) {
           setNewAccount(false);
@@ -82,11 +101,13 @@ const useInitXmtpClient = () => {
         } else {
           setNewAccount(true);
         }
+        setIsRequestPending(false);
       } catch (e) {
         console.error(e);
         setNewAccount(true);
       } finally {
         setIsLoading(false);
+        setIsRequestPending(false);
       }
     }
   };
@@ -94,6 +115,9 @@ const useInitXmtpClient = () => {
   useEffect(() => {
     if (!isRequestPending) {
       signer && initClient();
+      if (isAppEnvDemo()) {
+        createXmtpIdentity();
+      }
     }
   }, [signer]);
 
