@@ -71,7 +71,13 @@ export const AddressInput = ({
   const { t } = useTranslation();
   const subtextColor = isError ? "text-red-600" : "text-gray-500";
   return (
-    <div className="bg-indigo-50 flex items-center px-2 md:px-4 py-3 border-b border-indigo-500 border-l-0 z-10 max-md:h-fit md:max-h-sm w-full h-16">
+    <div
+      className={classNames(
+        !resolvedAddress?.displayAddress
+          ? "bg-indigo-50 border-b border-indigo-500"
+          : "border-b border-gray-200",
+        "flex items-center px-2 md:px-4 py-3 border-l-0 z-10 max-md:h-fit md:max-h-sm w-full h-16",
+      )}>
       <div className="max-md:w-fit md:hidden flex w-24 p-0 justify-start">
         <ChevronLeftIcon onClick={onLeftIconClick} width={24} />
       </div>
