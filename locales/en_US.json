@@ -1,7 +1,6 @@
 {
   "onboarding": {
-    "demo_header": "Hold on while we spin up a demo account",
-    "demo_subheader": "Get ready to experience the magic of Web3 messaging",
+    "demo_header": "Initializing demo mode…",
     "intro_header": "An interoperable web3 inbox",
     "intro_subheader": "Access all of your XMTP DMs—no matter where you started them.",
     "intro_button": "Connect your wallet",

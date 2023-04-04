@@ -72,7 +72,7 @@ export const OnboardingStep = ({
           <p
             className="text-lg"
             data-testid={step === 1 && "no-wallet-connected-subheader"}>
-            <Trans i18nKey={subheader} />
+            <Trans i18nKey={subheader ?? ""} />
           </p>
           <div>
             {cta === ctaStep.ENABLE ? (
