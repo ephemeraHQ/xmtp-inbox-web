@@ -20,25 +20,28 @@ const useInitXmtpClient = () => {
 
   const createXmtpIdentity = async () => {
     try {
-      if (signer) {
+      if (signer && !client) {
+        setIsRequestPending(true);
         setIsLoading(true);
         const address = await signer.getAddress();
-        const keys = await Client.getKeys(signer, {
-          env: getEnv(),
-          appVersion: getAppVersion(),
-        });
-        storeKeys(address, keys);
-        if (keys && isAppEnvDemo()) {
-          setIsRequestPending(true);
-          const xmtp = await Client.create(null, {
+        let keys = loadKeys(address);
+        if (!keys) {
+          keys = await Client.getKeys(signer, {
             env: getEnv(),
             appVersion: getAppVersion(),
-            persistConversations: true,
-            privateKeyOverride: keys,
           });
-          setClient(xmtp);
-          setIsRequestPending(false);
+          storeKeys(address, keys);
+          if (keys && isAppEnvDemo()) {
+            const xmtp = await Client.create(null, {
+              env: getEnv(),
+              appVersion: getAppVersion(),
+              persistConversations: true,
+              privateKeyOverride: keys,
+            });
+            setClient(xmtp);
+          }
         }
+        setIsRequestPending(false);
         setNewAccount(false);
         setIsLoading(false);
       }
@@ -114,7 +117,7 @@ const useInitXmtpClient = () => {
 
   useEffect(() => {
     if (!isRequestPending) {
-      signer && initClient();
+      signer && !client && initClient();
       if (isAppEnvDemo()) {
         createXmtpIdentity();
       }
