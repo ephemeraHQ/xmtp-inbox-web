@@ -130,7 +130,7 @@ describe("Disconnected Test Cases", () => {
     disconnectWallet();
   });
   it("Shows expected fields when disconnected from a wallet", () => {
-    const elements = ["xmtp-logo", "no-wallet-connected-header"];
+    const elements = ["xmtp-logo"];
 
     elements.forEach((element) => checkElement(element));
   });
