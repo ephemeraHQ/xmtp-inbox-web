@@ -32,13 +32,7 @@ const useInitXmtpClient = () => {
           });
           storeKeys(address, keys);
           if (keys && isAppEnvDemo()) {
-            const xmtp = await Client.create(null, {
-              env: getEnv(),
-              appVersion: getAppVersion(),
-              persistConversations: true,
-              privateKeyOverride: keys,
-            });
-            setClient(xmtp);
+            await connectToXmtp();
           }
         }
         setIsRequestPending(false);
