@@ -1,6 +1,5 @@
 import {
   checkElement,
-  disconnectWallet,
   startDemoEnv,
   checkLink,
   checkMissingElement,
@@ -125,12 +124,16 @@ describe(
 
 describe("Disconnected Test Cases", () => {
   beforeEach(() => {
-    startDemoEnv();
-    checkElement("empty-message-header");
-    disconnectWallet();
+    cy.visit("http://localhost:3000");
   });
   it("Shows expected fields when disconnected from a wallet", () => {
-    const elements = ["xmtp-logo"];
+    const elements = [
+      "xmtp-logo",
+      "no-wallet-connected-header",
+      "no-wallet-connected-subheader",
+      "no-wallet-connected-cta",
+      "no-wallet-connected-subtext",
+    ];
 
     elements.forEach((element) => checkElement(element));
   });
