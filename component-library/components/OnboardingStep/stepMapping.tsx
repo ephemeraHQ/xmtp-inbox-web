@@ -9,20 +9,30 @@ export const stepMapping: Record<
   {
     default: {
       header: string;
-      subheader: string;
-      cta: ctaStep;
+      subheader: string | null;
+      cta: ctaStep | null;
       subtext?: string | null;
       disconnect_tip?: string | null;
     };
-    loading: {
+    loading?: {
       header: string;
-      subheader: string;
-      cta: ctaStep | null;
+      subheader?: string;
+      cta?: ctaStep | null;
       subtext?: string | null;
       disconnect_tip?: string | null;
     };
   }
 > = {
+  0: {
+    default: {
+      header: "onboarding.demo_header",
+      subheader: null,
+      cta: null,
+    },
+    loading: {
+      header: "onboarding.demo_header",
+    },
+  },
   1: {
     default: {
       header: "onboarding.intro_header",

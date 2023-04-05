@@ -6,9 +6,8 @@ import useInitXmtpClient from "../hooks/useInitXmtpClient";
 import useHandleConnect from "../hooks/useHandleConnect";
 import { useAccount, useDisconnect } from "wagmi";
 import { useRouter } from "next/router";
-import { classNames, wipeKeys } from "../helpers";
+import { classNames, isAppEnvDemo, wipeKeys } from "../helpers";
 import { OnboardingStep } from "../component-library/components/OnboardingStep/OnboardingStep";
-import { useTranslation } from "react-i18next";
 
 const OnboardingPage: NextPage = () => {
   const client = useXmtpStore((state) => state.client);
@@ -19,9 +18,7 @@ const OnboardingPage: NextPage = () => {
   const { createXmtpIdentity, newAccount, connectToXmtp, isLoading } =
     useInitXmtpClient();
   const { disconnect: disconnectWagmi, reset: resetWagmi } = useDisconnect();
-  const { t } = useTranslation();
 
-  const [loading, setLoading] = useState(isLoading);
   const router = useRouter();
 
   useEffect(() => {
@@ -35,16 +32,18 @@ const OnboardingPage: NextPage = () => {
   }, [client, address, newAccount]);
 
   useEffect(() => {
-    if (isDisconnected) {
-      setStep(1);
-      setLoading(false);
-    } else if (isConnecting && !isDisconnected) {
-      setStep(1);
-      setLoading(true);
-    } else if (newAccount && !client) {
-      setStep(2);
+    if (isAppEnvDemo()) {
+      setStep(0);
     } else {
-      setStep(3);
+      if (isDisconnected) {
+        setStep(1);
+      } else if (isConnecting && !isDisconnected) {
+        setStep(1);
+      } else if (newAccount && !client) {
+        setStep(2);
+      } else {
+        setStep(3);
+      }
     }
   }, [client, isConnecting, isDisconnected, newAccount]);
 
