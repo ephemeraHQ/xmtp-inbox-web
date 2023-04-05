@@ -14,10 +14,10 @@ export const stepMapping: Record<
       subtext?: string | null;
       disconnect_tip?: string | null;
     };
-    loading: {
+    loading?: {
       header: string;
-      subheader: string;
-      cta: ctaStep | null;
+      subheader?: string;
+      cta?: ctaStep | null;
       subtext?: string | null;
       disconnect_tip?: string | null;
     };
@@ -31,8 +31,6 @@ export const stepMapping: Record<
     },
     loading: {
       header: "onboarding.demo_header",
-      subheader: "onboarding.demo_subheader",
-      cta: null,
     },
   },
   1: {
