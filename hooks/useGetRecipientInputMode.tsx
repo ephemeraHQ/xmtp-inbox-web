@@ -7,7 +7,6 @@ import {
 } from "../helpers";
 import { address } from "../pages/inbox";
 import { useXmtpStore } from "../store/xmtp";
-import useGetConversationKey from "./useGetConversationKey";
 
 const useGetRecipientInputMode = () => {
   const client = useXmtpStore((state) => state.client);
@@ -17,7 +16,7 @@ const useGetRecipientInputMode = () => {
   const setRecipientWalletAddress = useXmtpStore(
     (state) => state.setRecipientWalletAddress,
   );
-  const { conversationKey } = useGetConversationKey();
+  const setConversationId = useXmtpStore((state) => state.setConversationId);
 
   const recipientInputMode = useXmtpStore((state) => state.recipientInputMode);
   const setRecipientInputMode = useXmtpStore(
@@ -31,12 +30,6 @@ const useGetRecipientInputMode = () => {
     (state) => state.setRecipientEnteredValue,
   );
 
-  const setConversationId = useXmtpStore((state) => state.setConversationId);
-
-  //   // Current conversation by conversation ID
-  //   // Since conversationId can be set to an ENS name, we reset it below for those cases to pull from the ENS address
-  //   // Resolves bug where entering an existing conversation with ENS name in "new message" doesn't retrieve conversations
-
   const checkIfOnNetwork = async (address: string) => {
     let canMessage;
     if (client) {
@@ -47,6 +40,7 @@ const useGetRecipientInputMode = () => {
         } else {
           setRecipientInputMode(RecipientInputMode.OnNetwork);
           setRecipientWalletAddress(address);
+          // When coming from the input (vs the preview panel), conversation ids will always be in XMTP format.
           setConversationId(address);
         }
       } catch (e) {
@@ -91,7 +85,6 @@ const useGetRecipientInputMode = () => {
     setRecipientInputMode,
     recipientEnteredValue,
     setRecipientEnteredValue,
-    conversationKey,
   };
 };
 
