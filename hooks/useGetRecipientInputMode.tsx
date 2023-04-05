@@ -1,7 +1,6 @@
 import { fetchEnsAddress } from "@wagmi/core";
 import { useEffect } from "react";
 import {
-  getConversationId,
   isEnsAddress,
   isValidLongWalletAddress,
   RecipientInputMode,
@@ -32,9 +31,6 @@ const useGetRecipientInputMode = () => {
     (state) => state.setRecipientEnteredValue,
   );
 
-  const conversations = useXmtpStore((state) => state.conversations);
-  const setConversations = useXmtpStore((state) => state.setConversations);
-
   const setConversationId = useXmtpStore((state) => state.setConversationId);
 
   //   // Current conversation by conversation ID
@@ -59,46 +55,11 @@ const useGetRecipientInputMode = () => {
     }
   };
   useEffect(() => {
-    const setLookupValue = async () => {
-      if (
-        isValidLongWalletAddress(recipientWalletAddress) &&
-        !conversations.has(recipientWalletAddress) &&
-        !conversations.has(conversationKey ?? "")
-      ) {
-        const conversationId = conversationKey?.replace(
-          recipientWalletAddress + "/",
-          "",
-        );
-        const conversation =
-          conversationId &&
-          // the line below is to check if the conversation id is valid
-          // and a new conversation is not created for a invalid conversation Id
-          !conversationId.includes(recipientWalletAddress) &&
-          conversationId !== recipientWalletAddress
-            ? await client?.conversations?.newConversation(
-                recipientWalletAddress,
-                {
-                  conversationId,
-                  metadata: {},
-                },
-              )
-            : await client?.conversations?.newConversation(
-                recipientWalletAddress,
-              );
-        if (conversation) {
-          conversations.set(getConversationId(conversation), conversation);
-          setConversations(new Map(conversations));
-        }
-      }
-    };
     if (
       recipientWalletAddress &&
       recipientInputMode !== RecipientInputMode.OnNetwork
     ) {
       setRecipientInputMode(RecipientInputMode.OnNetwork);
-    }
-    if (recipientInputMode === RecipientInputMode.OnNetwork) {
-      setLookupValue();
     }
   }, [recipientInputMode, recipientWalletAddress]);
 
