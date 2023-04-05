@@ -20,8 +20,6 @@ export const disconnectWallet = () => {
 export const startDemoEnv = () => {
   cy.visit("http://localhost:3000");
   localStorage.setItem(ENVIRONMENT.DEMO, String(true));
-  checkElement("create-xmtp-identity-cta").click();
-  checkElement("enable-xmtp-identity-cta").click();
 };
 
 const enterWalletAddress = (testUser: string) => {

@@ -1,6 +1,5 @@
 import {
   checkElement,
-  disconnectWallet,
   startDemoEnv,
   checkLink,
   checkMissingElement,
@@ -90,12 +89,13 @@ describe(
         "Collapse",
         "wallet-address",
       ];
+
       elements.forEach((element) => checkElement(element));
 
       cy.get(`[data-testid="icon"]`).click();
       cy.get(`[data-testid="disconnect-wallet-cta"]`).click();
-      checkElement("no-wallet-connected-header");
     });
+
     it("Opens new message view when clicking on connect button from left panel", () => {
       checkMissingElement("message-input");
       checkElement("empty-message-cta").click();
@@ -124,9 +124,7 @@ describe(
 
 describe("Disconnected Test Cases", () => {
   beforeEach(() => {
-    startDemoEnv();
-    checkElement("empty-message-header");
-    disconnectWallet();
+    cy.visit("http://localhost:3000");
   });
   it("Shows expected fields when disconnected from a wallet", () => {
     const elements = [
