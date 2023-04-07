@@ -8,6 +8,7 @@ import { useAccount, useDisconnect } from "wagmi";
 import { useRouter } from "next/router";
 import { classNames, isAppEnvDemo, wipeKeys } from "../helpers";
 import { OnboardingStep } from "../component-library/components/OnboardingStep/OnboardingStep";
+import ReactGA from "react-ga4";
 
 const OnboardingPage: NextPage = () => {
   const client = useXmtpStore((state) => state.client);
@@ -27,6 +28,11 @@ const OnboardingPage: NextPage = () => {
 
   useEffect(() => {
     if (address && !newAccount && client) {
+      ReactGA.send({
+        hitType: "pageview",
+        page: "/inbox",
+        title: address,
+      });
       router.push("/inbox");
     }
   }, [client, address, newAccount]);

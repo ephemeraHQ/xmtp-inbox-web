@@ -10,8 +10,11 @@ import { publicProvider } from "wagmi/providers/public";
 import { MockConnector } from "@wagmi/core/connectors/mock";
 import { Wallet } from "ethers/lib";
 import React, { useEffect, useState } from "react";
+import ReactGA from "react-ga4";
 import { isAppEnvDemo } from "../helpers";
 import "../i18n";
+
+ReactGA.initialize("G-ME1W9N9QJ5");
 
 const AppWithoutSSR = dynamic(() => import("../components/App"), {
   ssr: false,
