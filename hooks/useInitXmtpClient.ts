@@ -27,6 +27,7 @@ const useInitXmtpClient = () => {
         let keys = loadKeys(address);
         if (!keys) {
           keys = await Client.getKeys(signer, {
+            apiUrl: process.env.NEXT_PUBLIC_XMTP_API_URL,
             env: getEnv(),
             appVersion: getAppVersion(),
           });
@@ -56,6 +57,7 @@ const useInitXmtpClient = () => {
         let keys = loadKeys(address);
         if (!keys) {
           keys = await Client.getKeys(signer, {
+            apiUrl: process.env.NEXT_PUBLIC_XMTP_API_URL,
             env: getEnv(),
             appVersion: getAppVersion(),
             // We don't need to publish the contact here since it
@@ -68,6 +70,7 @@ const useInitXmtpClient = () => {
           storeKeys(address, keys);
         }
         const xmtp = await Client.create(null, {
+          apiUrl: process.env.NEXT_PUBLIC_XMTP_API_URL,
           env: getEnv(),
           appVersion: getAppVersion(),
           persistConversations: true,
@@ -91,7 +94,10 @@ const useInitXmtpClient = () => {
       try {
         setIsLoading(true);
         setIsRequestPending(true);
-        const canMessage = await Client.canMessage(address, { env: getEnv() });
+        const canMessage = await Client.canMessage(address, {
+          apiUrl: process.env.NEXT_PUBLIC_XMTP_API_URL,
+          env: getEnv(),
+        });
         if (canMessage) {
           setNewAccount(false);
           connectToXmtp();
