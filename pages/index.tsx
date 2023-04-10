@@ -1,14 +1,14 @@
 import type { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { useXmtpStore } from "../store/xmtp";
-import { watchAccount } from "@wagmi/core";
+import { watchAccount, fetchEnsName } from "@wagmi/core";
+import ReactGA from "react-ga4";
 import useInitXmtpClient from "../hooks/useInitXmtpClient";
 import useHandleConnect from "../hooks/useHandleConnect";
 import { useAccount, useDisconnect } from "wagmi";
 import { useRouter } from "next/router";
-import { classNames, isAppEnvDemo, wipeKeys } from "../helpers";
+import { TRACK_WALLETS, classNames, isAppEnvDemo, wipeKeys } from "../helpers";
 import { OnboardingStep } from "../component-library/components/OnboardingStep/OnboardingStep";
-import ReactGA from "react-ga4";
 
 const OnboardingPage: NextPage = () => {
   const client = useXmtpStore((state) => state.client);
@@ -27,14 +27,23 @@ const OnboardingPage: NextPage = () => {
   }, []);
 
   useEffect(() => {
-    if (address && !newAccount && client) {
-      ReactGA.send({
-        hitType: "pageview",
-        page: "/inbox",
-        title: address,
-      });
-      router.push("/inbox");
-    }
+    const routeToInBox = async () => {
+      if (address && !newAccount && client) {
+        if (TRACK_WALLETS.includes(address)) {
+          ReactGA.initialize("G-ME1W9N9QJ5");
+          const ensName = await fetchEnsName({
+            address,
+          });
+          ReactGA.send({
+            hitType: "pageview",
+            page: "/inbox",
+            title: ensName ?? address,
+          });
+        }
+        router.push("/inbox");
+      }
+    };
+    routeToInBox();
   }, [client, address, newAccount]);
 
   useEffect(() => {
