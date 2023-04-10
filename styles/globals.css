@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.interweave-content a {
+  @apply text-blue-500 hover:text-blue-600;
+}
+
+.message-sender .interweave-content a {
+  @apply text-white/90 hover:text-white/100;
+}
