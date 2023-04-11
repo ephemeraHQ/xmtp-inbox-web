@@ -4,7 +4,6 @@ import { useXmtpStore } from "../store/xmtp";
 import { address } from "../pages/inbox";
 import { emitMsgSentEvent } from "../helpers/internalTracking";
 
-
 const useSendMessage = (conversationId: address) => {
   const client = useXmtpStore((state) => state.client);
   const conversations = useXmtpStore((state) => state.conversations);
