@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 import { MESSAGE_LIMIT } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
 
-const useGetMessages = (conversationKey: string, endTime?: Date) => {
+const useGetMessages = (conversationId: string, endTime?: Date) => {
   const convoMessages = useXmtpStore((state) =>
-    state.convoMessages.get(conversationKey),
+    state.convoMessages.get(conversationId),
   );
   const conversation = useXmtpStore((state) =>
-    state.conversations.get(conversationKey),
+    state.conversations.get(conversationId),
   );
   const addMessages = useXmtpStore((state) => state.addMessages);
   const [hasMore, setHasMore] = useState<Map<string, boolean>>(new Map());
@@ -25,26 +25,26 @@ const useGetMessages = (conversationKey: string, endTime?: Date) => {
         endTime: endTime,
       });
       if (newMessages.length > 0) {
-        addMessages(conversationKey, newMessages);
+        addMessages(conversationId, newMessages);
         if (newMessages.length < MESSAGE_LIMIT) {
-          hasMore.set(conversationKey, false);
+          hasMore.set(conversationId, false);
           setHasMore(new Map(hasMore));
         } else {
-          hasMore.set(conversationKey, true);
+          hasMore.set(conversationId, true);
           setHasMore(new Map(hasMore));
         }
       } else {
-        hasMore.set(conversationKey, false);
+        hasMore.set(conversationId, false);
         setHasMore(new Map(hasMore));
       }
     };
     loadMessages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [conversation, conversationKey, endTime]);
+  }, [conversation, conversationId, endTime]);
 
   return {
     convoMessages,
-    hasMore: hasMore.get(conversationKey) ?? false,
+    hasMore: hasMore.get(conversationId) ?? false,
   };
 };
 
