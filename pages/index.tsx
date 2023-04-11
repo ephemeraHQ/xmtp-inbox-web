@@ -1,14 +1,15 @@
 import type { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { useXmtpStore } from "../store/xmtp";
-import { watchAccount, fetchEnsName } from "@wagmi/core";
-import ReactGA from "react-ga4";
+import { watchAccount } from "@wagmi/core";
 import useInitXmtpClient from "../hooks/useInitXmtpClient";
 import useHandleConnect from "../hooks/useHandleConnect";
 import { useAccount, useDisconnect } from "wagmi";
 import { useRouter } from "next/router";
-import { TRACK_WALLETS, classNames, isAppEnvDemo, wipeKeys } from "../helpers";
+import { classNames, isAppEnvDemo, wipeKeys } from "../helpers";
 import { OnboardingStep } from "../component-library/components/OnboardingStep/OnboardingStep";
+import { emitPageVisitEvent } from "../helpers/internalTracking";
+import { address } from "./inbox";
 
 const OnboardingPage: NextPage = () => {
   const client = useXmtpStore((state) => state.client);
@@ -29,17 +30,11 @@ const OnboardingPage: NextPage = () => {
   useEffect(() => {
     const routeToInBox = async () => {
       if (address && !newAccount && client) {
-        if (TRACK_WALLETS.includes(address)) {
-          ReactGA.initialize("G-ME1W9N9QJ5");
-          const ensName = await fetchEnsName({
-            address,
-          });
-          ReactGA.send({
-            hitType: "pageview",
-            page: "/inbox",
-            title: ensName ?? address,
-          });
-        }
+        /* The function below, emitPageVisitEvent will only be called for specific 
+          wallets of XMTP-LABS team members using the interal domain alpha.xmtp.chat 
+          to gather insights about user behaviour which can help the team 
+          to build a better app. */
+        await emitPageVisitEvent(address as address);
         router.push("/inbox");
       }
     };
