@@ -1,9 +1,8 @@
 import { useCallback } from "react";
 import { getConversationId, isValidLongWalletAddress } from "../helpers";
-import { address } from "../pages/inbox";
 import { useXmtpStore } from "../store/xmtp";
 
-const useSendMessage = (conversationKey: string) => {
+const useSendMessage = (conversationId: string) => {
   const client = useXmtpStore((state) => state.client);
   const conversations = useXmtpStore((state) => state.conversations);
   const recipientWalletAddress = useXmtpStore(
@@ -13,17 +12,11 @@ const useSendMessage = (conversationKey: string) => {
 
   const sendMessage = useCallback(
     async (message: string) => {
-      let selectedConversation =
-        conversations.get(recipientWalletAddress) ||
-        conversations.get(conversationKey);
+      let selectedConversation = conversations.get(conversationId);
       if (
         isValidLongWalletAddress(recipientWalletAddress) &&
         !selectedConversation
       ) {
-        const conversationId = conversationKey?.replace(
-          recipientWalletAddress + "/",
-          "",
-        );
         const conversation =
           conversationId &&
           // the line below is to check if the conversation id is valid
@@ -48,7 +41,7 @@ const useSendMessage = (conversationKey: string) => {
       }
       await selectedConversation?.send(message);
     },
-    [conversationKey, recipientWalletAddress, conversations],
+    [conversationId, recipientWalletAddress, conversations],
   );
 
   return {

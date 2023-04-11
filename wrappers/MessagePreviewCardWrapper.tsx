@@ -5,7 +5,6 @@ import { MessagePreviewCard } from "../component-library/components/MessagePrevi
 import { getConversationId, shortAddress } from "../helpers";
 import { address } from "../pages/inbox";
 import { useXmtpStore } from "../store/xmtp";
-import useGetConversationKey from "../hooks/useGetConversationKey";
 
 interface MessagePreviewCardWrapperProps {
   convo?: Conversation;
@@ -21,11 +20,10 @@ export const MessagePreviewCardWrapper = ({
   const setRecipientWalletAddress = useXmtpStore(
     (state) => state.setRecipientWalletAddress,
   );
+  const conversationId = useXmtpStore((state) => state.conversationId);
+
   const setConversationId = useXmtpStore((state) => state.setConversationId);
   const previewMessage = previewMessages.get(getConversationId(convo));
-
-  // XMTP Hooks
-  const { conversationKey } = useGetConversationKey();
 
   // Get ENS name and avatar from Wagmi
   const { data: previewEnsName } = useEnsName({
@@ -36,13 +34,13 @@ export const MessagePreviewCardWrapper = ({
   });
 
   // Helpers
-  const isSelected = conversationKey === getConversationId(convo);
+  const isSelected = conversationId === getConversationId(convo);
 
   const onConvoClick = (conversation: Conversation) => {
     if (recipientWalletAddress !== conversation.peerAddress) {
       setRecipientWalletAddress(conversation.peerAddress);
     }
-    if (conversationKey !== getConversationId(conversation)) {
+    if (conversationId !== getConversationId(conversation)) {
       setConversationId(getConversationId(conversation));
     }
   };
