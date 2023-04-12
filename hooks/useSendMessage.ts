@@ -1,8 +1,10 @@
 import { useCallback } from "react";
 import { getConversationId, isValidLongWalletAddress } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
+import { address } from "../pages/inbox";
+import { emitMsgSentEvent } from "../helpers/internalTracking";
 
-const useSendMessage = (conversationId: string) => {
+const useSendMessage = (conversationId: address) => {
   const client = useXmtpStore((state) => state.client);
   const conversations = useXmtpStore((state) => state.conversations);
   const recipientWalletAddress = useXmtpStore(
@@ -40,6 +42,18 @@ const useSendMessage = (conversationId: string) => {
         }
       }
       await selectedConversation?.send(message);
+
+      /* The emitMsgSentEvent function is called only when
+          specific XMTP Labs team wallets use
+          the internal domain alpha.xmtp.chat. This
+          tracking is temporary and meant to help
+          surface insights about team usage to
+          help build a better app. */
+      await emitMsgSentEvent(
+        // @ts-expect-error: Property 'client' does not exist on type 'Conversation'
+        selectedConversation?.client.address,
+        conversationId,
+      );
     },
     [conversationId, recipientWalletAddress, conversations],
   );

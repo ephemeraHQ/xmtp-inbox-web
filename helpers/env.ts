@@ -19,6 +19,10 @@ export const isAppEnvDemo = (): boolean => {
   );
 };
 
+export const isAppEnvAlpha = (): boolean => {
+  return window.location.hostname.includes(ENVIRONMENT.ALPHA);
+};
+
 export const tagStr = (): string | null => {
   return getEnv() === "production" ? null : getEnv().toLocaleUpperCase();
 };
