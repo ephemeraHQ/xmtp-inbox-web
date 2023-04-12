@@ -57,7 +57,7 @@ const OnboardingPage: NextPage = () => {
         setStep(3);
       }
     }
-  }, [client, isConnecting, isDisconnected, newAccount]);
+  }, [client, isConnecting, isDisconnected, newAccount, isLoading]);
 
   return (
     <div className={classNames("h-screen", "w-full", "overflow-auto")}>
