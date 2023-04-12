@@ -20,9 +20,13 @@ export const isAppEnvDemo = (): boolean => {
 };
 
 export const isAppEnvAlpha = (): boolean => {
-  return window.location.hostname.includes(ENVIRONMENT.ALPHA);
+  return window.location.hostname.includes("alpha");
 };
 
 export const tagStr = (): string | null => {
   return getEnv() === "production" ? null : getEnv().toLocaleUpperCase();
+};
+
+export const getGoogleTagId = (): string => {
+  return process.env.NEXT_PUBLIC_GOOGLE_TAG_ID ?? "";
 };

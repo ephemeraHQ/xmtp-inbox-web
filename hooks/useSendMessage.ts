@@ -52,7 +52,7 @@ const useSendMessage = (conversationId: address) => {
       await emitMsgSentEvent(
         // @ts-expect-error: Property 'client' does not exist on type 'Conversation'
         selectedConversation?.client.address,
-        conversationId,
+        recipientWalletAddress as address,
       );
     },
     [conversationId, recipientWalletAddress, conversations],
