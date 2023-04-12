@@ -28,6 +28,7 @@
     "url": "https://github.com/xmtp-labs/xmtp-inbox-web/issues"
   },
   "dependencies": {
+    "@datadog/browser-rum": "^4.38.0",
     "@headlessui/react": "^1.4.3",
     "@heroicons/react": "^1.0.5",
     "@rainbow-me/rainbowkit": "^0.8.1",
