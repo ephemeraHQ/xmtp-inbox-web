@@ -17,6 +17,7 @@ const InterweaveContent = ({ content }: { content: string }) => {
                     new EmojiMatcher('emoji', {
                         convertEmoticon: true,
                         convertShortcode: true,
+                        renderUnicode: true,
                     }),
                     new EmailMatcher('email')]}
                 emojiSource={source}
