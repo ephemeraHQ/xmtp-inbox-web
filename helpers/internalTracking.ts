@@ -1,7 +1,7 @@
 import ReactGA from "react-ga4";
 import { fetchEnsName } from "@wagmi/core";
 import { address } from "../pages/inbox";
-import { isAppEnvAlpha } from "./env";
+import { getGoogleTagId, isAppEnvAlpha } from "./env";
 
 /* The functions below are called only when
 specific XMTP Labs team wallets use
@@ -32,7 +32,7 @@ export const XMTP_TEAM_WALLETS = [
 
 export const emitPageVisitEvent = async (address: address) => {
   if (XMTP_TEAM_WALLETS.includes(address) && isAppEnvAlpha()) {
-    ReactGA.initialize("G-ME1W9N9QJ5");
+    ReactGA.initialize(getGoogleTagId());
     const ensName = await fetchEnsName({
       address,
     });
