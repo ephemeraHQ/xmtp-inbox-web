@@ -1,0 +1,10 @@
+#!/bin/bash
+set -eou pipefail
+script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+set -a; source "${script_dir}/.env.default"; set +a
+
+docker buildx build \
+    --platform linux/amd64 \
+    --tag "${BUILD_CONTAINER_IMAGE}" \
+    -f "${script_dir}/Dockerfile" \
+    .
