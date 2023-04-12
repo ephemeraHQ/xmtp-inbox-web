@@ -42,10 +42,13 @@ const useSendMessage = (conversationId: address) => {
         }
       }
       await selectedConversation?.send(message);
-      /* The function below, emitMsgSentEvent will only be called for specific 
-          wallets of XMTP-LABS team members using the interal domain alpha.xmtp.chat 
-          to gather insights about user behaviour which can help the team 
-          to build a better app. */
+
+      /* The emitMsgSentEvent function is called only when
+          specific XMTP Labs team wallets use
+          the internal domain alpha.xmtp.chat. This
+          tracking is temporary and meant to help
+          surface insights about team usage to
+          help build a better app. */
       await emitMsgSentEvent(
         // @ts-expect-error: Property 'client' does not exist on type 'Conversation'
         selectedConversation?.client.address,

@@ -3,12 +3,14 @@ import { fetchEnsName } from "@wagmi/core";
 import { address } from "../pages/inbox";
 import { isAppEnvAlpha } from "./env";
 
-/* The functions below will only be called for specific 
-wallets of XMTP-LABS team members using the interal domain alpha.xmtp.chat 
-to gather insights about user behaviour which can help the team 
-to build a better app. */
+/* The functions below are called only when
+specific XMTP Labs team wallets use
+the internal domain alpha.xmtp.chat. This
+tracking is temporary and meant to help
+surface insights about team usage to
+help build a better app. */
 
-// List of XMTP LABS Team Wallets
+// List of XMTP Labs team wallets
 export const XMTP_TEAM_WALLETS = [
   "0x5aC09Ca0865B5492a82460acb43ce658Ea6163D2",
   "0x5e90705bd6e522B47E41397b1afEED5D615FA00e",

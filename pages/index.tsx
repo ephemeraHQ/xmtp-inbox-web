@@ -28,17 +28,19 @@ const OnboardingPage: NextPage = () => {
   }, []);
 
   useEffect(() => {
-    const routeToInBox = async () => {
+    const routeToInbox = async () => {
       if (address && !newAccount && client) {
-        /* The function below, emitPageVisitEvent will only be called for specific 
-          wallets of XMTP-LABS team members using the interal domain alpha.xmtp.chat 
-          to gather insights about user behaviour which can help the team 
-          to build a better app. */
+        /* The emitPageVisitEvent function is called only when
+          specific XMTP Labs team wallets use
+          the internal domain alpha.xmtp.chat. This
+          tracking is temporary and meant to help
+          surface insights about team usage to
+          help build a better app. */
         await emitPageVisitEvent(address as address);
         router.push("/inbox");
       }
     };
-    routeToInBox();
+    routeToInbox();
   }, [client, address, newAccount]);
 
   useEffect(() => {
