@@ -32,15 +32,19 @@ export const XMTP_TEAM_WALLETS = [
 
 export const emitPageVisitEvent = async (address: address) => {
   if (XMTP_TEAM_WALLETS.includes(address) && isAppEnvAlpha()) {
-    ReactGA.initialize(getGoogleTagId());
-    const ensName = await fetchEnsName({
-      address,
-    });
-    ReactGA.send({
-      hitType: "pageview",
-      page: "/inbox",
-      title: ensName ?? address,
-    });
+    try {
+      ReactGA.initialize(getGoogleTagId());
+      const ensName = await fetchEnsName({
+        address,
+      });
+      ReactGA.send({
+        hitType: "pageview",
+        page: "/inbox",
+        title: ensName ?? address,
+      });
+    } catch (e) {
+      console.error(e);
+    }
   }
 };
 
@@ -49,17 +53,21 @@ export const emitMsgSentEvent = async (
   recieverAddress: address,
 ) => {
   if (XMTP_TEAM_WALLETS.includes(senderAddress) && isAppEnvAlpha()) {
-    const ensNameSender = await fetchEnsName({
-      address: senderAddress,
-    });
-    const ensNameReciever = await fetchEnsName({
-      address: recieverAddress,
-    });
-    ReactGA.event({
-      category: "Msg sent event",
-      action: `${ensNameSender ?? senderAddress}-${
-        ensNameReciever ?? recieverAddress
-      }`,
-    });
+    try {
+      const ensNameSender = await fetchEnsName({
+        address: senderAddress,
+      });
+      const ensNameReciever = await fetchEnsName({
+        address: recieverAddress,
+      });
+      ReactGA.event({
+        category: "Msg sent event",
+        action: `${ensNameSender ?? senderAddress}-${
+          ensNameReciever ?? recieverAddress
+        }`,
+      });
+    } catch (e) {
+      console.error(e);
+    }
   }
 };
