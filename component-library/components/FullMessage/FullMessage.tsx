@@ -1,8 +1,7 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { DateDivider } from "../DateDivider/DateDivider";
 import { classNames } from "../../../helpers";
 import { useTranslation } from "react-i18next";
-import InterweaveContent from "../InterweaveContent";
 
 interface MessageSender {
   displayAddress: string;
@@ -13,7 +12,7 @@ interface FullMessageProps {
   /**
    * What is the message text?
    */
-  text: string;
+  text: ReactElement;
   /**
    * who is the message from?
    */
@@ -64,7 +63,7 @@ export const FullMessage = ({
                 : incomingMessageBackgroundStyles
             }`}
             data-testid="message-tile-text">
-            <InterweaveContent content={text} />
+            {text}
           </div>
           <div
             className={`text-xs text-gray-500 w-full flex mb-4 ${

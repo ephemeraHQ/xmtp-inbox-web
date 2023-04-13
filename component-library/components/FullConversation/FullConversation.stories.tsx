@@ -19,7 +19,12 @@ const Template: ComponentStory<typeof FullConversation> = (args) => (
 );
 
 const fromProps = {
-  text: "This should be a from message. Here is my super, super, super interesting from message. What do you think?",
+  text: (
+    <span>
+      This should be a from message. Here is my super, super, super interesting
+      from message. What do you think?
+    </span>
+  ),
   from: {
     displayAddress: "hi.xmtp.eth",
     isSelf: true,
@@ -28,7 +33,12 @@ const fromProps = {
 };
 
 const toProps = {
-  text: "This should be a to message. Here is my super, super, super interesting to message. What do you think?",
+  text: (
+    <span>
+      This should be a to message. Here is my super, super, super interesting to
+      message. What do you think?
+    </span>
+  ),
   from: {
     displayAddress: "otherperson.xmtp.eth",
     isSelf: false,
