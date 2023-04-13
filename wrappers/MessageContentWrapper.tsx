@@ -1,10 +1,10 @@
 import { Interweave } from "interweave";
 import { EmailMatcher, UrlMatcher } from "interweave-autolink";
 import { EmojiMatcher, useEmojiData } from "interweave-emoji";
-import type { FC, MouseEvent } from "react";
+import type { MouseEvent } from "react";
 
-const InterweaveContent = ({ content }: { content: string }) => {
-  const [emojis, source, manager] = useEmojiData({
+const MessageContentWrapper = ({ content }: { content: string }) => {
+  const [, source] = useEmojiData({
     compact: false,
     shortcodes: ["emojibase"],
   });
@@ -30,4 +30,4 @@ const InterweaveContent = ({ content }: { content: string }) => {
   );
 };
 
-export default InterweaveContent;
+export default MessageContentWrapper;
