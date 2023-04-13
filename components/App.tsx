@@ -15,7 +15,7 @@ function App({ children }: AppProps) {
     This tracking is meant to help surface insights 
     about performance based on team usage, and flag
     any performance degradations before they hit our
-    productions users. */
+    production users. */
     if (window.location.hostname.includes(ENVIRONMENT.ALPHA)) {
       datadogRum.init({
         applicationId: process.env.NEXT_PUBLIC_DATA_DOG_ID as string,
@@ -24,6 +24,7 @@ function App({ children }: AppProps) {
         service: "inbox-web",
         env: "prod",
         sessionSampleRate: 100,
+        sessionReplaySampleRate: 0,
         trackUserInteractions: false,
         trackResources: true,
         trackLongTasks: true,
