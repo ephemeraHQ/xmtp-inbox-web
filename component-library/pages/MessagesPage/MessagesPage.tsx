@@ -21,7 +21,7 @@ interface MessagesPageProps {
 }
 
 const fromProps = {
-  text: "This should be a from message.",
+  text: <span>This should be a from message</span>,
   from: {
     displayAddress: "hi.xmtp.eth",
     isSelf: true,
@@ -30,7 +30,7 @@ const fromProps = {
 };
 
 const toProps = {
-  text: "This should be a to message.",
+  text: <span>This should be a to message.</span>,
   from: {
     displayAddress: "otherperson.xmtp.eth",
     isSelf: false,

@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.interweave-content > span > a {
+  @apply text-black hover:text-indigo-300;
+  @apply font-medium;
+}
+
+.interweave-content > span > span {
+  @apply ml-1;
+}
