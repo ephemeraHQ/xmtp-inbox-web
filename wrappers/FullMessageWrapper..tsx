@@ -4,6 +4,7 @@ import { FullMessage } from "../component-library/components/FullMessage/FullMes
 import { isValidLongWalletAddress, shortAddress } from "../helpers";
 import { address } from "../pages/inbox";
 import { useXmtpStore } from "../store/xmtp";
+import MessageContentWrapper from "./MessageContentWrapper";
 
 interface FullMessageWrapperProps {
   msg: {
@@ -26,7 +27,7 @@ export const FullMessageWrapper = ({ msg, idx }: FullMessageWrapperProps) => {
 
   return (
     <FullMessage
-      text={msg.content}
+      text={<MessageContentWrapper content={msg.content} />}
       key={`${msg.id}_${idx}`}
       from={{
         displayAddress: ensName ? ensName : shortAddress(msg.senderAddress),

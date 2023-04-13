@@ -19,7 +19,7 @@ const Template: ComponentStory<typeof FullMessage> = (args) => (
 
 export const FullOutgoingMessage = Template.bind({});
 FullOutgoingMessage.args = {
-  text: "Hello there",
+  text: <span>Hello there</span>,
   from: {
     displayAddress: "hi.xmtp.eth",
     isSelf: true,
@@ -29,7 +29,7 @@ FullOutgoingMessage.args = {
 
 export const FullIncomingMessage = Template.bind({});
 FullIncomingMessage.args = {
-  text: "Hello there",
+  text: <span>Hello there</span>,
   from: {
     displayAddress: shortAddress("0x194c31cAe1418D5256E8c58e0d08Aee1046C6Ed0"),
     isSelf: false,
