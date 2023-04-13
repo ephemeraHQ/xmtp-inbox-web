@@ -15,6 +15,7 @@ import { LearnMore } from "../component-library/components/LearnMore/LearnMore";
 import router from "next/router";
 import useWindowSize from "../hooks/useWindowSize";
 import useHandleConnect from "../hooks/useHandleConnect";
+import useSendMessage from "../hooks/useSendMessage";
 
 export type address = "0x${string}";
 
@@ -45,6 +46,8 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   const setStartedFirstMessage = useXmtpStore(
     (state) => state.setStartedFirstMessage,
   );
+  const conversationId = useXmtpStore((state) => state.conversationId);
+  const { sendMessage } = useSendMessage(conversationId as string);
 
   useEffect(() => {
     if (!client) {
@@ -53,7 +56,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   }, [client]);
 
   // XMTP Hooks
-  useListConversations();
+  useListConversations(sendMessage);
 
   const orderByLatestMessage = (
     convoA: Conversation,
@@ -115,9 +118,9 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
                 <AddressInputWrapper />
               </div>
               <div className="h-full overflow-auto flex flex-col">
-                <FullConversationWrapper />
+                <FullConversationWrapper sendMessage={sendMessage} />
               </div>
-              <MessageInputWrapper />
+              <MessageInputWrapper sendMessage={sendMessage} />
             </>
           )}
         </div>

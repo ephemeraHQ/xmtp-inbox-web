@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { Conversation, DecodedMessage, Client } from "@xmtp/xmtp-js";
 import { create } from "zustand";
+import { ContentTypeReadReceipt } from "../codecs/ReadReceipt";
 import { RecipientInputMode } from "../helpers";
 import getUniqueMessages from "../helpers/getUniqueMessages";
 import { address } from "../pages/inbox";
@@ -39,12 +40,15 @@ export const useXmtpStore = create<XmtpState>((set) => ({
     set(() => ({ loadingConversations })),
   convoMessages: new Map(),
   previewMessages: new Map(),
-  setPreviewMessage: (key: string, message: DecodedMessage) =>
-    set((state) => {
-      const newPreviewMessages = new Map(state.previewMessages);
-      newPreviewMessages.set(key, message);
-      return { previewMessages: newPreviewMessages };
-    }),
+  setPreviewMessage: (key: string, message: DecodedMessage) => {
+    if (message?.contentType?.typeId !== ContentTypeReadReceipt?.typeId) {
+      set((state) => {
+        const newPreviewMessages = new Map(state.previewMessages);
+        newPreviewMessages.set(key, message);
+        return { previewMessages: newPreviewMessages };
+      });
+    }
+  },
   setPreviewMessages: (previewMessages) => set(() => ({ previewMessages })),
   addMessages: (key: string, newMessages: DecodedMessage[]) => {
     let numAdded = 0;

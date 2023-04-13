@@ -5,10 +5,13 @@ import { useXmtpStore } from "../store/xmtp";
 import { fetchEnsName } from "@wagmi/core";
 import { useAccount } from "wagmi";
 import { address } from "../pages/inbox";
+import { ContentTypeReadReceipt } from "../codecs/ReadReceipt";
 
 let latestMsgId: string;
 
-export const useStreamAllMessages = () => {
+export const useStreamAllMessages = (
+  onMessageCallback?: (message: DecodedMessage) => void,
+) => {
   const { address: walletAddress } = useAccount();
 
   const client = useXmtpStore((state) => state.client);
@@ -38,17 +41,27 @@ export const useStreamAllMessages = () => {
         setPreviewMessage(key, message);
 
         const numAdded = addMessages(key, [message]);
+
         if (numAdded > 0) {
           const newMessages = convoMessages.get(key) ?? [];
+
           newMessages.push(message);
+
+          if (onMessageCallback) {
+            onMessageCallback(message);
+          }
+
           // Below code is to remove duplicate messages from the
           // newMessages array
+
           const uniqueMessages = [
             ...Array.from(
               new Map(newMessages.map((item) => [item["id"], item])).values(),
             ),
           ];
+
           convoMessages.set(key, uniqueMessages);
+
           if (
             latestMsgId !== message.id &&
             Notification.permission === "granted" &&

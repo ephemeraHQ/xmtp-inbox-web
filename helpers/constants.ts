@@ -1,4 +1,4 @@
-export const MESSAGE_LIMIT = 20;
+export const MESSAGE_LIMIT = 50;
 
 export const ENVIRONMENT = {
   ALPHA: "alpha",

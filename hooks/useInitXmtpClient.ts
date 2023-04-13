@@ -1,6 +1,7 @@
 import { Client } from "@xmtp/xmtp-js";
 import { useEffect, useState } from "react";
 import { useSigner } from "wagmi";
+import { ReadReceiptCodec } from "../codecs/ReadReceipt";
 import {
   getAppVersion,
   getEnv,
@@ -75,6 +76,7 @@ const useInitXmtpClient = () => {
           appVersion: getAppVersion(),
           persistConversations: true,
           privateKeyOverride: keys,
+          codecs: [new ReadReceiptCodec()],
         });
         setClient(xmtp);
         setIsRequestPending(false);

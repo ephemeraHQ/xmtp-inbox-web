@@ -1,12 +1,24 @@
-import { Conversation, Stream } from "@xmtp/xmtp-js";
+import {
+  ContentTypeId,
+  Conversation,
+  DecodedMessage,
+  Stream,
+} from "@xmtp/xmtp-js";
 import { useEffect } from "react";
 import { useAccount } from "wagmi";
+import { ContentTypeReadReceipt, ReadReceipt } from "../codecs/ReadReceipt";
 import { getConversationId } from "../helpers";
 import fetchMostRecentMessage from "../helpers/fetchMostRecentMessage";
 import { useXmtpStore } from "../store/xmtp";
 import useStreamAllMessages from "./useStreamAllMessages";
 
-export const useListConversations = () => {
+export const useListConversations = (
+  sendMessage: (
+    message: string | ReadReceipt,
+    contentType?: ContentTypeId,
+    receiverAddress?: string,
+  ) => Promise<void>,
+) => {
   const { address: walletAddress } = useAccount();
   const client = useXmtpStore((state) => state.client);
 
@@ -19,7 +31,21 @@ export const useListConversations = () => {
     (state) => state.setLoadingConversations,
   );
 
-  useStreamAllMessages();
+  const onMessageCallback = (message: DecodedMessage) => {
+    if (
+      message?.contentType?.typeId !== ContentTypeReadReceipt?.typeId &&
+      walletAddress !== message?.senderAddress
+    ) {
+      const readReceipt: ReadReceipt = {
+        messageId: message?.id,
+        status: "DELIVERED",
+      };
+
+      sendMessage(readReceipt, ContentTypeReadReceipt, message?.senderAddress);
+    }
+  };
+
+  useStreamAllMessages(onMessageCallback);
 
   useEffect(() => {
     if (!client) {

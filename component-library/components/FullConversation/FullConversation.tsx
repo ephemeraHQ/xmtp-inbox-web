@@ -3,7 +3,7 @@ import { MessageSkeletonLoader } from "../Loaders/SkeletonLoaders/MessageSkeleto
 import { useTranslation } from "react-i18next";
 
 interface FullConversationProps {
-  messages?: Array<JSX.Element>;
+  messages?: Array<JSX.Element | null>;
   isLoading?: boolean;
 }
 
