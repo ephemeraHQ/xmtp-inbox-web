@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { DateDivider } from "../DateDivider/DateDivider";
 import { classNames } from "../../../helpers";
 import { useTranslation } from "react-i18next";
@@ -12,7 +12,7 @@ interface FullMessageProps {
   /**
    * What is the message text?
    */
-  text: string;
+  text: ReactElement;
   /**
    * who is the message from?
    */
@@ -38,7 +38,7 @@ export const FullMessage = ({
 
   const incomingMessageBackgroundStyles = "bg-gray-200 rounded-br-lg pl-2";
   const outgoingMessageBackgroundStyles =
-    "bg-indigo-600 text-white rounded-bl-lg";
+    "bg-indigo-600 text-white rounded-bl-lg message-sender";
 
   return (
     <div
