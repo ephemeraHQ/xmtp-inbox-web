@@ -38,6 +38,7 @@ export const XMTP_TEAM_WALLETS = [
   "0x009d5F0A4C42f5FAccb05aDc8a426042BBFB000f",
   "0x66942eC8b0A6d0cff51AEA9C7fd00494556E705F",
   "0xB1B9FbB174377BD64De7ACE1508eEd43e23f9301",
+  "0x2b0D29fFA81fa6Bf35D31db7C3bc11a5913B45ef",
 ];
 
 export const emitPageVisitEvent = async (address: address) => {
