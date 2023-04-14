@@ -5,13 +5,14 @@ import { useXmtpStore } from "../store/xmtp";
 import { fetchEnsName } from "@wagmi/core";
 import { useAccount } from "wagmi";
 import { address } from "../pages/inbox";
+import { useClient } from "@xmtp/react-sdk";
 
 let latestMsgId: string;
 
 export const useStreamAllMessages = () => {
   const { address: walletAddress } = useAccount();
 
-  const client = useXmtpStore((state) => state.client);
+  const { client } = useClient();
 
   const convoMessages = useXmtpStore((state) => state.convoMessages);
   const addMessages = useXmtpStore((state) => state.addMessages);
