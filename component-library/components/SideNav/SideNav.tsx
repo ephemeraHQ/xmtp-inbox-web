@@ -5,7 +5,7 @@ import {
   CheckCircleIcon,
   ChevronDoubleRightIcon,
 } from "@heroicons/react/solid";
-import { CogIcon, SparklesIcon } from "@heroicons/react/outline";
+import { CogIcon, FlagIcon, SparklesIcon } from "@heroicons/react/outline";
 import { classNames, shortAddress } from "../../../helpers";
 import { XmtpIcon } from "../Icons/XmtpIcon";
 import { useState } from "react";
@@ -91,6 +91,12 @@ const SideNav = ({
       className={isOpen ? "mr-4" : ""}
       data-testid="gallery-icon"
     />,
+    <FlagIcon
+      key={t("menu.report_header")}
+      width={24}
+      className={isOpen ? "mr-4" : ""}
+      data-testid="report-icon"
+    />,
     <CogIcon
       key={t("menu.settings_header")}
       width={24}
@@ -132,10 +138,22 @@ const SideNav = ({
             isOpen ? "w-[300px]" : "",
           )}>
           <>
-            <div className="flex justify-center items-center h-fit">
-              {icon}
-              <span data-testId={icon.key}>{isOpen && icon.key}</span>
-            </div>
+            {icon.key === t("menu.report_header") ? (
+              <a
+                href="https://github.com/xmtp-labs/xmtp-inbox-web/issues/new/choose"
+                target="_blank"
+                rel="noreferrer">
+                <div className="flex justify-center items-center h-fit">
+                  {icon}
+                  <span data-testId={icon.key}>{isOpen && icon.key}</span>
+                </div>
+              </a>
+            ) : (
+              <div className="flex justify-center items-center h-fit">
+                {icon}
+                <span data-testId={icon.key}>{isOpen && icon.key}</span>
+              </div>
+            )}
           </>
         </button>
         {(icon.key === t("menu.gallery_header") ||

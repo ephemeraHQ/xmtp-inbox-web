@@ -45,7 +45,8 @@
     "gallery_header": "Gallery",
     "messages_header": "Messages",
     "settings_header": "Settings",
-    "coming_soon": "Coming soon"
+    "coming_soon": "Coming soon",
+    "report_header": "Report Issue"
   },
   "status_messaging": {
     "error_1_header": "Sorry, the app encountered an error",
