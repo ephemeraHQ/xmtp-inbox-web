@@ -12,7 +12,7 @@ import {
 } from "../helpers";
 import { useClient } from "@xmtp/react-sdk";
 
-type ClientStatus = "new" | "created" | "enabled" | "no-signer";
+type ClientStatus = "new" | "created" | "enabled";
 
 /**
  * This is a helper function for creating a new promise and getting access
@@ -56,45 +56,44 @@ const useInitXmtpClient = () => {
    * creation process.
    */
 
-  // create promise for controlling the display of the create account signature
-  // this value should not change over time
-  const { promise: createPromise, resolve: createResolve } = useMemo(
-    () => makePromise(),
-    [],
-  );
+  // create promise, callback, and resolver for controlling the display of the
+  // create account signature. these values should not change over time.
+  const { createResolve, preCreateIdentityCallback, resolveCreate } =
+    useMemo(() => {
+      const { promise: createPromise, resolve: createResolve } = makePromise();
+      return {
+        createResolve,
+        preCreateIdentityCallback: () => createPromise,
+        // executing this function will result in displaying the create account
+        // signature prompt
+        resolveCreate: () => {
+          createResolve();
+          setSigning(true);
+        },
+      };
+    }, []);
 
-  // associated callback passed as XMTP client option
-  // this value should not change over time
-  const preCreateIdentityCallback = useCallback(() => createPromise, []);
-
-  // executing this function will result in displaying the create account
-  // signature prompt
-  const resolveCreate = useCallback(async () => {
-    createResolve();
-    setSigning(true);
-  }, [signer]);
-
-  // create promise for controlling the display of the enable account signature
-  // this value should not change over time
-  const { promise: enablePromise, resolve: enableResolve } = useMemo(
-    () => makePromise(),
-    [],
-  );
-
-  // associated callback passed as XMTP client option
-  // this value should not change over time
-  const preEnableIdentityCallback = useCallback(() => {
-    setSigning(false);
-    setStatus("created");
-    return enablePromise;
-  }, []);
-
-  // executing this function will result in displaying the enable account
-  // signature prompt
-  const resolveEnable = useCallback(() => {
-    enableResolve();
-    setSigning(true);
-  }, []);
+  // create promise, callback, and resolver for controlling the display of the
+  // enable account signature. these values should not change over time.
+  const { enableResolve, preEnableIdentityCallback, resolveEnable } =
+    useMemo(() => {
+      const { promise: enablePromise, resolve: enableResolve } = makePromise();
+      return {
+        enableResolve,
+        // this is called right after signing the create identity signature
+        preEnableIdentityCallback: () => {
+          setSigning(false);
+          setStatus("created");
+          return enablePromise;
+        },
+        // executing this function will result in displaying the enable account
+        // signature prompt
+        resolveEnable: () => {
+          enableResolve();
+          setSigning(true);
+        },
+      };
+    }, []);
 
   const { client, isLoading, initialize } = useClient();
 
