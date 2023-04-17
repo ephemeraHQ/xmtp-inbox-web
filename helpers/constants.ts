@@ -2,6 +2,7 @@ export const MESSAGE_LIMIT = 20;
 
 export const ENVIRONMENT = {
   DEMO: "demo",
+  ALPHA: "alpha.xmtp.chat",
 };
 
 export const RecipientInputMode = {

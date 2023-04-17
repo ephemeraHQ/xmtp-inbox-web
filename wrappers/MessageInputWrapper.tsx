@@ -3,13 +3,14 @@ import { MessageInput } from "../component-library/components/MessageInput/Messa
 import { RecipientInputMode } from "../helpers";
 import useGetRecipientInputMode from "../hooks/useGetRecipientInputMode";
 import useSendMessage from "../hooks/useSendMessage";
-import useGetConversationKey from "../hooks/useGetConversationKey";
+import { useXmtpStore } from "../store/xmtp";
+import { address } from "../pages/inbox";
 
 export const MessageInputWrapper = () => {
   // XMTP Hooks
   const { recipientInputMode } = useGetRecipientInputMode();
-  const { conversationKey } = useGetConversationKey();
-  const { sendMessage } = useSendMessage(conversationKey as string);
+  const conversationId = useXmtpStore((state) => state.conversationId);
+  const { sendMessage } = useSendMessage(conversationId as address);
 
   return (
     <MessageInput
