@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useLayoutEffect, useRef } from "react";
+import React, { ChangeEvent, useEffect, useLayoutEffect, useRef } from "react";
 import { ArrowUpIcon } from "@heroicons/react/solid";
 import { IconButton } from "../IconButton/IconButton";
 import { classNames } from "../../../helpers";
@@ -43,6 +43,10 @@ export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
     }
   }, [value]);
 
+  useEffect(() => {
+    textAreaRef.current?.focus();
+  });
+
   return (
     <form>
       <label htmlFor="chat" className="sr-only">
@@ -62,6 +66,7 @@ export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
           borderStyles,
         )}>
         <textarea
+          autoFocus
           id="chat"
           data-testid="message-input"
           onChange={onChange}
