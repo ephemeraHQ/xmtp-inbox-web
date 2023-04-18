@@ -13,9 +13,13 @@ interface InputProps {
    * Is the CTA button disabled?
    */
   isDisabled?: boolean;
+  /**
+   * Rerender component?
+   */
+  refresh: boolean;
 }
 
-export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
+export const MessageInput = ({ onSubmit, isDisabled, refresh }: InputProps) => {
   const { t } = useTranslation();
   let textAreaRef = useRef<HTMLTextAreaElement>(null);
   const [value, setValue] = React.useState("");
@@ -45,7 +49,7 @@ export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
 
   useEffect(() => {
     textAreaRef.current?.focus();
-  });
+  }, [refresh]);
 
   return (
     <form>
