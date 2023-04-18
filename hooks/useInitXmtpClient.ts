@@ -116,13 +116,13 @@ const useInitXmtpClient = () => {
   };
 
   useEffect(() => {
-    if (!isRequestPending) {
-      signer && !client && initClient();
+    if (!isRequestPending && !client) {
+      signer && initClient();
       if (isAppEnvDemo()) {
         createXmtpIdentity();
       }
     }
-  }, [signer]);
+  }, [signer, isRequestPending]);
 
   return {
     initClient,
