@@ -16,7 +16,7 @@ interface InputProps {
   /**
    * Rerender component?
    */
-  refresh: boolean;
+  refresh?: boolean;
 }
 
 export const MessageInput = ({ onSubmit, isDisabled, refresh }: InputProps) => {
