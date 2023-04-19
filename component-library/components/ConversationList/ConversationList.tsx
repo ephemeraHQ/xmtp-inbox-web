@@ -29,7 +29,9 @@ export const ConversationList = ({
 }: ConversationListProps) => {
   return !messages?.length && isLoading ? (
     <div className="w-full pl-16 overflow-hidden h-full flex flex-col justify-start sm:w-full bg-gray-100">
-      {Array(12).fill(<MessagePreviewCard isLoading />)}
+      {Array.from({ length: 12 }).map((_, idx) => (
+        <MessagePreviewCard key={idx} isLoading />
+      ))}
     </div>
   ) : !messages.length && !isLoading && !hasRecipientEnteredValue ? (
     <div className="w-full pl-16 overflow-hidden sm:w-full sm:p-4 md:p-8 border border-gray-100 h-full">

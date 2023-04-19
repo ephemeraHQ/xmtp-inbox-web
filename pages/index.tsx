@@ -1,35 +1,33 @@
 import type { NextPage } from "next";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useXmtpStore } from "../store/xmtp";
 import { watchAccount } from "@wagmi/core";
 import useInitXmtpClient from "../hooks/useInitXmtpClient";
-import useHandleConnect from "../hooks/useHandleConnect";
 import { useAccount, useDisconnect } from "wagmi";
 import { useRouter } from "next/router";
 import { classNames, isAppEnvDemo, wipeKeys } from "../helpers";
 import { OnboardingStep } from "../component-library/components/OnboardingStep/OnboardingStep";
 import { emitPageVisitEvent } from "../helpers/internalTracking";
 import { address } from "./inbox";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 
 const OnboardingPage: NextPage = () => {
-  const client = useXmtpStore((state) => state.client);
-  const [step, setStep] = useState(1);
   const resetXmtpState = useXmtpStore((state) => state.resetXmtpState);
-  const { address, isConnecting, isDisconnected } = useAccount();
-  const { handleConnect } = useHandleConnect();
-  const { createXmtpIdentity, newAccount, connectToXmtp, isLoading } =
+  const { address } = useAccount();
+  const { openConnectModal } = useConnectModal();
+  const { client, isLoading, status, resolveCreate, resolveEnable } =
     useInitXmtpClient();
   const { disconnect: disconnectWagmi, reset: resetWagmi } = useDisconnect();
 
   const router = useRouter();
 
   useEffect(() => {
-    watchAccount(() => resetXmtpState());
+    return watchAccount(() => resetXmtpState());
   }, []);
 
   useEffect(() => {
     const routeToInbox = async () => {
-      if (address && !newAccount && client) {
+      if (client) {
         /* The emitPageVisitEvent function is called only when
           specific XMTP Labs team wallets use
           the internal domain alpha.xmtp.chat. This
@@ -41,32 +39,35 @@ const OnboardingPage: NextPage = () => {
       }
     };
     routeToInbox();
-  }, [client, address, newAccount]);
+  }, [client]);
 
-  useEffect(() => {
+  const step = useMemo(() => {
+    // special demo case that will skip onboarding
     if (isAppEnvDemo()) {
-      setStep(0);
-    } else {
-      if (isDisconnected) {
-        setStep(1);
-      } else if (isConnecting && !isDisconnected) {
-        setStep(1);
-      } else if (newAccount && !client) {
-        setStep(2);
-      } else {
-        setStep(3);
-      }
+      return 0;
     }
-  }, [client, isConnecting, isDisconnected, newAccount, isLoading]);
+    switch (status) {
+      // XMTP identity not created
+      case "new":
+        return 2;
+      // XMTP identity created, but not enabled
+      case "created":
+        return 3;
+      // waiting on wallet connection
+      case undefined:
+      default:
+        return 1;
+    }
+  }, [status]);
 
   return (
     <div className={classNames("h-screen", "w-full", "overflow-auto")}>
       <OnboardingStep
         step={step}
         isLoading={isLoading}
-        onConnect={handleConnect}
-        onCreate={createXmtpIdentity}
-        onEnable={connectToXmtp}
+        onConnect={openConnectModal}
+        onCreate={resolveCreate}
+        onEnable={resolveEnable}
         onDisconnect={() => {
           wipeKeys(address ?? "");
           disconnectWagmi();

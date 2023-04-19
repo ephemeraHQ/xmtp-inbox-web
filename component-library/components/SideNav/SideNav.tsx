@@ -134,7 +134,7 @@ const SideNav = ({
           <>
             <div className="flex justify-center items-center h-fit">
               {icon}
-              <span data-testId={icon.key}>{isOpen && icon.key}</span>
+              <span data-testid={icon.key}>{isOpen && icon.key}</span>
             </div>
           </>
         </button>
