@@ -1,5 +1,5 @@
 import { Client } from "@xmtp/xmtp-js";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useConnect, useSigner } from "wagmi";
 import { MockConnector } from "@wagmi/core/connectors/mock";
 import { Wallet } from "ethers/lib";

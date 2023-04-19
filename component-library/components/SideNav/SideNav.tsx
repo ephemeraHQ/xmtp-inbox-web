@@ -240,6 +240,15 @@ const SideNav = ({
               })}
             </div>
             <hr className="m-2" />
+            <span className="text-sm ml-2 text-red-600 hover:text-red-800">
+              <a
+                href="https://github.com/xmtp-labs/xmtp-inbox-web/issues/new?assignees=&labels=bug&template=bug_report.yml&title=Bug%3A+"
+                target="_blank"
+                rel="noreferrer">
+                Report a bug
+              </a>
+            </span>
+            <hr className="m-2" />
             <GhostButton
               onClick={onDisconnect}
               label={t("common.disconnect")}
