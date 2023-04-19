@@ -24,7 +24,7 @@ export const LearnMore = ({
   return (
     <div className="flex flex-col justify-center items-center max-w-xl p-4 md:h-full m-0 m-auto">
       <div>
-        <h1 className="text-4xl font-bold my-4" data-testId="learn-more-header">
+        <h1 className="text-4xl font-bold my-4" data-testid="learn-more-header">
           {t("messages.messages_empty_header")}
         </h1>
       </div>
@@ -43,7 +43,7 @@ export const LearnMore = ({
         })}
       </div>
       <div>
-        <h2 className="text-lg font-bold my-4" data-testId="get-started-header">
+        <h2 className="text-lg font-bold my-4" data-testid="get-started-header">
           {t("messages.messages_empty_subheader")}
         </h2>
         <InfoCard

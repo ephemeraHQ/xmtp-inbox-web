@@ -5,6 +5,7 @@ import { isValidLongWalletAddress, shortAddress } from "../helpers";
 import { address } from "../pages/inbox";
 import { useXmtpStore } from "../store/xmtp";
 import MessageContentWrapper from "./MessageContentWrapper";
+import { useClient } from "@xmtp/react-sdk";
 
 interface FullMessageWrapperProps {
   msg: {
@@ -17,7 +18,7 @@ interface FullMessageWrapperProps {
 }
 
 export const FullMessageWrapper = ({ msg, idx }: FullMessageWrapperProps) => {
-  const client = useXmtpStore((state) => state.client);
+  const { client } = useClient();
 
   // Get ENS if exists from full address
   const { data: ensName } = useEnsName({

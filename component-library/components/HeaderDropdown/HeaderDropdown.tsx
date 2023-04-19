@@ -51,7 +51,7 @@ export const HeaderDropdown = ({
   return (
     <div
       data-modal-target="headerModalId"
-      data-testId="conversation-list-header"
+      data-testid="conversation-list-header"
       className="border-l border-r border-b border-gray-200 bg-gray-100 h-16 p-4 pl-20 pt-5">
       <div className="flex justify-between items-center">
         <span className="flex" onClick={() => setIsOpen(!isOpen)}>

@@ -15,8 +15,6 @@ interface XmtpState {
   setPreviewMessage: (key: string, message: DecodedMessage) => void;
   setPreviewMessages: (previewMessages: Map<string, DecodedMessage>) => void;
   addMessages: (key: string, newMessages: DecodedMessage[]) => number;
-  client: Client | undefined | null;
-  setClient: (client: Client | undefined | null) => void;
   recipientWalletAddress: string | address;
   setRecipientWalletAddress: (address: string) => void;
   conversationId?: string;
@@ -62,8 +60,6 @@ export const useXmtpStore = create<XmtpState>((set) => ({
     });
     return numAdded;
   },
-  client: undefined,
-  setClient: (client: Client | undefined | null) => set(() => ({ client })),
   recipientWalletAddress: "",
   setRecipientWalletAddress: (address) =>
     set(() => ({ recipientWalletAddress: address })),
