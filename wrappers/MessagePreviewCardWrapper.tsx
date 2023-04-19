@@ -5,6 +5,7 @@ import { MessagePreviewCard } from "../component-library/components/MessagePrevi
 import { getConversationId, shortAddress } from "../helpers";
 import { address } from "../pages/inbox";
 import { useXmtpStore } from "../store/xmtp";
+import MessageContentWrapper from "./MessageContentWrapper";
 
 interface MessagePreviewCardWrapperProps {
   convo?: Conversation;
@@ -51,7 +52,7 @@ export const MessagePreviewCardWrapper = ({
     <MessagePreviewCard
       isSelected={isSelected}
       key={previewMessage?.id}
-      text={previewMessage?.content}
+      text={<MessageContentWrapper content={previewMessage?.content} />}
       datetime={previewMessage?.sent}
       displayAddress={
         previewEnsName || shortAddress(convo?.peerAddress || "") || undefined
