@@ -78,7 +78,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
           <>
             <SideNavWrapper />
             <div className="flex flex-col w-full h-screen overflow-y-auto">
-              {!loadingConversations && <HeaderDropdownWrapper />}
+              <HeaderDropdownWrapper />
               <ConversationList
                 hasRecipientEnteredValue={!!recipientEnteredValue}
                 setStartedFirstMessage={() => setStartedFirstMessage(true)}
