@@ -52,7 +52,11 @@ export const MessagePreviewCardWrapper = ({
     <MessagePreviewCard
       isSelected={isSelected}
       key={previewMessage?.id}
-      text={<MessageContentWrapper content={previewMessage?.content} />}
+      text={
+        previewMessage?.content ? (
+          <MessageContentWrapper content={previewMessage?.content} />
+        ) : undefined
+      }
       datetime={previewMessage?.sent}
       displayAddress={
         previewEnsName || shortAddress(convo?.peerAddress || "") || undefined
