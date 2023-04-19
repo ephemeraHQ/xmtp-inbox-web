@@ -21,49 +21,60 @@ const AppWithoutSSR = dynamic(() => import("../components/App"), {
 
 const createWallet = (() => Wallet.createRandom())();
 
+const mockConnector = new MockConnector({
+  options: { signer: createWallet },
+});
+
+const { chains, provider, webSocketProvider } = configureChains(
+  [mainnet],
+  [
+    infuraProvider({ apiKey: process.env.NEXT_PUBLIC_INFURA_ID ?? "" }),
+    publicProvider(),
+  ],
+);
+
+const { connectors } = getDefaultWallets({
+  appName: "XMTP Inbox Web",
+  chains,
+});
+
+const wagmiDemoClient = createClient({
+  autoConnect: true,
+  connectors: [mockConnector],
+  provider,
+  webSocketProvider,
+});
+
+const wagmiClient = createClient({
+  autoConnect: true,
+  connectors,
+  provider,
+  webSocketProvider,
+});
+
 function AppWrapper({ Component, pageProps }: AppProps) {
-  const [isDemo, setIsDemo] = useState(false);
-
-  const mockConnector = new MockConnector({
-    options: { signer: createWallet },
-  });
-
-  const { chains, provider, webSocketProvider } = configureChains(
-    [mainnet],
-    [
-      infuraProvider({ apiKey: process.env.NEXT_PUBLIC_INFURA_ID ?? "" }),
-      publicProvider(),
-    ],
-  );
-
-  const { connectors } = getDefaultWallets({
-    appName: "XMTP Inbox Web",
-    chains,
-  });
-
-  const wagmiClient = createClient({
-    autoConnect: true,
-    connectors: isDemo ? [mockConnector] : connectors,
-    provider,
-    webSocketProvider,
-  });
-
+  const [client, setClient] = useState<typeof wagmiClient | null>(null);
   useEffect(() => {
-    setIsDemo(isAppEnvDemo());
+    if (isAppEnvDemo()) {
+      setClient(wagmiDemoClient);
+    } else {
+      setClient(wagmiClient);
+    }
   }, []);
-
   return (
-    <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains}>
-        <React.StrictMode>
-          <XMTPProvider>
-            <AppWithoutSSR>
-              <Component {...pageProps} />
-            </AppWithoutSSR>
-          </XMTPProvider>
-        </React.StrictMode>
-      </RainbowKitProvider>
-    </WagmiConfig>
+    client && (
+      <WagmiConfig client={client}>
+        <RainbowKitProvider chains={chains}>
+          <React.StrictMode>
+            <XMTPProvider>
+              <AppWithoutSSR>
+                <Component {...pageProps} />
+              </AppWithoutSSR>
+            </XMTPProvider>
+          </React.StrictMode>
+        </RainbowKitProvider>
+      </WagmiConfig>
+    )
   );
 }
 
