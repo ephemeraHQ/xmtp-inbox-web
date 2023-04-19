@@ -11,17 +11,12 @@ export const MessageInputWrapper = () => {
   const { recipientInputMode } = useGetRecipientInputMode();
   const conversationId = useXmtpStore((state) => state.conversationId);
   const { sendMessage } = useSendMessage(conversationId as address);
-  const [refresh, setRefresh] = useState(false);
-
-  useEffect(() => {
-    setRefresh(!refresh);
-  }, [conversationId]);
 
   return (
     <MessageInput
       isDisabled={recipientInputMode !== RecipientInputMode.OnNetwork}
       onSubmit={sendMessage}
-      refresh={refresh}
+      conversationId={conversationId}
     />
   );
 };
