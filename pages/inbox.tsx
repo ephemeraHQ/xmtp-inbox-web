@@ -1,7 +1,11 @@
 import React, { useEffect } from "react";
 import useListConversations from "../hooks/useListConversations";
 import { useXmtpStore } from "../store/xmtp";
-import { getConversationId, TAILWIND_MD_BREAKPOINT } from "../helpers";
+import {
+  getConversationId,
+  TAILWIND_MD_BREAKPOINT,
+  XMTP_FEEDBACK_ADDRESS,
+} from "../helpers";
 import { ConversationList } from "../component-library/components/ConversationList/ConversationList";
 import { Conversation } from "@xmtp/xmtp-js";
 import { MessagePreviewCardWrapper } from "../wrappers/MessagePreviewCardWrapper";
@@ -84,14 +88,25 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
                   recipientEnteredValue &&
                   !loadingConversations
                     ? [<MessagePreviewCardWrapper key="default" />]
-                    : Array.from(conversations.values())
-                        .sort(orderByLatestMessage)
-                        .map((convo) => (
-                          <MessagePreviewCardWrapper
-                            key={getConversationId(convo)}
-                            convo={convo}
-                          />
-                        ))
+                    : [
+                        <MessagePreviewCardWrapper
+                          key={XMTP_FEEDBACK_ADDRESS}
+                          convo={conversations.get(XMTP_FEEDBACK_ADDRESS)}
+                        />,
+                        ...Array.from(conversations.values())
+                          .sort(orderByLatestMessage)
+                          .filter(
+                            (convo) =>
+                              convo.peerAddress !== XMTP_FEEDBACK_ADDRESS,
+                          )
+                          .map((convo) => (
+                            <MessagePreviewCardWrapper
+                              key={getConversationId(convo)}
+                              convo={convo}
+                            />
+                          )),
+                        ,
+                      ]
                 }
               />
             </div>
