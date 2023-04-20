@@ -1,8 +1,6 @@
 import { Client } from "@xmtp/xmtp-js";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useConnect, useSigner } from "wagmi";
-import { MockConnector } from "@wagmi/core/connectors/mock";
-import { Wallet } from "ethers/lib";
 import {
   getAppVersion,
   getEnv,
@@ -11,6 +9,7 @@ import {
   storeKeys,
 } from "../helpers";
 import { useClient } from "@xmtp/react-sdk";
+import { mockConnector } from "../helpers/mockConnector";
 
 type ClientStatus = "new" | "created" | "enabled";
 
@@ -97,6 +96,13 @@ const useInitXmtpClient = () => {
 
   const { client, isLoading, initialize } = useClient();
 
+  // if this is an app demo, connect to the temporary wallet
+  useEffect(() => {
+    if (isAppEnvDemo()) {
+      connectWallet({ connector: mockConnector });
+    }
+  }, []);
+
   // the code in this effect should only run once
   useEffect(() => {
     const updateStatus = async () => {
@@ -120,14 +126,9 @@ const useInitXmtpClient = () => {
           // no signatures needed
           setStatus("enabled");
         } else {
-          // if this is an app demo, we need to create a temporary wallet
+          // demo mode, wallet won't require any signatures
           if (isAppEnvDemo()) {
-            const mockConnector = new MockConnector({
-              options: { signer: Wallet.createRandom() },
-            });
-            connectWallet({ connector: mockConnector });
-            // resolve client promises as this wallet won't require any
-            // signatures
+            // resolve client promises
             createResolve();
             enableResolve();
           } else {
