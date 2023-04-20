@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useLayoutEffect, useRef } from "react";
+import React, { ChangeEvent, useEffect, useLayoutEffect, useRef } from "react";
 import { ArrowUpIcon } from "@heroicons/react/solid";
 import { IconButton } from "../IconButton/IconButton";
 import { classNames } from "../../../helpers";
@@ -13,9 +13,17 @@ interface InputProps {
    * Is the CTA button disabled?
    */
   isDisabled?: boolean;
+  /**
+   * Rerender component?
+   */
+  conversationId?: string;
 }
 
-export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
+export const MessageInput = ({
+  onSubmit,
+  isDisabled,
+  conversationId,
+}: InputProps) => {
   const { t } = useTranslation();
   let textAreaRef = useRef<HTMLTextAreaElement>(null);
   const [value, setValue] = React.useState("");
@@ -43,6 +51,10 @@ export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
     }
   }, [value]);
 
+  useEffect(() => {
+    textAreaRef.current?.focus();
+  }, [conversationId]);
+
   return (
     <form>
       <label htmlFor="chat" className="sr-only">
@@ -62,6 +74,7 @@ export const MessageInput = ({ onSubmit, isDisabled }: InputProps) => {
           borderStyles,
         )}>
         <textarea
+          autoFocus
           id="chat"
           data-testid="message-input"
           onChange={onChange}

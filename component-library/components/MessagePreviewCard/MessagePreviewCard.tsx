@@ -1,12 +1,9 @@
-import React from "react";
-
+import React, { ReactElement } from "react";
 import { IconSkeletonLoader } from "../Loaders/SkeletonLoaders/IconSkeletonLoader";
 import { ShortCopySkeletonLoader } from "../Loaders/SkeletonLoaders/ShortCopySkeletonLoader";
-
 import { classNames } from "../../../helpers";
 import { Avatar } from "../Avatar/Avatar";
 import { useTranslation } from "react-i18next";
-import { formatDistanceToNowStrict } from "date-fns";
 
 interface MessagePreviewCard {
   /**
@@ -16,7 +13,7 @@ interface MessagePreviewCard {
   /**
    * What is the message text?
    */
-  text?: string;
+  text?: string | ReactElement;
   /**
    * What is the display address associated with the message?
    */
