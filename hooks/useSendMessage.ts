@@ -3,19 +3,21 @@ import { getConversationId, isValidLongWalletAddress } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
 import { address } from "../pages/inbox";
 import { emitMsgSentEvent } from "../helpers/internalTracking";
-import { useClient } from "@xmtp/react-sdk";
+import { useClient, useConversations } from "@xmtp/react-sdk";
 
 const useSendMessage = (conversationId: address) => {
   const { client } = useClient();
-  const conversations = useXmtpStore((state) => state.conversations);
+  const { conversations } = useConversations();
+
   const recipientWalletAddress = useXmtpStore(
     (state) => state.recipientWalletAddress,
   );
-  const setConversations = useXmtpStore((state) => state.setConversations);
 
   const sendMessage = useCallback(
     async (message: string) => {
-      let selectedConversation = conversations.get(conversationId);
+      let selectedConversation = conversations.find(
+        (convo) => getConversationId(convo) === conversationId,
+      );
       if (
         isValidLongWalletAddress(recipientWalletAddress) &&
         !selectedConversation
@@ -38,8 +40,7 @@ const useSendMessage = (conversationId: address) => {
               );
         if (conversation) {
           selectedConversation = conversation;
-          conversations.set(getConversationId(conversation), conversation);
-          setConversations(new Map(conversations));
+          conversations.push(conversation);
         }
       }
       await selectedConversation?.send(message);

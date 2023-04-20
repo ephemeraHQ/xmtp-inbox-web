@@ -13,7 +13,7 @@ import { SideNavWrapper } from "../wrappers/SideNavWrapper";
 import { LearnMore } from "../component-library/components/LearnMore/LearnMore";
 import router from "next/router";
 import useWindowSize from "../hooks/useWindowSize";
-import { useClient } from "@xmtp/react-sdk";
+import { useClient, useConversations } from "@xmtp/react-sdk";
 import { useSigner } from "wagmi";
 
 export type address = "0x${string}";
@@ -21,6 +21,7 @@ export type address = "0x${string}";
 const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   const resetXmtpState = useXmtpStore((state) => state.resetXmtpState);
   const { client, disconnect, signer: clientSigner } = useClient();
+  const { conversations: conversations, isLoading } = useConversations();
 
   useEffect(() => {
     if (!client) {
@@ -30,7 +31,6 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
 
   const { data: signer } = useSigner();
   // XMTP Store
-  const conversations = useXmtpStore((state) => state.conversations);
 
   const recipientWalletAddress = useXmtpStore(
     (state) => state.recipientWalletAddress,
@@ -41,10 +41,6 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   const previewMessages = useXmtpStore((state) => state.previewMessages);
   const recipientEnteredValue = useXmtpStore(
     (state) => state.recipientEnteredValue,
-  );
-
-  const loadingConversations = useXmtpStore(
-    (state) => state.loadingConversations,
   );
   const startedFirstMessage = useXmtpStore(
     (state) => state.startedFirstMessage,
@@ -89,15 +85,15 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
           <>
             <SideNavWrapper />
             <div className="flex flex-col w-full h-screen overflow-y-auto">
-              {!loadingConversations && <HeaderDropdownWrapper />}
+              {!isLoading && <HeaderDropdownWrapper />}
               <ConversationList
                 hasRecipientEnteredValue={!!recipientEnteredValue}
                 setStartedFirstMessage={() => setStartedFirstMessage(true)}
-                isLoading={loadingConversations}
+                isLoading={isLoading}
                 messages={
-                  (conversations.size === 0 || previewMessages.size === 0) &&
+                  (!conversations.length || previewMessages.size === 0) &&
                   recipientEnteredValue &&
-                  !loadingConversations
+                  !isLoading
                     ? [<MessagePreviewCardWrapper key="default" />]
                     : Array.from(conversations.values())
                         .sort(orderByLatestMessage)
@@ -117,9 +113,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
       recipientWalletAddress ||
       startedFirstMessage ? (
         <div className="flex w-full flex-col h-screen overflow-hidden">
-          {!conversations.size &&
-          !loadingConversations &&
-          !startedFirstMessage ? (
+          {!conversations.length && !isLoading && !startedFirstMessage ? (
             <LearnMore
               version={"replace"}
               setStartedFirstMessage={() => setStartedFirstMessage(true)}
