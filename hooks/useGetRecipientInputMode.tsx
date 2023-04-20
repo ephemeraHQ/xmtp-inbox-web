@@ -7,9 +7,10 @@ import {
 } from "../helpers";
 import { address } from "../pages/inbox";
 import { useXmtpStore } from "../store/xmtp";
+import { useClient } from "@xmtp/react-sdk";
 
 const useGetRecipientInputMode = () => {
-  const client = useXmtpStore((state) => state.client);
+  const { client } = useClient();
   const recipientWalletAddress = useXmtpStore(
     (state) => state.recipientWalletAddress,
   );

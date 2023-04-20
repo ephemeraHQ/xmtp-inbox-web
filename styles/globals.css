@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 .interweave-content > span > a {
-  @apply text-black hover:text-indigo-300;
   @apply font-medium;
+  @apply underline;
 }
 
 .interweave-content > span > span {

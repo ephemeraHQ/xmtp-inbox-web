@@ -3,9 +3,10 @@ import { getConversationId, isValidLongWalletAddress } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
 import { address } from "../pages/inbox";
 import { emitMsgSentEvent } from "../helpers/internalTracking";
+import { useClient } from "@xmtp/react-sdk";
 
 const useSendMessage = (conversationId: address) => {
-  const client = useXmtpStore((state) => state.client);
+  const { client } = useClient();
   const conversations = useXmtpStore((state) => state.conversations);
   const recipientWalletAddress = useXmtpStore(
     (state) => state.recipientWalletAddress,
