@@ -7,7 +7,7 @@ import { useXmtpStore } from "../store/xmtp";
 import { useClient } from "@xmtp/react-sdk";
 
 export const SideNavWrapper = () => {
-  const { client } = useClient();
+  const { client, disconnect } = useClient();
   const resetXmtpState = useXmtpStore((state) => state.resetXmtpState);
 
   const { data: ensNameConnectedWallet } = useEnsName({
@@ -26,6 +26,7 @@ export const SideNavWrapper = () => {
       walletAddress={client?.address}
       avatarUrl={selfAvatarUrl || ""}
       onDisconnect={() => {
+        disconnect();
         wipeKeys(client?.address ?? "");
         disconnectWagmi();
         resetWagmi();
