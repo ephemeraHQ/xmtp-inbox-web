@@ -13,14 +13,11 @@ export const FullConversation = ({
 }: FullConversationProps) => {
   const { t } = useTranslation();
   if (isLoading) {
-    const alternatingMessages = (
-      <>
-        <MessageSkeletonLoader incoming={false} /> <MessageSkeletonLoader />
-      </>
-    );
     return (
       <div className={"h-full flex flex-col-reverse justify-start p-4"}>
-        {Array(3).fill(alternatingMessages)}
+        {Array.from({ length: 3 }).map((_, idx) => (
+          <MessageSkeletonLoader key={idx} incoming={false} />
+        ))}
       </div>
     );
   }
