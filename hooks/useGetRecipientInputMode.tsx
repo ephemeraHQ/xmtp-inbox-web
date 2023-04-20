@@ -7,10 +7,12 @@ import {
 } from "../helpers";
 import { address } from "../pages/inbox";
 import { useXmtpStore } from "../store/xmtp";
-import { useClient } from "@xmtp/react-sdk";
+import { useClient, useCanMessage } from "@xmtp/react-sdk";
 
 const useGetRecipientInputMode = () => {
   const { client } = useClient();
+  const { canMessage: canMessageUser } = useCanMessage();
+
   const recipientWalletAddress = useXmtpStore(
     (state) => state.recipientWalletAddress,
   );
@@ -32,10 +34,9 @@ const useGetRecipientInputMode = () => {
   );
 
   const checkIfOnNetwork = async (address: string) => {
-    let canMessage;
     if (client) {
       try {
-        canMessage = await client.canMessage(address);
+        const canMessage = await canMessageUser(address);
         if (!canMessage) {
           setRecipientInputMode(RecipientInputMode.NotOnNetwork);
         } else {

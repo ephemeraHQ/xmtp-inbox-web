@@ -17,9 +17,6 @@ export const AddressInputWrapper = () => {
   const recipientWalletAddress = useXmtpStore(
     (state) => state.recipientWalletAddress,
   );
-  const loadingConversations = useXmtpStore(
-    (state) => state.loadingConversations,
-  );
   const setRecipientWalletAddress = useXmtpStore(
     (state) => state.setRecipientWalletAddress,
   );
@@ -50,11 +47,10 @@ export const AddressInputWrapper = () => {
   return (
     <AddressInput
       isError={recipientEnteredValue ? !isValid : false}
-      subtext={
-        !loadingConversations
-          ? getRecipientInputSubtext(recipientInputMode, recipientEnteredValue)
-          : ""
-      }
+      subtext={getRecipientInputSubtext(
+        recipientInputMode,
+        recipientEnteredValue,
+      )}
       resolvedAddress={{
         displayAddress:
           ensName ??
@@ -64,14 +60,11 @@ export const AddressInputWrapper = () => {
         walletAddress: ensName ? recipientWalletAddress : "",
       }}
       onChange={setRecipientEnteredValue}
-      isLoading={
-        RecipientInputMode.FindingEntry === recipientInputMode ||
-        loadingConversations
-      }
+      isLoading={RecipientInputMode.FindingEntry === recipientInputMode}
       value={recipientEnteredValue}
       avatarUrlProps={{
         url: recipientAvatarUrl || "",
-        isLoading: avatarLoading || loadingConversations,
+        isLoading: avatarLoading,
         address: recipientWalletAddress,
       }}
       onLeftIconClick={() => {
