@@ -19,6 +19,7 @@ import { useSigner } from "wagmi";
 export type address = "0x${string}";
 
 const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
+  const resetXmtpState = useXmtpStore((state) => state.resetXmtpState);
   const { client, disconnect, signer: clientSigner } = useClient();
 
   useEffect(() => {
@@ -59,11 +60,12 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
       const address2 = await clientSigner?.getAddress();
       // addresses must be defined before comparing
       if (address1 && address2 && address1 !== address2) {
+        resetXmtpState();
         disconnect();
       }
     };
     checkSigners();
-  }, [clientSigner, disconnect, signer]);
+  }, [clientSigner, disconnect, resetXmtpState, signer]);
 
   // XMTP Hooks
   useListConversations();
