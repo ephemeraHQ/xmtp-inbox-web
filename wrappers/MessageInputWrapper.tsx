@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { MessageInput } from "../component-library/components/MessageInput/MessageInput";
 import { RecipientInputMode } from "../helpers";
 import useGetRecipientInputMode from "../hooks/useGetRecipientInputMode";
@@ -16,6 +16,7 @@ export const MessageInputWrapper = () => {
     <MessageInput
       isDisabled={recipientInputMode !== RecipientInputMode.OnNetwork}
       onSubmit={sendMessage}
+      conversationId={conversationId}
     />
   );
 };
