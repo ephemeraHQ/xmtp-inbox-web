@@ -8,21 +8,14 @@ import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { mainnet } from "wagmi/chains";
 import { infuraProvider } from "wagmi/providers/infura";
 import { publicProvider } from "wagmi/providers/public";
-import { MockConnector } from "@wagmi/core/connectors/mock";
-import { Wallet } from "ethers/lib";
 import React, { useEffect, useState } from "react";
 import { isAppEnvDemo } from "../helpers";
 import "../i18n";
 import { XMTPProvider } from "@xmtp/react-sdk";
+import { mockConnector } from "../helpers/mockConnector";
 
 const AppWithoutSSR = dynamic(() => import("../components/App"), {
   ssr: false,
-});
-
-const createWallet = (() => Wallet.createRandom())();
-
-const mockConnector = new MockConnector({
-  options: { signer: createWallet },
 });
 
 const { chains, provider, webSocketProvider } = configureChains(
