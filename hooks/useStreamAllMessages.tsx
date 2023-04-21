@@ -8,6 +8,7 @@ import { address } from "../pages/inbox";
 import { useStreamAllMessages as useStreamAllMessagesHook } from "@xmtp/react-sdk";
 
 let latestMsgId: string;
+let browserVisible = true;
 
 export const useStreamAllMessages = () => {
   const { address: walletAddress } = useAccount();
@@ -15,7 +16,6 @@ export const useStreamAllMessages = () => {
   const convoMessages = useXmtpStore((state) => state.convoMessages);
   const addMessages = useXmtpStore((state) => state.addMessages);
   const setPreviewMessage = useXmtpStore((state) => state.setPreviewMessage);
-  const [browserVisible, setBrowserVisible] = useState<boolean>(true);
 
   const streamAllMessages = async (message: DecodedMessage) => {
     const key = getConversationId(message.conversation);
@@ -56,8 +56,8 @@ export const useStreamAllMessages = () => {
   useStreamAllMessagesHook(streamAllMessages);
 
   useEffect(() => {
-    window.addEventListener("focus", () => setBrowserVisible(true));
-    window.addEventListener("blur", () => setBrowserVisible(false));
+    window.addEventListener("focus", () => (browserVisible = true));
+    window.addEventListener("blur", () => (browserVisible = false));
   }, []);
 };
 
