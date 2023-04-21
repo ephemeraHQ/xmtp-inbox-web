@@ -8,7 +8,6 @@ import { address } from "../pages/inbox";
 import { useStreamAllMessages as useStreamAllMessagesHook } from "@xmtp/react-sdk";
 
 let latestMsgId: string;
-let browserVisible = true;
 
 export const useStreamAllMessages = () => {
   const { address: walletAddress } = useAccount();
@@ -37,7 +36,7 @@ export const useStreamAllMessages = () => {
         latestMsgId !== message.id &&
         Notification.permission === "granted" &&
         message.senderAddress !== walletAddress &&
-        !browserVisible
+        document.visibilityState !== "visible"
       ) {
         const name = await fetchEnsName({
           address: message.senderAddress as address,
@@ -54,11 +53,6 @@ export const useStreamAllMessages = () => {
   };
 
   useStreamAllMessagesHook(streamAllMessages);
-
-  useEffect(() => {
-    window.addEventListener("focus", () => (browserVisible = true));
-    window.addEventListener("blur", () => (browserVisible = false));
-  }, []);
 };
 
 export default useStreamAllMessages;
