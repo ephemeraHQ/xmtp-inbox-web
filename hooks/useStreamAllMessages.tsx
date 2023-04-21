@@ -1,5 +1,4 @@
 import { DecodedMessage } from "@xmtp/xmtp-js";
-import { useEffect, useState } from "react";
 import { getConversationId, shortAddress, truncate } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
 import { fetchEnsName } from "@wagmi/core";
