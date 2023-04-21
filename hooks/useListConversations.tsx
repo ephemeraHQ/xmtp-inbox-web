@@ -5,15 +5,10 @@ import { getConversationId } from "../helpers";
 import fetchMostRecentMessage from "../helpers/fetchMostRecentMessage";
 import { useXmtpStore } from "../store/xmtp";
 import useStreamAllMessages from "./useStreamAllMessages";
-import {
-  useClient,
-  useConversations,
-  useStreamConversations,
-} from "@xmtp/react-sdk";
+import { useConversations, useStreamConversations } from "@xmtp/react-sdk";
 
 export const useListConversations = () => {
   const { address: walletAddress } = useAccount();
-  const { client } = useClient();
 
   const {
     conversations: allConverssations,
@@ -46,10 +41,6 @@ export const useListConversations = () => {
   useStreamAllMessages();
 
   useEffect(() => {
-    if (!client) {
-      return;
-    }
-
     const listConversations = async () => {
       const newPreviewMessages = new Map(previewMessages);
       const previews = await Promise.all(
