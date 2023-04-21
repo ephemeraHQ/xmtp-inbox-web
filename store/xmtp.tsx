@@ -6,6 +6,10 @@ import getUniqueMessages from "../helpers/getUniqueMessages";
 import { address } from "../pages/inbox";
 
 interface XmtpState {
+  conversations: Map<string, Conversation>;
+  setConversations: (conversations: Map<string, Conversation>) => void;
+  loadingConversations: boolean;
+  setLoadingConversations: (loadingConversations: boolean) => void;
   convoMessages: Map<string, DecodedMessage[]>;
   previewMessages: Map<string, DecodedMessage>;
   setPreviewMessage: (key: string, message: DecodedMessage) => void;
@@ -25,6 +29,12 @@ interface XmtpState {
 }
 
 export const useXmtpStore = create<XmtpState>((set) => ({
+  conversations: new Map(),
+  setConversations: (conversations: Map<string, Conversation>) =>
+    set(() => ({ conversations })),
+  loadingConversations: false,
+  setLoadingConversations: (loadingConversations: boolean) =>
+    set(() => ({ loadingConversations })),
   convoMessages: new Map(),
   previewMessages: new Map(),
   setPreviewMessage: (key: string, message: DecodedMessage) =>

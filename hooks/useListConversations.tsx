@@ -1,19 +1,24 @@
 import { Conversation, Stream } from "@xmtp/xmtp-js";
 import { useEffect } from "react";
 import { useAccount } from "wagmi";
+import { getConversationId } from "../helpers";
 import fetchMostRecentMessage from "../helpers/fetchMostRecentMessage";
 import { useXmtpStore } from "../store/xmtp";
 import useStreamAllMessages from "./useStreamAllMessages";
-import { useClient, useConversations } from "@xmtp/react-sdk";
+import { useClient } from "@xmtp/react-sdk";
 
 export const useListConversations = () => {
   const { address: walletAddress } = useAccount();
   const { client } = useClient();
-  const { conversations } = useConversations();
 
+  const conversations = useXmtpStore((state) => state.conversations);
+  const setConversations = useXmtpStore((state) => state.setConversations);
   const previewMessages = useXmtpStore((state) => state.previewMessages);
   const setPreviewMessages = useXmtpStore((state) => state.setPreviewMessages);
   const setPreviewMessage = useXmtpStore((state) => state.setPreviewMessage);
+  const setLoadingConversations = useXmtpStore(
+    (state) => state.setLoadingConversations,
+  );
 
   useStreamAllMessages();
 
@@ -25,6 +30,7 @@ export const useListConversations = () => {
     let conversationStream: Stream<Conversation>;
 
     const listConversations = async () => {
+      setLoadingConversations(true);
       const newPreviewMessages = new Map(previewMessages);
       const convos = await client.conversations.list();
       const previews = await Promise.all(convos.map(fetchMostRecentMessage));
@@ -38,9 +44,11 @@ export const useListConversations = () => {
 
       for (const convo of convos) {
         if (convo.peerAddress !== walletAddress) {
-          conversations.push(convo);
+          conversations.set(getConversationId(convo), convo);
         }
       }
+      setConversations(new Map(conversations));
+      setLoadingConversations(false);
       if (Notification.permission === "default") {
         Notification.requestPermission();
       }
@@ -50,7 +58,8 @@ export const useListConversations = () => {
       conversationStream = await client.conversations.stream();
       for await (const convo of conversationStream) {
         if (convo.peerAddress !== walletAddress) {
-          conversations.push(convo);
+          conversations.set(getConversationId(convo), convo);
+          setConversations(new Map(conversations));
 
           const preview = await fetchMostRecentMessage(convo);
           if (preview.message) {
