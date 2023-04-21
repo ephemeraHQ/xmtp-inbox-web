@@ -24,7 +24,7 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Device and browser:**
-Please elaborate, on the device and browser this occurred.
+Please provide details about the device and browser where the bug occurs.
 
 **Additional context**
 Add any other context about the problem here.
