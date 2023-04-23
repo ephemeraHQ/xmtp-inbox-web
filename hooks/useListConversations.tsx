@@ -5,10 +5,11 @@ import { getConversationId } from "../helpers";
 import fetchMostRecentMessage from "../helpers/fetchMostRecentMessage";
 import { useXmtpStore } from "../store/xmtp";
 import useStreamAllMessages from "./useStreamAllMessages";
+import { useClient } from "@xmtp/react-sdk";
 
 export const useListConversations = () => {
   const { address: walletAddress } = useAccount();
-  const client = useXmtpStore((state) => state.client);
+  const { client } = useClient();
 
   const conversations = useXmtpStore((state) => state.conversations);
   const setConversations = useXmtpStore((state) => state.setConversations);
@@ -32,7 +33,6 @@ export const useListConversations = () => {
       setLoadingConversations(true);
       const newPreviewMessages = new Map(previewMessages);
       const convos = await client.conversations.list();
-
       const previews = await Promise.all(convos.map(fetchMostRecentMessage));
 
       for (const preview of previews) {
@@ -42,19 +42,16 @@ export const useListConversations = () => {
       }
       setPreviewMessages(newPreviewMessages);
 
-      Promise.all(
-        convos.map(async (convo) => {
-          if (convo.peerAddress !== walletAddress) {
-            conversations.set(getConversationId(convo), convo);
-            setConversations(new Map(conversations));
-          }
-        }),
-      ).then(() => {
-        setLoadingConversations(false);
-        if (Notification.permission === "default") {
-          Notification.requestPermission();
+      for (const convo of convos) {
+        if (convo.peerAddress !== walletAddress) {
+          conversations.set(getConversationId(convo), convo);
         }
-      });
+      }
+      setConversations(new Map(conversations));
+      setLoadingConversations(false);
+      if (Notification.permission === "default") {
+        Notification.requestPermission();
+      }
     };
 
     const streamConversations = async () => {
@@ -63,6 +60,7 @@ export const useListConversations = () => {
         if (convo.peerAddress !== walletAddress) {
           conversations.set(getConversationId(convo), convo);
           setConversations(new Map(conversations));
+
           const preview = await fetchMostRecentMessage(convo);
           if (preview.message) {
             setPreviewMessage(preview.key, preview.message);

@@ -19,6 +19,7 @@ describe(
       startDemoEnv();
       // In connected flow, empty message should render before any tests run
       checkElement("empty-message-header");
+      checkElement("empty-message-cta").click();
     });
     const testUserWithXmtpAccount =
       "0x78BfD39428C32Be149892d64bEE6C6f90aedEec1";
@@ -36,7 +37,7 @@ describe(
     });
 
     it("Can send multiple messages to user in XMTP network", () => {
-      sendAndEnterMessage(testUserWithXmtpAccount, shortMessage, 6);
+      sendAndEnterMessage(testUserWithXmtpAccount, shortMessage, 7);
     });
 
     it("Displays messages in the correct order", () => {
@@ -56,9 +57,8 @@ describe(
       checkElement("message-to-input").type("invalidUser").click();
       cy.get(`[data-testid=message-to-subtext]`, { timeout: TIMEOUT }).should(
         "have.text",
-        "Please enter a valid wallet address",
+        "Please enter a valid 0x wallet or ENS address",
       );
-      checkMissingElement("message-input");
     });
   },
 );

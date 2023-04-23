@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-vars */
 import { Conversation, DecodedMessage, Client } from "@xmtp/xmtp-js";
 import { create } from "zustand";
-import { address } from "../components/Address";
+import { RecipientInputMode } from "../helpers";
 import getUniqueMessages from "../helpers/getUniqueMessages";
+import { address } from "../pages/inbox";
 
 interface XmtpState {
   conversations: Map<string, Conversation>;
@@ -14,13 +15,17 @@ interface XmtpState {
   setPreviewMessage: (key: string, message: DecodedMessage) => void;
   setPreviewMessages: (previewMessages: Map<string, DecodedMessage>) => void;
   addMessages: (key: string, newMessages: DecodedMessage[]) => number;
-  client: Client | undefined | null;
-  setClient: (client: Client | undefined | null) => void;
   recipientWalletAddress: string | address;
   setRecipientWalletAddress: (address: string) => void;
   conversationId?: string;
   setConversationId: (conversationId?: string) => void;
+  recipientInputMode: number;
+  setRecipientInputMode: (recipientInputMode?: number) => void;
+  recipientEnteredValue: string;
+  setRecipientEnteredValue: (recipientEnteredValue?: string) => void;
   resetXmtpState: () => void;
+  startedFirstMessage: boolean;
+  setStartedFirstMessage: (startedFirstMessage: boolean) => void;
 }
 
 export const useXmtpStore = create<XmtpState>((set) => ({
@@ -55,13 +60,17 @@ export const useXmtpStore = create<XmtpState>((set) => ({
     });
     return numAdded;
   },
-  client: undefined,
-  setClient: (client: Client | undefined | null) => set(() => ({ client })),
   recipientWalletAddress: "",
   setRecipientWalletAddress: (address) =>
     set(() => ({ recipientWalletAddress: address })),
   conversationId: "",
   setConversationId: (conversationId) => set(() => ({ conversationId })),
+  recipientInputMode: RecipientInputMode.InvalidEntry,
+  setRecipientInputMode: (recipientInputMode) =>
+    set(() => ({ recipientInputMode })),
+  recipientEnteredValue: "",
+  setRecipientEnteredValue: (recipientEnteredValue) =>
+    set(() => ({ recipientEnteredValue })),
   resetXmtpState: () =>
     set(() => {
       return {
@@ -73,4 +82,7 @@ export const useXmtpStore = create<XmtpState>((set) => ({
         conversationId: undefined,
       };
     }),
+  startedFirstMessage: false,
+  setStartedFirstMessage: (startedFirstMessage) =>
+    set(() => ({ startedFirstMessage })),
 }));

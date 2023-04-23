@@ -1,3 +1,4 @@
+import i18next from "../i18n";
 import Document, {
   Html,
   Head,
@@ -14,7 +15,7 @@ class AppDocument extends Document {
 
   render() {
     return (
-      <Html className="h-full bg-gray-100">
+      <Html className="h-screen w-screen bg-white" lang={i18next.language}>
         <Head>
           <link rel="manifest" href="/manifest.json" />
           <link rel="apple-touch-icon" href="/icon.png"></link>
@@ -27,8 +28,10 @@ class AppDocument extends Document {
           />
         </Head>
         <body className="h-full">
-          <Main />
-          <NextScript />
+          <main>
+            <Main />
+            <NextScript />
+          </main>
         </body>
       </Html>
     );

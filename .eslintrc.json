@@ -1,7 +1,13 @@
 {
   "plugins": ["prettier"],
   "rules": {
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "jsx-a11y/label-has-associated-control": [
+      "error",
+      {
+        "assert": "either"
+      }
+    ]
   },
   "extends": ["next", "next/core-web-vitals", "plugin:prettier/recommended"]
 }

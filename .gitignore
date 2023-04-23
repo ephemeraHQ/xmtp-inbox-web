@@ -60,3 +60,4 @@ build/
 
 # Environment
 .env*
+!docker/.env.default

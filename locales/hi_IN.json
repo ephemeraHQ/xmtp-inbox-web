@@ -1,0 +1,67 @@
+{
+  "onboarding": {
+    "demo_header": "डेमो मोड प्रारंभ किया जा रहा है…",
+    "intro_header": "एक इंटरऑपरेबल वेब3 इनबॉक्स",
+    "intro_subheader": "अपने सभी XMTP डीएम तक पहुँचें—इससे कोई फर्क नहीं पड़ता कि आपने उन्हें कहाँ से शुरू किया है।",
+    "intro_button": "अपना वॉलेट कनेक्ट करें",
+    "connect_header": "आपके वॉलेट से जुड़ रहा है...",
+    "connect_subheader": "अपनी XMTP पहचान बनाने के लिए एक वॉलेट खाता चुनें। फिर इस ऐप को खाते से कनेक्ट करने की अनुमति दें।",
+    "create_header": "अपनी XMTP पहचान बनाएँ",
+    "create_subheader": "एक XMTP पहचान एक मैसेजिंग खाते की तरह है। आप अपनी XMTP पहचान वॉलेट हस्ताक्षर का उपयोग करके बनाएंगे।",
+    "create_button": "XMTP पहचान बनाएँ",
+    "creating_header": "अपनी XMTP पहचान बना रहे हैं...",
+    "creating_subheader": "अपनी XMTP पहचान बनाने के लिए <strong>हस्ताक्षर करें</strong> क्लिक करें। आपके हस्ताक्षर यह साबित करते हैं कि आप अपनी XMTP पहचान के स्वामी हैं और इसे नियंत्रित करते हैं।",
+    "enable_header": "अपनी XMTP पहचान सक्षम करें",
+    "enable_subheader": "आपकी XMTP पहचान को सक्षम करना आपके इनबॉक्स के लिए पासवर्ड सेट करने जैसा है।",
+    "enable_button": "सक्षम XMTP पहचान",
+    "enabling_header": "आपकी XMTP पहचान सक्षम की जा रही है...",
+    "enabling_subheader": "अपना पासवर्ड बनाने के लिए <strong>हस्ताक्षर करें</strong> क्लिक करें। जब भी आप अपना इनबॉक्स एक्सेस करेंगे तो आपको <strong>साइन करें</strong> क्लिक करने के लिए कहा जाएगा।"
+  },
+  "messages": {
+    "filter_none": "सभी मेसेज",
+    "filter_requests": "मेसेज अनुरोध",
+    "convos_empty_header": "कोई मेसेज नहीं? कोई समस्या नहीं।",
+    "convos_empty_subheader": "डीएम के साथ बातचीत शुरू करें, जिसके आप मालिक हैं और जिसे आप नियंत्रित करते हैं।",
+    "convos_empty_button": "अपना पहला मेसेज भेजें",
+    "convos_empty_recipient_placeholder": "नया प्राप्तकर्ता",
+    "convos_empty_text_placeholder": "नया मेसेज",
+    "messages_empty_header": "XMTP ब्रह्माण्ड की खोज करें",
+    "messages_empty_subheader": "आरंभ करें",
+    "messages_empty_cta_1_header": "मेसेज भेजें",
+    "messages_empty_cta_1_subheader": "किसी को उनके 0x वॉलेट या .eth पते का उपयोग करके मेसेज भेजें",
+    "messages_empty_cta_2_header": "अपने लिए सही ऐप्स खोजें",
+    "messages_empty_cta_2_subheader": "XMTP के साथ बनाए गए ऐप्स के शोकेस का अन्वेषण करें—जो आपको आपके इंटरऑपरेबल इनबॉक्स तक पहुंच प्रदान करते हैं",
+    "messages_empty_cta_3_header": "डेवलपर दस्तावेज़",
+    "messages_empty_cta_3_subheader": "जानें कि XMTP के साथ ऐप कैसे बनाएं",
+    "address_field_prompt": "एक 0x वॉलेट या .eth पता दर्ज करें",
+    "address_field_loading": "XMTP नेटवर्क पर पता खोजा जा रहा है...",
+    "address_field_invalid": "कृपया वैध 0x वॉलेट या .eth पता दर्ज करें",
+    "address_field_not_on_network": "क्षमा करें, हम इस पते को मेसेज नहीं भेज सकते क्योंकि इसके स्वामी ने अभी तक XMTP के साथ इसका उपयोग नहीं किया है",
+    "message_field_prompt": "मेसेज लिखें",
+    "conversation_start": "यह बातचीत की शुरुआत है"
+  },
+  "menu": {
+    "collapse_header": "संक्षिप्त करें",
+    "gallery_header": "गैलरी",
+    "messages_header": "मेसेज",
+    "settings_header": "सेटिंग्स",
+    "coming_soon": "जल्द आ रहा है"
+  },
+  "status_messaging": {
+    "error_1_header": "क्षमा करें, ऐप में त्रुटि आई",
+    "error_1_subheader": "चिंता की कोई बात नहीं है। आइए फिर से प्रयास करें। यदि त्रुटि बनी रहती है, तो <0>हम सहायता के लिए यहां हैं!</0>",
+    "error_1_button": "पुन: प्रयास करें"
+  },
+  "common": {
+    "disconnect": "वॉलेट डिस्कनेक्ट करें",
+    "private_key_note": "कोई निजी कुंजी साझा नहीं की जाएगी।",
+    "step_of_2": "{{NUM}} चरण",
+    "disconnect_tip": "<strong>युक्ति</strong>: यदि <strong>डिस्कनेक्ट वॉलेट</strong> पर क्लिक करने से आपका वॉलेट डिस्कनेक्ट नहीं होता है, तो कृपया इस ऐप से डिस्कनेक्ट करने के लिए सीधे अपने वॉलेट एक्सटेंशन का उपयोग करें।",
+    "input_label": "को"
+  },
+  "aria_labels": {
+    "address_input": "पता इनपुट",
+    "start_message": "नया मेसेज प्रारंभ करें",
+    "submit_message": "मेसेज भेजें"
+  }
+}

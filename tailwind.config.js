@@ -4,6 +4,7 @@ module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
+    "./component-library/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
@@ -57,14 +58,14 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ["Inter", ...fontFamily.sans],
+        sans: ["SF Pro Rounded", "Inter", ...fontFamily.sans],
         mono: ["Inconsolata", ...fontFamily.mono],
       },
       fontSize: {
-        xs: "10px",
-        sm: "12px",
-        md: "14px",
-        lg: "16px",
+        xs: "12px",
+        sm: "14px",
+        md: "15px",
+        lg: "18px",
         xl: "20px",
       },
     },
