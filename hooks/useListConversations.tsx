@@ -1,7 +1,7 @@
-import { Conversation, Stream } from "@xmtp/xmtp-js";
+import { Conversation, DecodedMessage, Stream } from "@xmtp/xmtp-js";
 import { useEffect } from "react";
 import { useAccount } from "wagmi";
-import { getConversationId } from "../helpers";
+import { XMTP_FEEDBACK_ADDRESS, getConversationId } from "../helpers";
 import fetchMostRecentMessage from "../helpers/fetchMostRecentMessage";
 import { useXmtpStore } from "../store/xmtp";
 import useStreamAllMessages from "./useStreamAllMessages";
@@ -30,6 +30,7 @@ export const useListConversations = () => {
     let conversationStream: Stream<Conversation>;
 
     const listConversations = async () => {
+      let isFeedbackConvoPresent = false;
       setLoadingConversations(true);
       const newPreviewMessages = new Map(previewMessages);
       const convos = await client.conversations.list();
@@ -38,15 +39,28 @@ export const useListConversations = () => {
       for (const preview of previews) {
         if (preview.message) {
           newPreviewMessages.set(preview.key, preview.message);
+          if (preview.key === XMTP_FEEDBACK_ADDRESS) {
+            isFeedbackConvoPresent = true;
+          }
         }
       }
-      setPreviewMessages(newPreviewMessages);
 
       for (const convo of convos) {
         if (convo.peerAddress !== walletAddress) {
           conversations.set(getConversationId(convo), convo);
         }
       }
+
+      if (!isFeedbackConvoPresent) {
+        newPreviewMessages.set(XMTP_FEEDBACK_ADDRESS, {
+          content: "Send Feedback",
+        } as DecodedMessage);
+        conversations.set(XMTP_FEEDBACK_ADDRESS, {
+          peerAddress: XMTP_FEEDBACK_ADDRESS,
+        } as Conversation);
+      }
+
+      setPreviewMessages(newPreviewMessages);
       setConversations(new Map(conversations));
       setLoadingConversations(false);
       if (Notification.permission === "default") {

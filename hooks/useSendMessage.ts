@@ -18,7 +18,7 @@ const useSendMessage = (conversationId: address) => {
       let selectedConversation = conversations.get(conversationId);
       if (
         isValidLongWalletAddress(recipientWalletAddress) &&
-        !selectedConversation
+        (!selectedConversation || !selectedConversation?.messages)
       ) {
         const conversation =
           conversationId &&

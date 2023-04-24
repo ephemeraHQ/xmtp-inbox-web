@@ -19,23 +19,27 @@ const useGetMessages = (conversationId: string, endTime?: Date) => {
     }
 
     const loadMessages = async () => {
-      const newMessages = await conversation.messages({
-        direction: SortDirection.SORT_DIRECTION_DESCENDING,
-        limit: MESSAGE_LIMIT,
-        endTime: endTime,
-      });
-      if (newMessages.length > 0) {
-        addMessages(conversationId, newMessages);
-        if (newMessages.length < MESSAGE_LIMIT) {
+      try {
+        const newMessages = await conversation?.messages({
+          direction: SortDirection.SORT_DIRECTION_DESCENDING,
+          limit: MESSAGE_LIMIT,
+          endTime: endTime,
+        });
+        if (newMessages.length > 0) {
+          addMessages(conversationId, newMessages);
+          if (newMessages.length < MESSAGE_LIMIT) {
+            hasMore.set(conversationId, false);
+            setHasMore(new Map(hasMore));
+          } else {
+            hasMore.set(conversationId, true);
+            setHasMore(new Map(hasMore));
+          }
+        } else {
           hasMore.set(conversationId, false);
           setHasMore(new Map(hasMore));
-        } else {
-          hasMore.set(conversationId, true);
-          setHasMore(new Map(hasMore));
         }
-      } else {
-        hasMore.set(conversationId, false);
-        setHasMore(new Map(hasMore));
+      } catch (e) {
+        console.log(e);
       }
     };
     loadMessages();
