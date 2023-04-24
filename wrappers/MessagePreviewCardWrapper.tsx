@@ -2,7 +2,11 @@ import { Conversation } from "@xmtp/xmtp-js";
 import React from "react";
 import { useEnsAvatar, useEnsName } from "wagmi";
 import { MessagePreviewCard } from "../component-library/components/MessagePreviewCard/MessagePreviewCard";
-import { getConversationId, shortAddress } from "../helpers";
+import {
+  XMTP_FEEDBACK_ADDRESS,
+  getConversationId,
+  shortAddress,
+} from "../helpers";
 import { address } from "../pages/inbox";
 import { useXmtpStore } from "../store/xmtp";
 import MessageContentWrapper from "./MessageContentWrapper";
@@ -68,7 +72,11 @@ export const MessagePreviewCardWrapper = ({
       }}
       isLoading={convoAvatarLoading}
       avatarUrl={convoAvatarUrl || ""}
-      conversationDomain={shortAddress(conversationDomain)}
+      conversationDomain={
+        convo?.peerAddress === XMTP_FEEDBACK_ADDRESS
+          ? "feedback"
+          : shortAddress(conversationDomain)
+      }
       address={convo?.peerAddress}
     />
   );
