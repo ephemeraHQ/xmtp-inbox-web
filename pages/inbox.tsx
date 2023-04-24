@@ -14,19 +14,26 @@ import { AddressInputWrapper } from "../wrappers/AddressInputWrapper";
 import { HeaderDropdownWrapper } from "../wrappers/HeaderDropdownWrapper";
 import { MessageInputWrapper } from "../wrappers/MessageInputWrapper";
 import { SideNavWrapper } from "../wrappers/SideNavWrapper";
-import useInitXmtpClient from "../hooks/useInitXmtpClient";
 import { LearnMore } from "../component-library/components/LearnMore/LearnMore";
 import router from "next/router";
 import useWindowSize from "../hooks/useWindowSize";
-import useHandleConnect from "../hooks/useHandleConnect";
+import { useClient } from "@xmtp/react-sdk";
+import { useSigner } from "wagmi";
 
 export type address = "0x${string}";
 
 const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
-  useHandleConnect();
-  useInitXmtpClient();
+  const resetXmtpState = useXmtpStore((state) => state.resetXmtpState);
+  const { client, disconnect, signer: clientSigner } = useClient();
+
+  useEffect(() => {
+    if (!client) {
+      router.push("/");
+    }
+  }, [client]);
+
+  const { data: signer } = useSigner();
   // XMTP Store
-  const client = useXmtpStore((state) => state.client);
   const conversations = useXmtpStore((state) => state.conversations);
 
   const recipientWalletAddress = useXmtpStore(
@@ -50,11 +57,19 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
     (state) => state.setStartedFirstMessage,
   );
 
+  // if the wallet address changes, disconnect the XMTP client
   useEffect(() => {
-    if (!client) {
-      router.push("/");
-    }
-  }, [client]);
+    const checkSigners = async () => {
+      const address1 = await signer?.getAddress();
+      const address2 = await clientSigner?.getAddress();
+      // addresses must be defined before comparing
+      if (address1 && address2 && address1 !== address2) {
+        resetXmtpState();
+        disconnect();
+      }
+    };
+    checkSigners();
+  }, [clientSigner, disconnect, resetXmtpState, signer]);
 
   // XMTP Hooks
   useListConversations();

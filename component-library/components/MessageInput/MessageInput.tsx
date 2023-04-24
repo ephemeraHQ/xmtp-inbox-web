@@ -16,10 +16,14 @@ interface InputProps {
   /**
    * Rerender component?
    */
-  refresh?: boolean;
+  conversationId?: string;
 }
 
-export const MessageInput = ({ onSubmit, isDisabled, refresh }: InputProps) => {
+export const MessageInput = ({
+  onSubmit,
+  isDisabled,
+  conversationId,
+}: InputProps) => {
   const { t } = useTranslation();
   let textAreaRef = useRef<HTMLTextAreaElement>(null);
   const [value, setValue] = React.useState("");
@@ -49,7 +53,7 @@ export const MessageInput = ({ onSubmit, isDisabled, refresh }: InputProps) => {
 
   useEffect(() => {
     textAreaRef.current?.focus();
-  }, [refresh]);
+  }, [conversationId]);
 
   return (
     <form>

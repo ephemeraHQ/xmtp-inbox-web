@@ -5,10 +5,11 @@ import { getConversationId } from "../helpers";
 import fetchMostRecentMessage from "../helpers/fetchMostRecentMessage";
 import { useXmtpStore } from "../store/xmtp";
 import useStreamAllMessages from "./useStreamAllMessages";
+import { useClient } from "@xmtp/react-sdk";
 
 export const useListConversations = () => {
   const { address: walletAddress } = useAccount();
-  const client = useXmtpStore((state) => state.client);
+  const { client } = useClient();
 
   const conversations = useXmtpStore((state) => state.conversations);
   const setConversations = useXmtpStore((state) => state.setConversations);
