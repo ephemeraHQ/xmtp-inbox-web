@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - dev
 env:
   BUILD_CONTAINER_IMAGE: xmtplabs/xmtp-inbox-web:latest
 jobs:
