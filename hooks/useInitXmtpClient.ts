@@ -102,6 +102,9 @@ const useInitXmtpClient = () => {
     if (isAppEnvDemo()) {
       connectWallet({ connector: mockConnector });
     }
+    if (!client) {
+      setStatus(undefined);
+    }
   }, []);
 
   // the code in this effect should only run once
