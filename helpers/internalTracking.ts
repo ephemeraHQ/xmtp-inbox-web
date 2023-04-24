@@ -56,15 +56,10 @@ export const emitMsgSentEvent = async (
       const ensNameSender = await fetchEnsName({
         address: senderAddress,
       });
-      const ensNameReciever = await fetchEnsName({
-        address: recieverAddress,
-      });
       ReactGA.event({
         category: "User",
         action: "Message Sent",
-        label: `${ensNameSender ?? senderAddress}-${
-          ensNameReciever ?? recieverAddress
-        }`,
+        label: `${ensNameSender ?? senderAddress}`,
       });
     } catch (e) {
       console.error(e);
