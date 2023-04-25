@@ -62,6 +62,9 @@ export const useStreamAllMessages = () => {
             });
 
             navigator.serviceWorker.ready.then((registration) => {
+              registration.pushManager.subscribe({
+                userVisibleOnly: true, //Set user to see every notification
+              });
               registration.showNotification("XMTP", {
                 body: `${
                   name || shortAddress(message.senderAddress ?? "")
