@@ -66,6 +66,7 @@ export const useStreamAllMessages = () => {
                 body: `${
                   name || shortAddress(message.senderAddress ?? "")
                 }\n${truncate(message.content, 75)}`,
+                icon: "192.png",
               });
             });
 
