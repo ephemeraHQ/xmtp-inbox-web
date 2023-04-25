@@ -14,7 +14,7 @@ const DmPage: NextPage = () => {
 
   useEffect(() => {
     const routeToInbox = async () => {
-      let recipient = window.location.pathname.split("/")[2];
+      let recipient = window.location.pathname.split("/").slice(-1)[0];
       if (isValidRecipientAddressFormat(recipient)) {
         if (isEnsAddress(recipient)) {
           recipient =

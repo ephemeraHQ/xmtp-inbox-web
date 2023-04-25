@@ -6,7 +6,7 @@ const Conversation: NextPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    let recipient = window.location.pathname.split("/")[2];
+    let recipient = window.location.pathname.split("/").slice(-1)[0];
     if (!recipient) {
       router.push("/");
     }
