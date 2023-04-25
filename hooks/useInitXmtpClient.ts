@@ -95,7 +95,7 @@ const useInitXmtpClient = () => {
     }, []);
 
   const { client, isLoading, initialize } = useClient();
-  const { canMessage: canMessageUser } = useCanMessage();
+  const { canMessageStatic: canMessageUser } = useCanMessage();
 
   // if this is an app demo, connect to the temporary wallet
   useEffect(() => {
@@ -138,7 +138,7 @@ const useInitXmtpClient = () => {
           } else {
             // no keys found, but maybe the address has already been created
             // let's check
-            const canMessage = await canMessageUser(address);
+            const canMessage = await canMessageUser(address, clientOptions);
             if (canMessage) {
               // resolve client promise
               createResolve();

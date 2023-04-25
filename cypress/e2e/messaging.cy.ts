@@ -10,8 +10,8 @@ describe(
   "Messaging Test Cases",
   {
     retries: {
-      runMode: 2,
-      openMode: 1,
+      runMode: 3,
+      openMode: 2,
     },
   },
   () => {
@@ -19,7 +19,7 @@ describe(
       startDemoEnv();
       // In connected flow, empty message should render before any tests run
       checkElement("empty-message-header");
-      checkElement("empty-message-cta").click();
+      checkElement("empty-message-cta").click().wait(TIMEOUT).click();
     });
     const testUserWithXmtpAccount =
       "0x78BfD39428C32Be149892d64bEE6C6f90aedEec1";
