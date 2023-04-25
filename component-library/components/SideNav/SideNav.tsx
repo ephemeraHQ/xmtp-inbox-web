@@ -5,7 +5,7 @@ import {
   CheckCircleIcon,
   ChevronDoubleRightIcon,
 } from "@heroicons/react/solid";
-import { CogIcon, SparklesIcon } from "@heroicons/react/outline";
+import { CogIcon, SparklesIcon, XIcon } from "@heroicons/react/outline";
 import { classNames, shortAddress } from "../../../helpers";
 import { XmtpIcon } from "../Icons/XmtpIcon";
 import { useState } from "react";
@@ -14,6 +14,7 @@ import { GhostButton } from "../GhostButton/GhostButton";
 import { DisconnectIcon } from "../Icons/DisconnectIcon";
 import { useTranslation } from "react-i18next";
 import i18next, { resourceMap } from "../../../i18n";
+import { QRCodeSVG } from "qrcode.react";
 
 interface SideNav {
   /**
@@ -69,6 +70,7 @@ const SideNav = ({
   const { t } = useTranslation();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isQrCodeDialogOpen, setIsQrCodeDialogOpen] = useState(false);
 
   const onSideNavBtnClick = (key: string) => {
     if (key === t("menu.collapse_header")) setIsOpen(!isOpen);
@@ -205,10 +207,34 @@ const SideNav = ({
           {icon}
         </div>
       </div>
+      <Transition.Root show={isQrCodeDialogOpen} as={Fragment}>
+        <Dialog
+          as="div"
+          onClose={onXmtpIconClick}
+          aria-label={t("menu.settings") || ""}>
+          <div className="bg-transparent w-[100vw] h-[100vh] flex items-center justify-center absolute top-0 z-20">
+            <div className="flex flex-col items-center justify-center p-4 bg-white rounded-xl drop-shadow-lg">
+              <div
+                onClick={() => setIsQrCodeDialogOpen(false)}
+                className="text-red-600 hover:text-red-800 w-[100%] flex justify-end cursor-pointer">
+                <XIcon width={24} />
+              </div>
+              <QRCodeSVG fgColor="#4f46e5" value="https://reactjs.org/" />
+              <span className="text-sm mt-5 text-indigo-600 hover:text-indigo-800">
+                <a
+                  href={`https://xmtp.chat/${walletAddress}`}
+                  target="_blank"
+                  rel="noreferrer">
+                  https://xmtp.chat/dm/{walletAddress}
+                </a>
+              </span>
+            </div>
+          </div>
+        </Dialog>
+      </Transition.Root>
       <Transition.Root show={isDialogOpen} as={Fragment}>
         <Dialog
           as="div"
-          className="overflow-y-auto"
           onClose={onXmtpIconClick}
           aria-label={t("menu.settings") || ""}>
           <div className="bg-white w-fit rounded-lg absolute bottom-16 left-12 p-2 z-20">
@@ -239,6 +265,15 @@ const SideNav = ({
                 );
               })}
             </div>
+            <hr className="m-2" />
+            <span
+              onClick={() => {
+                setIsQrCodeDialogOpen(true);
+                setIsDialogOpen(false);
+              }}
+              className="text-sm ml-2 cursor-pointer text-indigo-600 hover:text-indigo-800">
+              Share QR
+            </span>
             <hr className="m-2" />
             <span className="text-sm ml-2 text-red-600 hover:text-red-800">
               <a
