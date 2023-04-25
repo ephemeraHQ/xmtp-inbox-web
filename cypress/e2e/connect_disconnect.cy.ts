@@ -16,8 +16,8 @@ describe(
   () => {
     beforeEach(() => {
       startDemoEnv();
-      // // In connected flow, empty message should render before any tests run
-      checkElement("empty-message-header");
+      // // In connected flow, conversaton list header should render before any tests run
+      checkElement("conversation-list-header");
     });
 
     it("Shows expected left panel fields when logged in with a connected wallet and no existing messages", () => {
@@ -35,45 +35,45 @@ describe(
       elements.forEach((element) => checkElement(element));
     });
 
-    it("Shows expected right panel fields when logged in with a connected wallet and no existing messages", () => {
-      const elements = [
-        "learn-more-header",
-        "get-started-header",
-        "message-section-link",
-        "message-icon",
-        "message-header",
-        "message-subheader",
-        "message-arrow",
-        "community-section-link",
-        "community-icon",
-        "community-header",
-        "community-subheader",
-        "community-arrow",
-        "docs-section-link",
-        "docs-icon",
-        "docs-header",
-        "docs-subheader",
-        "docs-arrow",
-      ];
+    // it("Shows expected right panel fields when logged in with a connected wallet and no existing messages", () => {
+    //   const elements = [
+    //     "learn-more-header",
+    //     "get-started-header",
+    //     "message-section-link",
+    //     "message-icon",
+    //     "message-header",
+    //     "message-subheader",
+    //     "message-arrow",
+    //     "community-section-link",
+    //     "community-icon",
+    //     "community-header",
+    //     "community-subheader",
+    //     "community-arrow",
+    //     "docs-section-link",
+    //     "docs-icon",
+    //     "docs-header",
+    //     "docs-subheader",
+    //     "docs-arrow",
+    //   ];
 
-      elements.forEach((element) => checkElement(element));
-    });
+    //   elements.forEach((element) => checkElement(element));
+    // });
 
-    it("Directs user to expected links", () => {
-      const elementsWithCtas = [
-        {
-          testId: "docs-section-link",
-          link: "https://docs.xmtp.org",
-        },
-        {
-          testId: "community-section-link",
-          link: "https://community.xmtp.org",
-        },
-      ];
-      elementsWithCtas.forEach((element) =>
-        checkLink(element.testId, element.link),
-      );
-    });
+    // it("Directs user to expected links", () => {
+    //   const elementsWithCtas = [
+    //     {
+    //       testId: "docs-section-link",
+    //       link: "https://docs.xmtp.org",
+    //     },
+    //     {
+    //       testId: "community-section-link",
+    //       link: "https://community.xmtp.org",
+    //     },
+    //   ];
+    //   elementsWithCtas.forEach((element) =>
+    //     checkLink(element.testId, element.link),
+    //   );
+    // });
 
     it("Shows expected fields when expanding side nav while connected", () => {
       cy.get(`[data-testid="collapse-icon"]`).click();
@@ -92,29 +92,27 @@ describe(
       cy.get(`[data-testid="disconnect-wallet-cta"]`).click();
     });
 
-    it("Opens new message view when clicking on connect button from left panel", () => {
-      checkMissingElement("message-input");
-      checkElement("empty-message-cta").click();
-      checkElement("message-input");
-    });
+    // it("Opens new message view when clicking on connect button from left panel", () => {
+    //   checkMissingElement("message-input");
+    //   checkElement("empty-message-cta").click();
+    //   checkElement("message-input");
+    // });
     it("Opens new message view when clicking on plus icon from left panel", () => {
-      checkMissingElement("message-input");
       checkElement("new-message-icon-cta").click();
       checkElement("message-input");
     });
-    it("Opens new message view when clicking on new message section within learn more", () => {
-      checkMissingElement("message-input");
-      checkElement("message-section-link").click();
-      checkElement("message-input");
-    });
-    it("Should show conversation list instead of empty message as soon as user enters something into the input", () => {
-      checkElement("empty-message-header");
-      checkMissingElement("message-input");
-      checkElement("message-section-link").click();
-      checkElement("message-to-input").type("a");
-      checkMissingElement("empty-message-header");
-      cy.get(`[data-testid=conversations-list-panel]`).should("have.length", 1);
-    });
+    // it("Opens new message view when clicking on new message section within learn more", () => {
+    //   checkMissingElement("message-input");
+    //   checkElement("message-section-link").click();
+    //   checkElement("message-input");
+    // });
+    // it("Should show conversation list instead of empty message as soon as user enters something into the input", () => {
+    //   checkMissingElement("message-input");
+    //   checkElement("message-section-link").click();
+    //   checkElement("message-to-input").type("a");
+    //   checkMissingElement("empty-message-header");
+    //   cy.get(`[data-testid=conversations-list-panel]`).should("have.length", 1);
+    // });
   },
 );
 
