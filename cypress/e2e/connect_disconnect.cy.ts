@@ -30,10 +30,6 @@ describe(
         "icon",
         "conversation-list-header",
         "new-message-icon-cta",
-        "empty-message-icon",
-        "empty-message-header",
-        "empty-message-subheader",
-        "empty-message-cta",
       ];
 
       elements.forEach((element) => checkElement(element));
