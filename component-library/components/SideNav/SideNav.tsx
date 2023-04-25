@@ -5,7 +5,12 @@ import {
   CheckCircleIcon,
   ChevronDoubleRightIcon,
 } from "@heroicons/react/solid";
-import { CogIcon, SparklesIcon, XIcon } from "@heroicons/react/outline";
+import {
+  ClipboardCopyIcon,
+  CogIcon,
+  SparklesIcon,
+  XIcon,
+} from "@heroicons/react/outline";
 import { classNames, shortAddress } from "../../../helpers";
 import { XmtpIcon } from "../Icons/XmtpIcon";
 import { useState } from "react";
@@ -220,14 +225,16 @@ const SideNav = ({
                 <XIcon width={24} />
               </div>
               <QRCodeSVG fgColor="#4f46e5" value="https://reactjs.org/" />
-              <span className="text-sm mt-5 text-indigo-600 hover:text-indigo-800">
-                <a
-                  href={`https://xmtp.chat/${walletAddress}`}
-                  target="_blank"
-                  rel="noreferrer">
-                  https://xmtp.chat/dm/{walletAddress}
-                </a>
-              </span>
+              <div
+                onClick={() =>
+                  navigator.clipboard.writeText(
+                    `https://xmtp.chat/dm/${walletAddress}`,
+                  )
+                }
+                className="flex text-sm mt-5 text-indigo-600 hover:text-indigo-800">
+                <span>https://xmtp.chat/dm/{walletAddress}</span>
+                <ClipboardCopyIcon className="ml-2 cursor-pointer" width={16} />
+              </div>
             </div>
           </div>
         </Dialog>
