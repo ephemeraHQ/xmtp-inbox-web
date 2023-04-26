@@ -7,10 +7,11 @@ import {
 } from "../helpers";
 import { address } from "../pages/inbox";
 import { useXmtpStore } from "../store/xmtp";
-import { useClient } from "@xmtp/react-sdk";
+import { useCanMessage } from "@xmtp/react-sdk";
 
 const useGetRecipientInputMode = () => {
-  const { client } = useClient();
+  const { canMessage: canMessageUser } = useCanMessage();
+
   const recipientWalletAddress = useXmtpStore(
     (state) => state.recipientWalletAddress,
   );
@@ -32,21 +33,18 @@ const useGetRecipientInputMode = () => {
   );
 
   const checkIfOnNetwork = async (address: string) => {
-    let canMessage;
-    if (client) {
-      try {
-        canMessage = await client.canMessage(address);
-        if (!canMessage) {
-          setRecipientInputMode(RecipientInputMode.NotOnNetwork);
-        } else {
-          setRecipientInputMode(RecipientInputMode.OnNetwork);
-          setRecipientWalletAddress(address);
-          // When coming from the input (vs the preview panel), conversation ids will always be in XMTP format.
-          setConversationId(address);
-        }
-      } catch (e) {
+    try {
+      const canMessage = await canMessageUser(address);
+      if (!canMessage) {
         setRecipientInputMode(RecipientInputMode.NotOnNetwork);
+      } else {
+        setRecipientInputMode(RecipientInputMode.OnNetwork);
+        setRecipientWalletAddress(address);
+        // When coming from the input (vs the preview panel), conversation ids will always be in XMTP format.
+        setConversationId(address);
       }
+    } catch (e) {
+      setRecipientInputMode(RecipientInputMode.NotOnNetwork);
     }
   };
   useEffect(() => {
