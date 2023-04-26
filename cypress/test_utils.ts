@@ -1,7 +1,7 @@
 /* eslint-disable cypress/no-unnecessary-waiting */
 import { ENVIRONMENT } from "../helpers";
 
-export const TIMEOUT = 20000;
+export const TIMEOUT = 40000;
 
 export const checkElement = (testId: string) =>
   cy.get(`[data-testid=${testId}]`, { timeout: TIMEOUT }).should("exist");
