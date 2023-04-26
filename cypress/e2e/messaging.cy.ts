@@ -22,7 +22,7 @@ describe(
       checkElement("empty-message-cta");
       // Need to break up the click chain for GitHub actions
 
-      cy.get(`[data-testid=message-section-link]`).click({ timeout: TIMEOUT });
+      cy.get(`[data-testid=empty-message-cta]`).click({ timeout: TIMEOUT });
     });
     const testUserWithXmtpAccount =
       "0x78BfD39428C32Be149892d64bEE6C6f90aedEec1";

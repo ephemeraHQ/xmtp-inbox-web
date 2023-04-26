@@ -42,7 +42,8 @@ const sendMessages = (
   for (let i = 0; i < numberOfTimes; i++) {
     // Enters message
     checkElement("message-input").type(message);
-    checkElement("message-input-submit").click();
+    checkElement("message-input-submit");
+    cy.get(`[data-testid=message-input-submit]`).click({ timeout: TIMEOUT });
     cy.get(`[data-testid=conversations-list-panel]`, {
       timeout: TIMEOUT,
     }).should("have.length", 1);
@@ -57,7 +58,8 @@ const sendMessages = (
 
   // A way around to solve the message streaming issue
   cy.wait(2000);
-  checkElement("new-message-icon-cta").click();
+  checkElement("new-message-icon-cta");
+  cy.get(`[data-testid=new-message-icon-cta]`).click({ timeout: TIMEOUT });
   checkElement("message-to-input").type(testUser);
 };
 
