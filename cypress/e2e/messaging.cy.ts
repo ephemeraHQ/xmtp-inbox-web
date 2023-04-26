@@ -21,7 +21,9 @@ describe(
       checkElement("empty-message-header");
       checkElement("empty-message-cta");
       // Need to break up the click chain for GitHub actions
-      cy.get(`[data-testid=message-section-link]`).click();
+      cy.get(`[data-testid=message-section-link]`, {
+        timeout: TIMEOUT,
+      }).click();
     });
     const testUserWithXmtpAccount =
       "0x78BfD39428C32Be149892d64bEE6C6f90aedEec1";
