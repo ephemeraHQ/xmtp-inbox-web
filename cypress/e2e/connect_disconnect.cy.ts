@@ -98,23 +98,35 @@ describe(
 
     it("Opens new message view when clicking on connect button from left panel", () => {
       checkMissingElement("message-input");
-      checkElement("empty-message-cta").click();
+      checkElement("empty-message-cta");
+      // Need to break up the click chain for GitHub actions
+      cy.get(`[data-testid=empty-message-cta]`).click();
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(500);
       checkElement("message-input");
     });
+
     it("Opens new message view when clicking on plus icon from left panel", () => {
       checkMissingElement("message-input");
-      checkElement("new-message-icon-cta").click();
+      // Need to break up the click chain for GitHub actions
+      cy.get(`[data-testid=empty-message-cta]`).click();
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(500);
       checkElement("message-input");
     });
     it("Opens new message view when clicking on new message section within learn more", () => {
       checkMissingElement("message-input");
-      checkElement("message-section-link").click();
+      checkElement("message-section-link");
+      // Need to break up the click chain for GitHub actions
+      cy.get(`[data-testid=message-section-link]`).click();
       checkElement("message-input");
     });
     it("Should show conversation list instead of empty message as soon as user enters something into the input", () => {
       checkElement("empty-message-header");
       checkMissingElement("message-input");
-      checkElement("message-section-link").click();
+      checkElement("message-section-link");
+      // Need to break up the click chain for GitHub actions
+      cy.get(`[data-testid=message-section-link]`).click();
       checkElement("message-to-input").type("a");
       checkMissingElement("empty-message-header");
       cy.get(`[data-testid=conversations-list-panel]`).should("have.length", 1);

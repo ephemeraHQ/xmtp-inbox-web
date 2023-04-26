@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { classNames, isAppEnvDemo, wipeKeys } from "../helpers";
 import { OnboardingStep } from "../component-library/components/OnboardingStep/OnboardingStep";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { useClient } from "@xmtp/react-sdk";
 
 const OnboardingPage: NextPage = () => {
   const resetXmtpState = useXmtpStore((state) => state.resetXmtpState);
@@ -16,7 +17,7 @@ const OnboardingPage: NextPage = () => {
   const { client, isLoading, status, resolveCreate, resolveEnable } =
     useInitXmtpClient();
   const { disconnect: disconnectWagmi, reset: resetWagmi } = useDisconnect();
-
+  const { disconnect: disconnectClient } = useClient();
   const router = useRouter();
 
   useEffect(() => {
@@ -60,6 +61,7 @@ const OnboardingPage: NextPage = () => {
         onCreate={resolveCreate}
         onEnable={resolveEnable}
         onDisconnect={() => {
+          disconnectClient();
           wipeKeys(address ?? "");
           disconnectWagmi();
           resetWagmi();
