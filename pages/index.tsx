@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useXmtpStore } from "../store/xmtp";
 import { watchAccount } from "@wagmi/core";
 import useInitXmtpClient from "../hooks/useInitXmtpClient";
@@ -10,6 +10,7 @@ import { OnboardingStep } from "../component-library/components/OnboardingStep/O
 import { emitPageVisitEvent } from "../helpers/internalTracking";
 import { address } from "./inbox";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { useClient } from "@xmtp/react-sdk";
 
 const OnboardingPage: NextPage = () => {
   const resetXmtpState = useXmtpStore((state) => state.resetXmtpState);
@@ -18,7 +19,7 @@ const OnboardingPage: NextPage = () => {
   const { client, isLoading, status, resolveCreate, resolveEnable } =
     useInitXmtpClient();
   const { disconnect: disconnectWagmi, reset: resetWagmi } = useDisconnect();
-
+  const { disconnect: disconnectClient } = useClient();
   const router = useRouter();
 
   useEffect(() => {
@@ -69,6 +70,7 @@ const OnboardingPage: NextPage = () => {
         onCreate={resolveCreate}
         onEnable={resolveEnable}
         onDisconnect={() => {
+          disconnectClient();
           wipeKeys(address ?? "");
           disconnectWagmi();
           resetWagmi();
