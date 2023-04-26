@@ -99,11 +99,16 @@ describe(
     it("Opens new message view when clicking on connect button from left panel", () => {
       checkMissingElement("message-input");
       checkElement("empty-message-cta").click();
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(500);
       checkElement("message-input");
     });
+
     it("Opens new message view when clicking on plus icon from left panel", () => {
       checkMissingElement("message-input");
       checkElement("new-message-icon-cta").click();
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(500);
       checkElement("message-input");
     });
     it("Opens new message view when clicking on new message section within learn more", () => {
