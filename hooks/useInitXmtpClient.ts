@@ -191,6 +191,7 @@ const useInitXmtpClient = () => {
     resolveCreate,
     resolveEnable,
     status,
+    setStatus,
   };
 };
 
