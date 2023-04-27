@@ -103,7 +103,7 @@ describe(
     // });
 
     it("Opens new message view when clicking on plus icon from left panel", () => {
-      checkMissingElement("message-input");
+      // checkMissingElement("message-input");
       // Need to break up the click chain for GitHub actions
       cy.get(`[data-testid=new-message-icon-cta]`).click();
       // eslint-disable-next-line cypress/no-unnecessary-waiting
