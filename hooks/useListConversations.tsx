@@ -1,4 +1,4 @@
-import { Conversation, DecodedMessage, Stream } from "@xmtp/xmtp-js";
+import { Conversation, DecodedMessage } from "@xmtp/xmtp-js";
 import { useEffect } from "react";
 import { useAccount } from "wagmi";
 import { XMTP_FEEDBACK_ADDRESS, getConversationId } from "../helpers";
