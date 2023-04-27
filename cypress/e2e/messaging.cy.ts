@@ -10,14 +10,15 @@ describe(
   "Messaging Test Cases",
   {
     retries: {
-      runMode: 2,
-      openMode: 1,
+      runMode: 3,
+      openMode: 2,
     },
   },
   () => {
     beforeEach(() => {
       startDemoEnv();
-      checkElement("new-message-icon-cta").click();
+      // In connected flow, empty message should render before any tests run
+      checkElement("empty-message-header");
     });
     const testUserWithXmtpAccount =
       "0x78BfD39428C32Be149892d64bEE6C6f90aedEec1";
@@ -52,7 +53,9 @@ describe(
     });
 
     it("Renders error message when sending message to existing user outside of XMTP network", () => {
-      checkElement("message-to-input").type("invalidUser").click();
+      checkElement("empty-message-cta");
+      cy.get(`[data-testid=empty-message-cta]`).click();
+      checkElement("message-to-input").type("invalidUser");
       cy.get(`[data-testid=message-to-subtext]`, { timeout: TIMEOUT }).should(
         "have.text",
         "Please enter a valid 0x wallet or ENS address",

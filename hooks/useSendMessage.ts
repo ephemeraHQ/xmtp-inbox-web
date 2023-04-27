@@ -3,11 +3,19 @@ import { getConversationId, isValidLongWalletAddress } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
 import { address } from "../pages/inbox";
 import { emitMsgSentEvent } from "../helpers/internalTracking";
-import { useClient } from "@xmtp/react-sdk";
+import {
+  useSendMessage as useSendMessageHook,
+  useStartConversation,
+} from "@xmtp/react-sdk";
+import { Conversation } from "@xmtp/xmtp-js";
 
 const useSendMessage = (conversationId: address) => {
-  const { client } = useClient();
   const conversations = useXmtpStore((state) => state.conversations);
+  let selectedConversation = conversations.get(conversationId);
+  const startConversation = useStartConversation();
+  const sendMessageFromHook = useSendMessageHook(
+    selectedConversation as Conversation,
+  );
   const recipientWalletAddress = useXmtpStore(
     (state) => state.recipientWalletAddress,
   );
@@ -20,29 +28,18 @@ const useSendMessage = (conversationId: address) => {
         isValidLongWalletAddress(recipientWalletAddress) &&
         (!selectedConversation || !selectedConversation?.messages)
       ) {
-        const conversation =
-          conversationId &&
-          // the line below is to check if the conversation id is valid
-          // and a new conversation is not created for a invalid conversation Id
-          !conversationId.includes(recipientWalletAddress) &&
-          conversationId !== recipientWalletAddress
-            ? await client?.conversations?.newConversation(
-                recipientWalletAddress,
-                {
-                  conversationId,
-                  metadata: {},
-                },
-              )
-            : await client?.conversations?.newConversation(
-                recipientWalletAddress,
-              );
+        const conversation = await startConversation(
+          recipientWalletAddress,
+          message,
+        );
         if (conversation) {
           selectedConversation = conversation;
           conversations.set(getConversationId(conversation), conversation);
           setConversations(new Map(conversations));
         }
+      } else {
+        await sendMessageFromHook(message);
       }
-      await selectedConversation?.send(message);
 
       /* The emitMsgSentEvent function is called only when
           specific XMTP Labs team wallets use
