@@ -3,6 +3,8 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
+ARG NEXT_PUBLIC_INFURA_ID
+ENV NEXT_PUBLIC_INFURA_ID=${NEXT_PUBLIC_INFURA_ID}
 RUN npm run build
 
 FROM nginx:alpine
