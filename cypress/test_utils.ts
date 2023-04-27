@@ -43,7 +43,7 @@ const sendMessages = (
     // Enters message
     checkElement("message-input").type(message);
     checkElement("message-input-submit");
-    cy.get(`[data-testid=message-input-submit]`).click({ timeout: TIMEOUT });
+    cy.get(`[data-testid=message-input-submit]`).click();
     cy.get(`[data-testid=conversations-list-panel]`, {
       timeout: TIMEOUT,
     }).should("have.length", 1);
@@ -68,6 +68,7 @@ const checkMessageOutput = (numberOfTimes: number, message: string) => {
     .children()
     .should("have.length", numberOfTimes || 1);
   cy.get(`[data-testid=message-tile-text]`, { timeout: TIMEOUT })
+    .children()
     .last()
     .should("have.text", message);
 };
@@ -91,6 +92,8 @@ export const sendAndEnterMessage = (
   numberOfTimes = 1,
   checkDifferentMessages = false,
 ) => {
+  checkElement("empty-message-cta");
+  cy.get(`[data-testid=empty-message-cta]`).click();
   enterWalletAddress(testUser);
   checkExpectedPreMessageFields();
   sendMessages(numberOfTimes, message, testUser, checkDifferentMessages);
