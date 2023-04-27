@@ -69,9 +69,9 @@ const OnboardingPage: NextPage = () => {
         onConnect={openConnectModal}
         onCreate={resolveCreate}
         onEnable={resolveEnable}
-        onDisconnect={() => {
+        onDisconnect={async () => {
           if (client) {
-            disconnectClient();
+            await disconnectClient();
           }
           setStatus(undefined);
           wipeKeys(address ?? "");
