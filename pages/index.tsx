@@ -16,7 +16,7 @@ const OnboardingPage: NextPage = () => {
   const resetXmtpState = useXmtpStore((state) => state.resetXmtpState);
   const { address } = useAccount();
   const { openConnectModal } = useConnectModal();
-  const { client, isLoading, status, resolveCreate, resolveEnable } =
+  const { client, isLoading, status, setStatus, resolveCreate, resolveEnable } =
     useInitXmtpClient();
   const { disconnect: disconnectWagmi, reset: resetWagmi } = useDisconnect();
   const { disconnect: disconnectClient } = useClient();
@@ -69,8 +69,11 @@ const OnboardingPage: NextPage = () => {
         onConnect={openConnectModal}
         onCreate={resolveCreate}
         onEnable={resolveEnable}
-        onDisconnect={() => {
-          disconnectClient();
+        onDisconnect={async () => {
+          if (client) {
+            await disconnectClient();
+          }
+          setStatus(undefined);
           wipeKeys(address ?? "");
           disconnectWagmi();
           resetWagmi();

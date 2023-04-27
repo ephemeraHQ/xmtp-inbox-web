@@ -61,8 +61,7 @@ export const FullMessage = ({
               isOutgoingMessage
                 ? outgoingMessageBackgroundStyles
                 : incomingMessageBackgroundStyles
-            }`}
-            data-testid="message-tile-text">
+            }`}>
             {text}
           </div>
           <div
