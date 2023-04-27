@@ -108,7 +108,7 @@ const SideNav = ({
 
   const mappedButtons = icons.map((icon) => {
     return (
-      <div className="group flex relative" key={icon.key}>
+      <div className="group flex relative w-full" key={icon.key}>
         <button
           type="button"
           onClick={(event) => {
