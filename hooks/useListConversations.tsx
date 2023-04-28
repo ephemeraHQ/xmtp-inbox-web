@@ -1,18 +1,19 @@
 import { Conversation, DecodedMessage } from "@xmtp/xmtp-js";
 import { useEffect } from "react";
 import { useAccount } from "wagmi";
-import {
-  XMTP_FEEDBACK_ADDRESS,
-  XMTP_FEEDBACK_FIRST_MSG,
-  getConversationId,
-} from "../helpers";
+import { XMTP_FEEDBACK_ADDRESS, getConversationId } from "../helpers";
 import fetchMostRecentMessage from "../helpers/fetchMostRecentMessage";
 import { useXmtpStore } from "../store/xmtp";
 import useStreamAllMessages from "./useStreamAllMessages";
-import { useConversations, useStreamConversations } from "@xmtp/react-sdk";
+import {
+  useConversations,
+  useStartConversation,
+  useStreamConversations,
+} from "@xmtp/react-sdk";
 
 export const useListConversations = () => {
   const { address: walletAddress } = useAccount();
+  const startConversation = useStartConversation();
 
   const {
     conversations: allConversations,
@@ -46,7 +47,6 @@ export const useListConversations = () => {
 
   useEffect(() => {
     const listConversations = async () => {
-      let isFeedbackConvoPresent = false;
       setLoadingConversations(true);
       const newPreviewMessages = new Map(previewMessages);
       const previews = await Promise.all(
@@ -56,9 +56,6 @@ export const useListConversations = () => {
       for (const preview of previews) {
         if (preview.message) {
           newPreviewMessages.set(preview.key, preview.message);
-          if (preview.key === XMTP_FEEDBACK_ADDRESS) {
-            isFeedbackConvoPresent = true;
-          }
         }
       }
 
@@ -68,18 +65,10 @@ export const useListConversations = () => {
         }
       }
 
-      if (!isFeedbackConvoPresent) {
-        newPreviewMessages.set(XMTP_FEEDBACK_ADDRESS, {
-          content: "Send feedback",
-        } as DecodedMessage);
-        conversations.set(XMTP_FEEDBACK_ADDRESS, {
-          peerAddress: XMTP_FEEDBACK_ADDRESS,
-        } as Conversation);
-      }
-
       setPreviewMessages(newPreviewMessages);
       setConversations(new Map(conversations));
       setLoadingConversations(false);
+
       if (Notification.permission === "default") {
         Notification.requestPermission();
       }
@@ -91,6 +80,29 @@ export const useListConversations = () => {
       setLoadingConversations(true);
     }
   }, [walletAddress, isLoading, error, allConversations]);
+
+  useEffect(() => {
+    const addFeedbackConvo = async () => {
+      if (
+        conversations.size &&
+        !conversations.has(XMTP_FEEDBACK_ADDRESS) &&
+        !isLoading
+      ) {
+        await startConversation(XMTP_FEEDBACK_ADDRESS, "Hey");
+        previewMessages.set(XMTP_FEEDBACK_ADDRESS, {
+          content: "Send feedback",
+        } as DecodedMessage);
+        conversations.set(XMTP_FEEDBACK_ADDRESS, {
+          peerAddress: XMTP_FEEDBACK_ADDRESS,
+        } as Conversation);
+
+        setPreviewMessages(new Map(previewMessages));
+        setConversations(new Map(conversations));
+      }
+    };
+
+    addFeedbackConvo();
+  }, [conversations, isLoading]);
 };
 
 export default useListConversations;

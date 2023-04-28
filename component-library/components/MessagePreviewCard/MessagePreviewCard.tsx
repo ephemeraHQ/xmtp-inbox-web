@@ -4,6 +4,7 @@ import { ShortCopySkeletonLoader } from "../Loaders/SkeletonLoaders/ShortCopySke
 import { classNames } from "../../../helpers";
 import { Avatar } from "../Avatar/Avatar";
 import { useTranslation } from "react-i18next";
+import { StarIcon } from "@heroicons/react/solid";
 
 interface MessagePreviewCard {
   /**
@@ -42,6 +43,10 @@ interface MessagePreviewCard {
    * What is the app this conversation started on?
    */
   conversationDomain?: string;
+  /**
+   * Is this conversation pinned?
+   */
+  pinned?: boolean;
   // To-do: Add error views once we have the designs
 }
 
@@ -55,6 +60,7 @@ export const MessagePreviewCard = ({
   onClick,
   isSelected,
   conversationDomain,
+  pinned,
 }: MessagePreviewCard) => {
   const isFirstMessage = !text && !displayAddress;
   const { t } = useTranslation();
@@ -110,8 +116,14 @@ export const MessagePreviewCard = ({
             "text-right",
             "ml-4",
             "h-full",
+            "flex flex-col items-end justify-between",
           )}>
           {datetime && t("{{datetime, ago}}", { datetime })}
+          {pinned && (
+            <div>
+              <StarIcon className="text-indigo-600" width={16} />
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -72,11 +72,8 @@ export const MessagePreviewCardWrapper = ({
       }}
       isLoading={convoAvatarLoading}
       avatarUrl={convoAvatarUrl || ""}
-      conversationDomain={
-        convo?.peerAddress === XMTP_FEEDBACK_ADDRESS
-          ? "feedback"
-          : shortAddress(conversationDomain)
-      }
+      conversationDomain={shortAddress(conversationDomain)}
+      pinned={convo?.peerAddress === XMTP_FEEDBACK_ADDRESS}
       address={convo?.peerAddress}
     />
   );
