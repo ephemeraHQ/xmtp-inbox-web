@@ -218,7 +218,7 @@ const SideNav = ({
           onClose={onXmtpIconClick}
           aria-label={t("menu.settings") || ""}>
           <div className="bg-[#ffffffa3] w-[100vw] h-[100vh] flex items-center justify-center absolute top-0 z-20">
-            <div className="bg-[url('/shareQrBg.png')] w-[35%] h-[90vh] text-white flex flex-col items-center p-4 rounded-3xl drop-shadow-lg">
+            <div className="bg-[url('/shareQrBg.png')] bg-repeat-round m-4 lg:w-[35%] sm:w-[90%] md:w-[50%] h-[90vh] text-white flex flex-col items-center p-4 rounded-3xl drop-shadow-lg">
               <div
                 onClick={() => setIsQrCodeDialogOpen(false)}
                 className="w-[100%] flex justify-end cursor-pointer mb-20">
