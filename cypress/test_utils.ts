@@ -53,7 +53,8 @@ const sendMessages = (
     const differentMessage = "differentMessage";
     // Send additional different message, check that different message was returned in correct order
     checkElement("message-input").type(differentMessage);
-    checkElement("message-input-submit").click();
+    checkElement("message-input-submit");
+    cy.get(`[data-testid=message-input-submit]`).click();
   }
 
   // A way around to solve the message streaming issue
