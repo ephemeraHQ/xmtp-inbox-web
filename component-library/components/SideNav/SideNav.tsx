@@ -19,7 +19,7 @@ import { GhostButton } from "../GhostButton/GhostButton";
 import { DisconnectIcon } from "../Icons/DisconnectIcon";
 import { useTranslation } from "react-i18next";
 import i18next, { resourceMap } from "../../../i18n";
-import { QRCodeSVG } from "qrcode.react";
+import { QRCode } from "react-qrcode-logo";
 
 interface SideNav {
   /**
@@ -217,22 +217,41 @@ const SideNav = ({
           as="div"
           onClose={onXmtpIconClick}
           aria-label={t("menu.settings") || ""}>
-          <div className="bg-transparent w-[100vw] h-[100vh] flex items-center justify-center absolute top-0 z-20">
-            <div className="flex flex-col items-center justify-center p-4 bg-white rounded-xl drop-shadow-lg">
+          <div className="bg-[#ffffffa3] w-[100vw] h-[100vh] flex items-center justify-center absolute top-0 z-20">
+            <div className="bg-[url('/shareQrBg.png')] w-[35%] h-[90vh] text-white flex flex-col items-center p-4 rounded-3xl drop-shadow-lg">
               <div
                 onClick={() => setIsQrCodeDialogOpen(false)}
-                className="text-red-600 hover:text-red-800 w-[100%] flex justify-end cursor-pointer">
+                className="w-[100%] flex justify-end cursor-pointer mb-20">
                 <XIcon width={24} />
               </div>
-              <QRCodeSVG fgColor="#4f46e5" value="https://reactjs.org/" />
+              <div className="h-8">
+                <img
+                  className="h-[100%]"
+                  alt="xmtp-logo"
+                  src="/xmtp-logo.png"
+                />
+              </div>
+              <div className="text-center p-4 pb-6">
+                Share the power of the XMTP network with your friends, family
+                and colleagues
+              </div>
+              <div className="p-4 flex items-center justify-center rounded-3xl bg-white">
+                <QRCode
+                  size={200}
+                  logoImage="/xmtp-icon.png"
+                  removeQrCodeBehindLogo
+                  logoPadding={10}
+                  value="https://reactjs.org/"
+                />
+              </div>
               <div
                 onClick={() =>
                   navigator.clipboard.writeText(
                     `https://xmtp.chat/dm/${walletAddress}`,
                   )
                 }
-                className="flex text-sm mt-5 text-indigo-600 hover:text-indigo-800">
-                <span>https://xmtp.chat/dm/{walletAddress}</span>
+                className="flex text-sm mt-5">
+                <span className="underline">Copy your share link</span>
                 <ClipboardCopyIcon className="ml-2 cursor-pointer" width={16} />
               </div>
             </div>
