@@ -34,7 +34,7 @@ This conversation can be used to provide feedback about the
 protocol and this app.
 
 Here are a few things you can do:
-Send a new message to anyone using a Ox or ENS address:
+Send a new message to anyone using a 0x or ENS address:
 xmtp.chat/new
 
 Find the perfect app for you on our showcase of apps
