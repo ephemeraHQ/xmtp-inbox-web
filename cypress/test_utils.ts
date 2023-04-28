@@ -92,8 +92,9 @@ export const sendAndEnterMessage = (
   numberOfTimes = 1,
   checkDifferentMessages = false,
 ) => {
-  // checkElement("empty-message-cta");
-  cy.get(`[data-testid=new-message-icon-cta]`).click();
+  cy.wait(2000);
+  checkElement("new-message-icon-cta");
+  cy.get(`[data-testid=new-message-icon-cta]`).click({ timeout: TIMEOUT });
   enterWalletAddress(testUser);
   checkExpectedPreMessageFields();
   sendMessages(numberOfTimes, message, testUser, checkDifferentMessages);
