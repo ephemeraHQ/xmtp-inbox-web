@@ -73,12 +73,6 @@ export const useStreamAllMessages = () => {
               });
             });
 
-            new Notification("XMTP", {
-              body: `${
-                name || shortAddress(message.senderAddress ?? "")
-              }\n${truncate(message.content, 75)}`,
-            });
-
             latestMsgId = message.id;
           }
         }
