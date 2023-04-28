@@ -7,8 +7,6 @@ import { useAccount, useDisconnect } from "wagmi";
 import { useRouter } from "next/router";
 import { classNames, isAppEnvDemo, wipeKeys } from "../helpers";
 import { OnboardingStep } from "../component-library/components/OnboardingStep/OnboardingStep";
-import { emitPageVisitEvent } from "../helpers/internalTracking";
-import { address } from "./inbox";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useClient } from "@xmtp/react-sdk";
 
@@ -29,13 +27,6 @@ const OnboardingPage: NextPage = () => {
   useEffect(() => {
     const routeToInbox = async () => {
       if (client) {
-        /* The emitPageVisitEvent function is called only when
-          specific XMTP Labs team wallets use
-          the internal domain alpha.xmtp.chat. This
-          tracking is temporary and meant to help
-          surface insights about team usage to
-          help build a better app. */
-        await emitPageVisitEvent(address as address);
         router.push("/inbox");
       }
     };
