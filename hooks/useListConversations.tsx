@@ -1,7 +1,11 @@
 import { Conversation, DecodedMessage } from "@xmtp/xmtp-js";
 import { useEffect } from "react";
 import { useAccount } from "wagmi";
-import { XMTP_FEEDBACK_ADDRESS, getConversationId } from "../helpers";
+import {
+  XMTP_FEEDBACK_ADDRESS,
+  XMTP_FEEDBACK_FIRST_MSG,
+  getConversationId,
+} from "../helpers";
 import fetchMostRecentMessage from "../helpers/fetchMostRecentMessage";
 import { useXmtpStore } from "../store/xmtp";
 import useStreamAllMessages from "./useStreamAllMessages";
@@ -66,7 +70,7 @@ export const useListConversations = () => {
 
       if (!isFeedbackConvoPresent) {
         newPreviewMessages.set(XMTP_FEEDBACK_ADDRESS, {
-          content: "Send Feedback",
+          content: XMTP_FEEDBACK_FIRST_MSG.content,
         } as DecodedMessage);
         conversations.set(XMTP_FEEDBACK_ADDRESS, {
           peerAddress: XMTP_FEEDBACK_ADDRESS,

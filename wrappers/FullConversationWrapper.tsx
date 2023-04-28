@@ -1,10 +1,11 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { DateDivider } from "../component-library/components/DateDivider/DateDivider";
 import { FullConversation } from "../component-library/components/FullConversation/FullConversation";
 import useGetMessages from "../hooks/useGetMessages";
 import { useXmtpStore } from "../store/xmtp";
 import { FullMessageWrapper } from "./FullMessageWrapper.";
+import { XMTP_FEEDBACK_ADDRESS, XMTP_FEEDBACK_FIRST_MSG } from "../helpers";
 
 export const FullConversationWrapper = () => {
   let lastMessageDate: Date;
@@ -44,6 +45,12 @@ export const FullConversationWrapper = () => {
       }
     }
   }, [conversationId, hasMore, messages, endTime]);
+
+  useEffect(() => {
+    if (conversationId === XMTP_FEEDBACK_ADDRESS) {
+      messages.unshift(XMTP_FEEDBACK_FIRST_MSG);
+    }
+  }, [conversationId]);
 
   return (
     <div

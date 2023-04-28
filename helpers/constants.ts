@@ -1,3 +1,5 @@
+import { DecodedMessage } from "@xmtp/xmtp-js";
+
 export const MESSAGE_LIMIT = 20;
 
 export const ENVIRONMENT = {
@@ -22,3 +24,24 @@ export const ALLOWED_ENS_SUFFIXES = [".eth", ".cb.id"];
 
 export const XMTP_FEEDBACK_ADDRESS =
   "0x8bcF8AFF8Cb99335CD9f4d9866a40e05E23373ff";
+
+export const XMTP_FEEDBACK_FIRST_MSG = {
+  id: "feedbackMessage",
+  senderAddress: XMTP_FEEDBACK_ADDRESS,
+  content: `Welcome to XMTP Inbox!
+
+This conversation can be used to provide feedback about the
+protocol and this app.
+
+Here are a few things you can do:
+Send a new message to anyone using a Ox or ENS address:
+xmtp.chat/new
+
+Find the perfect app for you on our showcase of apps
+powered by the XMTP network:
+xmtp.chat/showcase
+
+If you're a developer, explore our developer documentation
+for how to build your own apps on the XMTP network:
+xmtp.org`,
+} as DecodedMessage;
