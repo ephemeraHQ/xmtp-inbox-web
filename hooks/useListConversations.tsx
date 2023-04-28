@@ -70,7 +70,7 @@ export const useListConversations = () => {
 
       if (!isFeedbackConvoPresent) {
         newPreviewMessages.set(XMTP_FEEDBACK_ADDRESS, {
-          content: XMTP_FEEDBACK_FIRST_MSG.content,
+          content: "Send feedback",
         } as DecodedMessage);
         conversations.set(XMTP_FEEDBACK_ADDRESS, {
           peerAddress: XMTP_FEEDBACK_ADDRESS,
