@@ -99,11 +99,8 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
                 setStartedFirstMessage={() => setStartedFirstMessage(true)}
                 isLoading={loadingConversations}
                 messages={
-                  (conversations.size === 0 || previewMessages.size === 0) &&
-                  recipientEnteredValue &&
                   !loadingConversations
-                    ? [<MessagePreviewCardWrapper key="default" />]
-                    : [
+                    ? [
                         <MessagePreviewCardWrapper
                           key={XMTP_FEEDBACK_ADDRESS}
                           convo={conversations.get(XMTP_FEEDBACK_ADDRESS)}
@@ -122,6 +119,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
                           )),
                         ,
                       ]
+                    : []
                 }
               />
             </div>
