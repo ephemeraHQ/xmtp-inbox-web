@@ -83,7 +83,7 @@ const checkMostRecentMessageOutput = (
     .should("have.length", numberOfTimes + 1 || 2);
 
   cy.get(`[data-testid=message-tile-text]`, { timeout: TIMEOUT })
-    .first()
+    .eq(1)
     .should("have.text", differentMessage);
 };
 
