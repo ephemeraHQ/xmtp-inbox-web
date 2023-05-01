@@ -1,10 +1,12 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { DateDivider } from "../component-library/components/DateDivider/DateDivider";
 import { FullConversation } from "../component-library/components/FullConversation/FullConversation";
-import useGetMessages from "../hooks/useGetMessages";
 import { useXmtpStore } from "../store/xmtp";
 import { FullMessageWrapper } from "./FullMessageWrapper.";
+import { useMessages } from "@xmtp/react-sdk";
+import { SortDirection } from "@xmtp/xmtp-js";
+import { MESSAGE_LIMIT } from "../helpers";
 
 export const FullConversationWrapper = () => {
   let lastMessageDate: Date;
@@ -19,17 +21,21 @@ export const FullConversationWrapper = () => {
     (state) => state.loadingConversations,
   );
 
-  // XMTP Hooks
-  const { convoMessages: messages = [], hasMore } = useGetMessages(
-    conversationId as string,
-    endTime.get(conversationId as string),
+  const conversation = useXmtpStore((state) =>
+    state.conversations.get(conversationId as string),
   );
+
+  const { messages, hasMore } = useMessages(conversation, {
+    limit: MESSAGE_LIMIT,
+    direction: SortDirection.SORT_DIRECTION_DESCENDING,
+    endTime: endTime.get(conversationId as string),
+  });
 
   const isOnSameDay = (d1?: Date, d2?: Date): boolean => {
     return d1?.toDateString() === d2?.toDateString();
   };
 
-  const fetchNextMessages = useCallback(() => {
+  const fetchNextMessages = () => {
     if (
       hasMore &&
       Array.isArray(messages) &&
@@ -43,7 +49,7 @@ export const FullConversationWrapper = () => {
         setEndTime(new Map(endTime));
       }
     }
-  }, [conversationId, hasMore, messages, endTime]);
+  };
 
   return (
     <div
