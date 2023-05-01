@@ -10,16 +10,19 @@ import {
 } from "../helpers";
 import { useClient, useCanMessage } from "@xmtp/react-sdk";
 import { mockConnector } from "../helpers/mockConnector";
+import { Signer } from "ethers";
 
 type ClientStatus = "new" | "created" | "enabled";
+
+type ResolveReject<T = void> = (value: T | PromiseLike<T>) => void;
 
 /**
  * This is a helper function for creating a new promise and getting access
  * to the resolve and reject callbacks for external use.
  */
 const makePromise = <T = void>() => {
-  let reject: (value: T | PromiseLike<T>) => void = () => {};
-  let resolve: (value: T | PromiseLike<T>) => void = () => {};
+  let reject: ResolveReject<T> = () => {};
+  let resolve: ResolveReject<T> = () => {};
   const promise = new Promise<T>((yes, no) => {
     resolve = yes;
     reject = no;
@@ -39,8 +42,9 @@ const clientOptions = {
 };
 
 const useInitXmtpClient = () => {
-  // track if an update is in flight
-  const updatingRef = useRef(false);
+  // track if onboarding is in progress
+  const onboardingRef = useRef(false);
+  const signerRef = useRef<Signer | null>();
   // XMTP address status
   const [status, setStatus] = useState<ClientStatus | undefined>();
   // is there a pending signature?
@@ -56,7 +60,7 @@ const useInitXmtpClient = () => {
    */
 
   // create promise, callback, and resolver for controlling the display of the
-  // create account signature. these values should not change over time.
+  // create account signature.
   const { createResolve, preCreateIdentityCallback, resolveCreate } =
     useMemo(() => {
       const { promise: createPromise, resolve: createResolve } = makePromise();
@@ -70,10 +74,11 @@ const useInitXmtpClient = () => {
           setSigning(true);
         },
       };
-    }, []);
+      // if the signer changes during the onboarding process, reset the promise
+    }, [signer]);
 
   // create promise, callback, and resolver for controlling the display of the
-  // enable account signature. these values should not change over time.
+  // enable account signature.
   const { enableResolve, preEnableIdentityCallback, resolveEnable } =
     useMemo(() => {
       const { promise: enablePromise, resolve: enableResolve } = makePromise();
@@ -92,7 +97,8 @@ const useInitXmtpClient = () => {
           setSigning(true);
         },
       };
-    }, []);
+      // if the signer changes during the onboarding process, reset the promise
+    }, [signer]);
 
   const { client, isLoading, initialize } = useClient();
   const { canMessageStatic: canMessageUser } = useCanMessage();
@@ -110,16 +116,20 @@ const useInitXmtpClient = () => {
   // the code in this effect should only run once
   useEffect(() => {
     const updateStatus = async () => {
-      // prevent this code from running when it's already in flight
-      if (updatingRef.current) {
-        return;
+      // onboarding is in progress
+      if (onboardingRef.current) {
+        // the signer has changed, restart the onboarding process
+        if (signer !== signerRef.current) {
+          setStatus(undefined);
+          setSigning(false);
+        } else {
+          // onboarding in progress and signer is the same, do nothing
+          return;
+        }
       }
-      // skip this if we already have a client
-      // skip this if the client is busy
-      // effectively, once these conditions are met,
-      // this code will only run once
-      if (!client && !isLoading && signer) {
-        updatingRef.current = true;
+      // skip this if we already have a client and ensure we have a signer
+      if (!client && signer) {
+        onboardingRef.current = true;
         const address = await signer.getAddress();
         let keys = loadKeys(address);
         // check if we already have the keys
@@ -169,21 +179,16 @@ const useInitXmtpClient = () => {
         }
         // initialize client
         await initialize({ keys, options: clientOptions, signer });
-        updatingRef.current = false;
+        onboardingRef.current = false;
       }
     };
     updateStatus();
-  }, [
-    client,
-    connectWallet,
-    createResolve,
-    enableResolve,
-    initialize,
-    isLoading,
-    preCreateIdentityCallback,
-    preEnableIdentityCallback,
-    signer,
-  ]);
+  }, [client, signer]);
+
+  // it's important that this effect runs last
+  useEffect(() => {
+    signerRef.current = signer;
+  }, [signer]);
 
   return {
     client,
