@@ -1,4 +1,4 @@
-import { Conversation, DecodedMessage } from "@xmtp/xmtp-js";
+import { Conversation, DecodedMessage } from "@xmtp/react-sdk";
 import { create } from "zustand";
 import { RecipientInputMode } from "../helpers";
 import getUniqueMessages from "../helpers/getUniqueMessages";

@@ -7,7 +7,7 @@ import {
   wipeKeys,
 } from "../helpers";
 import { ConversationList } from "../component-library/components/ConversationList/ConversationList";
-import { Conversation } from "@xmtp/xmtp-js";
+import { Conversation } from "@xmtp/react-sdk";
 import { MessagePreviewCardWrapper } from "../wrappers/MessagePreviewCardWrapper";
 import { FullConversationWrapper } from "../wrappers/FullConversationWrapper";
 import { AddressInputWrapper } from "../wrappers/AddressInputWrapper";

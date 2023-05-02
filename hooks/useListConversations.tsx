@@ -1,4 +1,4 @@
-import { Conversation } from "@xmtp/xmtp-js";
+import { Conversation } from "@xmtp/react-sdk";
 import { useEffect } from "react";
 import { useAccount } from "wagmi";
 import { getConversationId } from "../helpers";

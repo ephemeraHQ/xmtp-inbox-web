@@ -1,4 +1,4 @@
-import { Conversation } from "@xmtp/xmtp-js";
+import { Conversation } from "@xmtp/react-sdk";
 import React from "react";
 import { useEnsAvatar, useEnsName } from "wagmi";
 import { MessagePreviewCard } from "../component-library/components/MessagePreviewCard/MessagePreviewCard";

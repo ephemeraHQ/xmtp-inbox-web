@@ -4,8 +4,7 @@ import { DateDivider } from "../component-library/components/DateDivider/DateDiv
 import { FullConversation } from "../component-library/components/FullConversation/FullConversation";
 import { useXmtpStore } from "../store/xmtp";
 import { FullMessageWrapper } from "./FullMessageWrapper.";
-import { useMessages } from "@xmtp/react-sdk";
-import { SortDirection } from "@xmtp/xmtp-js";
+import { SortDirection, useMessages } from "@xmtp/react-sdk";
 import { MESSAGE_LIMIT } from "../helpers";
 
 export const FullConversationWrapper = () => {

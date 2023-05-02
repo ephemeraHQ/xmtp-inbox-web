@@ -1,4 +1,4 @@
-import { DecodedMessage } from "@xmtp/xmtp-js";
+import { DecodedMessage } from "@xmtp/react-sdk";
 import { useEffect, useState } from "react";
 import { getConversationId, shortAddress, truncate } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
