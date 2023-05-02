@@ -1,7 +1,11 @@
 import React, { useEffect } from "react";
 import useListConversations from "../hooks/useListConversations";
 import { useXmtpStore } from "../store/xmtp";
-import { getConversationId, TAILWIND_MD_BREAKPOINT } from "../helpers";
+import {
+  getConversationId,
+  TAILWIND_MD_BREAKPOINT,
+  wipeKeys,
+} from "../helpers";
 import { ConversationList } from "../component-library/components/ConversationList/ConversationList";
 import { Conversation } from "@xmtp/xmtp-js";
 import { MessagePreviewCardWrapper } from "../wrappers/MessagePreviewCardWrapper";
@@ -14,7 +18,7 @@ import { LearnMore } from "../component-library/components/LearnMore/LearnMore";
 import router from "next/router";
 import useWindowSize from "../hooks/useWindowSize";
 import { useClient } from "@xmtp/react-sdk";
-import { useSigner } from "wagmi";
+import { useDisconnect, useSigner } from "wagmi";
 
 export type address = "0x${string}";
 
@@ -53,6 +57,8 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
     (state) => state.setStartedFirstMessage,
   );
 
+  const { disconnect: disconnectWagmi, reset: resetWagmi } = useDisconnect();
+
   // if the wallet address changes, disconnect the XMTP client
   useEffect(() => {
     const checkSigners = async () => {
@@ -62,6 +68,9 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
       if (address1 && address2 && address1 !== address2) {
         resetXmtpState();
         disconnect();
+        wipeKeys(address1 ?? "");
+        disconnectWagmi();
+        resetWagmi();
       }
     };
     checkSigners();

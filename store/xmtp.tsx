@@ -79,6 +79,8 @@ export const useXmtpStore = create<XmtpState>((set) => ({
         previewMessages: new Map(),
         recipientWalletAddress: "",
         conversationId: undefined,
+        startedFirstMessage: false,
+        recipientInputMode: RecipientInputMode.InvalidEntry,
       };
     }),
   startedFirstMessage: false,
