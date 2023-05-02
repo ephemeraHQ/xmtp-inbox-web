@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - dev
 env:
   BUILD_CONTAINER_IMAGE: xmtplabs/xmtp-inbox-web:latest
 jobs:
@@ -16,4 +17,6 @@ jobs:
           password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
       - uses: actions/checkout@v3
       - run: docker/build
+        env:
+          NEXT_PUBLIC_INFURA_ID: ${{ secrets.DEV_INFURA_ID }}
       - run: docker/push

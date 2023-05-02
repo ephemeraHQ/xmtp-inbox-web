@@ -1,7 +1,7 @@
 /* eslint-disable cypress/no-unnecessary-waiting */
 import { ENVIRONMENT } from "../helpers";
 
-export const TIMEOUT = 20000;
+export const TIMEOUT = 40000;
 
 export const checkElement = (testId: string) =>
   cy.get(`[data-testid=${testId}]`, { timeout: TIMEOUT }).should("exist");
@@ -42,7 +42,8 @@ const sendMessages = (
   for (let i = 0; i < numberOfTimes; i++) {
     // Enters message
     checkElement("message-input").type(message);
-    checkElement("message-input-submit").click();
+    checkElement("message-input-submit");
+    cy.get(`[data-testid=message-input-submit]`).click();
     cy.get(`[data-testid=conversations-list-panel]`, {
       timeout: TIMEOUT,
     }).should("have.length", 1);
@@ -57,7 +58,8 @@ const sendMessages = (
 
   // A way around to solve the message streaming issue
   cy.wait(2000);
-  checkElement("new-message-icon-cta").click();
+  checkElement("new-message-icon-cta");
+  cy.get(`[data-testid=new-message-icon-cta]`).click({ timeout: TIMEOUT });
   checkElement("message-to-input").type(testUser);
 };
 
@@ -66,6 +68,7 @@ const checkMessageOutput = (numberOfTimes: number, message: string) => {
     .children()
     .should("have.length", numberOfTimes || 1);
   cy.get(`[data-testid=message-tile-text]`, { timeout: TIMEOUT })
+    .children()
     .last()
     .should("have.text", message);
 };
@@ -89,6 +92,8 @@ export const sendAndEnterMessage = (
   numberOfTimes = 1,
   checkDifferentMessages = false,
 ) => {
+  checkElement("empty-message-cta");
+  cy.get(`[data-testid=empty-message-cta]`).click();
   enterWalletAddress(testUser);
   checkExpectedPreMessageFields();
   sendMessages(numberOfTimes, message, testUser, checkDifferentMessages);

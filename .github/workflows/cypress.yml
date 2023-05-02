@@ -19,3 +19,5 @@ jobs:
         with:
           build: npm run build
           start: npm run dev
+        env:
+          NEXT_PUBLIC_INFURA_ID: ${{ secrets.NEXT_PUBLIC_INFURA_ID }}

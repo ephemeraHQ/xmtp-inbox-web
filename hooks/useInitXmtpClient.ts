@@ -8,7 +8,7 @@ import {
   loadKeys,
   storeKeys,
 } from "../helpers";
-import { useClient } from "@xmtp/react-sdk";
+import { useClient, useCanMessage } from "@xmtp/react-sdk";
 import { mockConnector } from "../helpers/mockConnector";
 
 type ClientStatus = "new" | "created" | "enabled";
@@ -95,11 +95,15 @@ const useInitXmtpClient = () => {
     }, []);
 
   const { client, isLoading, initialize } = useClient();
+  const { canMessageStatic: canMessageUser } = useCanMessage();
 
   // if this is an app demo, connect to the temporary wallet
   useEffect(() => {
     if (isAppEnvDemo()) {
       connectWallet({ connector: mockConnector });
+    }
+    if (!client) {
+      setStatus(undefined);
     }
   }, []);
 
@@ -134,7 +138,7 @@ const useInitXmtpClient = () => {
           } else {
             // no keys found, but maybe the address has already been created
             // let's check
-            const canMessage = await Client.canMessage(address, clientOptions);
+            const canMessage = await canMessageUser(address, clientOptions);
             if (canMessage) {
               // resolve client promise
               createResolve();
@@ -187,6 +191,7 @@ const useInitXmtpClient = () => {
     resolveCreate,
     resolveEnable,
     status,
+    setStatus,
   };
 };
 

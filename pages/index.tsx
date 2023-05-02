@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useXmtpStore } from "../store/xmtp";
 import { watchAccount } from "@wagmi/core";
 import useInitXmtpClient from "../hooks/useInitXmtpClient";
@@ -7,18 +7,17 @@ import { useAccount, useDisconnect } from "wagmi";
 import { useRouter } from "next/router";
 import { classNames, isAppEnvDemo, wipeKeys } from "../helpers";
 import { OnboardingStep } from "../component-library/components/OnboardingStep/OnboardingStep";
-import { emitPageVisitEvent } from "../helpers/internalTracking";
-import { address } from "./inbox";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { useClient } from "@xmtp/react-sdk";
 
 const OnboardingPage: NextPage = () => {
   const resetXmtpState = useXmtpStore((state) => state.resetXmtpState);
   const { address } = useAccount();
   const { openConnectModal } = useConnectModal();
-  const { client, isLoading, status, resolveCreate, resolveEnable } =
+  const { client, isLoading, status, setStatus, resolveCreate, resolveEnable } =
     useInitXmtpClient();
   const { disconnect: disconnectWagmi, reset: resetWagmi } = useDisconnect();
-
+  const { disconnect: disconnectClient } = useClient();
   const router = useRouter();
 
   useEffect(() => {
@@ -28,13 +27,6 @@ const OnboardingPage: NextPage = () => {
   useEffect(() => {
     const routeToInbox = async () => {
       if (client) {
-        /* The emitPageVisitEvent function is called only when
-          specific XMTP Labs team wallets use
-          the internal domain alpha.xmtp.chat. This
-          tracking is temporary and meant to help
-          surface insights about team usage to
-          help build a better app. */
-        await emitPageVisitEvent(address as address);
         router.push("/inbox");
       }
     };
@@ -68,7 +60,11 @@ const OnboardingPage: NextPage = () => {
         onConnect={openConnectModal}
         onCreate={resolveCreate}
         onEnable={resolveEnable}
-        onDisconnect={() => {
+        onDisconnect={async () => {
+          if (client) {
+            await disconnectClient();
+          }
+          setStatus(undefined);
           wipeKeys(address ?? "");
           disconnectWagmi();
           resetWagmi();

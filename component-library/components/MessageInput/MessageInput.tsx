@@ -53,6 +53,7 @@ export const MessageInput = ({
 
   useEffect(() => {
     textAreaRef.current?.focus();
+    setValue("");
   }, [conversationId]);
 
   return (
@@ -104,6 +105,7 @@ export const MessageInput = ({
               if (value) {
                 onSubmit?.(value);
                 setValue("");
+                textAreaRef.current?.focus();
               }
             }}
             isDisabled={!value || isDisabled}

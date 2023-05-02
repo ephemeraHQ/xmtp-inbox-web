@@ -9,7 +9,7 @@ const MessageContentWrapper = ({ content }: { content: string }) => {
     shortcodes: ["emojibase"],
   });
   return (
-    <span className="interweave-content">
+    <span className="interweave-content" data-testid="message-tile-text">
       <Interweave
         content={content}
         newWindow
