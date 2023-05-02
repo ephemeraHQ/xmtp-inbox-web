@@ -58,8 +58,8 @@ export const emitMsgSentEvent = async (
       });
       ReactGA.event({
         category: "User",
-        action: "Message Sent",
-        label: `${ensNameSender ?? senderAddress}`,
+        action: `${ensNameSender ?? senderAddress}`,
+        label: "Message sent",
       });
     } catch (e) {
       console.error(e);
