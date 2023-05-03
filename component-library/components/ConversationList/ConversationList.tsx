@@ -40,11 +40,10 @@ export const ConversationList = ({
     </div>
   ) : (
     <Virtuoso
-      className="overflow-auto sm:w-full flex flex-col h-full bg-gray-100 border-x"
-      style={{ width: "calc(100%- 4rem)" }}
+      className="sm:w-full flex flex-col h-full bg-gray-100 border-x"
       data-testid="conversations-list-panel"
-      totalCount={messages.length}
-      itemContent={() => messages.map((message) => message)}
+      data={messages}
+      itemContent={(index, message) => message}
     />
   );
 };

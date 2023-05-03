@@ -55,7 +55,10 @@ export const useListConversations = () => {
       setPreviewMessages(newPreviewMessages);
 
       for (const convo of allConversations) {
-        if (convo.peerAddress !== walletAddress) {
+        if (
+          convo.peerAddress !== walletAddress &&
+          newPreviewMessages.has(getConversationId(convo))
+        ) {
           conversations.set(getConversationId(convo), convo);
         }
       }
