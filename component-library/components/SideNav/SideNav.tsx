@@ -232,8 +232,7 @@ const SideNav = ({
                 />
               </div>
               <div className="text-center p-4 pb-6">
-                Share the power of the XMTP network with your friends, family
-                and colleagues
+                {t("common.share_code")}
               </div>
               <div className="p-4 flex items-center justify-center rounded-3xl bg-white">
                 <QRCode
@@ -251,7 +250,7 @@ const SideNav = ({
                   )
                 }
                 className="flex text-sm mt-5">
-                <span className="underline">Copy your share link</span>
+                <span className="underline">{t("common.share_link")}</span>
                 <ClipboardCopyIcon className="ml-2 cursor-pointer" width={16} />
               </div>
             </div>
@@ -298,7 +297,7 @@ const SideNav = ({
                 setIsDialogOpen(false);
               }}
               className="text-sm ml-2 cursor-pointer text-indigo-600 hover:text-indigo-800">
-              Share QR
+              {t("common.share_qr_code")}
             </span>
             <hr className="m-2" />
             <span className="text-sm ml-2 text-red-600 hover:text-red-800">
@@ -306,7 +305,7 @@ const SideNav = ({
                 href="https://github.com/xmtp-labs/xmtp-inbox-web/issues/new?assignees=&labels=bug&template=bug_report.yml&title=Bug%3A+"
                 target="_blank"
                 rel="noreferrer">
-                Report a bug
+                {t("common.report_bug")}
               </a>
             </span>
             <hr className="m-2" />
