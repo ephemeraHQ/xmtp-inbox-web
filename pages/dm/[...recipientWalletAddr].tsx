@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { isEnsAddress, isValidRecipientAddressFormat } from "../../helpers";
@@ -12,25 +12,24 @@ const DmPage: NextPage = () => {
     (state) => state.setRecipientWalletAddress,
   );
 
-  useEffect(() => {
-    const routeToInbox = async () => {
-      let recipient = window.location.pathname.split("/").slice(-1)[0];
-      if (isValidRecipientAddressFormat(recipient)) {
-        if (isEnsAddress(recipient)) {
-          recipient =
-            (await fetchEnsAddress({
-              name: recipient,
-            })) ?? "";
-        }
-        setConversationId(recipient);
-        setRecipientWalletAddress(recipient);
-        router.push("/inbox");
+  const routeToInbox = async () => {
+    let recipient = window.location.pathname.split("/").slice(-1)[0];
+    if (isValidRecipientAddressFormat(recipient)) {
+      if (isEnsAddress(recipient)) {
+        recipient =
+          (await fetchEnsAddress({
+            name: recipient,
+          })) ?? "";
       }
-    };
-    if (window.location.pathname.includes("/dm")) {
-      routeToInbox();
+      setConversationId(recipient);
+      setRecipientWalletAddress(recipient);
+      router.push("/inbox");
     }
-  }, [window.location.pathname]);
+  };
+
+  if (window.location.pathname.includes("/dm")) {
+    routeToInbox();
+  }
 
   return <div></div>;
 };
