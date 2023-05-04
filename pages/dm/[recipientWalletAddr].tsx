@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { isEnsAddress, isValidRecipientAddressFormat } from "../../helpers";
@@ -13,16 +13,14 @@ const DmPage: NextPage = () => {
     (state) => state.setRecipientWalletAddress,
   );
 
-  const [recipientWalletAddr, setRecipientWalletAddr] = useState<string>();
-
-  useEffect(() => {
-    if (router.query.recipientWalletAddr)
-      setRecipientWalletAddr(router.query.recipientWalletAddr as string);
-  }, [router.query.recipientWalletAddr]);
+  const { recipientWalletAddr } = router.query;
 
   useEffect(() => {
     const routeToInbox = async () => {
-      if (recipientWalletAddr) {
+      if (
+        recipientWalletAddr ||
+        window.location.pathname.split("/").slice(-1)[0]
+      ) {
         let recipient = recipientWalletAddr as string;
         if (isValidRecipientAddressFormat(recipient)) {
           if (isEnsAddress(recipient)) {
@@ -41,7 +39,7 @@ const DmPage: NextPage = () => {
     routeToInbox();
   }, [window.location.pathname, recipientWalletAddr]);
 
-  return <div></div>;
+  return <div />;
 };
 
 export default DmPage;
