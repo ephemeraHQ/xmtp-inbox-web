@@ -13,7 +13,6 @@ const DmPage: NextPage = () => {
   );
 
   const routeToInbox = async () => {
-    console.log(router.query.recipientWalletAddr);
     let recipient = router.query.recipientWalletAddr
       ? (router.query.recipientWalletAddr as string)
       : window.location.pathname.split("/").slice(-1)[0];
@@ -26,8 +25,8 @@ const DmPage: NextPage = () => {
       }
       setConversationId(recipient);
       setRecipientWalletAddress(recipient);
-      router.push("/inbox");
     }
+    router.push("/inbox");
   };
 
   if (
