@@ -5,12 +5,7 @@ import {
   CheckCircleIcon,
   ChevronDoubleRightIcon,
 } from "@heroicons/react/solid";
-import {
-  ClipboardCopyIcon,
-  CogIcon,
-  SparklesIcon,
-  XIcon,
-} from "@heroicons/react/outline";
+import { CogIcon, SparklesIcon } from "@heroicons/react/outline";
 import { classNames, shortAddress } from "../../../helpers";
 import { XmtpIcon } from "../Icons/XmtpIcon";
 import { useState } from "react";
@@ -19,7 +14,6 @@ import { GhostButton } from "../GhostButton/GhostButton";
 import { DisconnectIcon } from "../Icons/DisconnectIcon";
 import { useTranslation } from "react-i18next";
 import i18next, { resourceMap } from "../../../i18n";
-import { QRCode } from "react-qrcode-logo";
 
 interface SideNav {
   /**
@@ -75,7 +69,6 @@ const SideNav = ({
   const { t } = useTranslation();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isQrCodeDialogOpen, setIsQrCodeDialogOpen] = useState(false);
 
   const onSideNavBtnClick = (key: string) => {
     if (key === t("menu.collapse_header")) setIsOpen(!isOpen);
@@ -212,54 +205,10 @@ const SideNav = ({
           {icon}
         </div>
       </div>
-      <Transition.Root show={isQrCodeDialogOpen} as={Fragment}>
-        <Dialog
-          as="div"
-          onClose={onXmtpIconClick}
-          aria-label={t("menu.settings") || ""}>
-          <div className="bg-[#ffffffa3] w-[100vw] h-[100vh] flex items-center justify-center absolute top-0 z-20">
-            <div className="bg-[url('/shareQrBg.png')] bg-repeat-round m-4 lg:w-[35%] sm:w-[90%] md:w-[50%] h-[90vh] text-white flex flex-col items-center p-4 rounded-3xl drop-shadow-lg">
-              <div
-                onClick={() => setIsQrCodeDialogOpen(false)}
-                className="w-[100%] flex justify-end cursor-pointer mb-20">
-                <XIcon width={24} />
-              </div>
-              <div className="h-8">
-                <img
-                  className="h-[100%]"
-                  alt="xmtp-logo"
-                  src="/xmtp-logo.png"
-                />
-              </div>
-              <div className="text-center p-4 pb-6">
-                {t("common.share_code")}
-              </div>
-              <div className="p-4 flex items-center justify-center rounded-3xl bg-white">
-                <QRCode
-                  size={200}
-                  logoImage="/xmtp-icon.png"
-                  removeQrCodeBehindLogo
-                  logoPadding={10}
-                  value="https://reactjs.org/"
-                />
-              </div>
-              <div
-                onClick={() =>
-                  navigator.clipboard.writeText(
-                    `https://xmtp.chat/dm/${walletAddress}`,
-                  )
-                }
-                className="flex text-sm mt-5">
-                <span className="underline">{t("common.share_link")}</span>
-                <ClipboardCopyIcon className="ml-2 cursor-pointer" width={16} />
-              </div>
-            </div>
-          </div>
-        </Dialog>
-      </Transition.Root>
       <Transition.Root show={isDialogOpen} as={Fragment}>
         <Dialog
           as="div"
+          className="overflow-y-auto"
           onClose={onXmtpIconClick}
           aria-label={t("menu.settings") || ""}>
           <div className="bg-white w-fit rounded-lg absolute bottom-16 left-12 p-2 z-20">
@@ -291,21 +240,12 @@ const SideNav = ({
               })}
             </div>
             <hr className="m-2" />
-            <span
-              onClick={() => {
-                setIsQrCodeDialogOpen(true);
-                setIsDialogOpen(false);
-              }}
-              className="text-sm ml-2 cursor-pointer text-indigo-600 hover:text-indigo-800">
-              {t("common.share_qr_code")}
-            </span>
-            <hr className="m-2" />
             <span className="text-sm ml-2 text-red-600 hover:text-red-800">
               <a
                 href="https://github.com/xmtp-labs/xmtp-inbox-web/issues/new?assignees=&labels=bug&template=bug_report.yml&title=Bug%3A+"
                 target="_blank"
                 rel="noreferrer">
-                {t("common.report_bug")}
+                Report a bug
               </a>
             </span>
             <hr className="m-2" />
