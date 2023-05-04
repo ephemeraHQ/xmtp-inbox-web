@@ -49,7 +49,9 @@ export const useListConversations = () => {
           const preview = await fetchMostRecentMessage(convo);
           if (preview.message) {
             newPreviewMessages.set(preview.key, preview.message);
-            conversations.set(getConversationId(convo), convo);
+            if (convo.peerAddress !== walletAddress) {
+              conversations.set(getConversationId(convo), convo);
+            }
           }
         }),
       );
