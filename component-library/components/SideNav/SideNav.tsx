@@ -240,7 +240,7 @@ const SideNav = ({
                   logoImage="/xmtp-icon.png"
                   removeQrCodeBehindLogo
                   logoPadding={10}
-                  value="https://reactjs.org/"
+                  value={`https://xmtp.chat/dm/${walletAddress}`}
                 />
               </div>
               <div
