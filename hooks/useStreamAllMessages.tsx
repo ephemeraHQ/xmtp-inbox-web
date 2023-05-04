@@ -18,7 +18,6 @@ export const useStreamAllMessages = () => {
   const addMessages = useXmtpStore((state) => state.addMessages);
   const setPreviewMessage = useXmtpStore((state) => state.setPreviewMessage);
   const [browserVisible, setBrowserVisible] = useState<boolean>(true);
-
   useEffect(() => {
     window.addEventListener("focus", () => setBrowserVisible(true));
     window.addEventListener("blur", () => setBrowserVisible(false));
