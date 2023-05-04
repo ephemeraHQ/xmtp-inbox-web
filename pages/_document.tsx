@@ -19,7 +19,7 @@ class AppDocument extends Document {
         <Head>
           <link rel="manifest" href="/manifest.json" />
           <link rel="apple-touch-icon" href="/icon.png"></link>
-          <meta name="theme-color" content="#fff" />
+          <meta name="theme-color" content="#31006e" />
           <meta name="description" content="Chat via XMTP" />
           <link rel="icon" href="/favicon.ico" />
           <link
