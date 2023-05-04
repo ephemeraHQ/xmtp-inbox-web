@@ -240,13 +240,13 @@ const SideNav = ({
                   logoImage="/xmtp-icon.png"
                   removeQrCodeBehindLogo
                   logoPadding={10}
-                  value={`https://xmtp.chat/dm/${walletAddress}`}
+                  value={`${window.location.origin}/dm/${walletAddress}`}
                 />
               </div>
               <div
                 onClick={() =>
                   navigator.clipboard.writeText(
-                    `https://xmtp.chat/dm/${walletAddress}`,
+                    `${window.location.origin}/dm/${walletAddress}`,
                   )
                 }
                 className="flex text-sm mt-5">
