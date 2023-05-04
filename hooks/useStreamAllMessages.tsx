@@ -50,6 +50,7 @@ export const useStreamAllMessages = () => {
             ),
           ];
           convoMessages.set(key, uniqueMessages);
+
           if (
             latestMsgId !== message.id &&
             Notification.permission === "granted" &&
@@ -59,10 +60,14 @@ export const useStreamAllMessages = () => {
             const name = await fetchEnsName({
               address: message.senderAddress as address,
             });
-            new Notification("XMTP", {
-              body: `${
-                name || shortAddress(message.senderAddress ?? "")
-              }\n${truncate(message.content, 75)}`,
+
+            navigator.serviceWorker.ready.then((registration) => {
+              registration.showNotification("XMTP", {
+                body: `${
+                  name || shortAddress(message.senderAddress ?? "")
+                }\n${truncate(message.content, 75)}`,
+                icon: "192.png",
+              });
             });
 
             latestMsgId = message.id;
