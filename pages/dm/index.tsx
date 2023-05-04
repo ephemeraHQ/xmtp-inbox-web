@@ -11,6 +11,7 @@ const Conversation: NextPage = () => {
       router.push("/");
     }
   }, [window.location.pathname]);
+
   return <div />;
 };
 

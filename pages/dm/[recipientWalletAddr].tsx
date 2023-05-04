@@ -13,7 +13,10 @@ const DmPage: NextPage = () => {
   );
 
   const routeToInbox = async () => {
-    let recipient = window.location.pathname.split("/").slice(-1)[0];
+    console.log(router.query.recipientWalletAddr);
+    let recipient = router.query.recipientWalletAddr
+      ? (router.query.recipientWalletAddr as string)
+      : window.location.pathname.split("/").slice(-1)[0];
     if (isValidRecipientAddressFormat(recipient)) {
       if (isEnsAddress(recipient)) {
         recipient =
@@ -27,7 +30,10 @@ const DmPage: NextPage = () => {
     }
   };
 
-  if (window.location.pathname.includes("/dm")) {
+  if (
+    window.location.pathname.includes("/dm") ||
+    router.query.recipientWalletAddr
+  ) {
     routeToInbox();
   }
 
