@@ -56,7 +56,13 @@ export const MessagePreviewCard = ({
   isSelected,
   conversationDomain,
 }: MessagePreviewCard) => {
+  const isFirstMessage = !text && !displayAddress;
+
   const { t } = useTranslation();
+
+  if (!text && !isFirstMessage && !isLoading) {
+    return null;
+  }
 
   return (
     <div
