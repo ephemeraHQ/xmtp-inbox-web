@@ -39,7 +39,7 @@ export const ErrorPage = ({
         <PillButton
           label={t("status_messaging.error_1_button")}
           variant="secondary"
-          onClick={() => window.location.reload()}
+          onClick={() => window.location.replace(window.location.origin)}
         />
       )}
       <div className="text-gray-300 text-sm font-bold">{subtext}</div>
