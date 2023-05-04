@@ -43,25 +43,18 @@ export const useListConversations = () => {
   useEffect(() => {
     const listConversations = async () => {
       const newPreviewMessages = new Map(previewMessages);
-      const previews = await Promise.all(
-        allConversations.map(fetchMostRecentMessage),
+
+      await Promise.all(
+        allConversations.map(async (convo) => {
+          const preview = await fetchMostRecentMessage(convo);
+          if (preview.message) {
+            newPreviewMessages.set(preview.key, preview.message);
+            conversations.set(getConversationId(convo), convo);
+          }
+        }),
       );
 
-      for (const preview of previews) {
-        if (preview.message) {
-          newPreviewMessages.set(preview.key, preview.message);
-        }
-      }
       setPreviewMessages(newPreviewMessages);
-
-      for (const convo of allConversations) {
-        if (
-          convo.peerAddress !== walletAddress &&
-          newPreviewMessages.has(getConversationId(convo))
-        ) {
-          conversations.set(getConversationId(convo), convo);
-        }
-      }
       setConversations(new Map(conversations));
       setLoadingConversations(false);
       if (Notification.permission === "default") {
