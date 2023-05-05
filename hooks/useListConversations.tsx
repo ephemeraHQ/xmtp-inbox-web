@@ -6,15 +6,15 @@ import fetchMostRecentMessage from "../helpers/fetchMostRecentMessage";
 import { useXmtpStore } from "../store/xmtp";
 import useStreamAllMessages from "./useStreamAllMessages";
 import {
+  useClient,
   useConversations,
-  useStartConversation,
   useStreamConversations,
 } from "@xmtp/react-sdk";
 
 export const useListConversations = () => {
   const feedbackConvoPresent = useRef(false);
   const { address: walletAddress } = useAccount();
-  const startConversation = useStartConversation();
+  const { client } = useClient();
 
   const {
     conversations: allConversations,
@@ -49,31 +49,29 @@ export const useListConversations = () => {
   useEffect(() => {
     const listConversations = async () => {
       const newPreviewMessages = new Map(previewMessages);
-      const previews = await Promise.all(
-        allConversations.map(fetchMostRecentMessage),
+
+      await Promise.all(
+        allConversations.map(async (convo) => {
+          const preview = await fetchMostRecentMessage(convo);
+          if (preview.message) {
+            newPreviewMessages.set(preview.key, preview.message);
+            if (convo.peerAddress !== walletAddress) {
+              conversations.set(getConversationId(convo), convo);
+            }
+            if (preview.key === XMTP_FEEDBACK_ADDRESS) {
+              feedbackConvoPresent.current = true;
+            }
+          }
+        }),
       );
-
-      for (const preview of previews) {
-        if (preview.message) {
-          newPreviewMessages.set(preview.key, preview.message);
-        }
-        if (preview.key === XMTP_FEEDBACK_ADDRESS) {
-          feedbackConvoPresent.current = true;
-        }
-      }
-
-      for (const convo of allConversations) {
-        if (convo.peerAddress !== walletAddress) {
-          conversations.set(getConversationId(convo), convo);
-        }
-      }
 
       if (
         !conversations.has(XMTP_FEEDBACK_ADDRESS) &&
         !isLoading &&
         !feedbackConvoPresent.current
       ) {
-        await startConversation(XMTP_FEEDBACK_ADDRESS, "Hey");
+        await client?.conversations.newConversation(XMTP_FEEDBACK_ADDRESS);
+
         previewMessages.set(XMTP_FEEDBACK_ADDRESS, {
           content: "Send feedback",
         } as DecodedMessage);
