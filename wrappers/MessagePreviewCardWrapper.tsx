@@ -59,7 +59,7 @@ export const MessagePreviewCardWrapper = ({
       }
       datetime={previewMessage?.sent}
       displayAddress={
-        previewEnsName || shortAddress(convo?.peerAddress || "") || undefined
+        previewEnsName || shortAddress(convo?.peerAddress || "")
       }
       onClick={() => {
         if (convo) {

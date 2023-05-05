@@ -57,11 +57,13 @@ export const MessagePreviewCard = ({
   conversationDomain,
 }: MessagePreviewCard) => {
   const isFirstMessage = !text && !displayAddress;
+
   const { t } = useTranslation();
 
   if (!text && !isFirstMessage && !isLoading) {
     return null;
   }
+
   return (
     <div
       className={classNames(
