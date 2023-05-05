@@ -170,13 +170,11 @@ const SideNav = ({
         "h-screen",
         "bg-gray-50",
         "px-3",
-        "absolute",
-        "z-10",
         "border-r",
         "border-gray-200",
-        !isOpen ? "w-[64px]" : "",
+        !isOpen ? "w-[64px]" : "absolute z-10 w-[300px]",
       )}>
-      <div className="flex flex-col items-start space-y-4 w-fit">
+      <div className="flex flex-col items-start space-y-4 w-full">
         <div className="py-4 flex">
           <div>
             <div className="flex mb-12">
@@ -187,7 +185,7 @@ const SideNav = ({
                     <span className="font-bold" data-testid="wallet-address">
                       {shortAddress(displayAddress ?? "")}
                     </span>
-                    {walletAddress && (
+                    {walletAddress && displayAddress !== walletAddress && (
                       <span className="font-sm">
                         {shortAddress(walletAddress)}
                       </span>
