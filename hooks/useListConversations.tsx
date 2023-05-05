@@ -87,7 +87,7 @@ export const useListConversations = () => {
 
   useEffect(() => {
     const startFeedbackConvo = async () => {
-      if (!feedbackConvoPresent && !loadingConversations) {
+      if (!feedbackConvoPresent.current && !loadingConversations) {
         await client?.conversations.newConversation(XMTP_FEEDBACK_ADDRESS);
         previewMessages.set(XMTP_FEEDBACK_ADDRESS, {
           content: "Send feedback",
@@ -103,7 +103,7 @@ export const useListConversations = () => {
       }
     };
     startFeedbackConvo();
-  }, [loadingConversations]);
+  }, [feedbackConvoPresent.current, loadingConversations]);
 };
 
 export default useListConversations;
