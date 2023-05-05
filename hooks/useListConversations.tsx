@@ -22,6 +22,10 @@ export const useListConversations = () => {
     isLoading,
   } = useConversations();
 
+  const loadingConversations = useXmtpStore(
+    (state) => state.loadingConversations,
+  );
+
   const setLoadingConversations = useXmtpStore(
     (state) => state.setLoadingConversations,
   );
@@ -65,20 +69,7 @@ export const useListConversations = () => {
         }),
       );
 
-      if (!feedbackConvoPresent.current) {
-        await client?.conversations.newConversation(XMTP_FEEDBACK_ADDRESS);
-
-        newPreviewMessages.set(XMTP_FEEDBACK_ADDRESS, {
-          content: "Send feedback",
-          id: "Feedback_Msg",
-        } as DecodedMessage);
-
-        conversations.set(XMTP_FEEDBACK_ADDRESS, {
-          peerAddress: XMTP_FEEDBACK_ADDRESS,
-        } as Conversation);
-      }
-
-      setPreviewMessages(newPreviewMessages);
+      setPreviewMessages(new Map(newPreviewMessages));
       setConversations(new Map(conversations));
       setLoadingConversations(false);
 
@@ -87,12 +78,32 @@ export const useListConversations = () => {
       }
     };
 
-    if (walletAddress && !isLoading && !error) {
+    if (walletAddress && !isLoading && !error && client) {
       listConversations();
     } else if (isLoading) {
       setLoadingConversations(true);
     }
-  }, [walletAddress, isLoading, error, allConversations]);
+  }, [walletAddress, isLoading, error, allConversations, client]);
+
+  useEffect(() => {
+    const startFeedbackConvo = async () => {
+      if (!feedbackConvoPresent && !loadingConversations) {
+        await client?.conversations.newConversation(XMTP_FEEDBACK_ADDRESS);
+        previewMessages.set(XMTP_FEEDBACK_ADDRESS, {
+          content: "Send feedback",
+          id: "Feedback_Msg",
+        } as DecodedMessage);
+
+        conversations.set(XMTP_FEEDBACK_ADDRESS, {
+          peerAddress: XMTP_FEEDBACK_ADDRESS,
+        } as Conversation);
+
+        setPreviewMessages(new Map(previewMessages));
+        setConversations(new Map(conversations));
+      }
+    };
+    startFeedbackConvo();
+  }, [loadingConversations]);
 };
 
 export default useListConversations;

@@ -31,7 +31,7 @@ export const useXmtpStore = create<XmtpState>((set) => ({
   conversations: new Map(),
   setConversations: (conversations: Map<string, Conversation>) =>
     set(() => ({ conversations })),
-  loadingConversations: false,
+  loadingConversations: true,
   setLoadingConversations: (loadingConversations: boolean) =>
     set(() => ({ loadingConversations })),
   convoMessages: new Map(),
