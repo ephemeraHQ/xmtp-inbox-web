@@ -247,9 +247,9 @@ const SideNav = ({
                     `${window.location.origin}/dm/${walletAddress}`,
                   )
                 }
-                className="flex text-sm mt-5">
+                className="flex text-sm mt-5 cursor-pointer">
                 <span className="underline">{t("common.share_link")}</span>
-                <ClipboardCopyIcon className="ml-2 cursor-pointer" width={16} />
+                <ClipboardCopyIcon className="ml-2" width={16} />
               </div>
             </div>
           </div>
