@@ -5,7 +5,7 @@ import type { AppProps } from "next/app";
 import dynamic from "next/dynamic";
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { configureChains, createClient, WagmiConfig } from "wagmi";
+import { configureChains, Connector, createClient, WagmiConfig } from "wagmi";
 import { mainnet } from "wagmi/chains";
 import { infuraProvider } from "wagmi/providers/infura";
 import { publicProvider } from "wagmi/providers/public";
@@ -13,7 +13,7 @@ import React, { useEffect, useState } from "react";
 import { isAppEnvDemo } from "../helpers";
 import "../i18n";
 import { XMTPProvider } from "@xmtp/react-sdk";
-import { mockConnector } from "../helpers/mockConnector";
+import { getMockConnector } from "../helpers/mockConnector";
 
 const AppWithoutSSR = dynamic(() => import("../components/App"), {
   ssr: false,
@@ -34,7 +34,7 @@ const { connectors } = getDefaultWallets({
 
 const wagmiDemoClient = createClient({
   autoConnect: true,
-  connectors: [mockConnector],
+  connectors: [getMockConnector() as Connector],
   provider,
   webSocketProvider,
 });
