@@ -65,15 +65,13 @@ export const useListConversations = () => {
         }),
       );
 
-      if (
-        !conversations.has(XMTP_FEEDBACK_ADDRESS) &&
-        !isLoading &&
-        !feedbackConvoPresent.current
-      ) {
+      if (!feedbackConvoPresent.current) {
         await client?.conversations.newConversation(XMTP_FEEDBACK_ADDRESS);
 
         previewMessages.set(XMTP_FEEDBACK_ADDRESS, {
           content: "Send feedback",
+          id: "Feedback_Msg",
+          sent: new Date(),
         } as DecodedMessage);
 
         conversations.set(XMTP_FEEDBACK_ADDRESS, {
