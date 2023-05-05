@@ -86,7 +86,7 @@ export const MessagePreviewCard = ({
       }}
       tabIndex={0}>
       <Avatar url={avatarUrl} address={address} isLoading={isLoading} />
-      <div className="flex flex-col items-start w-3/4 ml-3">
+      <div className="flex flex-col items-start w-3/4 ml-3 overflow-hidden">
         {!isLoading && conversationDomain && (
           <div className="text-sm mb-1 text-white px-2 rounded-lg bg-indigo-600">
             {conversationDomain}
@@ -123,7 +123,7 @@ export const MessagePreviewCard = ({
           {datetime && t("{{datetime, ago}}", { datetime })}
           {pinned && (
             <div>
-              <StarIcon className="text-indigo-600" width={16} />
+              <StarIcon className="text-indigo-600 mt-2" width={16} />
             </div>
           )}
         </div>
