@@ -6,16 +6,21 @@ import dynamic from "next/dynamic";
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
+import { fetchEnsAddress } from "@wagmi/core";
 import { mainnet } from "wagmi/chains";
 import { infuraProvider } from "wagmi/providers/infura";
 import { publicProvider } from "wagmi/providers/public";
 import React, { useEffect, useState } from "react";
-import { isAppEnvDemo } from "../helpers";
+import {
+  isAppEnvDemo,
+  isEnsAddress,
+  isValidRecipientAddressFormat,
+} from "../helpers";
 import "../i18n";
 import { XMTPProvider } from "@xmtp/react-sdk";
 import { mockConnector } from "../helpers/mockConnector";
 import { useXmtpStore } from "../store/xmtp";
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/router";
 
 const AppWithoutSSR = dynamic(() => import("../components/App"), {
   ssr: false,
@@ -53,6 +58,8 @@ function AppWrapper({ Component, pageProps }: AppProps) {
   const setRecipientWalletAddress = useXmtpStore(
     (state) => state.setRecipientWalletAddress,
   );
+  const setConversationId = useXmtpStore((state) => state.setConversationId);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -61,13 +68,34 @@ function AppWrapper({ Component, pageProps }: AppProps) {
     } else {
       setClient(wagmiClient);
     }
+  }, []);
 
-    if (window.location.href.includes("/dm/")) {
-      const walletAddress = window.location.href.split("/dm/")[1];
-      setRecipientWalletAddress(walletAddress);
-      router.push("/inbox");
+  useEffect(() => {
+    const routeToInbox = async () => {
+      let recipient = window.location.href.split("/").slice(-1)[0];
+      if (isValidRecipientAddressFormat(recipient)) {
+        if (isEnsAddress(recipient)) {
+          recipient =
+            (await fetchEnsAddress({
+              name: recipient,
+            })) ?? "";
+        }
+        if (recipient) {
+          setConversationId(recipient);
+          setRecipientWalletAddress(recipient);
+          router.push("/inbox");
+        } else {
+          router.push("/");
+        }
+      } else {
+        router.push("/");
+      }
+    };
+    if (window?.location?.href.includes("/dm")) {
+      routeToInbox();
     }
   }, []);
+
   return (
     client && (
       <WagmiConfig client={client}>
