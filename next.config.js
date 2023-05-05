@@ -1,5 +1,12 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+
+const withPWA = require("next-pwa")({
+  dest: "public",
+  register: true,
+  skipWaiting: true,
+});
+
+const nextConfig = withPWA({
   experimental: {
     esmExternals: false,
   },
@@ -17,6 +24,6 @@ const nextConfig = {
     config.resolve.mainFields = ["browser", "main", "module"];
     return config;
   },
-};
+});
 
 module.exports = nextConfig;

@@ -18,7 +18,6 @@ export const useStreamAllMessages = () => {
   const addMessages = useXmtpStore((state) => state.addMessages);
   const setPreviewMessage = useXmtpStore((state) => state.setPreviewMessage);
   const [browserVisible, setBrowserVisible] = useState<boolean>(true);
-
   useEffect(() => {
     window.addEventListener("focus", () => setBrowserVisible(true));
     window.addEventListener("blur", () => setBrowserVisible(false));
@@ -50,6 +49,7 @@ export const useStreamAllMessages = () => {
             ),
           ];
           convoMessages.set(key, uniqueMessages);
+
           if (
             latestMsgId !== message.id &&
             Notification.permission === "granted" &&
@@ -59,10 +59,14 @@ export const useStreamAllMessages = () => {
             const name = await fetchEnsName({
               address: message.senderAddress as address,
             });
-            new Notification("XMTP", {
-              body: `${
-                name || shortAddress(message.senderAddress ?? "")
-              }\n${truncate(message.content, 75)}`,
+
+            navigator.serviceWorker.ready.then((registration) => {
+              registration.showNotification("XMTP", {
+                body: `${
+                  name || shortAddress(message.senderAddress ?? "")
+                }\n${truncate(message.content, 75)}`,
+                icon: "192.png",
+              });
             });
 
             latestMsgId = message.id;
