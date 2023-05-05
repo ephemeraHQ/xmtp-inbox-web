@@ -13,7 +13,7 @@ import React, { useEffect, useState } from "react";
 import { isAppEnvDemo } from "../helpers";
 import "../i18n";
 import { XMTPProvider } from "@xmtp/react-sdk";
-import { mockConnector } from "../helpers/mockConnector";
+import { getMockConnector } from "../helpers/mockConnector";
 
 const AppWithoutSSR = dynamic(() => import("../components/App"), {
   ssr: false,
@@ -34,7 +34,7 @@ const { connectors } = getDefaultWallets({
 
 const wagmiDemoClient = createClient({
   autoConnect: true,
-  connectors: [mockConnector],
+  connectors: [getMockConnector()],
   provider,
   webSocketProvider,
 });

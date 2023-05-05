@@ -9,7 +9,7 @@ import {
   storeKeys,
 } from "../helpers";
 import { useClient, useCanMessage } from "@xmtp/react-sdk";
-import { mockConnector } from "../helpers/mockConnector";
+import { getMockConnector } from "../helpers/mockConnector";
 import { Signer } from "ethers";
 
 type ClientStatus = "new" | "created" | "enabled";
@@ -106,7 +106,7 @@ const useInitXmtpClient = () => {
   // if this is an app demo, connect to the temporary wallet
   useEffect(() => {
     if (isAppEnvDemo()) {
-      connectWallet({ connector: mockConnector });
+      connectWallet({ connector: getMockConnector() });
     }
     if (!client) {
       setStatus(undefined);
