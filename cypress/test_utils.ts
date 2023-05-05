@@ -80,12 +80,12 @@ const checkMostRecentMessageOutput = (
   differentMessage: string,
 ) => {
   cy.get(`[data-testid=message-tile-container]`, { timeout: TIMEOUT })
-    .eq(1)
     .children()
-    .should("have.length", numberOfTimes + 1 || 2);
+    .should("have.length", numberOfTimes + 1);
 
   cy.get(`[data-testid=message-tile-text]`, { timeout: TIMEOUT })
-    .eq(1)
+    .children()
+    .first()
     .should("have.text", differentMessage);
 };
 
