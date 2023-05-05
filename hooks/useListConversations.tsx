@@ -68,10 +68,9 @@ export const useListConversations = () => {
       if (!feedbackConvoPresent.current) {
         await client?.conversations.newConversation(XMTP_FEEDBACK_ADDRESS);
 
-        previewMessages.set(XMTP_FEEDBACK_ADDRESS, {
+        newPreviewMessages.set(XMTP_FEEDBACK_ADDRESS, {
           content: "Send feedback",
           id: "Feedback_Msg",
-          sent: new Date(),
         } as DecodedMessage);
 
         conversations.set(XMTP_FEEDBACK_ADDRESS, {
@@ -81,6 +80,7 @@ export const useListConversations = () => {
 
       setPreviewMessages(newPreviewMessages);
       setConversations(new Map(conversations));
+      setLoadingConversations(false);
 
       if (Notification.permission === "default") {
         Notification.requestPermission();
@@ -89,7 +89,6 @@ export const useListConversations = () => {
 
     if (walletAddress && !isLoading && !error) {
       listConversations();
-      setLoadingConversations(false);
     } else if (isLoading) {
       setLoadingConversations(true);
     }
