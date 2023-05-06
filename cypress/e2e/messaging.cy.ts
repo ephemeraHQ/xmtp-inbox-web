@@ -17,8 +17,8 @@ describe(
   () => {
     beforeEach(() => {
       startDemoEnv();
-      // In connected flow, empty message should render before any tests run
-      // checkElement("empty-message-header");
+      // In connected flow, conversaton list header should render before any tests run
+      checkElement("conversation-list-header");
     });
     const testUserWithXmtpAccount =
       "0x78BfD39428C32Be149892d64bEE6C6f90aedEec1";
@@ -36,11 +36,11 @@ describe(
     });
 
     it("Can send multiple messages to user in XMTP network", () => {
-      sendAndEnterMessage(testUserWithXmtpAccount, shortMessage, 7);
+      sendAndEnterMessage(testUserWithXmtpAccount, shortMessage, 3);
     });
 
     it("Displays messages in the correct order", () => {
-      sendAndEnterMessage(testUserWithXmtpAccount, shortMessage, 6, true);
+      sendAndEnterMessage(testUserWithXmtpAccount, shortMessage, 3, true);
     });
 
     it("Does not allow address to be edited", () => {

@@ -1,9 +1,5 @@
-import {
-  checkElement,
-  startDemoEnv,
-  checkLink,
-  checkMissingElement,
-} from "../test_utils";
+import { XMTP_FEEDBACK_ADDRESS } from "../../helpers";
+import { checkElement, startDemoEnv, TIMEOUT } from "../test_utils";
 
 describe(
   "Connected Test Cases",
@@ -16,7 +12,7 @@ describe(
   () => {
     beforeEach(() => {
       startDemoEnv();
-      // // In connected flow, conversaton list header should render before any tests run
+      // In connected flow, conversaton list header should render before any tests run
       checkElement("conversation-list-header");
     });
 
@@ -30,50 +26,20 @@ describe(
         "icon",
         "conversation-list-header",
         "new-message-icon-cta",
+        "conversations-list-panel",
       ];
 
       elements.forEach((element) => checkElement(element));
     });
 
-    // it("Shows expected right panel fields when logged in with a connected wallet and no existing messages", () => {
-    //   const elements = [
-    //     "learn-more-header",
-    //     "get-started-header",
-    //     "message-section-link",
-    //     "message-icon",
-    //     "message-header",
-    //     "message-subheader",
-    //     "message-arrow",
-    //     "community-section-link",
-    //     "community-icon",
-    //     "community-header",
-    //     "community-subheader",
-    //     "community-arrow",
-    //     "docs-section-link",
-    //     "docs-icon",
-    //     "docs-header",
-    //     "docs-subheader",
-    //     "docs-arrow",
-    //   ];
-
-    //   elements.forEach((element) => checkElement(element));
-    // });
-
-    // it("Directs user to expected links", () => {
-    //   const elementsWithCtas = [
-    //     {
-    //       testId: "docs-section-link",
-    //       link: "https://docs.xmtp.org",
-    //     },
-    //     {
-    //       testId: "community-section-link",
-    //       link: "https://community.xmtp.org",
-    //     },
-    //   ];
-    //   elementsWithCtas.forEach((element) =>
-    //     checkLink(element.testId, element.link),
-    //   );
-    // });
+    it("Shows feedback convo with right preview message", () => {
+      checkElement("conversations-list-panel");
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(500);
+      cy.get(`[data-testid=message-tile-text]`, { timeout: TIMEOUT })
+        .first()
+        .should("have.text", "Send feedback");
+    });
 
     it("Shows expected fields when expanding side nav while connected", () => {
       cy.get(`[data-testid="collapse-icon"]`).click();
@@ -92,43 +58,34 @@ describe(
       cy.get(`[data-testid="disconnect-wallet-cta"]`).click();
     });
 
-    // it("Opens new message view when clicking on connect button from left panel", () => {
-    //   checkMissingElement("message-input");
-    //   checkElement("empty-message-cta");
-    //   // Need to break up the click chain for GitHub actions
-    //   cy.get(`[data-testid=empty-message-cta]`).click();
+    // Need to fix this
+    // it("Opens feedback message conversation and gets the right message", () => {
+    //   checkElement("conversations-list-panel");
     //   // eslint-disable-next-line cypress/no-unnecessary-waiting
     //   cy.wait(500);
-    //   checkElement("message-input");
+    //   cy.get(`[data-testid=message-tile-text]`, { timeout: TIMEOUT })
+    //     .first()
+    //     .click();
+    //   // eslint-disable-next-line cypress/no-unnecessary-waiting
+    //   cy.wait(15000);
+    //   // Need to break up the click chain for GitHub actions
+    //   checkElement("new-message-icon-cta");
+    //   cy.get(`[data-testid=new-message-icon-cta]`).click({ timeout: TIMEOUT });
+    //   checkElement("message-to-input").type(XMTP_FEEDBACK_ADDRESS);
+
+    //   cy.get(`[data-testid=message-tile-text]`)
+    //     .children("span")
+    //     .first()
+    //     .should("have.text", "Welcome to XMTP Inbox 👋");
     // });
 
     it("Opens new message view when clicking on plus icon from left panel", () => {
-      // checkMissingElement("message-input");
       // Need to break up the click chain for GitHub actions
       cy.get(`[data-testid=new-message-icon-cta]`).click();
       // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(500);
       checkElement("message-input");
     });
-
-    // it("Opens new message view when clicking on new message section within learn more", () => {
-    //   checkMissingElement("message-input");
-    //   checkElement("message-section-link");
-    //   // Need to break up the click chain for GitHub actions
-    //   cy.get(`[data-testid=message-section-link]`).click();
-    //   checkElement("message-input");
-    // });
-
-    // it("Should show conversation list instead of empty message as soon as user enters something into the input", () => {
-    //   checkElement("empty-message-header");
-    //   checkMissingElement("message-input");
-    //   checkElement("message-section-link");
-    //   // Need to break up the click chain for GitHub actions
-    //   cy.get(`[data-testid=message-section-link]`).click();
-    //   checkElement("message-to-input").type("a");
-    //   checkMissingElement("empty-message-header");
-    //   cy.get(`[data-testid=conversations-list-panel]`).should("have.length", 1);
-    // });
   },
 );
 
