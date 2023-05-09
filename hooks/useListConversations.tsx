@@ -1,10 +1,9 @@
-import { Conversation, DecodedMessage } from "@xmtp/xmtp-js";
+import { Conversation } from "@xmtp/xmtp-js";
 import { useEffect, useRef } from "react";
 import { useAccount } from "wagmi";
 import { XMTP_FEEDBACK_ADDRESS, getConversationId } from "../helpers";
 import fetchMostRecentMessage from "../helpers/fetchMostRecentMessage";
 import { useXmtpStore } from "../store/xmtp";
-import useStreamAllMessages from "./useStreamAllMessages";
 import {
   useClient,
   useConversations,
@@ -22,10 +21,6 @@ export const useListConversations = () => {
     isLoading,
   } = useConversations();
 
-  const loadingConversations = useXmtpStore(
-    (state) => state.loadingConversations,
-  );
-
   const setLoadingConversations = useXmtpStore(
     (state) => state.setLoadingConversations,
   );
@@ -34,10 +29,6 @@ export const useListConversations = () => {
   const previewMessages = useXmtpStore((state) => state.previewMessages);
   const setPreviewMessages = useXmtpStore((state) => state.setPreviewMessages);
   const setPreviewMessage = useXmtpStore((state) => state.setPreviewMessage);
-  const setRecipientWalletAddress = useXmtpStore(
-    (state) => state.setRecipientWalletAddress,
-  );
-  const setConversationId = useXmtpStore((state) => state.setConversationId);
 
   const streamConversations = async (conversation: Conversation) => {
     if (conversation.peerAddress !== walletAddress) {
@@ -52,7 +43,6 @@ export const useListConversations = () => {
   };
 
   useStreamConversations(streamConversations);
-  useStreamAllMessages();
 
   useEffect(() => {
     const listConversations = async () => {
@@ -88,28 +78,6 @@ export const useListConversations = () => {
       setLoadingConversations(true);
     }
   }, [walletAddress, isLoading, error, allConversations, client]);
-
-  useEffect(() => {
-    const startFeedbackConvo = async () => {
-      if (!feedbackConvoPresent.current && !loadingConversations) {
-        await client?.conversations.newConversation(XMTP_FEEDBACK_ADDRESS);
-        previewMessages.set(XMTP_FEEDBACK_ADDRESS, {
-          content: "Send feedback",
-          id: "Feedback_Msg",
-        } as DecodedMessage);
-
-        conversations.set(XMTP_FEEDBACK_ADDRESS, {
-          peerAddress: XMTP_FEEDBACK_ADDRESS,
-        } as Conversation);
-
-        setPreviewMessages(new Map(previewMessages));
-        setConversations(new Map(conversations));
-        setConversationId(XMTP_FEEDBACK_ADDRESS);
-        setRecipientWalletAddress(XMTP_FEEDBACK_ADDRESS);
-      }
-    };
-    startFeedbackConvo();
-  }, [feedbackConvoPresent.current, loadingConversations]);
 };
 
 export default useListConversations;

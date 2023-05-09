@@ -1,15 +1,6 @@
 import React, { useEffect } from "react";
-import useListConversations from "../hooks/useListConversations";
 import { useXmtpStore } from "../store/xmtp";
-import {
-  getConversationId,
-  TAILWIND_MD_BREAKPOINT,
-  XMTP_FEEDBACK_ADDRESS,
-  wipeKeys,
-} from "../helpers";
-import { ConversationList } from "../component-library/components/ConversationList/ConversationList";
-import { Conversation } from "@xmtp/xmtp-js";
-import { MessagePreviewCardWrapper } from "../wrappers/MessagePreviewCardWrapper";
+import { TAILWIND_MD_BREAKPOINT, wipeKeys } from "../helpers";
 import { FullConversationWrapper } from "../wrappers/FullConversationWrapper";
 import { AddressInputWrapper } from "../wrappers/AddressInputWrapper";
 import { HeaderDropdownWrapper } from "../wrappers/HeaderDropdownWrapper";
@@ -20,7 +11,7 @@ import router from "next/router";
 import useWindowSize from "../hooks/useWindowSize";
 import { useClient } from "@xmtp/react-sdk";
 import { useDisconnect, useSigner } from "wagmi";
-import getFilteredConversations from "../helpers/getFilteredConversations";
+import { ConversationListWrapper } from "../wrappers/ConversationListWrapper";
 
 export type address = "0x${string}";
 
@@ -43,11 +34,6 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   );
 
   const size = useWindowSize();
-
-  const previewMessages = useXmtpStore((state) => state.previewMessages);
-  const recipientEnteredValue = useXmtpStore(
-    (state) => state.recipientEnteredValue,
-  );
 
   const loadingConversations = useXmtpStore(
     (state) => state.loadingConversations,
@@ -78,19 +64,9 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
     checkSigners();
   }, [clientSigner, disconnect, resetXmtpState, signer]);
 
-  // XMTP Hooks
-  useListConversations();
-
-  const orderByLatestMessage = (
-    convoA: Conversation,
-    convoB: Conversation,
-  ): number => {
-    const convoALastMessageDate =
-      previewMessages.get(getConversationId(convoA))?.sent || new Date();
-    const convoBLastMessageDate =
-      previewMessages.get(getConversationId(convoB))?.sent || new Date();
-    return convoALastMessageDate < convoBLastMessageDate ? 1 : -1;
-  };
+  if (!client) {
+    return <div />;
+  }
 
   return (
     <div className="bg-white w-full md:h-full overflow-auto flex flex-col md:flex-row">
@@ -101,29 +77,8 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
             <SideNavWrapper />
             <div className="flex flex-col w-full h-screen overflow-y-auto">
               <HeaderDropdownWrapper />
-              <ConversationList
-                hasRecipientEnteredValue={!!recipientEnteredValue}
-                setStartedFirstMessage={() => setStartedFirstMessage(true)}
-                isLoading={loadingConversations}
-                messages={
-                  !loadingConversations
-                    ? [
-                        <MessagePreviewCardWrapper
-                          key={XMTP_FEEDBACK_ADDRESS}
-                          convo={conversations.get(XMTP_FEEDBACK_ADDRESS)}
-                        />,
-                        ...getFilteredConversations(conversations)
-                          .sort(orderByLatestMessage)
-                          .map((convo) => (
-                            <MessagePreviewCardWrapper
-                              key={getConversationId(convo)}
-                              convo={convo}
-                            />
-                          )),
-                        ,
-                      ]
-                    : []
-                }
+              <ConversationListWrapper
+                setStartedFirstMessage={setStartedFirstMessage}
               />
             </div>
           </>
