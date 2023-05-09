@@ -33,6 +33,8 @@ const { connectors } = getDefaultWallets({
 });
 
 function AppWrapper({ Component, pageProps }: AppProps) {
+  // setting the type to any because the return
+  // type of createClient is not being exported
   const [client, setClient] = useState<any>(null);
   useEffect(() => {
     if (isAppEnvDemo()) {
