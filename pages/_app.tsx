@@ -48,6 +48,7 @@ const wagmiClient = createClient({
 
 function AppWrapper({ Component, pageProps }: AppProps) {
   const [client, setClient] = useState<typeof wagmiClient | null>(null);
+
   useEffect(() => {
     if (isAppEnvDemo()) {
       setClient(wagmiDemoClient);

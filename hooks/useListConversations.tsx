@@ -34,6 +34,10 @@ export const useListConversations = () => {
   const previewMessages = useXmtpStore((state) => state.previewMessages);
   const setPreviewMessages = useXmtpStore((state) => state.setPreviewMessages);
   const setPreviewMessage = useXmtpStore((state) => state.setPreviewMessage);
+  const setRecipientWalletAddress = useXmtpStore(
+    (state) => state.setRecipientWalletAddress,
+  );
+  const setConversationId = useXmtpStore((state) => state.setConversationId);
 
   const streamConversations = async (conversation: Conversation) => {
     if (conversation.peerAddress !== walletAddress) {
@@ -100,6 +104,8 @@ export const useListConversations = () => {
 
         setPreviewMessages(new Map(previewMessages));
         setConversations(new Map(conversations));
+        setConversationId(XMTP_FEEDBACK_ADDRESS);
+        setRecipientWalletAddress(XMTP_FEEDBACK_ADDRESS);
       }
     };
     startFeedbackConvo();
