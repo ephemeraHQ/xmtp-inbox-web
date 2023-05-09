@@ -20,6 +20,7 @@ import router from "next/router";
 import useWindowSize from "../hooks/useWindowSize";
 import { useClient } from "@xmtp/react-sdk";
 import { useDisconnect, useSigner } from "wagmi";
+import getFilteredConversations from "../helpers/getFilteredConversations";
 
 export type address = "0x${string}";
 
@@ -111,12 +112,8 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
                           key={XMTP_FEEDBACK_ADDRESS}
                           convo={conversations.get(XMTP_FEEDBACK_ADDRESS)}
                         />,
-                        ...Array.from(conversations.values())
+                        ...getFilteredConversations(conversations)
                           .sort(orderByLatestMessage)
-                          .filter(
-                            (convo) =>
-                              convo.peerAddress !== XMTP_FEEDBACK_ADDRESS,
-                          )
                           .map((convo) => (
                             <MessagePreviewCardWrapper
                               key={getConversationId(convo)}
