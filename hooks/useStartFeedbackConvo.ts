@@ -33,6 +33,7 @@ export const useStartFeedbackConvo = () => {
           content: "Send feedback",
           id: "Feedback_Msg",
         } as DecodedMessage);
+
         setConversations(new Map(conversations));
         setConversationId(XMTP_FEEDBACK_ADDRESS);
         setRecipientWalletAddress(XMTP_FEEDBACK_ADDRESS);

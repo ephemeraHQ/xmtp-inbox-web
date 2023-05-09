@@ -11,7 +11,6 @@ import {
 } from "@xmtp/react-sdk";
 
 export const useListConversations = () => {
-  const feedbackConvoPresent = useRef(false);
   const { address: walletAddress } = useAccount();
   const { client } = useClient();
 
@@ -55,9 +54,6 @@ export const useListConversations = () => {
             newPreviewMessages.set(preview.key, preview.message);
             if (convo.peerAddress !== walletAddress) {
               conversations.set(getConversationId(convo), convo);
-            }
-            if (preview.key === XMTP_FEEDBACK_ADDRESS) {
-              feedbackConvoPresent.current = true;
             }
           }
         }),

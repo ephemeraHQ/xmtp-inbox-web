@@ -31,7 +31,7 @@ describe(
       elements.forEach((element) => checkElement(element));
     });
 
-    it("Shows feedback convo with right preview message", () => {
+    it("Shows feedback convo with a preview message", () => {
       checkElement("conversations-list-panel");
       // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(500);

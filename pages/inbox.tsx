@@ -28,6 +28,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   const { data: signer } = useSigner();
   // XMTP Store
   const conversations = useXmtpStore((state) => state.conversations);
+  const conversationId = useXmtpStore((state) => state.conversationId);
 
   const recipientWalletAddress = useXmtpStore(
     (state) => state.recipientWalletAddress,
@@ -101,7 +102,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
                 <AddressInputWrapper />
               </div>
               <div className="h-full overflow-auto flex flex-col">
-                <FullConversationWrapper />
+                {conversationId && <FullConversationWrapper />}
               </div>
               <MessageInputWrapper />
             </>
