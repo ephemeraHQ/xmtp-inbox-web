@@ -32,29 +32,28 @@ const { connectors } = getDefaultWallets({
   chains,
 });
 
-const wagmiDemoClient = createClient({
-  autoConnect: true,
-  connectors: [(getMockConnector() as Connector) ?? {}],
-  provider,
-  webSocketProvider,
-});
-
-const wagmiClient = createClient({
-  autoConnect: true,
-  connectors,
-  provider,
-  webSocketProvider,
-});
-
 function AppWrapper({ Component, pageProps }: AppProps) {
-  const [client, setClient] = useState<typeof wagmiClient | null>(null);
+  const [client, setClient] = useState<any>(null);
   useEffect(() => {
     if (isAppEnvDemo()) {
+      const wagmiDemoClient = createClient({
+        autoConnect: true,
+        connectors: [(getMockConnector() as Connector) ?? {}],
+        provider,
+        webSocketProvider,
+      });
       setClient(wagmiDemoClient);
     } else {
+      const wagmiClient = createClient({
+        autoConnect: true,
+        connectors,
+        provider,
+        webSocketProvider,
+      });
       setClient(wagmiClient);
     }
   }, []);
+
   return (
     client && (
       <WagmiConfig client={client}>
