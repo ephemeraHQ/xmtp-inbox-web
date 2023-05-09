@@ -1,11 +1,10 @@
 import { Conversation, DecodedMessage } from "@xmtp/xmtp-js";
 import { useEffect, useRef } from "react";
-import { XMTP_FEEDBACK_ADDRESS } from "../helpers";
+import { XMTP_FEEDBACK_ADDRESS, getConversationId } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
 import { useClient } from "@xmtp/react-sdk";
 
 export const useStartFeedbackConvo = () => {
-  const feedbackConvoPresent = useRef(false);
   const { client } = useClient();
 
   const loadingConversations = useXmtpStore(
@@ -22,12 +21,16 @@ export const useStartFeedbackConvo = () => {
 
   useEffect(() => {
     const startFeedbackConvo = async () => {
-      if (!feedbackConvoPresent.current && !loadingConversations && client) {
-        await client?.conversations.newConversation(XMTP_FEEDBACK_ADDRESS);
+      if (
+        !loadingConversations &&
+        client &&
+        !conversations.has(XMTP_FEEDBACK_ADDRESS)
+      ) {
+        const conversation = await client?.conversations.newConversation(
+          XMTP_FEEDBACK_ADDRESS,
+        );
 
-        conversations.set(XMTP_FEEDBACK_ADDRESS, {
-          peerAddress: XMTP_FEEDBACK_ADDRESS,
-        } as Conversation);
+        conversations.set(getConversationId(conversation), conversation);
 
         setPreviewMessage(XMTP_FEEDBACK_ADDRESS, {
           content: "Send feedback",
@@ -40,7 +43,7 @@ export const useStartFeedbackConvo = () => {
       }
     };
     startFeedbackConvo();
-  }, [feedbackConvoPresent.current, loadingConversations, client]);
+  }, [loadingConversations, client, conversations]);
 };
 
 export default useStartFeedbackConvo;

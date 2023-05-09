@@ -1,7 +1,7 @@
 import { Conversation } from "@xmtp/xmtp-js";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useAccount } from "wagmi";
-import { XMTP_FEEDBACK_ADDRESS, getConversationId } from "../helpers";
+import { getConversationId } from "../helpers";
 import fetchMostRecentMessage from "../helpers/fetchMostRecentMessage";
 import { useXmtpStore } from "../store/xmtp";
 import {
@@ -44,7 +44,7 @@ export const useListConversations = () => {
   useStreamConversations(streamConversations);
 
   useEffect(() => {
-    const listConversations = async () => {
+    const fetchMessagePreviews = async () => {
       const newPreviewMessages = new Map(previewMessages);
 
       await Promise.all(
@@ -69,7 +69,7 @@ export const useListConversations = () => {
     };
 
     if (walletAddress && !isLoading && !error && client) {
-      listConversations();
+      fetchMessagePreviews();
     } else if (isLoading) {
       setLoadingConversations(true);
     }
