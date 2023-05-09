@@ -34,7 +34,7 @@ const { connectors } = getDefaultWallets({
 
 const wagmiDemoClient = createClient({
   autoConnect: true,
-  connectors: [getMockConnector() as Connector],
+  connectors: [(getMockConnector() as Connector) ?? {}],
   provider,
   webSocketProvider,
 });
