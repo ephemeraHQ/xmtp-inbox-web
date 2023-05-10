@@ -1,5 +1,5 @@
-import { Conversation } from "@xmtp/xmtp-js";
-import { useEffect } from "react";
+import { Conversation } from "@xmtp/react-sdk";
+import { useCallback } from "react";
 import { useAccount } from "wagmi";
 import { getConversationId } from "../helpers";
 import fetchMostRecentMessage from "../helpers/fetchMostRecentMessage";
@@ -13,13 +13,6 @@ import {
 export const useListConversations = () => {
   const { address: walletAddress } = useAccount();
   const { client } = useClient();
-
-  const {
-    conversations: allConversations,
-    error,
-    isLoading,
-  } = useConversations();
-
   const setLoadingConversations = useXmtpStore(
     (state) => state.setLoadingConversations,
   );
@@ -28,6 +21,34 @@ export const useListConversations = () => {
   const previewMessages = useXmtpStore((state) => state.previewMessages);
   const setPreviewMessages = useXmtpStore((state) => state.setPreviewMessages);
   const setPreviewMessage = useXmtpStore((state) => state.setPreviewMessage);
+
+  const fetchMessagePreviews = useCallback(async (convos: Conversation[]) => {
+    const newPreviewMessages = new Map(previewMessages);
+
+    await Promise.all(
+      convos.map(async (convo) => {
+        const preview = await fetchMostRecentMessage(convo);
+        if (preview.message) {
+          newPreviewMessages.set(preview.key, preview.message);
+          if (convo.peerAddress !== walletAddress) {
+            conversations.set(getConversationId(convo), convo);
+          }
+        }
+      }),
+    );
+
+    setPreviewMessages(new Map(newPreviewMessages));
+    setConversations(new Map(conversations));
+    setLoadingConversations(false);
+
+    if (Notification.permission === "default") {
+      Notification.requestPermission();
+    }
+  }, []);
+
+  useConversations({
+    onConversations: fetchMessagePreviews,
+  });
 
   const streamConversations = async (conversation: Conversation) => {
     if (conversation.peerAddress !== walletAddress) {
@@ -42,38 +63,6 @@ export const useListConversations = () => {
   };
 
   useStreamConversations(streamConversations);
-
-  useEffect(() => {
-    const fetchMessagePreviews = async () => {
-      const newPreviewMessages = new Map(previewMessages);
-
-      await Promise.all(
-        allConversations.map(async (convo) => {
-          const preview = await fetchMostRecentMessage(convo);
-          if (preview.message) {
-            newPreviewMessages.set(preview.key, preview.message);
-            if (convo.peerAddress !== walletAddress) {
-              conversations.set(getConversationId(convo), convo);
-            }
-          }
-        }),
-      );
-
-      setPreviewMessages(new Map(newPreviewMessages));
-      setConversations(new Map(conversations));
-      setLoadingConversations(false);
-
-      if (Notification.permission === "default") {
-        Notification.requestPermission();
-      }
-    };
-
-    if (walletAddress && !isLoading && !error && client) {
-      fetchMessagePreviews();
-    } else if (isLoading) {
-      setLoadingConversations(true);
-    }
-  }, [walletAddress, isLoading, error, allConversations, client]);
 };
 
 export default useListConversations;

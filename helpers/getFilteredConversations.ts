@@ -1,4 +1,4 @@
-import type { Conversation } from "@xmtp/xmtp-js";
+import type { Conversation } from "@xmtp/react-sdk";
 import { XMTP_FEEDBACK_ADDRESS } from "./constants";
 
 const getFilteredConversations = (
