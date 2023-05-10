@@ -215,7 +215,9 @@ const SideNav = ({
           as="div"
           onClose={onXmtpIconClick}
           aria-label={t("menu.settings") || ""}>
-          <div className="bg-[#ffffffa3] w-[100vw] h-[100vh] flex items-center justify-center absolute top-0 z-20">
+          <div
+            data-testid="share-qr-modal"
+            className="bg-[#ffffffa3] w-[100vw] h-[100vh] flex items-center justify-center absolute top-0 z-20">
             <div className="bg-[url('/shareQrBg.png')] bg-repeat-round m-4 lg:w-[35%] sm:w-[90%] md:w-[50%] h-[90vh] text-white flex flex-col items-center p-4 rounded-3xl drop-shadow-lg">
               <div
                 onClick={() => setIsQrCodeDialogOpen(false)}
@@ -248,7 +250,9 @@ const SideNav = ({
                   )
                 }
                 className="flex text-sm mt-5 cursor-pointer">
-                <span className="underline">{t("common.share_link")}</span>
+                <span data-testid="share-qr-link" className="underline">
+                  {t("common.share_link")}
+                </span>
                 <ClipboardCopyIcon className="ml-2" width={16} />
               </div>
             </div>
@@ -294,6 +298,7 @@ const SideNav = ({
                 setIsQrCodeDialogOpen(true);
                 setIsDialogOpen(false);
               }}
+              data-testid="share-qr"
               className="text-sm ml-2 cursor-pointer text-indigo-600 hover:text-indigo-800">
               {t("common.share_qr_code")}
             </span>
