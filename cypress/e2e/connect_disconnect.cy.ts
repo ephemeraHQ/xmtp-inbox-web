@@ -151,7 +151,7 @@ describe("Disconnected Test Cases", () => {
   });
 });
 
-describe("Dm Route Test Case", () => {
+describe("QR Code Test Case", () => {
   beforeEach(() => {
     startDemoEnv();
   });
