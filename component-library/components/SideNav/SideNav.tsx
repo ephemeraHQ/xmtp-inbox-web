@@ -11,7 +11,7 @@ import {
   SparklesIcon,
   XIcon,
 } from "@heroicons/react/outline";
-import { classNames, shortAddress } from "../../../helpers";
+import { classNames, isAppEnvDemo, shortAddress } from "../../../helpers";
 import { XmtpIcon } from "../Icons/XmtpIcon";
 import { useState } from "react";
 import { Avatar } from "../Avatar/Avatar";
@@ -293,16 +293,21 @@ const SideNav = ({
               })}
             </div>
             <hr className="m-2" />
-            <span
-              onClick={() => {
-                setIsQrCodeDialogOpen(true);
-                setIsDialogOpen(false);
-              }}
-              data-testid="share-qr"
-              className="text-sm ml-2 cursor-pointer text-indigo-600 hover:text-indigo-800">
-              {t("common.share_qr_code")}
-            </span>
-            <hr className="m-2" />
+            {!isAppEnvDemo() && (
+              <>
+                <span
+                  onClick={() => {
+                    setIsQrCodeDialogOpen(true);
+                    setIsDialogOpen(false);
+                  }}
+                  data-testid="share-qr"
+                  className="text-sm ml-2 cursor-pointer text-indigo-600 hover:text-indigo-800">
+                  {t("common.share_qr_code")}
+                </span>
+                <hr className="m-2" />
+              </>
+            )}
+
             <span className="text-sm ml-2 text-red-600 hover:text-red-800">
               <a
                 href="https://github.com/xmtp-labs/xmtp-inbox-web/issues/new?assignees=&labels=bug&template=bug_report.yml&title=Bug%3A+"

@@ -83,17 +83,3 @@ describe("Disconnected Test Cases", () => {
     elements.forEach((element) => checkElement(element));
   });
 });
-
-describe("QR Code Test Case", () => {
-  beforeEach(() => {
-    startDemoEnv();
-  });
-  it("Click on Share QR Code Link", () => {
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(500);
-    cy.get(`[data-testid="icon"]`).click();
-    cy.get(`[data-testid="share-qr"]`).click();
-    cy.get(`[data-testid="share-qr-link"]`).click();
-    checkElement("share-qr-modal");
-  });
-});
