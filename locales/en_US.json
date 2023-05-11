@@ -57,7 +57,11 @@
     "private_key_note": "No private keys will be shared.",
     "step_of_2": "Step {{NUM}} of 2",
     "disconnect_tip": "<strong>Tip</strong>: If clicking <strong>Disconnect wallet</strong> doesn’t disconnect your wallet, please use your wallet extension directly to disconnect from this app.",
-    "input_label": "To"
+    "input_label": "To",
+    "share_code": "Share the power of the XMTP network with your friends, family and colleagues",
+    "share_link": "Copy your share link",
+    "share_qr_code": "Share QR Code",
+    "report_bug": "Report a bug"
   },
   "aria_labels": {
     "address_input": "Address input",
