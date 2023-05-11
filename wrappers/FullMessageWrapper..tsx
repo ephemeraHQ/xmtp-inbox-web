@@ -3,7 +3,6 @@ import { useEnsName } from "wagmi";
 import { FullMessage } from "../component-library/components/FullMessage/FullMessage";
 import { isValidLongWalletAddress, shortAddress } from "../helpers";
 import { address } from "../pages/inbox";
-import { useXmtpStore } from "../store/xmtp";
 import MessageContentWrapper from "./MessageContentWrapper";
 import { useClient } from "@xmtp/react-sdk";
 

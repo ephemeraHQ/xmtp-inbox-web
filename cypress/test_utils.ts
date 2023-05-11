@@ -44,6 +44,7 @@ const sendMessages = (
     checkElement("message-input").type(message);
     checkElement("message-input-submit");
     cy.get(`[data-testid=message-input-submit]`).click();
+    cy.wait(100);
     cy.get(`[data-testid=conversations-list-panel]`, {
       timeout: TIMEOUT,
     }).should("have.length", 1);
@@ -53,7 +54,8 @@ const sendMessages = (
     const differentMessage = "differentMessage";
     // Send additional different message, check that different message was returned in correct order
     checkElement("message-input").type(differentMessage);
-    checkElement("message-input-submit").click();
+    checkElement("message-input-submit");
+    cy.get(`[data-testid=message-input-submit]`).click();
   }
 
   // A way around to solve the message streaming issue
@@ -67,6 +69,7 @@ const checkMessageOutput = (numberOfTimes: number, message: string) => {
   cy.get(`[data-testid=message-tile-container]`, { timeout: TIMEOUT })
     .children()
     .should("have.length", numberOfTimes || 1);
+
   cy.get(`[data-testid=message-tile-text]`, { timeout: TIMEOUT })
     .children()
     .last()
@@ -79,10 +82,11 @@ const checkMostRecentMessageOutput = (
 ) => {
   cy.get(`[data-testid=message-tile-container]`, { timeout: TIMEOUT })
     .children()
-    .should("have.length", numberOfTimes + 1 || 2);
+    .should("have.length", numberOfTimes + 1);
 
   cy.get(`[data-testid=message-tile-text]`, { timeout: TIMEOUT })
-    .first()
+    .children()
+    .eq(1)
     .should("have.text", differentMessage);
 };
 
@@ -92,8 +96,9 @@ export const sendAndEnterMessage = (
   numberOfTimes = 1,
   checkDifferentMessages = false,
 ) => {
-  checkElement("empty-message-cta");
-  cy.get(`[data-testid=empty-message-cta]`).click();
+  cy.wait(2000);
+  checkElement("new-message-icon-cta");
+  cy.get(`[data-testid=new-message-icon-cta]`).click({ timeout: TIMEOUT });
   enterWalletAddress(testUser);
   checkExpectedPreMessageFields();
   sendMessages(numberOfTimes, message, testUser, checkDifferentMessages);

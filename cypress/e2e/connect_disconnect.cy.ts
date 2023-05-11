@@ -1,9 +1,4 @@
-import {
-  checkElement,
-  startDemoEnv,
-  checkLink,
-  checkMissingElement,
-} from "../test_utils";
+import { checkElement, startDemoEnv, TIMEOUT } from "../test_utils";
 
 describe(
   "Connected Test Cases",
@@ -16,8 +11,8 @@ describe(
   () => {
     beforeEach(() => {
       startDemoEnv();
-      // // In connected flow, empty message should render before any tests run
-      checkElement("empty-message-header");
+      // In connected flow, conversation list header should render before any tests run
+      checkElement("conversation-list-header");
     });
 
     it("Shows expected left panel fields when logged in with a connected wallet and no existing messages", () => {
@@ -30,53 +25,19 @@ describe(
         "icon",
         "conversation-list-header",
         "new-message-icon-cta",
-        "empty-message-icon",
-        "empty-message-header",
-        "empty-message-subheader",
-        "empty-message-cta",
+        "conversations-list-panel",
       ];
 
       elements.forEach((element) => checkElement(element));
     });
 
-    it("Shows expected right panel fields when logged in with a connected wallet and no existing messages", () => {
-      const elements = [
-        "learn-more-header",
-        "get-started-header",
-        "message-section-link",
-        "message-icon",
-        "message-header",
-        "message-subheader",
-        "message-arrow",
-        "community-section-link",
-        "community-icon",
-        "community-header",
-        "community-subheader",
-        "community-arrow",
-        "docs-section-link",
-        "docs-icon",
-        "docs-header",
-        "docs-subheader",
-        "docs-arrow",
-      ];
-
-      elements.forEach((element) => checkElement(element));
-    });
-
-    it("Directs user to expected links", () => {
-      const elementsWithCtas = [
-        {
-          testId: "docs-section-link",
-          link: "https://docs.xmtp.org",
-        },
-        {
-          testId: "community-section-link",
-          link: "https://community.xmtp.org",
-        },
-      ];
-      elementsWithCtas.forEach((element) =>
-        checkLink(element.testId, element.link),
-      );
+    it("Shows feedback convo with a preview message", () => {
+      checkElement("conversations-list-panel");
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(500);
+      cy.get(`[data-testid=message-tile-text]`, { timeout: TIMEOUT })
+        .first()
+        .should("exist");
     });
 
     it("Shows expected fields when expanding side nav while connected", () => {
@@ -96,40 +57,12 @@ describe(
       cy.get(`[data-testid="disconnect-wallet-cta"]`).click();
     });
 
-    it("Opens new message view when clicking on connect button from left panel", () => {
-      checkMissingElement("message-input");
-      checkElement("empty-message-cta");
-      // Need to break up the click chain for GitHub actions
-      cy.get(`[data-testid=empty-message-cta]`).click();
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(500);
-      checkElement("message-input");
-    });
-
     it("Opens new message view when clicking on plus icon from left panel", () => {
-      checkMissingElement("message-input");
       // Need to break up the click chain for GitHub actions
-      cy.get(`[data-testid=empty-message-cta]`).click();
+      cy.get(`[data-testid=new-message-icon-cta]`).click();
       // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(500);
       checkElement("message-input");
-    });
-    it("Opens new message view when clicking on new message section within learn more", () => {
-      checkMissingElement("message-input");
-      checkElement("message-section-link");
-      // Need to break up the click chain for GitHub actions
-      cy.get(`[data-testid=message-section-link]`).click();
-      checkElement("message-input");
-    });
-    it("Should show conversation list instead of empty message as soon as user enters something into the input", () => {
-      checkElement("empty-message-header");
-      checkMissingElement("message-input");
-      checkElement("message-section-link");
-      // Need to break up the click chain for GitHub actions
-      cy.get(`[data-testid=message-section-link]`).click();
-      checkElement("message-to-input").type("a");
-      checkMissingElement("empty-message-header");
-      cy.get(`[data-testid=conversations-list-panel]`).should("have.length", 1);
     });
   },
 );

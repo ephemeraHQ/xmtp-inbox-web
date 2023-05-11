@@ -7,7 +7,7 @@ import {
   useSendMessage as useSendMessageHook,
   useStartConversation,
 } from "@xmtp/react-sdk";
-import { Conversation } from "@xmtp/xmtp-js";
+import { Conversation } from "@xmtp/react-sdk";
 
 const useSendMessage = (conversationId: address) => {
   const conversations = useXmtpStore((state) => state.conversations);
@@ -26,7 +26,7 @@ const useSendMessage = (conversationId: address) => {
       let selectedConversation = conversations.get(conversationId);
       if (
         isValidLongWalletAddress(recipientWalletAddress) &&
-        !selectedConversation
+        (!selectedConversation || !selectedConversation?.messages)
       ) {
         const conversation = await startConversation(
           recipientWalletAddress,
