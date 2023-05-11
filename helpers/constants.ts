@@ -19,3 +19,6 @@ export const CONVERSATION_CACHE_VERSION = 1;
 export const TAILWIND_MD_BREAKPOINT = 767;
 
 export const ALLOWED_ENS_SUFFIXES = [".eth", ".cb.id"];
+
+export const XMTP_FEEDBACK_ADDRESS =
+  "0x8bcF8AFF8Cb99335CD9f4d9866a40e05E23373ff";

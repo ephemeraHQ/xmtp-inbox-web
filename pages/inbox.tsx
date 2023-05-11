@@ -1,14 +1,6 @@
 import React, { useEffect } from "react";
-import useListConversations from "../hooks/useListConversations";
 import { useXmtpStore } from "../store/xmtp";
-import {
-  getConversationId,
-  TAILWIND_MD_BREAKPOINT,
-  wipeKeys,
-} from "../helpers";
-import { ConversationList } from "../component-library/components/ConversationList/ConversationList";
-import { Conversation } from "@xmtp/xmtp-js";
-import { MessagePreviewCardWrapper } from "../wrappers/MessagePreviewCardWrapper";
+import { TAILWIND_MD_BREAKPOINT, wipeKeys } from "../helpers";
 import { FullConversationWrapper } from "../wrappers/FullConversationWrapper";
 import { AddressInputWrapper } from "../wrappers/AddressInputWrapper";
 import { HeaderDropdownWrapper } from "../wrappers/HeaderDropdownWrapper";
@@ -19,6 +11,7 @@ import router from "next/router";
 import useWindowSize from "../hooks/useWindowSize";
 import { useClient } from "@xmtp/react-sdk";
 import { useDisconnect, useSigner } from "wagmi";
+import { ConversationListWrapper } from "../wrappers/ConversationListWrapper";
 
 export type address = "0x${string}";
 
@@ -35,17 +28,13 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   const { data: signer } = useSigner();
   // XMTP Store
   const conversations = useXmtpStore((state) => state.conversations);
+  const conversationId = useXmtpStore((state) => state.conversationId);
 
   const recipientWalletAddress = useXmtpStore(
     (state) => state.recipientWalletAddress,
   );
 
   const size = useWindowSize();
-
-  const previewMessages = useXmtpStore((state) => state.previewMessages);
-  const recipientEnteredValue = useXmtpStore(
-    (state) => state.recipientEnteredValue,
-  );
 
   const loadingConversations = useXmtpStore(
     (state) => state.loadingConversations,
@@ -76,19 +65,9 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
     checkSigners();
   }, [clientSigner, disconnect, resetXmtpState, signer]);
 
-  // XMTP Hooks
-  useListConversations();
-
-  const orderByLatestMessage = (
-    convoA: Conversation,
-    convoB: Conversation,
-  ): number => {
-    const convoALastMessageDate =
-      previewMessages.get(getConversationId(convoA))?.sent || new Date();
-    const convoBLastMessageDate =
-      previewMessages.get(getConversationId(convoB))?.sent || new Date();
-    return convoALastMessageDate < convoBLastMessageDate ? 1 : -1;
-  };
+  if (!client) {
+    return <div />;
+  }
 
   return (
     <div className="bg-white w-full md:h-full overflow-auto flex flex-col md:flex-row">
@@ -98,25 +77,9 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
           <>
             <SideNavWrapper />
             <div className="flex flex-col w-full h-screen overflow-y-auto">
-              {!loadingConversations && <HeaderDropdownWrapper />}
-              <ConversationList
-                hasRecipientEnteredValue={!!recipientEnteredValue}
-                setStartedFirstMessage={() => setStartedFirstMessage(true)}
-                isLoading={loadingConversations}
-                messages={
-                  (conversations.size === 0 || previewMessages.size === 0) &&
-                  recipientEnteredValue &&
-                  !loadingConversations
-                    ? [<MessagePreviewCardWrapper key="default" />]
-                    : Array.from(conversations.values())
-                        .sort(orderByLatestMessage)
-                        .map((convo) => (
-                          <MessagePreviewCardWrapper
-                            key={getConversationId(convo)}
-                            convo={convo}
-                          />
-                        ))
-                }
+              <HeaderDropdownWrapper />
+              <ConversationListWrapper
+                setStartedFirstMessage={setStartedFirstMessage}
               />
             </div>
           </>
@@ -139,7 +102,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
                 <AddressInputWrapper />
               </div>
               <div className="h-full overflow-auto flex flex-col">
-                <FullConversationWrapper />
+                {conversationId && <FullConversationWrapper />}
               </div>
               <MessageInputWrapper />
             </>
