@@ -1,4 +1,4 @@
-import { Conversation, DecodedMessage } from "@xmtp/xmtp-js";
+import { Conversation, DecodedMessage } from "@xmtp/react-sdk";
 import { create } from "zustand";
 import { RecipientInputMode } from "../helpers";
 import getUniqueMessages from "../helpers/getUniqueMessages";
@@ -31,7 +31,7 @@ export const useXmtpStore = create<XmtpState>((set) => ({
   conversations: new Map(),
   setConversations: (conversations: Map<string, Conversation>) =>
     set(() => ({ conversations })),
-  loadingConversations: false,
+  loadingConversations: true,
   setLoadingConversations: (loadingConversations: boolean) =>
     set(() => ({ loadingConversations })),
   convoMessages: new Map(),

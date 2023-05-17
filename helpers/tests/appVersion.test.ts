@@ -1,10 +1,13 @@
-import { getAppVersion } from "../appVersion";
-import { expect } from "@jest/globals";
+import { expect, jest } from "@jest/globals";
 
-jest.mock("../../package.json", () => ({
-  name: "testName",
-  version: "1",
+jest.unstable_mockModule("../../package.json", () => ({
+  default: {
+    name: "testName",
+    version: "1",
+  },
 }));
+
+const { getAppVersion } = await import("../appVersion");
 
 describe("getAppVersion", () => {
   it("returns app version and name in package json", () => {

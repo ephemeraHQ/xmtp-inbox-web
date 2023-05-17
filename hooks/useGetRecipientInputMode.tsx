@@ -47,12 +47,27 @@ const useGetRecipientInputMode = () => {
       setRecipientInputMode(RecipientInputMode.NotOnNetwork);
     }
   };
+
   useEffect(() => {
+    const checkRecipient = async () => {
+      try {
+        const canMessage = await canMessageUser(recipientWalletAddress);
+        if (!canMessage) {
+          setRecipientWalletAddress("");
+          setRecipientEnteredValue(recipientWalletAddress);
+          setRecipientInputMode(RecipientInputMode.NotOnNetwork);
+        } else {
+          setRecipientInputMode(RecipientInputMode.OnNetwork);
+        }
+      } catch (e) {
+        setRecipientInputMode(RecipientInputMode.NotOnNetwork);
+      }
+    };
     if (
       recipientWalletAddress &&
       recipientInputMode !== RecipientInputMode.OnNetwork
     ) {
-      setRecipientInputMode(RecipientInputMode.OnNetwork);
+      checkRecipient();
     }
   }, [recipientInputMode, recipientWalletAddress]);
 

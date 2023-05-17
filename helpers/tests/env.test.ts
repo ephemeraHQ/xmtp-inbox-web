@@ -1,6 +1,6 @@
 import { getEnv, isAppEnvDemo, tagStr } from "../env";
 import { ENVIRONMENT } from "../constants";
-import { expect } from "@jest/globals";
+import { expect, jest } from "@jest/globals";
 
 describe("getEnv", () => {
   const OLD_ENV = process.env;

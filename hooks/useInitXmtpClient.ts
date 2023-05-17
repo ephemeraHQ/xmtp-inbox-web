@@ -1,4 +1,4 @@
-import { Client } from "@xmtp/xmtp-js";
+import { Client } from "@xmtp/react-sdk";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useConnect, useSigner } from "wagmi";
 import {
