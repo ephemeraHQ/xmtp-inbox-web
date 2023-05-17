@@ -111,7 +111,7 @@ export const AddressInput = ({
               type="search"
               spellCheck="false"
               autoComplete="off"
-              autoCorrect="false"
+              autoCorrect="off"
               autoCapitalize="off"
               autoFocus
               onChange={(e) =>
