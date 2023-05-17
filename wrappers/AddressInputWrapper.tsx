@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useEnsAvatar } from "wagmi";
 import { AddressInput } from "../component-library/components/AddressInput/AddressInput";
 import {
+  fetchUnsName,
   getRecipientInputSubtext,
+  isValidLongWalletAddress,
   RecipientInputMode,
   shortAddress,
 } from "../helpers";
@@ -47,6 +49,22 @@ export const AddressInputWrapper = () => {
 
   const size = useWindowSize();
 
+  // UNS Hooks
+  const [unsName, setUnsName] = useState("");
+
+  useEffect(() => {
+    const getUns = async () => {
+      if (isValidLongWalletAddress(recipientWalletAddress)) {
+        const name = await fetchUnsName(recipientWalletAddress);
+        setUnsName(name);
+      } else {
+        setUnsName("");
+      }
+    };
+
+    getUns();
+  }, [recipientWalletAddress]);
+
   return (
     <AddressInput
       isError={recipientEnteredValue ? !isValid : false}
@@ -56,11 +74,13 @@ export const AddressInputWrapper = () => {
           : ""
       }
       resolvedAddress={{
-        displayAddress:
-          ensName ??
-          (size[0] < 700
-            ? shortAddress(recipientWalletAddress)
-            : recipientWalletAddress),
+        displayAddress: ensName
+          ? ensName
+          : unsName
+          ? unsName
+          : size[0] < 700
+          ? shortAddress(recipientWalletAddress)
+          : recipientWalletAddress,
         walletAddress: ensName ? recipientWalletAddress : "",
       }}
       onChange={setRecipientEnteredValue}
@@ -80,6 +100,7 @@ export const AddressInputWrapper = () => {
         setStartedFirstMessage(false);
         setConversationId("");
         setRecipientInputMode(RecipientInputMode.InvalidEntry);
+        setUnsName("");
       }}
     />
   );

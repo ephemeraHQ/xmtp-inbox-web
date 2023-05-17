@@ -1,6 +1,7 @@
 //@ts-nocheck
 import {
   isEnsAddress,
+  isUnsAddress,
   getConversationId,
   shortAddress,
   truncate,
@@ -58,6 +59,25 @@ describe("isEnsAddress", () => {
     it("should handle empty string inputs by returning an empty string", () => {
       expect(shortAddress("")).toBe("");
     });
+  });
+});
+
+describe("isUnsAddress", () => {
+  it("should return true if address ends with .wallet", () => {
+    expect(isUnsAddress("test.wallet")).toBe(true);
+  });
+  it("should return false if address does not include .wallet", () => {
+    expect(isUnsAddress("01201209483434")).toBe(false);
+  });
+  it("should return false if address includes but does not end with .wallet", () => {
+    expect(isUnsAddress("test.notwallet")).toBe(false);
+    expect(isUnsAddress("wallet.test")).toBe(false);
+  });
+  it("should return false if invalid address", () => {
+    expect(isUnsAddress("")).toBe(false);
+  });
+  it("should return true for subdomain .wallet addresses", () => {
+    expect(isUnsAddress("test.test.wallet")).toBe(true);
   });
 });
 

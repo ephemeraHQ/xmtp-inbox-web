@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useEnsName } from "wagmi";
 import { FullMessage } from "../component-library/components/FullMessage/FullMessage";
-import { isValidLongWalletAddress, shortAddress } from "../helpers";
+import {
+  fetchUnsName,
+  isValidLongWalletAddress,
+  shortAddress,
+} from "../helpers";
 import { address } from "../pages/inbox";
 import MessageContentWrapper from "./MessageContentWrapper";
 import { useClient } from "@xmtp/react-sdk";
@@ -25,12 +29,30 @@ export const FullMessageWrapper = ({ msg, idx }: FullMessageWrapperProps) => {
     enabled: isValidLongWalletAddress(msg.senderAddress),
   });
 
+  // Get UNS if exists from full address
+  const [unsNameFullMessage, setUnsNameFullMessage] = useState("");
+
+  useEffect(() => {
+    const getUns = async () => {
+      if (isValidLongWalletAddress(msg.senderAddress)) {
+        const name = await fetchUnsName(msg.senderAddress);
+        setUnsNameFullMessage(name);
+      }
+    };
+
+    getUns();
+  }, []);
+
   return (
     <FullMessage
       text={<MessageContentWrapper content={msg.content} />}
       key={`${msg.id}_${idx}`}
       from={{
-        displayAddress: ensName ? ensName : shortAddress(msg.senderAddress),
+        displayAddress: ensName
+          ? ensName
+          : unsNameFullMessage
+          ? unsNameFullMessage
+          : shortAddress(msg.senderAddress),
         isSelf: client?.address === msg.senderAddress,
       }}
       datetime={msg.sent}

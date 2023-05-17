@@ -1,5 +1,5 @@
 import { Conversation } from "@xmtp/react-sdk";
-import { ALLOWED_ENS_SUFFIXES } from "./constants";
+import { ALLOWED_ENS_SUFFIXES, ALLOWED_UNS_SUFFIXES } from "./constants";
 
 export const truncate = (str: string | undefined, length: number): string => {
   if (!str) {
@@ -35,11 +35,56 @@ export const isEnsAddress = (address: string): boolean => {
   return ALLOWED_ENS_SUFFIXES.some((suffix) => address.endsWith(suffix));
 };
 
+export const isUnsAddress = (address: string): boolean => {
+  // Bail out early if empty string or a string without any dots
+  if (!address || !address.includes(".")) {
+    return false;
+  }
+  return ALLOWED_UNS_SUFFIXES.some((suffix) => address.endsWith(suffix));
+};
+
+export const fetchUnsName = async (address: any): Promise<string> => {
+  try {
+    const response = await fetch(
+      `https://resolve.unstoppabledomains.com/reverse/${address.toLowerCase()}`,
+      {
+        headers: {
+          Authorization: "Bearer JWT",
+        },
+      },
+    );
+
+    const domainJson = await response.json();
+    return domainJson?.meta?.domain;
+  } catch {
+    return "";
+  }
+};
+
+export const fetchUnsAddress = async (name: any): Promise<string> => {
+  try {
+    const response = await fetch(
+      `https://resolve.unstoppabledomains.com/domains/${name}`,
+      {
+        headers: {
+          Authorization: "Bearer JWT",
+        },
+      },
+    );
+
+    const domainJson = await response.json();
+    return domainJson?.meta?.owner;
+  } catch {
+    return "";
+  }
+};
+
 export const isValidRecipientAddressFormat = (
   recipientWalletAddress: string,
 ) => {
   return (
     isEnsAddress(recipientWalletAddress) ||
+    isUnsAddress(recipientWalletAddress) ||
     (recipientWalletAddress?.startsWith("0x") &&
       recipientWalletAddress?.length === 42)
   );
