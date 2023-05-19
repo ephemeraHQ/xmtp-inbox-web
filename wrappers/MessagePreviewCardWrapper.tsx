@@ -40,7 +40,7 @@ export const MessagePreviewCardWrapper = ({
   });
 
   // Get UNS name
-  const [previewUnsName, setPreviewUnsName] = useState("");
+  const [previewUnsName, setPreviewUnsName] = useState<string | null>();
 
   useEffect(() => {
     const getUns = async () => {

@@ -66,7 +66,7 @@ describe("isUnsAddress", () => {
   it("should return true if address ends with .wallet", () => {
     expect(isUnsAddress("test.wallet")).toBe(true);
   });
-  it("should return false if address does not include .wallet", () => {
+  it("should return false if address does not end with any UNS suffix", () => {
     expect(isUnsAddress("01201209483434")).toBe(false);
   });
   it("should return false if address includes but does not end with .wallet", () => {

@@ -43,39 +43,54 @@ export const isUnsAddress = (address: string): boolean => {
   return ALLOWED_UNS_SUFFIXES.some((suffix) => address.endsWith(suffix));
 };
 
-export const fetchUnsName = async (address: any): Promise<string> => {
-  try {
-    const response = await fetch(
-      `https://resolve.unstoppabledomains.com/reverse/${address.toLowerCase()}`,
-      {
-        headers: {
-          Authorization: "Bearer JWT",
+export const fetchUnsName = async (
+  address: string | undefined,
+): Promise<string | null> => {
+  if (process.env.NEXT_PUBLIC_UNS_TOKEN && address) {
+    try {
+      const response = await fetch(
+        `https://resolve.unstoppabledomains.com/reverse/${address.toLowerCase()}`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_UNS_TOKEN}`,
+          },
         },
-      },
-    );
+      );
 
-    const domainJson = await response.json();
-    return domainJson?.meta?.domain;
-  } catch {
-    return "";
+      const domainJson = await response.json();
+      return domainJson?.meta?.domain ? domainJson?.meta?.domain : null;
+    } catch {
+      return null;
+    }
+  } else {
+    return null;
   }
 };
 
-export const fetchUnsAddress = async (name: any): Promise<string> => {
-  try {
-    const response = await fetch(
-      `https://resolve.unstoppabledomains.com/domains/${name}`,
-      {
-        headers: {
-          Authorization: "Bearer JWT",
+export const fetchUnsAddress = async (
+  name: string | undefined,
+): Promise<string | null> => {
+  if (process.env.NEXT_PUBLIC_UNS_TOKEN && name) {
+    try {
+      const response = await fetch(
+        `https://resolve.unstoppabledomains.com/domains/${name}`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_UNS_TOKEN}`,
+          },
         },
-      },
-    );
-
-    const domainJson = await response.json();
-    return domainJson?.meta?.owner;
-  } catch {
-    return "";
+      );
+      const domainJson = await response.json();
+      if (
+        domainJson?.meta?.owner === "0x0000000000000000000000000000000000000000"
+      )
+        return null;
+      return domainJson?.meta?.owner ? domainJson?.meta?.owner : null;
+    } catch {
+      return null;
+    }
+  } else {
+    return null;
   }
 };
 

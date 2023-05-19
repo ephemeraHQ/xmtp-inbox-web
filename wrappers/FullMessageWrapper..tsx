@@ -30,29 +30,29 @@ export const FullMessageWrapper = ({ msg, idx }: FullMessageWrapperProps) => {
   });
 
   // Get UNS if exists from full address
-  const [unsNameFullMessage, setUnsNameFullMessage] = useState("");
+  const [unsNameFullMessage, setUnsNameFullMessage] = useState<string | null>();
 
   useEffect(() => {
     const getUns = async () => {
       if (isValidLongWalletAddress(msg.senderAddress)) {
         const name = await fetchUnsName(msg.senderAddress);
         setUnsNameFullMessage(name);
+      } else {
+        setUnsNameFullMessage(null);
       }
     };
 
     getUns();
   }, []);
 
+  const domain = ensName ?? unsNameFullMessage;
+
   return (
     <FullMessage
       text={<MessageContentWrapper content={msg.content} />}
       key={`${msg.id}_${idx}`}
       from={{
-        displayAddress: ensName
-          ? ensName
-          : unsNameFullMessage
-          ? unsNameFullMessage
-          : shortAddress(msg.senderAddress),
+        displayAddress: domain ?? shortAddress(msg.senderAddress),
         isSelf: client?.address === msg.senderAddress,
       }}
       datetime={msg.sent}

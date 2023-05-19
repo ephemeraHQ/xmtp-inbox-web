@@ -10,12 +10,12 @@ export const SideNavWrapper = () => {
   const { client, disconnect } = useClient();
   const resetXmtpState = useXmtpStore((state) => state.resetXmtpState);
 
-  const [unsNameConnectedWallet, setUnsNameConnectedWallet] = useState("");
+  const [unsNameConnected, setUnsNameConnected] = useState<string | null>();
 
   useEffect(() => {
     const getUns = async () => {
       const name = await fetchUnsName(client?.address);
-      setUnsNameConnectedWallet(name);
+      setUnsNameConnected(name);
     };
 
     getUns();
@@ -31,15 +31,11 @@ export const SideNavWrapper = () => {
   });
   const { disconnect: disconnectWagmi, reset: resetWagmi } = useDisconnect();
 
+  const domain = ensNameConnectedWallet ?? unsNameConnected;
+
   return (
     <SideNav
-      displayAddress={
-        ensNameConnectedWallet
-          ? ensNameConnectedWallet
-          : unsNameConnectedWallet
-          ? unsNameConnectedWallet
-          : client?.address
-      }
+      displayAddress={domain ?? client?.address}
       walletAddress={client?.address}
       avatarUrl={selfAvatarUrl || ""}
       onDisconnect={() => {

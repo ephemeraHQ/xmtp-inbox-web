@@ -50,7 +50,7 @@ export const AddressInputWrapper = () => {
   const size = useWindowSize();
 
   // UNS Hooks
-  const [unsName, setUnsName] = useState("");
+  const [unsName, setUnsName] = useState<string | null>();
 
   useEffect(() => {
     const getUns = async () => {
@@ -58,12 +58,14 @@ export const AddressInputWrapper = () => {
         const name = await fetchUnsName(recipientWalletAddress);
         setUnsName(name);
       } else {
-        setUnsName("");
+        setUnsName(null);
       }
     };
 
     getUns();
   }, [recipientWalletAddress]);
+
+  const domain = ensName ?? unsName;
 
   return (
     <AddressInput
@@ -74,14 +76,12 @@ export const AddressInputWrapper = () => {
           : ""
       }
       resolvedAddress={{
-        displayAddress: ensName
-          ? ensName
-          : unsName
-          ? unsName
-          : size[0] < 700
-          ? shortAddress(recipientWalletAddress)
-          : recipientWalletAddress,
-        walletAddress: ensName ? recipientWalletAddress : "",
+        displayAddress:
+          domain ??
+          (size[0] < 700
+            ? shortAddress(recipientWalletAddress)
+            : recipientWalletAddress),
+        walletAddress: domain ? recipientWalletAddress : "",
       }}
       onChange={setRecipientEnteredValue}
       isLoading={
@@ -100,7 +100,7 @@ export const AddressInputWrapper = () => {
         setStartedFirstMessage(false);
         setConversationId("");
         setRecipientInputMode(RecipientInputMode.InvalidEntry);
-        setUnsName("");
+        setUnsName(null);
       }}
     />
   );
