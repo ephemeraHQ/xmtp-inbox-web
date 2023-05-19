@@ -1,4 +1,4 @@
-import { DecodedMessage, SortDirection } from "@xmtp/xmtp-js";
+import { DecodedMessage, SortDirection } from "@xmtp/react-sdk";
 import { useCallback, useMemo } from "react";
 import { MESSAGE_LIMIT } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";

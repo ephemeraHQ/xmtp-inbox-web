@@ -1,4 +1,4 @@
-import type { DecodedMessage } from "@xmtp/xmtp-js";
+import type { DecodedMessage } from "@xmtp/react-sdk";
 
 const getUniqueMessages = (msgObj: DecodedMessage[]): DecodedMessage[] => {
   const uniqueMessages = [

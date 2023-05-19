@@ -1,6 +1,6 @@
 //@ts-nocheck
 import fetchMostRecentMessage from "../fetchMostRecentMessage";
-import { expect } from "@jest/globals";
+import { expect, jest } from "@jest/globals";
 
 let mockConvo = {
   messages: jest.fn().mockResolvedValue(["test1", "test2", "test3"]),

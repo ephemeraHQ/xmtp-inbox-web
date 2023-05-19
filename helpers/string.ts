@@ -1,4 +1,4 @@
-import { Conversation } from "@xmtp/xmtp-js";
+import { Conversation } from "@xmtp/react-sdk";
 import { ALLOWED_ENS_SUFFIXES } from "./constants";
 
 export const truncate = (str: string | undefined, length: number): string => {

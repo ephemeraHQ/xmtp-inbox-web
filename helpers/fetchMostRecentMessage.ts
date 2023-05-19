@@ -1,4 +1,4 @@
-import { Conversation, DecodedMessage, SortDirection } from "@xmtp/xmtp-js";
+import { Conversation, DecodedMessage, SortDirection } from "@xmtp/react-sdk";
 import { getConversationId } from "./string";
 
 const fetchMostRecentMessage = async (
