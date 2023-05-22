@@ -3,13 +3,14 @@ import { useCallback, useMemo } from "react";
 import { MESSAGE_LIMIT } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
 import { useMessages } from "@xmtp/react-sdk";
+import { utils } from "ethers";
 
 const useGetMessages = (conversationId: string) => {
   const messages = useXmtpStore((state) =>
     state.convoMessages.get(conversationId),
   );
   const conversation = useXmtpStore((state) =>
-    state.conversations.get(conversationId),
+    state.conversations.get(utils.getAddress(conversationId) ?? conversationId),
   );
   const addMessages = useXmtpStore((state) => state.addMessages);
 
