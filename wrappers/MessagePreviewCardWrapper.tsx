@@ -6,6 +6,7 @@ import {
   XMTP_FEEDBACK_ADDRESS,
   fetchUnsName,
   getConversationId,
+  isValidLongWalletAddress,
   shortAddress,
 } from "../helpers";
 import { address } from "../pages/inbox";
@@ -44,8 +45,12 @@ export const MessagePreviewCardWrapper = ({
 
   useEffect(() => {
     const getUns = async () => {
-      const name = await fetchUnsName(convo?.peerAddress);
-      setPreviewUnsName(name);
+      if (isValidLongWalletAddress(convo?.peerAddress || "")) {
+        const name = await fetchUnsName(convo?.peerAddress);
+        setPreviewUnsName(name);
+      } else {
+        setPreviewUnsName(null);
+      }
     };
 
     getUns();

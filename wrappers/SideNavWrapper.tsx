@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDisconnect, useEnsAvatar, useEnsName } from "wagmi";
 import SideNav from "../component-library/components/SideNav/SideNav";
-import { fetchUnsName, wipeKeys } from "../helpers";
+import { fetchUnsName, isValidLongWalletAddress, wipeKeys } from "../helpers";
 import { address } from "../pages/inbox";
 import { useXmtpStore } from "../store/xmtp";
 import { useClient } from "@xmtp/react-sdk";
@@ -14,8 +14,12 @@ export const SideNavWrapper = () => {
 
   useEffect(() => {
     const getUns = async () => {
-      const name = await fetchUnsName(client?.address);
-      setUnsNameConnected(name);
+      if (isValidLongWalletAddress(client?.address || "")) {
+        const name = await fetchUnsName(client?.address);
+        setUnsNameConnected(name);
+      } else {
+        setUnsNameConnected(null);
+      }
     };
 
     getUns();
