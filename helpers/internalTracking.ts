@@ -10,6 +10,7 @@ tracking is temporary and meant to help
 surface insights about team usage to
 help build a better app. */
 
+//JOHANNA: use when testing
 // List of XMTP Labs team wallets
 export const XMTP_TEAM_WALLETS = [
   "0x5aC09Ca0865B5492a82460acb43ce658Ea6163D2",

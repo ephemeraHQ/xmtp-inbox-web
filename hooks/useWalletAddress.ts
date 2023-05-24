@@ -7,16 +7,17 @@ import {
 } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
 import { address } from "../pages/inbox";
+import useEverynameApi from "./useEverynameApi";
 
 const useWalletAddress = (address?: address | string) => {
   const recipientWalletAddress = useXmtpStore(
     (state) => state.recipientWalletAddress,
   );
-
   const [addressToUse, setAddressToUse] = useState(
     address || recipientWalletAddress,
   );
   const isEns = isEnsAddress(addressToUse);
+  console.log(addressToUse, 'address tp ise', recipientWalletAddress)
 
   // Get full address when only have ENS
   const { data: ensAddress, isLoading: ensAddressLoading } = useEnsAddress({
@@ -29,6 +30,11 @@ const useWalletAddress = (address?: address | string) => {
     address: addressToUse as address,
     enabled: isValidLongWalletAddress(addressToUse),
   });
+
+  const resolutionResult = useEverynameApi(addressToUse, recipientWalletAddress);
+  console.log(resolutionResult, 'resolution result?')
+
+  //Create a useEverynameReverseResolution()
 
   useEffect(() => {
     setAddressToUse(address || recipientWalletAddress);

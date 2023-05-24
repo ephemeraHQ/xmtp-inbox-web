@@ -66,7 +66,12 @@ export const AddressInputWrapper = () => {
   }, [recipientWalletAddress]);
 
   const domain = ensName ?? unsName;
-
+  console.log(
+    domain,
+    "DOMAIN IS??",
+    recipientWalletAddress,
+    recipientEnteredValue,
+  );
   return (
     <AddressInput
       isError={recipientEnteredValue ? !isValid : false}
