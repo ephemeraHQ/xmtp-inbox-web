@@ -6,8 +6,10 @@ import {
   shortAddress,
   truncate,
   isValidRecipientAddressFormat,
+  getAddress,
 } from "../string";
 import { expect } from "@jest/globals";
+import { utils } from "ethers";
 
 describe("truncate", () => {
   it("should return the original string if its length is less than the length param", () => {
@@ -119,5 +121,21 @@ describe("isValidRecipientAddressFormat", () => {
   });
   it("should return false if invalid address", () => {
     expect(isValidRecipientAddressFormat("")).toBe(false);
+  });
+});
+
+describe("getAddress", () => {
+  it("should return a valid checksum'd address if conversationId is in expected format", () => {
+    const conversationId = "0x78bfd39428c32be149892d64bee6c6f90aedeec1";
+    expect(getAddress(conversationId)).toBe(utils.getAddress(conversationId));
+  });
+  it("should return the input if conversationId is not in expected format", () => {
+    const conversationId =
+      "0x78bfd39428c32be149892d64bee6c6f90aedeec1/lens.dev/dm/12345";
+
+    expect(getAddress(conversationId)).toBe(conversationId);
+  });
+  it("should handle empty string input and return empty string", () => {
+    expect(getAddress("")).toBe("");
   });
 });
