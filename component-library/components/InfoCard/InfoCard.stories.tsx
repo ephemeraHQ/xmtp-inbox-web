@@ -33,7 +33,7 @@ InfoCardNoArrow.args = {
   leftIcon: InfoCardIcon.NEW_MESSAGE,
   header: "Send a new message",
   subtext:
-    "Find an existing contact or message someone using their wallet address or ENS address",
+    "Find an existing contact or message someone using their wallet address, ENS, or UNS address",
   onClick: undefined,
 };
 
@@ -42,7 +42,7 @@ InfoCardWithArrow.args = {
   leftIcon: InfoCardIcon.NEW_MESSAGE,
   header: "Send a new message",
   subtext:
-    "Find an existing contact or message someone using their wallet address or ENS address",
+    "Find an existing contact or message someone using their wallet address, ENS, or UNS address",
   onClick: () => {},
 };
 

@@ -47,6 +47,11 @@ LensAddressTag.args = {
   text: "hi.xmtp.lens",
 };
 
+export const UnsAddressTag = Template.bind({});
+UnsAddressTag.args = {
+  text: "hi.xmtp.wallet",
+};
+
 export const TagLoading = Template.bind({});
 TagLoading.args = {
   isLoading: true,
