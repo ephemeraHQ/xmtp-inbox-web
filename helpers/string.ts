@@ -1,5 +1,6 @@
 import { Conversation } from "@xmtp/react-sdk";
 import { ALLOWED_ENS_SUFFIXES } from "./constants";
+import { utils } from "ethers";
 
 export const truncate = (str: string | undefined, length: number): string => {
   if (!str) {
@@ -61,4 +62,14 @@ export const getConversationId = (conversation?: Conversation): string => {
   return conversation?.context?.conversationId
     ? `${conversation?.peerAddress}/${conversation?.context?.conversationId}`
     : conversation?.peerAddress ?? "";
+};
+
+export const getAddress = (conversationId: string) => {
+  let addr;
+  try {
+    addr = utils.getAddress(conversationId);
+  } catch {
+    addr = conversationId;
+  }
+  return addr;
 };
