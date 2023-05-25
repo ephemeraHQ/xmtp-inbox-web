@@ -12,10 +12,10 @@ import {
   Attachment,
   RemoteAttachment,
   ContentTypeRemoteAttachment,
+  RemoteAttachmentCodec,
 } from "xmtp-content-type-remote-attachment";
 import { AttachmentCodec } from "xmtp-content-type-remote-attachment";
 import { Web3Storage } from "web3.storage";
-import { RemoteAttachmentCodec } from "../classes/RemoteAttachment";
 import Upload from "../classes/Upload";
 
 const useSendMessage = (conversationId: address, attachment?: Attachment) => {
