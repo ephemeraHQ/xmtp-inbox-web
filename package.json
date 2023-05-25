@@ -33,8 +33,9 @@
     "@heroicons/react": "^1.0.5",
     "@rainbow-me/rainbowkit": "^0.12.8",
     "@tailwindcss/line-clamp": "^0.4.2",
-    "@xmtp/react-sdk": "1.0.0-preview.32",
+    "@xmtp/react-sdk": "^1.0.0-preview.32",
     "date-fns": "^2.29.3",
+    "dexie": "^3.2.3",
     "emojibase": "^6.1.0",
     "ethers": "^5.7.2",
     "i18next": "^22.4.13",
@@ -98,10 +99,10 @@
     "postcss": "^8.4.21",
     "postcss-loader": "^7.0.2",
     "prettier": "2.8.3",
+    "react-docgen-typescript-plugin": "^1.0.5",
     "start-server-and-test": "^1.15.2",
     "tailwindcss": "^3.2.4",
     "typescript": "^5.0.4",
-    "react-docgen-typescript-plugin": "^1.0.5",
     "walletlink": "^2.4.6"
   }
 }
