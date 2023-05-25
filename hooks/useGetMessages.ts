@@ -9,19 +9,6 @@ const useGetMessages = (conversationId: string) => {
     state.convoMessages.get(conversationId),
   );
 
-<<<<<<< HEAD
-=======
-  const getAddress = (conversationId) => {
-    let addr;
-    try {
-      addr = utils.getAddress(conversationId);
-    } catch {
-      addr = conversationId;
-    }
-    return addr;
-  };
-
->>>>>>> dfee395 (added try/catch for ethers check)
   const conversation = useXmtpStore((state) =>
     state.conversations.get(getAddress(conversationId)),
   );

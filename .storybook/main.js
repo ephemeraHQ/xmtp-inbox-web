@@ -11,9 +11,6 @@ module.exports = {
   core: {
     builder: "@storybook/builder-webpack5",
   },
-  typescript: {
-    reactDocgen: "react-docgen-typescript-plugin",
-  },
   webpackFinal: async (config) => {
     config.module.rules.push({
       test: /\.css$/i,
