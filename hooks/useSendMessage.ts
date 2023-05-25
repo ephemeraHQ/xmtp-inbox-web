@@ -37,7 +37,7 @@ const useSendMessage = (conversationId: address, attachment?: Attachment) => {
   const setConversations = useXmtpStore((state) => state.setConversations);
 
   const sendMessage = useCallback(
-    async (message: string) => {
+    async (message: string | Attachment) => {
       if (attachment) {
         const web3Storage = new Web3Storage({
           token: process.env.NEXT_PUBLIC_WEB3_STORAGE_TOKEN as string,
@@ -77,7 +77,7 @@ const useSendMessage = (conversationId: address, attachment?: Attachment) => {
             recipientWalletAddress,
             remoteAttachment,
             {
-              contentFallback: message,
+              contentFallback: message as string,
               contentType: ContentTypeRemoteAttachment,
             },
           );
@@ -88,7 +88,7 @@ const useSendMessage = (conversationId: address, attachment?: Attachment) => {
           }
         } else {
           await sendMessageFromHook(remoteAttachment, {
-            contentFallback: message,
+            contentFallback: message as string,
             contentType: ContentTypeRemoteAttachment,
           });
         }
@@ -100,7 +100,7 @@ const useSendMessage = (conversationId: address, attachment?: Attachment) => {
         ) {
           const conversation = await startConversation(
             recipientWalletAddress,
-            message,
+            message as string,
           );
 
           if (conversation) {
@@ -109,7 +109,7 @@ const useSendMessage = (conversationId: address, attachment?: Attachment) => {
             setConversations(new Map(conversations));
           }
         } else {
-          await sendMessageFromHook(message);
+          await sendMessageFromHook(message as string);
         }
 
         /* The emitMsgSentEvent function is called only when
