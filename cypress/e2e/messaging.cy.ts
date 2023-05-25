@@ -58,7 +58,7 @@ describe(
       checkElement("message-to-input").type("invalidUser");
       cy.get(`[data-testid=message-to-subtext]`, { timeout: TIMEOUT }).should(
         "have.text",
-        "Please enter a valid 0x wallet or ENS address",
+        "Please enter a valid 0x wallet, ENS, or UNS address",
       );
     });
   },

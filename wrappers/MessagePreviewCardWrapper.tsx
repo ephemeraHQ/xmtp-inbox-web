@@ -1,10 +1,12 @@
 import { Conversation } from "@xmtp/react-sdk";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useEnsAvatar, useEnsName } from "wagmi";
 import { MessagePreviewCard } from "../component-library/components/MessagePreviewCard/MessagePreviewCard";
 import {
   XMTP_FEEDBACK_ADDRESS,
+  fetchUnsName,
   getConversationId,
+  isValidLongWalletAddress,
   shortAddress,
 } from "../helpers";
 import { address } from "../pages/inbox";
@@ -38,6 +40,22 @@ export const MessagePreviewCardWrapper = ({
     address: convo?.peerAddress as address,
   });
 
+  // Get UNS name
+  const [previewUnsName, setPreviewUnsName] = useState<string | null>();
+
+  useEffect(() => {
+    const getUns = async () => {
+      if (isValidLongWalletAddress(convo?.peerAddress || "")) {
+        const name = await fetchUnsName(convo?.peerAddress);
+        setPreviewUnsName(name);
+      } else {
+        setPreviewUnsName(null);
+      }
+    };
+
+    getUns();
+  }, [convo?.peerAddress]);
+
   // Helpers
   const isSelected = conversationId === getConversationId(convo);
 
@@ -68,7 +86,11 @@ export const MessagePreviewCardWrapper = ({
         ) : undefined
       }
       datetime={previewMessage?.sent}
-      displayAddress={previewEnsName || shortAddress(convo?.peerAddress || "")}
+      displayAddress={
+        previewEnsName ||
+        previewUnsName ||
+        shortAddress(convo?.peerAddress || "")
+      }
       onClick={() => {
         if (convo) {
           onConvoClick?.(convo);

@@ -43,7 +43,7 @@ export const FullMessageWrapper = ({ msg, idx }: FullMessageWrapperProps) => {
       isError={!!error}
       key={`${msg.id}_${idx}`}
       from={{
-        displayAddress: ensName ? ensName : shortAddress(msg.senderAddress),
+        displayAddress: ensName ?? shortAddress(msg.senderAddress),
         isSelf: client?.address === msg.senderAddress,
       }}
       datetime={msg.sent}

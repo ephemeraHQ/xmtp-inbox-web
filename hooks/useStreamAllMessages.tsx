@@ -1,6 +1,11 @@
 import { DecodedMessage } from "@xmtp/react-sdk";
 import { useEffect, useState } from "react";
-import { getConversationId, shortAddress, truncate } from "../helpers";
+import {
+  getConversationId,
+  shortAddress,
+  truncate,
+  fetchUnsName,
+} from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
 import { fetchEnsName } from "@wagmi/core";
 import { useAccount } from "wagmi";
@@ -56,14 +61,17 @@ export const useStreamAllMessages = () => {
             message.senderAddress !== walletAddress &&
             !browserVisible
           ) {
-            const name = await fetchEnsName({
+            const ensName = await fetchEnsName({
               address: message.senderAddress as address,
             });
+            const unsName = await fetchUnsName(message?.senderAddress);
 
             navigator.serviceWorker.ready.then((registration) => {
               registration.showNotification("XMTP", {
                 body: `${
-                  name || shortAddress(message.senderAddress ?? "")
+                  ensName ||
+                  unsName ||
+                  shortAddress(message.senderAddress ?? "")
                 }\n${truncate(message.content, 75)}`,
                 icon: "192.png",
               });
