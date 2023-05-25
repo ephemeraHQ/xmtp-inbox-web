@@ -77,7 +77,7 @@ const useSendMessage = (conversationId: address, attachment?: Attachment) => {
             recipientWalletAddress,
             remoteAttachment,
             {
-              contentFallback: message as string,
+              contentFallback: remoteAttachment.filename,
               contentType: ContentTypeRemoteAttachment,
             },
           );
@@ -88,7 +88,7 @@ const useSendMessage = (conversationId: address, attachment?: Attachment) => {
           }
         } else {
           await sendMessageFromHook(remoteAttachment, {
-            contentFallback: message as string,
+            contentFallback: remoteAttachment.filename,
             contentType: ContentTypeRemoteAttachment,
           });
         }
