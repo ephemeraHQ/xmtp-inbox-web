@@ -1,5 +1,5 @@
 import React from "react";
-import { isEnsAddress } from "../../../helpers";
+import { isEnsAddress, isUnsAddress } from "../../../helpers";
 import { iconMapping, TagIcon } from "./iconMapping";
 
 interface TagProps {
@@ -26,6 +26,8 @@ export const Tag = ({ text, icon, isLoading = false }: TagProps) => {
       iconMapping[TagIcon.ENS_ADDRESS]
     ) : text.endsWith(".lens") ? (
       iconMapping[TagIcon.LENS_ADDRESS]
+    ) : isUnsAddress(text) ? (
+      iconMapping[TagIcon.UNS_ADDRESS]
     ) : (
       <></>
     );

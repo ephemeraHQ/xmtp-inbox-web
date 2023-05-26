@@ -1,12 +1,15 @@
 //@ts-nocheck
 import {
   isEnsAddress,
+  isUnsAddress,
   getConversationId,
   shortAddress,
   truncate,
   isValidRecipientAddressFormat,
+  getAddress,
 } from "../string";
 import { expect } from "@jest/globals";
+import { utils } from "ethers";
 
 describe("truncate", () => {
   it("should return the original string if its length is less than the length param", () => {
@@ -61,6 +64,25 @@ describe("isEnsAddress", () => {
   });
 });
 
+describe("isUnsAddress", () => {
+  it("should return true if address ends with .wallet", () => {
+    expect(isUnsAddress("test.wallet")).toBe(true);
+  });
+  it("should return false if address does not end with any UNS suffix", () => {
+    expect(isUnsAddress("01201209483434")).toBe(false);
+  });
+  it("should return false if address includes but does not end with .wallet", () => {
+    expect(isUnsAddress("test.notwallet")).toBe(false);
+    expect(isUnsAddress("wallet.test")).toBe(false);
+  });
+  it("should return false if invalid address", () => {
+    expect(isUnsAddress("")).toBe(false);
+  });
+  it("should return true for subdomain .wallet addresses", () => {
+    expect(isUnsAddress("test.test.wallet")).toBe(true);
+  });
+});
+
 describe("getConversationId", () => {
   let conversation = {
     context: {
@@ -99,5 +121,21 @@ describe("isValidRecipientAddressFormat", () => {
   });
   it("should return false if invalid address", () => {
     expect(isValidRecipientAddressFormat("")).toBe(false);
+  });
+});
+
+describe("getAddress", () => {
+  it("should return a valid checksum'd address if conversationId is in expected format", () => {
+    const conversationId = "0x78bfd39428c32be149892d64bee6c6f90aedeec1";
+    expect(getAddress(conversationId)).toBe(utils.getAddress(conversationId));
+  });
+  it("should return the input if conversationId is not in expected format", () => {
+    const conversationId =
+      "0x78bfd39428c32be149892d64bee6c6f90aedeec1/lens.dev/dm/12345";
+
+    expect(getAddress(conversationId)).toBe(conversationId);
+  });
+  it("should handle empty string input and return empty string", () => {
+    expect(getAddress("")).toBe("");
   });
 });
