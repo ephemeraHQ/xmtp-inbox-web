@@ -1,6 +1,6 @@
 import React from "react";
 import { classNames } from "../../../helpers";
-import loaderStyles from "../../../.storybook/Loaders/Loader.module.css";
+import styles from "./Loaders.module.css";
 
 interface ButtonLoaderProps {
   /**
@@ -26,14 +26,10 @@ export const ButtonLoader = ({
       <div
         className={classNames(
           "rounded-full",
-          loaderStyles.btnLoader,
-          color === "primary"
-            ? loaderStyles.btnLoaderLight
-            : loaderStyles.btnLoaderDark,
-          size === "small"
-            ? loaderStyles.btnLoaderXs
-            : loaderStyles.btnLoaderSm,
-          loaderStyles.animateSpin,
+          styles.btnLoader,
+          color === "primary" ? styles.btnLoaderLight : styles.btnLoaderDark,
+          size === "small" ? styles.btnLoaderXs : styles.btnLoaderSm,
+          styles.animateSpin,
         )}
       />
     </div>

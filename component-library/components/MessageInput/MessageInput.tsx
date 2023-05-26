@@ -34,7 +34,7 @@ interface InputProps {
   /**
    * Function to set content attachment in state for the message input
    */
-  setAttachment: Dispatch<SetStateAction<any>>;
+  setAttachment?: Dispatch<SetStateAction<any>>;
 }
 
 const imageTypes = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
@@ -94,7 +94,7 @@ export const MessageInput = ({
 
   const onAttachmentChange = async (e: ChangeEvent<HTMLInputElement>) => {
     setError(undefined);
-    if (e.target?.files?.length) {
+    if (e.target?.files?.length && setAttachment) {
       const file = e.target.files[0];
 
       // Currently images are the only attachment type supported
@@ -131,7 +131,7 @@ export const MessageInput = ({
       // resets the value so the same image can be re-uploaded after a deletion
       e.target.value = "";
     } else {
-      setAttachment(undefined);
+      setAttachment?.(undefined);
     }
   };
 
@@ -180,7 +180,7 @@ export const MessageInput = ({
                 if (value || attachment) {
                   onSubmit?.(value);
                   setValue("");
-                  setAttachment(undefined);
+                  setAttachment?.(undefined);
                   setAttachmentPreview(undefined);
                 }
               }
@@ -227,7 +227,7 @@ export const MessageInput = ({
               if (value || attachment) {
                 onSubmit?.((value as string) || (attachment as Attachment));
                 setValue("");
-                setAttachment(undefined);
+                setAttachment?.(undefined);
                 setAttachmentPreview(undefined);
                 textAreaRef.current?.focus();
               }

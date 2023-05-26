@@ -28,3 +28,10 @@ export const MessagePreviewMessageLoading = Template.bind({});
 MessagePreviewMessageLoading.args = {
   isLoading: true,
 };
+
+export const MessagePreviewAttachment = Template.bind({});
+MessagePreviewAttachment.args = {
+  text: "Attachment",
+  displayAddress: "hi.xmtp.eth",
+  datetime: new Date(),
+};
