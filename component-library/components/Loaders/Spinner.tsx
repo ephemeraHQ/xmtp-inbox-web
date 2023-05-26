@@ -1,4 +1,4 @@
-import loaderStyles from "./Loader.module.css";
+import loaderStyles from "../../../.storybook/Loaders/Loader.module.css";
 
 // To-do: this is temporary; update with finalized loader
 export const Spinner = (): JSX.Element | null => (

@@ -1,6 +1,6 @@
 import React from "react";
 import { classNames } from "../../../helpers";
-import loaderStyles from "../../../styles/Loader.module.css";
+import loaderStyles from "../../../.storybook/Loaders/Loader.module.css";
 
 interface ButtonLoaderProps {
   /**

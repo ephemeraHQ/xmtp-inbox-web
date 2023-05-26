@@ -1,5 +1,7 @@
 {
-  "plugins": ["prettier"],
+  "plugins": [
+    "prettier"
+  ],
   "rules": {
     "prettier/prettier": "error",
     "jsx-a11y/label-has-associated-control": [
@@ -9,5 +11,10 @@
       }
     ]
   },
-  "extends": ["next", "next/core-web-vitals", "plugin:prettier/recommended"]
+  "extends": [
+    "next",
+    "next/core-web-vitals",
+    "plugin:prettier/recommended",
+    "plugin:storybook/recommended"
+  ]
 }

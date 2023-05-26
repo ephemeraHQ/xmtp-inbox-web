@@ -7,22 +7,29 @@ module.exports = {
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
   ],
-  framework: "@storybook/react",
-  core: {
-    builder: "@storybook/builder-webpack5",
+  framework: {
+    name: "@storybook/nextjs",
+    options: {},
   },
   webpackFinal: async (config) => {
     config.module.rules.push({
-      test: /\.css$/i,
+      test: /\.css$/,
       use: [
         {
           loader: "postcss-loader",
-          options: { implementation: require.resolve("postcss") },
+          options: {
+            postcssOptions: {
+              config: path.resolve(__dirname, "../postcss.config.js"),
+            },
+          },
         },
       ],
       include: path.resolve(__dirname, "../"),
     });
     // Return the altered config
     return config;
+  },
+  docs: {
+    autodocs: true,
   },
 };
