@@ -82,6 +82,11 @@ export const MessagePreviewCardWrapper = ({
                 ? "Attachment"
                 : previewMessage?.content
             }
+            // None of these props are needed for this preview view.
+            // If there is an error or loading of attachment, the message preview still has the same view.
+            isSelf={false}
+            isLoading={false}
+            isError={false}
           />
         ) : undefined
       }
