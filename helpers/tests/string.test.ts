@@ -1,6 +1,6 @@
 //@ts-nocheck
 import {
-  isEnsAddress,
+  isEverynameAddress,
   isUnsAddress,
   getConversationId,
   shortAddress,
@@ -25,20 +25,20 @@ describe("truncate", () => {
 
 describe("isEnsAddress", () => {
   it("should return true if address ends with .eth", () => {
-    expect(isEnsAddress("test.eth")).toBe(true);
+    expect(isEverynameAddress("test.eth")).toBe(true);
   });
   it("should return false if address does not include eth", () => {
-    expect(isEnsAddress("01201209483434")).toBe(false);
+    expect(isEverynameAddress("01201209483434")).toBe(false);
   });
   it("should return false if address includes but does not end with .eth", () => {
-    expect(isEnsAddress("test.noteth")).toBe(false);
-    expect(isEnsAddress("eth.test")).toBe(false);
+    expect(isEverynameAddress("test.noteth")).toBe(false);
+    expect(isEverynameAddress("eth.test")).toBe(false);
   });
   it("should return false if invalid address", () => {
-    expect(isEnsAddress("")).toBe(false);
+    expect(isEverynameAddress("")).toBe(false);
   });
   it("should return true for cb.id addresses", () => {
-    expect(isEnsAddress("test.cb.id")).toBe(true);
+    expect(isEverynameAddress("test.cb.id")).toBe(true);
   });
 
   describe("shortAddress", () => {

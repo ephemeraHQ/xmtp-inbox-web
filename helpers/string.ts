@@ -1,5 +1,5 @@
 import { Conversation } from "@xmtp/react-sdk";
-import { ALLOWED_ENS_SUFFIXES, ALLOWED_UNS_SUFFIXES } from "./constants";
+import { ALLOWED_EVERYNAME_SUFFIXES, ALLOWED_UNS_SUFFIXES } from "./constants";
 import { utils } from "ethers";
 
 export const truncate = (str: string | undefined, length: number): string => {
@@ -18,22 +18,22 @@ export const formatDate = (d: Date | undefined): string =>
 export const formatTime = (d: Date | undefined): string =>
   d
     ? d
-        .toLocaleTimeString(undefined, {
-          hour12: true,
-          hour: "numeric",
-          minute: "2-digit",
-        })
-        // ICU 72.1 may use different unicode space characters
-        .replace(/\u202f|\u2009/g, " ")
+      .toLocaleTimeString(undefined, {
+        hour12: true,
+        hour: "numeric",
+        minute: "2-digit",
+      })
+      // ICU 72.1 may use different unicode space characters
+      .replace(/\u202f|\u2009/g, " ")
     : "";
 
-export const isEnsAddress = (address: string): boolean => {
+export const isEverynameAddress = (address: string): boolean => {
   // Bail out early if empty string or a string without any dots
   if (!address || !address.includes(".")) {
     return false;
   }
 
-  return ALLOWED_ENS_SUFFIXES.some((suffix) => address.endsWith(suffix));
+  return ALLOWED_EVERYNAME_SUFFIXES.some((suffix) => address.endsWith(suffix));
 };
 
 export const isUnsAddress = (address: string): boolean => {
@@ -95,11 +95,61 @@ export const fetchUnsAddress = async (
   }
 };
 
+export const fetchEverynameAddress = async (
+  name: string | undefined,
+): Promise<string | null> => {
+  if (name && process.env.NEXT_PUBLIC_EVERYNAME_API_KEY) {
+    try {
+      const response = await fetch(
+        `https://api.everyname.xyz/forward?domain=${name}`,
+        {
+          headers: {
+            Accept: "application/json",
+            "api-key": process.env.NEXT_PUBLIC_EVERYNAME_API_KEY,
+          },
+        },
+      );
+      const data = await response.json();
+      const { address } = data;
+      return address;
+    } catch (error) {
+      return null;
+    }
+  } else {
+    return null;
+  }
+};
+
+export const fetchEverynameName = async (
+  address: string | undefined,
+): Promise<string | null> => {
+  if (address && process.env.NEXT_PUBLIC_EVERYNAME_API_KEY) {
+    try {
+      const response = await fetch(
+        `https://api.everyname.xyz/reverse?address=${address}&network=eth`, //make network dynamic if you support non-evm chains in the future (for example you can take chaindId from wallet provider)
+        {
+          headers: {
+            Accept: "application/json",
+            "api-key": process.env.NEXT_PUBLIC_EVERYNAME_API_KEY,
+          },
+        },
+      );
+      const data = await response.json();
+      const { domain } = data;
+      return domain;
+    } catch (error) {
+      return null;
+    }
+  } else {
+    return null;
+  }
+};
+
 export const isValidRecipientAddressFormat = (
   recipientWalletAddress: string,
 ) => {
   return (
-    isEnsAddress(recipientWalletAddress) ||
+    isEverynameAddress(recipientWalletAddress) ||
     isUnsAddress(recipientWalletAddress) ||
     (recipientWalletAddress?.startsWith("0x") &&
       recipientWalletAddress?.length === 42)

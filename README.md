@@ -26,13 +26,16 @@ This app has not undergone a formal security audit.
 
 The XMTP Inbox app uses Infura to enable wallet apps to connect to the Ethereum blockchain.
 
-Add your Infura API key to `.env.local` at the root of `xmtp-inbox-web`.
+Add your Infura and Everyname API key(s) to `.env.local` at the root of `xmtp-inbox-web`.
 
 ```
 NEXT_PUBLIC_INFURA_ID={YOUR_INFURA_API_KEY}
+NEXT_PUBLIC_EVERYNAME_API_KEY={YOUR_EVERYNAME_API_KEY}
 ```
 
 To learn how to create an Infura API key, see [Getting started](https://docs.infura.io/infura/getting-started) in the Infura docs.
+
+You can create a temporary Everyname API key [here](https://docs.everyname.xyz/api/get-a-trial-api-key) or request one [here](https://weightless.so/hgd2zt6r).
 
 ### Install the package
 

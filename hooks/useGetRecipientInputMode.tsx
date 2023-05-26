@@ -1,11 +1,12 @@
 import { fetchEnsAddress } from "@wagmi/core";
 import { useEffect } from "react";
 import {
-  isEnsAddress,
+  isEverynameAddress,
   isUnsAddress,
   isValidLongWalletAddress,
   RecipientInputMode,
   fetchUnsAddress,
+  fetchEverynameAddress,
 } from "../helpers";
 import { address } from "../pages/inbox";
 import { useXmtpStore } from "../store/xmtp";
@@ -76,11 +77,9 @@ const useGetRecipientInputMode = () => {
   useEffect(() => {
     const handleSubmit = async () => {
       if (recipientEnteredValue) {
-        if (isEnsAddress(recipientEnteredValue)) {
+        if (isEverynameAddress(recipientEnteredValue)) {
           setRecipientInputMode(RecipientInputMode.FindingEntry);
-          const address = await fetchEnsAddress({
-            name: recipientEnteredValue,
-          });
+          const address = await fetchEverynameAddress(recipientEnteredValue);
           if (address) {
             checkIfOnNetwork(address);
           } else {

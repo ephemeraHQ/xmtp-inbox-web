@@ -7,6 +7,7 @@ import {
   isValidLongWalletAddress,
   RecipientInputMode,
   shortAddress,
+  fetchEverynameName,
 } from "../helpers";
 import useGetRecipientInputMode from "../hooks/useGetRecipientInputMode";
 import useWalletAddress from "../hooks/useWalletAddress";
@@ -40,8 +41,6 @@ export const AddressInputWrapper = () => {
     setRecipientEnteredValue,
   } = useGetRecipientInputMode();
 
-  const { isValid, ensName } = useWalletAddress();
-
   // Wagmi Hooks
   const { data: recipientAvatarUrl, isLoading: avatarLoading } = useEnsAvatar({
     address: recipientWalletAddress as address,
@@ -49,13 +48,16 @@ export const AddressInputWrapper = () => {
 
   const size = useWindowSize();
 
-  // UNS Hooks
+  // Domain name Hooks
   const [unsName, setUnsName] = useState<string | null>();
+  const [everynameName, setEverynameName] = useState<string | null>();
+  const [isValid, setisValid] = useState<boolean>();
 
   useEffect(() => {
     const getUns = async () => {
       if (isValidLongWalletAddress(recipientWalletAddress)) {
         const name = await fetchUnsName(recipientWalletAddress);
+        setisValid(true);
         setUnsName(name);
       } else {
         setUnsName(null);
@@ -65,13 +67,22 @@ export const AddressInputWrapper = () => {
     getUns();
   }, [recipientWalletAddress]);
 
-  const domain = ensName ?? unsName;
-  console.log(
-    domain,
-    "DOMAIN IS??",
-    recipientWalletAddress,
-    recipientEnteredValue,
-  );
+  useEffect(() => {
+    const getEveryname = async () => {
+      if (isValidLongWalletAddress(recipientWalletAddress)) {
+        const name = await fetchEverynameName(recipientWalletAddress);
+        setisValid(true);
+        setEverynameName(name);
+      } else {
+        setEverynameName(null);
+      }
+    };
+
+    getEveryname();
+  }, [recipientWalletAddress]);
+
+  const domain = everynameName ?? unsName;
+
   return (
     <AddressInput
       isError={recipientEnteredValue ? !isValid : false}
