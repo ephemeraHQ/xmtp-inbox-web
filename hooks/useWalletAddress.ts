@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useEnsAddress, useEnsName } from "wagmi";
 import {
-  isEnsAddress,
+  isEverynameAddress,
   isValidLongWalletAddress,
   isValidRecipientAddressFormat,
 } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
 import { address } from "../pages/inbox";
-import useEverynameApi from "./useEverynameApi";
 
+//JOHANNA: This hook should be refactored to use Everynames API instead
 const useWalletAddress = (address?: address | string) => {
   const recipientWalletAddress = useXmtpStore(
     (state) => state.recipientWalletAddress,
@@ -16,13 +16,12 @@ const useWalletAddress = (address?: address | string) => {
   const [addressToUse, setAddressToUse] = useState(
     address || recipientWalletAddress,
   );
-  const isEns = isEnsAddress(addressToUse);
-  console.log(addressToUse, 'address tp ise', recipientWalletAddress)
+  const isEns = isEverynameAddress(addressToUse);
 
   // Get full address when only have ENS
   const { data: ensAddress, isLoading: ensAddressLoading } = useEnsAddress({
     name: addressToUse,
-    enabled: isEnsAddress(addressToUse),
+    enabled: isEverynameAddress(addressToUse),
   });
 
   // Get ENS if exists from full address
@@ -30,11 +29,6 @@ const useWalletAddress = (address?: address | string) => {
     address: addressToUse as address,
     enabled: isValidLongWalletAddress(addressToUse),
   });
-
-  const resolutionResult = useEverynameApi(addressToUse, recipientWalletAddress);
-  console.log(resolutionResult, 'resolution result?')
-
-  //Create a useEverynameReverseResolution()
 
   useEffect(() => {
     setAddressToUse(address || recipientWalletAddress);

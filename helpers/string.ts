@@ -18,13 +18,13 @@ export const formatDate = (d: Date | undefined): string =>
 export const formatTime = (d: Date | undefined): string =>
   d
     ? d
-      .toLocaleTimeString(undefined, {
-        hour12: true,
-        hour: "numeric",
-        minute: "2-digit",
-      })
-      // ICU 72.1 may use different unicode space characters
-      .replace(/\u202f|\u2009/g, " ")
+        .toLocaleTimeString(undefined, {
+          hour12: true,
+          hour: "numeric",
+          minute: "2-digit",
+        })
+        // ICU 72.1 may use different unicode space characters
+        .replace(/\u202f|\u2009/g, " ")
     : "";
 
 export const isEverynameAddress = (address: string): boolean => {
