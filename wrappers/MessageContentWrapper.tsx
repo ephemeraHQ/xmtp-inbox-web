@@ -24,17 +24,10 @@ const MessageContentWrapper = ({
     shortcodes: ["emojibase"],
   });
 
-  return typeof content !== "string" && content.url ? (
-    <RemoteAttachmentMessageTile
-      content={content}
-      isSelf={isSelf}
-      isLoading={isLoading}
-      isError={isError}
-    />
-  ) : (
+  return typeof content === "string" ? (
     <span className="interweave-content" data-testid="message-tile-text">
       <Interweave
-        content={content as string}
+        content={content}
         newWindow
         escapeHtml
         onClick={(event: MouseEvent<HTMLDivElement>) => event.stopPropagation()}
@@ -50,7 +43,14 @@ const MessageContentWrapper = ({
         emojiSource={source}
       />
     </span>
-  );
+  ) : content.url ? (
+    <RemoteAttachmentMessageTile
+      content={content}
+      isSelf={isSelf}
+      isLoading={isLoading}
+      isError={isError}
+    />
+  ) : null;
 };
 
 export default MessageContentWrapper;

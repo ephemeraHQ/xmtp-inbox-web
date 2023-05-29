@@ -6,6 +6,7 @@ import React, {
   useRef,
   Dispatch,
   SetStateAction,
+  useCallback,
 } from "react";
 import { Attachment } from "xmtp-content-type-remote-attachment";
 import { ArrowUpIcon, PaperClipIcon } from "@heroicons/react/outline";
@@ -92,48 +93,51 @@ export const MessageInput = ({
     inputFile?.current?.click();
   };
 
-  const onAttachmentChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    setError(undefined);
-    if (e.target?.files?.length && setAttachment) {
-      const file = e.target.files[0];
+  const onAttachmentChange = useCallback(
+    async (e: ChangeEvent<HTMLInputElement>) => {
+      setError(undefined);
+      if (e.target?.files?.length && setAttachment) {
+        const file = e.target.files[0];
 
-      // Currently images are the only attachment type supported
-      if (!imageTypes.includes(file.type)) {
-        setError("File must be of valid file format");
-        return;
-      }
-      const fileReader = new FileReader();
-      fileReader.addEventListener("load", async () => {
-        const data = fileReader.result;
-
-        if (!(data instanceof ArrayBuffer)) {
+        // Currently images are the only attachment type supported
+        if (!imageTypes.includes(file.type)) {
+          setError("File must be of valid file format");
           return;
         }
+        const fileReader = new FileReader();
+        fileReader.addEventListener("load", async () => {
+          const data = fileReader.result;
 
-        const imageAttachment: Attachment = {
-          filename: file.name,
-          mimeType: file.type,
-          data: new Uint8Array(data),
-        };
+          if (!(data instanceof ArrayBuffer)) {
+            return;
+          }
 
-        setAttachmentPreview(
-          URL.createObjectURL(
-            new Blob([Buffer.from(data)], {
-              type: imageAttachment.mimeType,
-            }),
-          ),
-        );
+          const imageAttachment: Attachment = {
+            filename: file.name,
+            mimeType: file.type,
+            data: new Uint8Array(data),
+          };
 
-        setAttachment(imageAttachment);
-      });
+          setAttachmentPreview(
+            URL.createObjectURL(
+              new Blob([Buffer.from(data)], {
+                type: imageAttachment.mimeType,
+              }),
+            ),
+          );
 
-      fileReader.readAsArrayBuffer(file);
-      // resets the value so the same image can be re-uploaded after a deletion
-      e.target.value = "";
-    } else {
-      setAttachment?.(undefined);
-    }
-  };
+          setAttachment(imageAttachment);
+        });
+
+        fileReader.readAsArrayBuffer(file);
+        // resets the value so the same image can be re-uploaded after a deletion
+        e.target.value = "";
+      } else {
+        setAttachment?.(undefined);
+      }
+    },
+    [setAttachment],
+  );
 
   return (
     <form className="flex items-center px-1">
@@ -150,7 +154,9 @@ export const MessageInput = ({
         id="file"
         ref={inputFile}
         onInput={onAttachmentChange}
-        className="hidden"></input>
+        accept={imageTypes.join(", ")}
+        className="hidden"
+      />
       <div
         className={classNames(
           "flex",
