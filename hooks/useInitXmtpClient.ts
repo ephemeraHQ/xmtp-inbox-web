@@ -153,7 +153,7 @@ const useInitXmtpClient = () => {
           } else {
             // no keys found, but maybe the address has already been created
             // let's check
-            const canMessage = await canMessageUser([address], clientOptions);
+            const canMessage = await canMessageUser(address, clientOptions);
             if (canMessage) {
               // resolve client promise
               createResolve();
