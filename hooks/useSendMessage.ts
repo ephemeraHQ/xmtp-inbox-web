@@ -55,9 +55,6 @@ const useSendMessage = (conversationId: address, attachment?: Attachment) => {
 
         const cid = await web3Storage.put([upload]);
         const url = `https://${cid}.ipfs.w3s.link/XMTPEncryptedContent`;
-
-        console.log(`url is`, url);
-
         const remoteAttachment: RemoteAttachment = {
           url: url,
           contentDigest: encryptedEncoded.digest,
