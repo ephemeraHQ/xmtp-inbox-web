@@ -1,4 +1,5 @@
-import "../styles/globals.css";
+import "./styles/globals.css";
+
 import i18n from "../i18n";
 import React, { Suspense, useEffect } from "react";
 import { I18nextProvider } from "react-i18next";

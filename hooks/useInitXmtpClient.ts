@@ -11,6 +11,10 @@ import {
 import { useClient, useCanMessage } from "@xmtp/react-sdk";
 import { mockConnector } from "../helpers/mockConnector";
 import { Signer } from "ethers";
+import {
+  AttachmentCodec,
+  RemoteAttachmentCodec,
+} from "xmtp-content-type-remote-attachment";
 
 type ClientStatus = "new" | "created" | "enabled";
 
@@ -39,6 +43,7 @@ const clientOptions = {
   apiUrl: process.env.NEXT_PUBLIC_XMTP_API_URL,
   env: getEnv(),
   appVersion: getAppVersion(),
+  codecs: [new AttachmentCodec(), new RemoteAttachmentCodec()],
 };
 
 const useInitXmtpClient = () => {

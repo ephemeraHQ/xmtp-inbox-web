@@ -1,14 +1,25 @@
-import React, { ChangeEvent, useEffect, useLayoutEffect, useRef } from "react";
-import { ArrowUpIcon } from "@heroicons/react/solid";
+import React, {
+  ChangeEvent,
+  useEffect,
+  useState,
+  useLayoutEffect,
+  useRef,
+  Dispatch,
+  SetStateAction,
+  useCallback,
+} from "react";
+import { Attachment } from "xmtp-content-type-remote-attachment";
+import { ArrowUpIcon, PaperClipIcon } from "@heroicons/react/outline";
 import { IconButton } from "../IconButton/IconButton";
 import { classNames } from "../../../helpers";
 import { useTranslation } from "react-i18next";
+import { XCircleIcon } from "@heroicons/react/solid";
 
 interface InputProps {
   /**
    * What happens on a submit?
    */
-  onSubmit?: (msg: string) => Promise<void>;
+  onSubmit?: (msg: string | Attachment) => Promise<void>;
   /**
    * Is the CTA button disabled?
    */
@@ -17,16 +28,36 @@ interface InputProps {
    * Rerender component?
    */
   conversationId?: string;
+  /**
+   * Content attachment
+   */
+  attachment?: Attachment;
+  /**
+   * Function to set content attachment in state for the message input
+   */
+  setAttachment?: Dispatch<SetStateAction<any>>;
 }
+
+const imageTypes = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
 
 export const MessageInput = ({
   onSubmit,
   isDisabled,
   conversationId,
+  attachment,
+  setAttachment,
 }: InputProps) => {
   const { t } = useTranslation();
   let textAreaRef = useRef<HTMLTextAreaElement>(null);
   const [value, setValue] = React.useState("");
+
+  const inputFile = useRef<HTMLInputElement | null>(null);
+  const [attachmentPreview, setAttachmentPreview]: [
+    string | undefined,
+    Function,
+  ] = useState();
+  const [error, setError]: [string, Function] = useState("");
+
   const onChange = (event: ChangeEvent<HTMLTextAreaElement>) =>
     setValue(event.target.value);
   const borderStyles =
@@ -54,13 +85,78 @@ export const MessageInput = ({
   useEffect(() => {
     textAreaRef.current?.focus();
     setValue("");
+    setAttachmentPreview(undefined);
   }, [conversationId]);
 
+  const onButtonClick = () => {
+    // Current points to the mounted file input element
+    inputFile?.current?.click();
+  };
+
+  const onAttachmentChange = useCallback(
+    async (e: ChangeEvent<HTMLInputElement>) => {
+      setError(undefined);
+      if (e.target?.files?.length && setAttachment) {
+        const file = e.target.files[0];
+
+        // Currently images are the only attachment type supported
+        if (!imageTypes.includes(file.type)) {
+          setError("File must be of valid file format");
+          return;
+        }
+        const fileReader = new FileReader();
+        fileReader.addEventListener("load", async () => {
+          const data = fileReader.result;
+
+          if (!(data instanceof ArrayBuffer)) {
+            return;
+          }
+
+          const imageAttachment: Attachment = {
+            filename: file.name,
+            mimeType: file.type,
+            data: new Uint8Array(data),
+          };
+
+          setAttachmentPreview(
+            URL.createObjectURL(
+              new Blob([Buffer.from(data)], {
+                type: imageAttachment.mimeType,
+              }),
+            ),
+          );
+
+          setAttachment(imageAttachment);
+        });
+
+        fileReader.readAsArrayBuffer(file);
+        // resets the value so the same image can be re-uploaded after a deletion
+        e.target.value = "";
+      } else {
+        setAttachment?.(undefined);
+      }
+    },
+    [setAttachment],
+  );
+
   return (
-    <form>
+    <form className="flex items-center px-1">
       <label htmlFor="chat" className="sr-only">
         {t("messages.message_field_prompt")}
       </label>
+      <PaperClipIcon
+        width={36}
+        className="mb-4 ml-4 cursor-pointer bg-gray-100 p-2 rounded-full"
+        onClick={onButtonClick}
+      />
+      <input
+        type="file"
+        id="file"
+        ref={inputFile}
+        onInput={onAttachmentChange}
+        accept={imageTypes.join(", ")}
+        className="hidden"
+      />
       <div
         className={classNames(
           "flex",
@@ -72,29 +168,61 @@ export const MessageInput = ({
           "no-scrollbar",
           "z-10",
           "p-1",
+          "w-full",
           borderStyles,
         )}>
-        <textarea
-          autoFocus
-          id="chat"
-          data-testid="message-input"
-          onChange={onChange}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              if (value) {
-                onSubmit?.(value);
-                setValue("");
+        {error ? (
+          <p className="text-red-600 w-full m-1 ml-4">{error ? error : null}</p>
+        ) : !attachmentPreview ? (
+          //  Show regular text input if not in attachment view
+          <textarea
+            autoFocus
+            id="chat"
+            data-testid="message-input"
+            onChange={onChange}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                if (value || attachment) {
+                  onSubmit?.(value);
+                  setValue("");
+                  setAttachment?.(undefined);
+                  setAttachmentPreview(undefined);
+                }
               }
-            }
-          }}
-          ref={textAreaRef}
-          rows={1}
-          className={textAreaStyles}
-          placeholder={t("messages.message_field_prompt") || ""}
-          value={value}
-          disabled={isDisabled}
-        />
+            }}
+            ref={textAreaRef}
+            rows={1}
+            className={textAreaStyles}
+            placeholder={t("messages.message_field_prompt") || ""}
+            value={value}
+            disabled={isDisabled}
+          />
+        ) : (
+          <div
+            style={{
+              position: "relative",
+              // Required to preserve aspect ratio
+              paddingBottom: "5%",
+            }}>
+            <img
+              src={attachmentPreview || ""}
+              alt={"Add filename here"}
+              style={{
+                position: "relative",
+                width: "95%",
+                minHeight: "100px",
+                maxHeight: "300px",
+                borderRadius: "12px",
+                overflow: "auto",
+              }}></img>
+            <XCircleIcon
+              width={20}
+              fill="gray"
+              className="absolute top-0 right-0 cursor-pointer"
+              onClick={() => setAttachmentPreview(undefined)}></XCircleIcon>
+          </div>
+        )}
         <div className="flex items-end absolute bottom-1.5 right-1">
           <IconButton
             testId="message-input-submit"
@@ -102,13 +230,15 @@ export const MessageInput = ({
             label={<ArrowUpIcon color="white" width="20" />}
             srText={t("aria_labels.submit_message") || ""}
             onClick={() => {
-              if (value) {
-                onSubmit?.(value);
+              if (value || attachment) {
+                onSubmit?.((value as string) || (attachment as Attachment));
                 setValue("");
+                setAttachment?.(undefined);
+                setAttachmentPreview(undefined);
                 textAreaRef.current?.focus();
               }
             }}
-            isDisabled={!value || isDisabled}
+            isDisabled={!(value || attachmentPreview) || isDisabled || !!error}
           />
         </div>
       </div>

@@ -76,7 +76,18 @@ export const MessagePreviewCardWrapper = ({
       key={previewMessage?.id}
       text={
         previewMessage?.content ? (
-          <MessageContentWrapper content={previewMessage?.content} />
+          <MessageContentWrapper
+            content={
+              typeof previewMessage.content !== "string"
+                ? "Attachment"
+                : previewMessage?.content
+            }
+            // None of these props are needed for this preview view.
+            // If there is an error or loading of attachment, the message preview still has the same view.
+            isSelf={false}
+            isLoading={false}
+            isError={false}
+          />
         ) : undefined
       }
       datetime={previewMessage?.sent}

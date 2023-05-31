@@ -5,6 +5,8 @@ import { isValidLongWalletAddress, shortAddress } from "../helpers";
 import { address } from "../pages/inbox";
 import MessageContentWrapper from "./MessageContentWrapper";
 import { useClient } from "@xmtp/react-sdk";
+import useSendMessage from "../hooks/useSendMessage";
+import { useXmtpStore } from "../store/xmtp";
 
 interface FullMessageWrapperProps {
   msg: {
@@ -24,10 +26,21 @@ export const FullMessageWrapper = ({ msg, idx }: FullMessageWrapperProps) => {
     address: msg.senderAddress as address,
     enabled: isValidLongWalletAddress(msg.senderAddress),
   });
+  const conversationId = useXmtpStore((state) => state.conversationId);
+
+  const { loading, error } = useSendMessage(conversationId as address);
 
   return (
     <FullMessage
-      text={<MessageContentWrapper content={msg.content} />}
+      text={
+        <MessageContentWrapper
+          content={msg.content}
+          isSelf={client?.address === msg.senderAddress}
+          isLoading={loading}
+          isError={!!error}
+        />
+      }
+      isError={!!error}
       key={`${msg.id}_${idx}`}
       from={{
         displayAddress: ensName ?? shortAddress(msg.senderAddress),

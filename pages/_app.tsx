@@ -1,6 +1,6 @@
 // Temporarily removing until we pull components from the SDK.
 // import "@xmtp/react-sdk/style.css";
-import "../styles/globals.css";
+import "../.storybook/styles/globals.css";
 import type { AppProps } from "next/app";
 import dynamic from "next/dynamic";
 import "@rainbow-me/rainbowkit/styles.css";
