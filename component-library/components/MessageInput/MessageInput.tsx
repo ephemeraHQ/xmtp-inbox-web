@@ -1,19 +1,14 @@
-import React, {
-  ChangeEvent,
-  useEffect,
-  useState,
-  useLayoutEffect,
-  useRef,
-  Dispatch,
-  SetStateAction,
-  useCallback,
-} from "react";
+import React, { ChangeEvent, useEffect, useLayoutEffect, useRef } from "react";
 import { Attachment } from "xmtp-content-type-remote-attachment";
 import { ArrowUpIcon, PaperClipIcon } from "@heroicons/react/outline";
 import { IconButton } from "../IconButton/IconButton";
 import { classNames } from "../../../helpers";
 import { useTranslation } from "react-i18next";
 import { XCircleIcon } from "@heroicons/react/solid";
+import {
+  imageTypes,
+  useAttachmentChange,
+} from "../../../hooks/useAttachmentChange";
 
 interface InputProps {
   /**
@@ -33,12 +28,22 @@ interface InputProps {
    */
   attachment?: Attachment;
   /**
-   * Function to set content attachment in state for the message input
+   * Function to set content attachment in state to send on submit
    */
-  setAttachment?: Dispatch<SetStateAction<any>>;
+  setAttachment: Function;
+  /**
+   * What to show in the input before an attachment is sent
+   */
+  attachmentPreview?: string;
+  /**
+   * Function to set the preview of the attachment in the input
+   */
+  setAttachmentPreview: Function;
+  /**
+   * Function to set whether content is being dragged over the draggable area, including the message input
+   */
+  setIsDragActive: Function;
 }
-
-const imageTypes = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
 
 export const MessageInput = ({
   onSubmit,
@@ -46,20 +51,19 @@ export const MessageInput = ({
   conversationId,
   attachment,
   setAttachment,
+  attachmentPreview,
+  setAttachmentPreview,
+  setIsDragActive,
 }: InputProps) => {
   const { t } = useTranslation();
   let textAreaRef = useRef<HTMLTextAreaElement>(null);
   const [value, setValue] = React.useState("");
 
   const inputFile = useRef<HTMLInputElement | null>(null);
-  const [attachmentPreview, setAttachmentPreview]: [
-    string | undefined,
-    Function,
-  ] = useState();
-  const [error, setError]: [string, Function] = useState("");
 
   const onChange = (event: ChangeEvent<HTMLTextAreaElement>) =>
     setValue(event.target.value);
+
   const borderStyles =
     "border border-gray-300 focus-within:border-1 focus-within:border-indigo-600 rounded-tl-3xl rounded-bl-3xl rounded-tr-3xl";
   const textAreaStyles = `${
@@ -85,7 +89,7 @@ export const MessageInput = ({
   useEffect(() => {
     textAreaRef.current?.focus();
     setValue("");
-    setAttachmentPreview(undefined);
+    setAttachmentPreview();
   }, [conversationId]);
 
   const onButtonClick = () => {
@@ -93,54 +97,14 @@ export const MessageInput = ({
     inputFile?.current?.click();
   };
 
-  const onAttachmentChange = useCallback(
-    async (e: ChangeEvent<HTMLInputElement>) => {
-      setError(undefined);
-      if (e.target?.files?.length && setAttachment) {
-        const file = e.target.files[0];
-
-        // Currently images are the only attachment type supported
-        if (!imageTypes.includes(file.type)) {
-          setError("File must be of valid file format");
-          return;
-        }
-        const fileReader = new FileReader();
-        fileReader.addEventListener("load", async () => {
-          const data = fileReader.result;
-
-          if (!(data instanceof ArrayBuffer)) {
-            return;
-          }
-
-          const imageAttachment: Attachment = {
-            filename: file.name,
-            mimeType: file.type,
-            data: new Uint8Array(data),
-          };
-
-          setAttachmentPreview(
-            URL.createObjectURL(
-              new Blob([Buffer.from(data)], {
-                type: imageAttachment.mimeType,
-              }),
-            ),
-          );
-
-          setAttachment(imageAttachment);
-        });
-
-        fileReader.readAsArrayBuffer(file);
-        // resets the value so the same image can be re-uploaded after a deletion
-        e.target.value = "";
-      } else {
-        setAttachment?.(undefined);
-      }
-    },
-    [setAttachment],
-  );
+  const { error, onAttachmentChange } = useAttachmentChange({
+    setAttachment,
+    setAttachmentPreview,
+    setIsDragActive,
+  });
 
   return (
-    <form className="flex items-center px-1">
+    <form className="flex items-center">
       <label htmlFor="chat" className="sr-only">
         {t("messages.message_field_prompt")}
       </label>
@@ -153,9 +117,9 @@ export const MessageInput = ({
         type="file"
         id="file"
         ref={inputFile}
-        onInput={onAttachmentChange}
+        onChange={onAttachmentChange}
         accept={imageTypes.join(", ")}
-        className="hidden"
+        hidden
       />
       <div
         className={classNames(
@@ -186,8 +150,8 @@ export const MessageInput = ({
                 if (value || attachment) {
                   onSubmit?.(value);
                   setValue("");
-                  setAttachment?.(undefined);
-                  setAttachmentPreview(undefined);
+                  setAttachment?.();
+                  setAttachmentPreview();
                 }
               }
             }}
@@ -220,7 +184,7 @@ export const MessageInput = ({
               width={20}
               fill="gray"
               className="absolute top-0 right-0 cursor-pointer"
-              onClick={() => setAttachmentPreview(undefined)}></XCircleIcon>
+              onClick={() => setAttachmentPreview()}></XCircleIcon>
           </div>
         )}
         <div className="flex items-end absolute bottom-1.5 right-1">
@@ -233,8 +197,8 @@ export const MessageInput = ({
               if (value || attachment) {
                 onSubmit?.((value as string) || (attachment as Attachment));
                 setValue("");
-                setAttachment?.(undefined);
-                setAttachmentPreview(undefined);
+                setAttachment?.();
+                setAttachmentPreview();
                 textAreaRef.current?.focus();
               }
             }}
