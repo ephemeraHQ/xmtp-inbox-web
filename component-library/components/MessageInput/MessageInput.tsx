@@ -30,7 +30,7 @@ interface InputProps {
   /**
    * Function to set content attachment in state to send on submit
    */
-  setAttachment: Function;
+  setAttachment: (attachment: Attachment | undefined) => void;
   /**
    * What to show in the input before an attachment is sent
    */
@@ -38,11 +38,11 @@ interface InputProps {
   /**
    * Function to set the preview of the attachment in the input
    */
-  setAttachmentPreview: Function;
+  setAttachmentPreview: (url: string | undefined) => void;
   /**
    * Function to set whether content is being dragged over the draggable area, including the message input
    */
-  setIsDragActive: Function;
+  setIsDragActive: (status: boolean) => void;
 }
 
 export const MessageInput = ({
@@ -89,7 +89,7 @@ export const MessageInput = ({
   useEffect(() => {
     textAreaRef.current?.focus();
     setValue("");
-    setAttachmentPreview();
+    setAttachmentPreview(undefined);
   }, [conversationId]);
 
   const onButtonClick = () => {
@@ -150,8 +150,8 @@ export const MessageInput = ({
                 if (value || attachment) {
                   onSubmit?.(value);
                   setValue("");
-                  setAttachment?.();
-                  setAttachmentPreview();
+                  setAttachment(undefined);
+                  setAttachmentPreview(undefined);
                 }
               }
             }}
@@ -184,7 +184,7 @@ export const MessageInput = ({
               width={20}
               fill="gray"
               className="absolute top-0 right-0 cursor-pointer"
-              onClick={() => setAttachmentPreview()}></XCircleIcon>
+              onClick={() => setAttachmentPreview(undefined)}></XCircleIcon>
           </div>
         )}
         <div className="flex items-end absolute bottom-1.5 right-1">
@@ -197,8 +197,8 @@ export const MessageInput = ({
               if (value || attachment) {
                 onSubmit?.((value as string) || (attachment as Attachment));
                 setValue("");
-                setAttachment?.();
-                setAttachmentPreview();
+                setAttachment(undefined);
+                setAttachmentPreview(undefined);
                 textAreaRef.current?.focus();
               }
             }}

@@ -53,11 +53,13 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
 
   const [attachmentPreview, setAttachmentPreview]: [
     string | undefined,
-    Function,
+    (url: string | undefined) => void,
   ] = useState();
 
-  const [attachment, setAttachment]: [Attachment | undefined, Function] =
-    useState();
+  const [attachment, setAttachment]: [
+    Attachment | undefined,
+    (attachment: Attachment | undefined) => void,
+  ] = useState();
 
   const { onAttachmentChange } = useAttachmentChange({
     setAttachment,

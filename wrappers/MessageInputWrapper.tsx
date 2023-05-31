@@ -10,9 +10,9 @@ import { Attachment } from "xmtp-content-type-remote-attachment";
 interface MessageInputWrapperProps {
   attachment?: Attachment;
   attachmentPreview?: string;
-  setAttachment: Function;
-  setAttachmentPreview: Function;
-  setIsDragActive: Function;
+  setAttachment: (attachment: Attachment | undefined) => void;
+  setAttachmentPreview: (url: string | undefined) => void;
+  setIsDragActive: (status: boolean) => void;
 }
 
 export const MessageInputWrapper = ({

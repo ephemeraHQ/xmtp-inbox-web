@@ -74,7 +74,11 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
         <div className="flex w-full overflow-visible md:overflow-hidden flex-col h-screen md:h-full ">
           <AddressInput />
           <FullConversation messages={[]} />
-          <MessageInput />
+          <MessageInput
+            setAttachment={() => {}}
+            setAttachmentPreview={() => {}}
+            setIsDragActive={() => {}}
+          />
         </div>
       </div>
     );
@@ -92,7 +96,11 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
         <div className="flex w-full overflow-visible md:overflow-hidden flex-col h-screen md:h-full ">
           <AddressInput subtext="Finding ENS..." />
           <FullConversation messages={[]} />
-          <MessageInput />
+          <MessageInput
+            setAttachment={() => {}}
+            setAttachmentPreview={() => {}}
+            setIsDragActive={() => {}}
+          />
         </div>
       </div>
     );
@@ -119,7 +127,11 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             }}
           />
           <FullConversation messages={[]} />
-          <MessageInput />
+          <MessageInput
+            setAttachment={() => {}}
+            setAttachmentPreview={() => {}}
+            setIsDragActive={() => {}}
+          />
         </div>
       </div>
     );
@@ -149,7 +161,11 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
         <div className="flex w-full overflow-visible md:overflow-hidden flex-col h-screen md:h-full ">
           <AddressInput subtext="Finding ENS..." />
           <FullConversation />
-          <MessageInput />
+          <MessageInput
+            setAttachment={() => {}}
+            setAttachmentPreview={() => {}}
+            setIsDragActive={() => {}}
+          />
         </div>
       </div>
     );
@@ -187,7 +203,11 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             }}
           />
           <FullConversation />
-          <MessageInput />
+          <MessageInput
+            setAttachment={() => {}}
+            setAttachmentPreview={() => {}}
+            setIsDragActive={() => {}}
+          />
         </div>
       </div>
     );
@@ -215,7 +235,11 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             }}
           />
           <FullConversation messages={[]} />
-          <MessageInput />
+          <MessageInput
+            setAttachment={() => {}}
+            setAttachmentPreview={() => {}}
+            setIsDragActive={() => {}}
+          />
         </div>
       </div>
     );
@@ -260,7 +284,11 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
               <FullConversation messages={Array(2).fill(alternatingMessage)} />
             </InfiniteScroll>
           </div>
-          <MessageInput />
+          <MessageInput
+            setAttachment={() => {}}
+            setAttachmentPreview={() => {}}
+            setIsDragActive={() => {}}
+          />
         </div>
       </div>
     );
@@ -305,7 +333,11 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
               <FullConversation messages={Array(20).fill(alternatingMessage)} />
             </InfiniteScroll>
           </div>
-          <MessageInput />
+          <MessageInput
+            setAttachment={() => {}}
+            setAttachmentPreview={() => {}}
+            setIsDragActive={() => {}}
+          />
         </div>
       </div>
     );
@@ -350,7 +382,12 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
               <FullConversation isLoading={true} />
             </InfiniteScroll>
           </div>
-          <MessageInput isDisabled />
+          <MessageInput
+            setAttachment={() => {}}
+            setAttachmentPreview={() => {}}
+            setIsDragActive={() => {}}
+            isDisabled
+          />
         </div>
       </div>
     );
@@ -412,7 +449,11 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             }}
           />
           <FullConversation messages={[]} />
-          <MessageInput />
+          <MessageInput
+            setAttachment={() => {}}
+            setAttachmentPreview={() => {}}
+            setIsDragActive={() => {}}
+          />
         </div>
       </div>
     );
@@ -460,7 +501,11 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             ]}
           />
           <FullConversation messages={[]} />
-          <MessageInput />
+          <MessageInput
+            setAttachment={() => {}}
+            setAttachmentPreview={() => {}}
+            setIsDragActive={() => {}}
+          />
         </div>
       </div>
     );

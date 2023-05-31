@@ -4,9 +4,9 @@ import { Attachment } from "xmtp-content-type-remote-attachment";
 export const imageTypes = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
 
 interface useAttachmentChangeProps {
-  setAttachment: Function;
-  setAttachmentPreview: Function;
-  setIsDragActive: Function;
+  setAttachment: (attachment: Attachment | undefined) => void;
+  setAttachmentPreview: (url: string | undefined) => void;
+  setIsDragActive: (status: boolean) => void;
 }
 
 export const useAttachmentChange = ({
@@ -70,7 +70,7 @@ export const useAttachmentChange = ({
         // not needed for drag events
         (e as ChangeEvent<HTMLInputElement>).target.value = "";
       } else {
-        setAttachment?.(undefined);
+        setAttachment(undefined);
       }
       setIsDragActive(false);
     },

@@ -15,8 +15,12 @@ export default {
   },
 } as ComponentMeta<typeof MessageInput>;
 
-const Template: ComponentStory<typeof MessageInput> = (args) => (
-  <MessageInput {...args} />
+const Template: ComponentStory<typeof MessageInput> = () => (
+  <MessageInput
+    setAttachment={() => {}}
+    setAttachmentPreview={() => {}}
+    setIsDragActive={() => {}}
+  />
 );
 
 export const MessageInputDefault = Template.bind({});
