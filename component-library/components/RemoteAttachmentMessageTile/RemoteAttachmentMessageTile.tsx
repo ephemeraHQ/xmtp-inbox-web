@@ -48,8 +48,22 @@ const RemoteAttachmentMessageTile = ({
             }),
           );
 
-          setURL(objectURL);
-          setStatus("loaded");
+          db.attachments
+            .add({
+              remoteContentUrl: content.url,
+              attachmentObject: attachment,
+              attachmentUrl: objectURL,
+            })
+            .then(() => {
+              setURL(objectURL);
+              setStatus("loaded");
+            })
+            .catch((e: Error) => {
+              // If error adding to cache, can silently fail and no need to display an error
+              console.log("Error caching image --> ", e);
+              setURL(objectURL);
+              setStatus("loaded");
+            });
         }
 
         return;
@@ -59,36 +73,32 @@ const RemoteAttachmentMessageTile = ({
   }, [status, client, content]);
 
   const load = (inCache = false) => {
-    // If not in cache, add to cache
+    // If not in cache, run handleLoading
     if (!inCache) {
-      db.attachments
-        .add({ attachment: content.url })
-        .then(() => {
-          setStatus("loadRequested");
-        })
-        .catch((e: Error) => {
-          // If error adding to cache, can silently fail and no need to display an error
-          console.log("Error caching image --> ", e);
-        });
-    } else {
       setStatus("loadRequested");
     }
   };
 
   useEffect(() => {
-    // No need to wait
-    if (isSelf) {
-      load();
-    }
     // Check if this is in cache
     db.attachments
-      .get({ attachment: content.url })
-      .then(() => {
-        load(true);
+      .get({ remoteContentUrl: content.url })
+      .then((attachment) => {
+        if (attachment?.attachmentUrl) {
+          setURL(attachment.attachmentUrl);
+          setStatus("loaded");
+        } else {
+          if (isSelf) {
+            load();
+          }
+        }
       })
-      .catch((e: Error) => {
+      .catch(() => {
         // If error retrieving from cache, can silently fail and no need to display an error
-        console.log("Error fetching image --> ", e);
+        // Still load if it's own images
+        if (isSelf) {
+          load();
+        }
       });
   }, []);
 
