@@ -119,6 +119,7 @@ export const MessageInput = ({
         ref={inputFile}
         onChange={onAttachmentChange}
         accept={imageTypes.join(", ")}
+        aria-label="file-picker"
         hidden
       />
       <div
@@ -171,7 +172,7 @@ export const MessageInput = ({
             }}>
             <img
               src={attachmentPreview || ""}
-              alt={"Add filename here"}
+              alt={attachment?.filename}
               style={{
                 position: "relative",
                 width: "95%",
