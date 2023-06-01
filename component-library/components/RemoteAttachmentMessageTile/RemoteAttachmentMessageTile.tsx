@@ -7,6 +7,8 @@ import {
 import React from "react";
 import { useClient } from "@xmtp/react-sdk";
 import { humanFileSize } from "../../../helpers/attachments";
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
 
 type RemoteAttachmentMessageTileProps = {
   content: RemoteAttachment;
@@ -72,14 +74,9 @@ const RemoteAttachmentMessageTile = ({
     <div>
       {status === "loading" || isLoading ? "Loading…" : ""}
       {url ? (
-        <img
-          src={url}
-          style={{
-            maxHeight: "300px",
-            borderRadius: "12px",
-            cursor: "pointer",
-          }}
-        />
+        <Zoom>
+          <img src={url} className="max-h-80 rounded-lg" />
+        </Zoom>
       ) : null}
       {status !== "loaded" && !isSelf ? (
         <small>
