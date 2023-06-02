@@ -9,6 +9,7 @@ import { useClient } from "@xmtp/react-sdk";
 import { humanFileSize } from "../../../helpers/attachments";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
+import { db } from "../../../db";
 
 type RemoteAttachmentMessageTileProps = {
   content: RemoteAttachment;
@@ -47,8 +48,23 @@ const RemoteAttachmentMessageTile = ({
             }),
           );
 
-          setURL(objectURL);
-          setStatus("loaded");
+          db.attachments
+            .add({
+              contentURL: content.url,
+              filename: attachment.filename,
+              mimetype: attachment.mimeType,
+              contentDataURL: objectURL,
+            })
+            .then(() => {
+              setURL(objectURL);
+              setStatus("loaded");
+            })
+            .catch((e: Error) => {
+              // If error adding to cache, can silently fail and no need to display an error
+              console.log("Error caching image --> ", e);
+              setURL(objectURL);
+              setStatus("loaded");
+            });
         }
 
         return;
@@ -57,15 +73,34 @@ const RemoteAttachmentMessageTile = ({
     handleLoading();
   }, [status, client, content]);
 
-  function load() {
-    setStatus("loadRequested");
-  }
+  const load = (inCache = false) => {
+    // If not in cache, run handleLoading
+    if (!inCache) {
+      setStatus("loadRequested");
+    }
+  };
 
   useEffect(() => {
-    // No need to wait
-    if (isSelf) {
-      load();
-    }
+    // Check if this is in cache
+    db.attachments
+      .get({ contentURL: content.url })
+      .then((attachment) => {
+        if (attachment?.contentDataURL) {
+          setURL(attachment.contentDataURL);
+          setStatus("loaded");
+        } else {
+          if (isSelf) {
+            load();
+          }
+        }
+      })
+      .catch(() => {
+        // If error retrieving from cache, can silently fail and no need to display an error
+        // Still load if it's own images
+        if (isSelf) {
+          load();
+        }
+      });
   }, []);
 
   return isError ? (
@@ -75,14 +110,18 @@ const RemoteAttachmentMessageTile = ({
       {status === "loading" || isLoading ? "Loading…" : ""}
       {url ? (
         <Zoom>
-          <img src={url} className="max-h-80 rounded-lg" />
+          <img
+            src={url}
+            className="max-h-80 rounded-lg"
+            alt={content.filename}
+          />
         </Zoom>
       ) : null}
       {status !== "loaded" && !isSelf ? (
         <small>
           {content.filename} - {humanFileSize(content.contentLength)}
           {
-            <button onClick={load} type="button">
+            <button onClick={() => load(false)} type="button">
               - Click to Load
             </button>
           }

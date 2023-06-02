@@ -75,9 +75,6 @@ export const FullMessage = ({
             className={`text-xs text-gray-500 w-full flex mb-4 ${
               isOutgoingMessage ? "justify-end" : "justify-start"
             }`}>
-            {typeof text?.props?.content !== "string" ? (
-              <p className="mx-1">Image</p>
-            ) : null}
             {t("{{datetime, time}}", { datetime })}
           </div>
         </div>
