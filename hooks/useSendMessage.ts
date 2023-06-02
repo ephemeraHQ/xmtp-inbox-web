@@ -17,8 +17,10 @@ import {
 import { AttachmentCodec } from "xmtp-content-type-remote-attachment";
 import { Web3Storage } from "web3.storage";
 import Upload from "../classes/Upload";
+import { useTranslation } from "react-i18next";
 
 const useSendMessage = (conversationId: address, attachment?: Attachment) => {
+  const { t } = useTranslation();
   const conversations = useXmtpStore((state) => state.conversations);
   let selectedConversation = conversations.get(conversationId);
   const { startConversation, error, isLoading } = useStartConversation<
@@ -74,7 +76,10 @@ const useSendMessage = (conversationId: address, attachment?: Attachment) => {
             recipientWalletAddress,
             remoteAttachment,
             {
-              contentFallback: remoteAttachment.filename,
+              contentFallback:
+                t("status_messaging.file_unsupported", {
+                  FILENAME: remoteAttachment.filename,
+                }) || remoteAttachment.filename,
               contentType: ContentTypeRemoteAttachment,
             },
           );
@@ -85,7 +90,10 @@ const useSendMessage = (conversationId: address, attachment?: Attachment) => {
           }
         } else {
           await sendMessageFromHook(remoteAttachment, {
-            contentFallback: remoteAttachment.filename,
+            contentFallback:
+              t("status_messaging.file_unsupported", {
+                FILENAME: remoteAttachment.filename,
+              }) || remoteAttachment.filename,
             contentType: ContentTypeRemoteAttachment,
           });
         }

@@ -18,6 +18,8 @@
     "enabling_subheader": "Click <strong>Sign</strong> to create your password. You'll be prompted to click <strong>Sign</strong> to provide it whenever you access your inbox."
   },
   "messages": {
+    "attachment": "Attachment",
+    "attachment_cta": "Click to load",
     "filter_none": "All messages",
     "filter_requests": "Message requests",
     "convos_empty_header": "No messages? No problem.",
@@ -50,7 +52,11 @@
   "status_messaging": {
     "error_1_header": "Sorry, the app encountered an error",
     "error_1_subheader": "Not to worry. Let’s try again. If the error persists, <0>we're here to help!</0>",
-    "error_1_button": "Try again"
+    "error_1_button": "Try again",
+    "file_invalid_format": "File must be of valid file format",
+    "file_too_large": "File too large",
+    "file_unsupported": "[Attachment] Cannot display {{FILENAME}}. This app does not support attachments yet.",
+    "loading": "Loading..."
   },
   "common": {
     "disconnect": "Disconnect wallet",
@@ -65,6 +71,7 @@
   },
   "aria_labels": {
     "address_input": "Address input",
+    "filepicker": "File picker",
     "start_message": "Start new message",
     "submit_message": "Submit message"
   }

@@ -14,6 +14,7 @@ import { useDisconnect, useSigner } from "wagmi";
 import { ConversationListWrapper } from "../wrappers/ConversationListWrapper";
 import { useAttachmentChange } from "../hooks/useAttachmentChange";
 import { Attachment } from "xmtp-content-type-remote-attachment";
+import { db } from "../db";
 
 export type address = "0x${string}";
 
@@ -26,6 +27,10 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
     if (!client) {
       router.push("/");
     }
+    // any time the client changes, the attachments cached db should be cleared
+    // this is because the contentDataURL is partially derived from client
+    // and doesn't render properly if image is in cache with a different client.
+    db.attachments.clear();
   }, [client]);
 
   const { data: signer } = useSigner();

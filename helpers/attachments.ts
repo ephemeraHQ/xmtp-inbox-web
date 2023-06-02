@@ -1,3 +1,5 @@
+import { ATTACHMENT_ERRORS } from "./constants";
+
 /**
  * Returns a human readable file size string.
  *
@@ -9,7 +11,7 @@
 export const humanFileSize = (bytes: number, si = false, dp = 1) => {
   // Throws error if > 100 MB
   if (bytes > 100000000) {
-    throw new Error("File too large!");
+    return ATTACHMENT_ERRORS.FILE_TOO_LARGE;
   }
   const thresh = si ? 1000 : 1024;
 
