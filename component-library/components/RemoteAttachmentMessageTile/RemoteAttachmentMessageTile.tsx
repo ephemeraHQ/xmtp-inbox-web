@@ -10,6 +10,7 @@ import { humanFileSize } from "../../../helpers/attachments";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { db } from "../../../db";
+import { useTranslation } from "react-i18next";
 
 type RemoteAttachmentMessageTileProps = {
   content: RemoteAttachment;
@@ -28,6 +29,7 @@ const RemoteAttachmentMessageTile = ({
 }: RemoteAttachmentMessageTileProps) => {
   const [status, setStatus] = useState<status>("unloaded");
   const [url, setURL] = useState<string | null>(null);
+  const { t } = useTranslation();
 
   const { client } = useClient();
 
@@ -104,10 +106,10 @@ const RemoteAttachmentMessageTile = ({
   }, []);
 
   return isError ? (
-    <p className="text-red-600 p-0">Sorry, an error occurred.</p>
+    <p className="text-red-600 p-0">{t("status_messaging.error_1_header")}</p>
   ) : (
     <div>
-      {status === "loading" || isLoading ? "Loading…" : ""}
+      {status === "loading" || isLoading ? t("status_messaging.loading") : ""}
       {url ? (
         <Zoom>
           <img
@@ -122,7 +124,7 @@ const RemoteAttachmentMessageTile = ({
           {content.filename} - {humanFileSize(content.contentLength)}
           {
             <button onClick={() => load(false)} type="button">
-              - Click to Load
+              {`- ${t("messages.attachment_cta")}`}
             </button>
           }
         </small>

@@ -2,6 +2,7 @@ import { ChangeEvent, useCallback, useState } from "react";
 import { Attachment } from "xmtp-content-type-remote-attachment";
 import { humanFileSize } from "../helpers/attachments";
 import { ATTACHMENT_ERRORS } from "../helpers";
+import { useTranslation } from "react-i18next";
 
 export const imageTypes = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
 
@@ -16,6 +17,8 @@ export const useAttachmentChange = ({
   setAttachmentPreview,
   setIsDragActive,
 }: useAttachmentChangeProps) => {
+  const { t } = useTranslation();
+
   const [error, setError]: [string, Function] = useState("");
 
   const onAttachmentChange = useCallback(
@@ -39,12 +42,15 @@ export const useAttachmentChange = ({
 
         // Currently images are the only attachment type supported
         if (!imageTypes.includes(file.type)) {
-          setError("File must be of valid file format");
+          setError(t("status_messaging.file_invalid_format"));
+          setIsDragActive(false);
           return;
         }
         // Displays error if > 100 MB
         if (humanFileSize(file.size) === ATTACHMENT_ERRORS.FILE_TOO_LARGE) {
-          setError("File too large!");
+          setError(t("status_messaging.file_too_large"));
+          setIsDragActive(false);
+          return;
         }
         const fileReader = new FileReader();
         fileReader.addEventListener("load", async () => {
