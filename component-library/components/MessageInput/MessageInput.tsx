@@ -119,7 +119,7 @@ export const MessageInput = ({
         ref={inputFile}
         onChange={onAttachmentChange}
         accept={imageTypes.join(", ")}
-        aria-label="file-picker"
+        aria-label={t("aria_labels.filepicker") || "File picker"}
         hidden
       />
       <div
@@ -165,22 +165,12 @@ export const MessageInput = ({
           />
         ) : (
           <div
-            style={{
-              position: "relative",
-              // Required to preserve aspect ratio
-              paddingBottom: "5%",
-            }}>
+            // Bottom padding required to preserve aspect ratio
+            className="relative pb-[5%]">
             <img
               src={attachmentPreview || ""}
               alt={attachment?.filename}
-              style={{
-                position: "relative",
-                width: "95%",
-                minHeight: "100px",
-                maxHeight: "300px",
-                borderRadius: "12px",
-                overflow: "auto",
-              }}></img>
+              className="relative w-95/100 min-h-[100px] max-h-80 rounded-xl overflow-auto"></img>
             <XCircleIcon
               width={20}
               fill="gray"
