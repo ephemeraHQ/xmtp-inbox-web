@@ -50,9 +50,10 @@ const RemoteAttachmentMessageTile = ({
 
           db.attachments
             .add({
-              remoteContentUrl: content.url,
-              attachmentObject: attachment,
-              attachmentUrl: objectURL,
+              contentURL: content.url,
+              filename: attachment.filename,
+              mimetype: attachment.mimeType,
+              contentDataURL: objectURL,
             })
             .then(() => {
               setURL(objectURL);
@@ -82,10 +83,10 @@ const RemoteAttachmentMessageTile = ({
   useEffect(() => {
     // Check if this is in cache
     db.attachments
-      .get({ remoteContentUrl: content.url })
+      .get({ contentURL: content.url })
       .then((attachment) => {
-        if (attachment?.attachmentUrl) {
-          setURL(attachment.attachmentUrl);
+        if (attachment?.contentDataURL) {
+          setURL(attachment.contentDataURL);
           setStatus("loaded");
         } else {
           if (isSelf) {

@@ -1,10 +1,13 @@
 import Dexie, { Table } from "dexie";
-import { Attachment } from "xmtp-content-type-remote-attachment";
 
 export interface CachedAttachments {
-  attachmentObject: Attachment;
-  attachmentUrl: string;
-  remoteContentUrl: string;
+  // Used as key
+  contentURL: string;
+  // Below fields come directly from the attachment data
+  filename: string;
+  mimetype: string;
+  // Derived from the attachment data
+  contentDataURL: string;
 }
 
 export class RemoteAttachmentDb extends Dexie {
@@ -13,7 +16,7 @@ export class RemoteAttachmentDb extends Dexie {
   constructor() {
     super("remoteAttachments");
     this.version(1).stores({
-      attachments: "id++, remoteContentUrl, attachmentObject, attachmentUrl",
+      attachments: "id++, contentURL, filename, mimetype, contentDataURL",
     });
   }
 }
