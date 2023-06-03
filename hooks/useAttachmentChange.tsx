@@ -4,7 +4,13 @@ import { humanFileSize } from "../helpers/attachments";
 import { ATTACHMENT_ERRORS } from "../helpers";
 import { useTranslation } from "react-i18next";
 
-export const imageTypes = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
+export const imageTypes = [
+  "image/jpg",
+  "image/jpeg",
+  "image/png",
+  "image/gif",
+  "image/webp",
+];
 
 interface useAttachmentChangeProps {
   setAttachment: (attachment: Attachment | undefined) => void;
