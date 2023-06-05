@@ -66,15 +66,10 @@ export const useStreamAllMessages = () => {
             });
             const unsName = await fetchUnsName(message?.senderAddress);
 
-            navigator.serviceWorker.ready.then((registration) => {
-              registration.showNotification("XMTP", {
-                body: `${
-                  ensName ||
-                  unsName ||
-                  shortAddress(message.senderAddress ?? "")
-                }\n${truncate(message.content, 75)}`,
-                icon: "192.png",
-              });
+            new Notification("XMTP", {
+              body: `${
+                ensName || unsName || shortAddress(message.senderAddress ?? "")
+              }\n${truncate(message.content, 75)}`,
             });
 
             latestMsgId = message.id;

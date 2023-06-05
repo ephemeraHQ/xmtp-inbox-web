@@ -17,9 +17,6 @@ class AppDocument extends Document {
     return (
       <Html className="h-screen w-screen bg-white" lang={i18next.language}>
         <Head>
-          <link rel="manifest" href="/manifest.json" />
-          <link rel="apple-touch-icon" href="/icon.png"></link>
-          <meta name="theme-color" content="#31006e" />
           <meta name="description" content="Chat via XMTP" />
           <link rel="icon" href="/favicon.ico" />
           <link
