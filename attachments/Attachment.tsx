@@ -1,5 +1,5 @@
+import { CodecRegistry } from "@xmtp/react-sdk";
 import { ContentCodec, ContentTypeId, EncodedContent } from "@xmtp/xmtp-js";
-import { CodecRegistry } from "@xmtp/xmtp-js/dist/types/src/MessageContent";
 
 export const ContentTypeAttachment = new ContentTypeId({
   authorityId: "xmtp.org",
