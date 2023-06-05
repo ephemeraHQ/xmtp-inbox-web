@@ -11,10 +11,9 @@ import {
 import { useClient, useCanMessage } from "@xmtp/react-sdk";
 import { mockConnector } from "../helpers/mockConnector";
 import { Signer } from "ethers";
-import {
-  AttachmentCodec,
-  RemoteAttachmentCodec,
-} from "xmtp-content-type-remote-attachment";
+
+import { RemoteAttachmentCodec } from "../attachments/RemoteAttachment";
+import { AttachmentCodec } from "../attachments/Attachment";
 
 type ClientStatus = "new" | "created" | "enabled";
 
