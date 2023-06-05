@@ -1,4 +1,3 @@
-# Disabling until upgrading to latest ethers/wagmi versions, as the E2E test errors are being thrown from there.
 name: E2E Tests
 
 on: [pull_request]
