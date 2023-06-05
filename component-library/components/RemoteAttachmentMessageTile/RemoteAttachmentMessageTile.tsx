@@ -3,7 +3,7 @@ import {
   Attachment,
   RemoteAttachment,
   RemoteAttachmentCodec,
-} from "xmtp-content-type-remote-attachment";
+} from "../../../attachments";
 import React from "react";
 import { useClient } from "@xmtp/react-sdk";
 import { humanFileSize } from "../../../helpers/attachments";

@@ -5,7 +5,7 @@ import useGetRecipientInputMode from "../hooks/useGetRecipientInputMode";
 import useSendMessage from "../hooks/useSendMessage";
 import { useXmtpStore } from "../store/xmtp";
 import { address } from "../pages/inbox";
-import { Attachment } from "xmtp-content-type-remote-attachment";
+import { Attachment } from "../attachments";
 
 interface MessageInputWrapperProps {
   attachment?: Attachment;

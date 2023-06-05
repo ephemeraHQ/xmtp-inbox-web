@@ -4,7 +4,7 @@ import { EmojiMatcher, useEmojiData } from "interweave-emoji";
 import type { MouseEvent } from "react";
 import React from "react";
 import RemoteAttachmentMessageTile from "../component-library/components/RemoteAttachmentMessageTile/RemoteAttachmentMessageTile";
-import { RemoteAttachment } from "xmtp-content-type-remote-attachment";
+import { RemoteAttachment } from "../attachments";
 
 interface MessageContentWrapperProps {
   content: string | RemoteAttachment;

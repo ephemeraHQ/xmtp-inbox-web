@@ -13,7 +13,7 @@ import { useClient } from "@xmtp/react-sdk";
 import { useDisconnect, useSigner } from "wagmi";
 import { ConversationListWrapper } from "../wrappers/ConversationListWrapper";
 import { useAttachmentChange } from "../hooks/useAttachmentChange";
-import { Attachment } from "xmtp-content-type-remote-attachment";
+import { Attachment } from "../attachments";
 import { db } from "../db";
 
 export type address = "0x${string}";

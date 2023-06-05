@@ -1,5 +1,5 @@
 import { ChangeEvent, useCallback, useState } from "react";
-import { Attachment } from "xmtp-content-type-remote-attachment";
+import { Attachment } from "../attachments";
 import { humanFileSize } from "../helpers/attachments";
 import { ATTACHMENT_ERRORS } from "../helpers";
 import { useTranslation } from "react-i18next";

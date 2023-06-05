@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useLayoutEffect, useRef } from "react";
-import { Attachment } from "xmtp-content-type-remote-attachment";
+import { Attachment } from "../../../attachments";
 import { ArrowUpIcon, PaperClipIcon } from "@heroicons/react/outline";
 import { IconButton } from "../IconButton/IconButton";
 import { classNames } from "../../../helpers";

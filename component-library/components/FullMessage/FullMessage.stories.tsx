@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { FullMessage } from "./FullMessage";
 import { shortAddress } from "../../../helpers";
 import MessageContentWrapper from "../../../wrappers/MessageContentWrapper";
-import { RemoteAttachment } from "xmtp-content-type-remote-attachment";
+import { RemoteAttachment } from "../../../attachments";
 
 export default {
   title: "FullMessage",
