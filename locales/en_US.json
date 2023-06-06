@@ -19,7 +19,6 @@
   },
   "messages": {
     "attachment": "Attachment",
-    "attachment_cta": "Click to load",
     "filter_none": "All messages",
     "filter_requests": "Message requests",
     "convos_empty_header": "No messages? No problem.",
@@ -54,7 +53,7 @@
     "error_1_subheader": "Not to worry. Let’s try again. If the error persists, <0>we're here to help!</0>",
     "error_1_button": "Try again",
     "file_invalid_format": "File must be of valid file format",
-    "file_too_large": "File too large",
+    "file_too_large": "Please choose attachments smaller than 5 MB",
     "file_unsupported": "[Attachment] Cannot display {{FILENAME}}. This app does not support attachments yet.",
     "loading": "Loading..."
   },

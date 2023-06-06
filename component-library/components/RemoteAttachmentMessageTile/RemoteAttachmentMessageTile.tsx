@@ -6,7 +6,6 @@ import {
 } from "xmtp-content-type-remote-attachment";
 import React from "react";
 import { useClient } from "@xmtp/react-sdk";
-import { humanFileSize } from "../../../helpers/attachments";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { db } from "../../../db";
@@ -91,17 +90,12 @@ const RemoteAttachmentMessageTile = ({
           setURL(attachment.contentDataURL);
           setStatus("loaded");
         } else {
-          if (isSelf) {
-            load();
-          }
+          load();
         }
       })
       .catch(() => {
         // If error retrieving from cache, can silently fail and no need to display an error
-        // Still load if it's own images
-        if (isSelf) {
-          load();
-        }
+        load();
       });
   }, []);
 
@@ -118,16 +112,6 @@ const RemoteAttachmentMessageTile = ({
             alt={content.filename}
           />
         </Zoom>
-      ) : null}
-      {status !== "loaded" && !isSelf ? (
-        <small>
-          {content.filename} - {humanFileSize(content.contentLength)}
-          {
-            <button onClick={() => load(false)} type="button">
-              {`- ${t("messages.attachment_cta")}`}
-            </button>
-          }
-        </small>
       ) : null}
     </div>
   );
