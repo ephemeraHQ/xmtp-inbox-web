@@ -1,5 +1,5 @@
 /* eslint-disable cypress/no-unnecessary-waiting */
-import { ENVIRONMENT } from "../helpers";
+import { ENVIRONMENT } from "../src/helpers";
 
 export const TIMEOUT = 40000;
 
