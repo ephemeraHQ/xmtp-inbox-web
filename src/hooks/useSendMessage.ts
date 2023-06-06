@@ -16,7 +16,7 @@ import {
 } from "xmtp-content-type-remote-attachment";
 import { AttachmentCodec } from "xmtp-content-type-remote-attachment";
 import { Web3Storage } from "web3.storage";
-import Upload from "../classes/Upload";
+import Upload from "../helpers/classes/Upload";
 import { useTranslation } from "react-i18next";
 
 const useSendMessage = (conversationId: address, attachment?: Attachment) => {
