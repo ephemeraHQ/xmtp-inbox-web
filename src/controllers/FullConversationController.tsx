@@ -3,10 +3,10 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { DateDivider } from "../component-library/components/DateDivider/DateDivider";
 import { FullConversation } from "../component-library/components/FullConversation/FullConversation";
 import { useXmtpStore } from "../store/xmtp";
-import { FullMessageWrapper } from "./FullMessageWrapper.";
+import { FullMessageController } from "./FullMessageController";
 import useGetMessages from "../hooks/useGetMessages";
 
-export const FullConversationWrapper = () => {
+export const FullConversationController = () => {
   let lastMessageDate: Date;
   const [initialConversationLoaded, setInitialConversationLoaded] =
     useState(false);
@@ -59,7 +59,7 @@ export const FullConversationWrapper = () => {
                 {messages.length === 1 || index === messages.length - 1 ? (
                   <DateDivider date={msg.sent} />
                 ) : null}
-                <FullMessageWrapper msg={msg} idx={index} />
+                <FullMessageController msg={msg} idx={index} />
                 {dateHasChanged ? <DateDivider date={lastMessageDate} /> : null}
               </div>
             );

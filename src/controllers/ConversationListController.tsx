@@ -4,18 +4,18 @@ import { Conversation } from "@xmtp/react-sdk";
 import useListConversations from "../hooks/useListConversations";
 import { ConversationList } from "../component-library/components/ConversationList/ConversationList";
 import getFilteredConversations from "../helpers/getFilteredConversations";
-import { MessagePreviewCardWrapper } from "./MessagePreviewCardWrapper";
+import { MessagePreviewCardController } from "./MessagePreviewCardController";
 import { XMTP_FEEDBACK_ADDRESS, getConversationId } from "../helpers";
 import useStartFeedbackConvo from "../hooks/useStartFeedbackConvo";
 import useStreamAllMessages from "../hooks/useStreamAllMessages";
 
-type ConversationListWrapperProps = {
+type ConversationListControllerProps = {
   setStartedFirstMessage: (startedFirstMessage: boolean) => void;
 };
 
-export const ConversationListWrapper = ({
+export const ConversationListController = ({
   setStartedFirstMessage,
-}: ConversationListWrapperProps) => {
+}: ConversationListControllerProps) => {
   useListConversations();
   useStartFeedbackConvo();
   useStreamAllMessages();
@@ -47,14 +47,14 @@ export const ConversationListWrapper = ({
       messages={
         !loadingConversations
           ? [
-              <MessagePreviewCardWrapper
+              <MessagePreviewCardController
                 key={XMTP_FEEDBACK_ADDRESS}
                 convo={conversations.get(XMTP_FEEDBACK_ADDRESS)}
               />,
               ...getFilteredConversations(conversations)
                 .sort(orderByLatestMessage)
                 .map((convo) => (
-                  <MessagePreviewCardWrapper
+                  <MessagePreviewCardController
                     key={getConversationId(convo)}
                     convo={convo}
                   />

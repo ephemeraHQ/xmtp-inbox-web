@@ -6,19 +6,19 @@ import React from "react";
 import RemoteAttachmentMessageTile from "../component-library/components/RemoteAttachmentMessageTile/RemoteAttachmentMessageTile";
 import { RemoteAttachment } from "xmtp-content-type-remote-attachment";
 
-interface MessageContentWrapperProps {
+interface MessageContentControllerProps {
   content: string | RemoteAttachment;
   isSelf: boolean;
   isLoading: boolean;
   isError: boolean;
 }
 
-const MessageContentWrapper = ({
+const MessageContentController = ({
   content,
   isSelf,
   isLoading,
   isError,
-}: MessageContentWrapperProps) => {
+}: MessageContentControllerProps) => {
   const [, source] = useEmojiData({
     compact: false,
     shortcodes: ["emojibase"],
@@ -53,4 +53,4 @@ const MessageContentWrapper = ({
   ) : null;
 };
 
-export default MessageContentWrapper;
+export default MessageContentController;

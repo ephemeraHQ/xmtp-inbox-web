@@ -53,7 +53,7 @@ const wagmiClient = createClient({
   webSocketProvider,
 });
 
-function AppWrapper({ Component, pageProps }: AppProps) {
+function AppController({ Component, pageProps }: AppProps) {
   const [client, setClient] = useState<typeof wagmiClient | null>(null);
   const setRecipientWalletAddress = useXmtpStore(
     (state) => state.setRecipientWalletAddress,
@@ -113,4 +113,4 @@ function AppWrapper({ Component, pageProps }: AppProps) {
   );
 }
 
-export default AppWrapper;
+export default AppController;

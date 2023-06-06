@@ -3,12 +3,12 @@ import { useEnsName } from "wagmi";
 import { FullMessage } from "../component-library/components/FullMessage/FullMessage";
 import { isValidLongWalletAddress, shortAddress } from "../helpers";
 import { address } from "../pages/inbox";
-import MessageContentWrapper from "./MessageContentWrapper";
+import MessageContentController from "./MessageContentController";
 import { useClient } from "@xmtp/react-sdk";
 import useSendMessage from "../hooks/useSendMessage";
 import { useXmtpStore } from "../store/xmtp";
 
-interface FullMessageWrapperProps {
+interface FullMessageControllerProps {
   msg: {
     id: string;
     senderAddress: string;
@@ -18,7 +18,10 @@ interface FullMessageWrapperProps {
   idx: number;
 }
 
-export const FullMessageWrapper = ({ msg, idx }: FullMessageWrapperProps) => {
+export const FullMessageController = ({
+  msg,
+  idx,
+}: FullMessageControllerProps) => {
   const { client } = useClient();
 
   // Get ENS if exists from full address
@@ -33,7 +36,7 @@ export const FullMessageWrapper = ({ msg, idx }: FullMessageWrapperProps) => {
   return (
     <FullMessage
       text={
-        <MessageContentWrapper
+        <MessageContentController
           content={msg.content}
           isSelf={client?.address === msg.senderAddress}
           isLoading={loading}

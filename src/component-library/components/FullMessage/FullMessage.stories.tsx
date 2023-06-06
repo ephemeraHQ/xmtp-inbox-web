@@ -2,7 +2,7 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { FullMessage } from "./FullMessage";
 import { shortAddress } from "../../../../src/helpers";
-import MessageContentWrapper from "../../../wrappers/MessageContentWrapper";
+import MessageContentController from "../../../controllers/MessageContentController";
 import { RemoteAttachment } from "xmtp-content-type-remote-attachment";
 
 export default {
@@ -22,7 +22,7 @@ const Template: ComponentStory<typeof FullMessage> = (args) => (
 export const FullOutgoingMessage = Template.bind({});
 FullOutgoingMessage.args = {
   text: (
-    <MessageContentWrapper
+    <MessageContentController
       content={"Hello there"}
       isSelf={true}
       isLoading={false}
@@ -39,7 +39,7 @@ FullOutgoingMessage.args = {
 export const FullIncomingMessage = Template.bind({});
 FullIncomingMessage.args = {
   text: (
-    <MessageContentWrapper
+    <MessageContentController
       content={"Hello there"}
       isSelf={false}
       isLoading={false}
@@ -67,7 +67,7 @@ const remoteAttachment: RemoteAttachment = {
 export const FullOutgoingMessageAttachmentLoading = Template.bind({});
 FullOutgoingMessageAttachmentLoading.args = {
   text: (
-    <MessageContentWrapper
+    <MessageContentController
       content={remoteAttachment}
       isSelf={true}
       isLoading={true}
@@ -84,7 +84,7 @@ FullOutgoingMessageAttachmentLoading.args = {
 export const FullIncomingMessageAttachment = Template.bind({});
 FullIncomingMessageAttachment.args = {
   text: (
-    <MessageContentWrapper
+    <MessageContentController
       content={remoteAttachment}
       isSelf={false}
       isLoading={false}
@@ -101,7 +101,7 @@ FullIncomingMessageAttachment.args = {
 export const FullIncomingAttachmentError = Template.bind({});
 FullIncomingAttachmentError.args = {
   text: (
-    <MessageContentWrapper
+    <MessageContentController
       content={remoteAttachment}
       isSelf={false}
       isLoading={false}

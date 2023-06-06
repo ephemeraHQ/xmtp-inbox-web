@@ -6,7 +6,7 @@ import { address } from "../pages/inbox";
 import { useXmtpStore } from "../store/xmtp";
 import { useClient } from "@xmtp/react-sdk";
 
-export const SideNavWrapper = () => {
+export const SideNavController = () => {
   const { client, disconnect } = useClient();
   const resetXmtpState = useXmtpStore((state) => state.resetXmtpState);
 

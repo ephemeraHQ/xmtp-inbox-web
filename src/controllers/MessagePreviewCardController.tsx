@@ -11,15 +11,15 @@ import {
 } from "../helpers";
 import { address } from "../pages/inbox";
 import { useXmtpStore } from "../store/xmtp";
-import MessageContentWrapper from "./MessageContentWrapper";
+import MessageContentController from "./MessageContentController";
 import { useTranslation } from "react-i18next";
 
-interface MessagePreviewCardWrapperProps {
+interface MessagePreviewCardControllerProps {
   convo?: Conversation;
 }
-export const MessagePreviewCardWrapper = ({
+export const MessagePreviewCardController = ({
   convo,
-}: MessagePreviewCardWrapperProps) => {
+}: MessagePreviewCardControllerProps) => {
   const { t } = useTranslation();
   // XMTP State
   const previewMessages = useXmtpStore((state) => state.previewMessages);
@@ -78,7 +78,7 @@ export const MessagePreviewCardWrapper = ({
       key={previewMessage?.id}
       text={
         previewMessage?.content ? (
-          <MessageContentWrapper
+          <MessageContentController
             content={
               typeof previewMessage.content !== "string"
                 ? t("messages.attachment") || "Attachment"

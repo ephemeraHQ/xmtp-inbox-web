@@ -4,7 +4,7 @@ import { RecipientInputMode } from "../helpers";
 import useGetRecipientInputMode from "../hooks/useGetRecipientInputMode";
 import { useXmtpStore } from "../store/xmtp";
 
-export const HeaderDropdownWrapper = () => {
+export const HeaderDropdownController = () => {
   // XMTP State
   const setRecipientWalletAddress = useXmtpStore(
     (state) => state.setRecipientWalletAddress,

@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useXmtpStore } from "../store/xmtp";
 import { TAILWIND_MD_BREAKPOINT, wipeKeys } from "../helpers";
-import { FullConversationWrapper } from "../wrappers/FullConversationWrapper";
-import { AddressInputWrapper } from "../wrappers/AddressInputWrapper";
-import { HeaderDropdownWrapper } from "../wrappers/HeaderDropdownWrapper";
-import { MessageInputWrapper } from "../wrappers/MessageInputWrapper";
-import { SideNavWrapper } from "../wrappers/SideNavWrapper";
+import { FullConversationController } from "../controllers/FullConversationController";
+import { AddressInputController } from "../controllers/AddressInputController";
+import { HeaderDropdownController } from "../controllers/HeaderDropdownController";
+import { MessageInputController } from "../controllers/MessageInputController";
+import { SideNavController } from "../controllers/SideNavController";
 import { LearnMore } from "../component-library/components/LearnMore/LearnMore";
 import router from "next/router";
 import useWindowSize from "../hooks/useWindowSize";
 import { useClient } from "@xmtp/react-sdk";
 import { useDisconnect, useSigner } from "wagmi";
-import { ConversationListWrapper } from "../wrappers/ConversationListWrapper";
+import { ConversationListController } from "../controllers/ConversationListController";
 import { useAttachmentChange } from "../hooks/useAttachmentChange";
 import { Attachment } from "xmtp-content-type-remote-attachment";
 import { db } from "../../db";
@@ -103,7 +103,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   };
 
   return (
-    // Wrapper for drag-and-drop area
+    // Controller for drag-and-drop area
     <div
       className={isDragActive ? "bg-slate-100" : "bg-white"}
       onDragOver={handleDrag}
@@ -115,10 +115,10 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
           {size[0] > TAILWIND_MD_BREAKPOINT ||
           (!recipientWalletAddress && !startedFirstMessage) ? (
             <>
-              <SideNavWrapper />
+              <SideNavController />
               <div className="flex flex-col w-full h-screen overflow-y-auto">
-                <HeaderDropdownWrapper />
-                <ConversationListWrapper
+                <HeaderDropdownController />
+                <ConversationListController
                   setStartedFirstMessage={setStartedFirstMessage}
                 />
               </div>
@@ -139,13 +139,13 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
             ) : (
               <>
                 <div className="flex">
-                  <AddressInputWrapper />
+                  <AddressInputController />
                 </div>
                 <div className="h-full overflow-auto flex flex-col">
-                  {conversationId && <FullConversationWrapper />}
+                  {conversationId && <FullConversationController />}
                 </div>
                 {/* Drag event handling needing for content attachments */}
-                <MessageInputWrapper
+                <MessageInputController
                   attachment={attachment}
                   setAttachment={setAttachment}
                   attachmentPreview={attachmentPreview}

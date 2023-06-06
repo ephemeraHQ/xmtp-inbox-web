@@ -14,7 +14,7 @@ import { address } from "../pages/inbox";
 import useWindowSize from "../hooks/useWindowSize";
 import { useXmtpStore } from "../store/xmtp";
 
-export const AddressInputWrapper = () => {
+export const AddressInputController = () => {
   // XMTP State
   const recipientWalletAddress = useXmtpStore(
     (state) => state.recipientWalletAddress,

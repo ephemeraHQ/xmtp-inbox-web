@@ -7,7 +7,7 @@ import { useXmtpStore } from "../store/xmtp";
 import { address } from "../pages/inbox";
 import { Attachment } from "xmtp-content-type-remote-attachment";
 
-interface MessageInputWrapperProps {
+interface MessageInputControllerProps {
   attachment?: Attachment;
   attachmentPreview?: string;
   setAttachment: (attachment: Attachment | undefined) => void;
@@ -15,13 +15,13 @@ interface MessageInputWrapperProps {
   setIsDragActive: (status: boolean) => void;
 }
 
-export const MessageInputWrapper = ({
+export const MessageInputController = ({
   attachment,
   setAttachment,
   attachmentPreview,
   setAttachmentPreview,
   setIsDragActive,
-}: MessageInputWrapperProps) => {
+}: MessageInputControllerProps) => {
   // XMTP Hooks
   const { recipientInputMode } = useGetRecipientInputMode();
   const conversationId = useXmtpStore((state) => state.conversationId);
