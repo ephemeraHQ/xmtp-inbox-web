@@ -7,7 +7,7 @@ import { format as formatDate, isDate, formatDistanceStrict } from "date-fns";
 import * as locales from "date-fns/locale"; // import all locales we need
 
 // Get translated JSON files from locales folder so we don't need to import here individually
-const webpackContext = require.context("./locales", false, /\.json$/);
+const webpackContext = require.context("./src/locales", false, /\.json$/);
 const filenames = webpackContext.keys(); // => ['./de_DE.json, './en_US.json']
 const key_value_pairs = filenames.map((name) => [
   name?.match(/\/(\w+)\.json$/)?.[1],
