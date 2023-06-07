@@ -10,6 +10,8 @@ import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { db } from "../../../db";
 import { useTranslation } from "react-i18next";
+import { humanFileSize } from "../../../helpers/attachments";
+import { ATTACHMENT_ERRORS } from "../../../helpers";
 
 type RemoteAttachmentMessageTileProps = {
   content: RemoteAttachment;
@@ -29,6 +31,7 @@ const RemoteAttachmentMessageTile = ({
   const [status, setStatus] = useState<status>("unloaded");
   const [url, setURL] = useState<string | null>(null);
   const { t } = useTranslation();
+  const fileSize = humanFileSize(content.contentLength);
 
   const { client } = useClient();
 
@@ -74,9 +77,13 @@ const RemoteAttachmentMessageTile = ({
     handleLoading();
   }, [status, client, content]);
 
-  const load = (inCache = false) => {
-    // If not in cache, run handleLoading
-    if (!inCache) {
+  const load = (inCache = false, clickedToLoad = false) => {
+    // If attachment is not in cache and it is the appropriate file size,
+    // or it's too large and user has initiated this anyway, run handleLoading
+    const loadImage =
+      clickedToLoad === true ||
+      (!inCache && fileSize !== ATTACHMENT_ERRORS.FILE_TOO_LARGE);
+    if (loadImage) {
       setStatus("loadRequested");
     }
   };
@@ -112,6 +119,18 @@ const RemoteAttachmentMessageTile = ({
             alt={content.filename}
           />
         </Zoom>
+      ) : null}
+      {status !== "loaded" &&
+      !isSelf &&
+      fileSize === ATTACHMENT_ERRORS.FILE_TOO_LARGE ? (
+        <small>
+          {content.filename} - {humanFileSize(content.contentLength)}
+          {
+            <button onClick={() => load(false, true)} type="button">
+              {`- ${t("messages.attachment_cta")}`}
+            </button>
+          }
+        </small>
       ) : null}
     </div>
   );

@@ -19,6 +19,7 @@
   },
   "messages": {
     "attachment": "Attachment",
+    "attachment_cta": "Click to load",
     "filter_none": "All messages",
     "filter_requests": "Message requests",
     "convos_empty_header": "No messages? No problem.",
