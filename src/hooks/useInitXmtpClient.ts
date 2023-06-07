@@ -40,7 +40,7 @@ const makePromise = <T = void>() => {
 
 // XMTP client options
 const clientOptions = {
-  apiUrl: import.meta.env.XMTP_API_URL,
+  apiUrl: import.meta.env.VITE_XMTP_API_URL,
   env: getEnv(),
   appVersion: getAppVersion(),
   codecs: [new AttachmentCodec(), new RemoteAttachmentCodec()],

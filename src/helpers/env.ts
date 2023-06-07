@@ -1,7 +1,7 @@
 import { ENVIRONMENT } from "./constants";
 
 export const getEnv = (): "dev" | "production" | "local" => {
-  const envVar = import.meta.env.XMTP_ENVIRONMENT;
+  const envVar = import.meta.env.VITE_XMTP_ENVIRONMENT;
   if (envVar === "production") {
     return envVar;
   }
@@ -24,5 +24,5 @@ export const isAppEnvAlpha = (): boolean => {
 };
 
 export const getGoogleTagId = (): string => {
-  return import.meta.env.GOOGLE_TAG_ID ?? "";
+  return import.meta.env.VITE_GOOGLE_TAG_ID ?? "";
 };

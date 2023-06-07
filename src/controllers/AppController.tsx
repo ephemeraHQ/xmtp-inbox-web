@@ -9,7 +9,12 @@ import "../helpers/i18n";
 import { useXmtpStore } from "../store/xmtp";
 import { datadogRum } from "@datadog/browser-rum";
 import { ENVIRONMENT } from "../helpers";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Inbox from "../pages/inbox";
 import Index from "../pages/index";
 
@@ -32,12 +37,12 @@ const AppController: React.FC = () => {
         if (recipient) {
           setConversationId(recipient);
           setRecipientWalletAddress(recipient);
-          // router.push("/inbox");
+          <Navigate to="/inbox" replace />;
         } else {
-          // router.push("/");
+          <Navigate to="/" replace />;
         }
       } else {
-        // router.push("/");
+        <Navigate to="/inbox" replace />;
       }
     };
     if (window?.location?.href.includes("/dm")) {
@@ -55,8 +60,8 @@ const AppController: React.FC = () => {
     production users. */
     if (window.location.hostname.includes(ENVIRONMENT.ALPHA)) {
       datadogRum.init({
-        applicationId: import.meta.env.DATA_DOG_ID as string,
-        clientToken: import.meta.env.DATA_DOG_TOKEN as string,
+        applicationId: import.meta.env.VITE_DATA_DOG_ID as string,
+        clientToken: import.meta.env.VITE_DATA_DOG_TOKEN as string,
         site: "datadoghq.com",
         service: "inbox-web",
         env: "prod",
