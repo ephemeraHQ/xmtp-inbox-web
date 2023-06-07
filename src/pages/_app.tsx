@@ -16,7 +16,7 @@ import {
   isEnsAddress,
   isValidRecipientAddressFormat,
 } from "../helpers";
-import "../../i18n";
+import "../helpers/i18n";
 import { XMTPProvider } from "@xmtp/react-sdk";
 import { mockConnector } from "../helpers/mockConnector";
 import { useXmtpStore } from "../store/xmtp";

@@ -14,7 +14,7 @@ import { useDisconnect, useSigner } from "wagmi";
 import { ConversationListController } from "../controllers/ConversationListController";
 import { useAttachmentChange } from "../hooks/useAttachmentChange";
 import { Attachment } from "xmtp-content-type-remote-attachment";
-import { db } from "../../db";
+import { db } from "../helpers/attachment_db";
 
 export type address = "0x${string}";
 

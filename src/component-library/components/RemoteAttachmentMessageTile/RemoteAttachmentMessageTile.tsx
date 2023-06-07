@@ -9,7 +9,7 @@ import { useClient } from "@xmtp/react-sdk";
 import { humanFileSize } from "../../../../src/helpers/attachments";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
-import { db } from "../../../../db";
+import { db } from "../../../helpers/attachment_db";
 import { useTranslation } from "react-i18next";
 import { ATTACHMENT_ERRORS } from "../../../helpers";
 

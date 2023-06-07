@@ -22,7 +22,7 @@ import { Avatar } from "../Avatar/Avatar";
 import { GhostButton } from "../GhostButton/GhostButton";
 import { DisconnectIcon } from "../Icons/DisconnectIcon";
 import { useTranslation } from "react-i18next";
-import i18next, { resourceMap } from "../../../../i18n";
+import i18next, { resourceMap } from "../../../helpers/i18n";
 import { QRCode } from "react-qrcode-logo";
 
 interface SideNav {
