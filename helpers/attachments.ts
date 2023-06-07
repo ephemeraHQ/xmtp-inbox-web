@@ -9,8 +9,8 @@ import { ATTACHMENT_ERRORS } from "./constants";
  * @returns The human readable file size string.
  */
 export const humanFileSize = (bytes: number, si = false, dp = 1) => {
-  // Throws error if > 100 MB
-  if (bytes > 100000000) {
+  // Throws error if > 5 MB
+  if (bytes > 5000000) {
     return ATTACHMENT_ERRORS.FILE_TOO_LARGE;
   }
   const thresh = si ? 1000 : 1024;
