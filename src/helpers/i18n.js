@@ -6,12 +6,12 @@ import { format as formatDate, isDate, formatDistanceStrict } from "date-fns";
 import * as locales from "date-fns/locale"; // import all locales we need
 
 // Get translated JSON files from locales folder so we don't need to import here individually
-const webpackContext = require.context("../../src/locales", false, /\.json$/);
-const filenames = webpackContext.keys(); // => ['./de_DE.json, './en_US.json']
-const key_value_pairs = filenames.map((name) => [
-  name?.match(/\/(\w+)\.json$/)?.[1],
-  webpackContext(name),
-]);
+// const webpackContext = require.context("../../src/locales", false, /\.json$/);
+// const filenames = ["./de_DE.json", "./en_US.json"];
+const key_value_pairs = [
+  ["de_DE", "./de_DE.json"],
+  ["en_US", "./en_US.json"],
+];
 
 // Create object with languages and corresponding file mappings
 const messages = Object.fromEntries(key_value_pairs);
