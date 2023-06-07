@@ -9,6 +9,9 @@ import "../helpers/i18n";
 import { useXmtpStore } from "../store/xmtp";
 import { datadogRum } from "@datadog/browser-rum";
 import { ENVIRONMENT } from "../helpers";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Inbox from "../pages/inbox";
+import Index from "../pages/index";
 
 const AppController: React.FC = () => {
   const setRecipientWalletAddress = useXmtpStore(
@@ -69,7 +72,14 @@ const AppController: React.FC = () => {
     }
   }, []);
 
-  return <>hello, world!</>;
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Index />}></Route>
+        <Route path="/inbox" element={<Inbox />}></Route>
+      </Routes>
+    </Router>
+  );
 };
 
 export default AppController;

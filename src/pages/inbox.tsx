@@ -7,7 +7,7 @@ import { HeaderDropdownController } from "../controllers/HeaderDropdownControlle
 import { MessageInputController } from "../controllers/MessageInputController";
 import { SideNavController } from "../controllers/SideNavController";
 import { LearnMore } from "../component-library/components/LearnMore/LearnMore";
-import router from "next/router";
+// import router from "next/router";
 import useWindowSize from "../hooks/useWindowSize";
 import { useClient } from "@xmtp/react-sdk";
 import { useDisconnect, useSigner } from "wagmi";
@@ -25,7 +25,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
 
   useEffect(() => {
     if (!client) {
-      router.push("/");
+      // router.push("/");
     }
     // any time the client changes, the attachments cached db should be cleared
     // this is because the contentDataURL is partially derived from client
