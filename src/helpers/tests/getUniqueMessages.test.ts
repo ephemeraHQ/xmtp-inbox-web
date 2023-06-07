@@ -1,6 +1,5 @@
 //@ts-nocheck
 import getUniqueMessages from "../getUniqueMessages";
-import { expect } from "@jest/globals";
 
 describe("getUniqueMessages", () => {
   it("returns unique messages in order provided if no timestamps", () => {

@@ -8,7 +8,6 @@ import {
   isValidRecipientAddressFormat,
   getAddress,
 } from "../string";
-import { expect } from "@jest/globals";
 import { utils } from "ethers";
 
 describe("truncate", () => {

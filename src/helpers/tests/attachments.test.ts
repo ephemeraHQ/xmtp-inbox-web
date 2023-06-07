@@ -1,5 +1,4 @@
 import { humanFileSize } from "../attachments";
-import { expect } from "@jest/globals";
 import { ATTACHMENT_ERRORS } from "../constants";
 
 describe("humanFileSize", () => {

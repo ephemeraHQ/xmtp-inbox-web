@@ -1,5 +1,4 @@
 import { classNames } from "../classNames";
-import { expect } from "@jest/globals";
 
 describe("classNames", () => {
   it("should return a string of class names", () => {

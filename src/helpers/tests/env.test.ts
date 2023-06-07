@@ -1,6 +1,5 @@
 import { isAppEnvDemo } from "../env";
 import { ENVIRONMENT } from "../constants";
-import { expect } from "@jest/globals";
 
 describe("isAppEnvDemo", () => {
   it("returns false if local storage does not have a key of demo", () => {

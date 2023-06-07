@@ -1,5 +1,4 @@
 //@ts-nocheck
-import { expect } from "@jest/globals";
 import { buildLocalStorageKey, loadKeys, storeKeys, wipeKeys } from "../keys";
 
 var localStorageMock = (() => {

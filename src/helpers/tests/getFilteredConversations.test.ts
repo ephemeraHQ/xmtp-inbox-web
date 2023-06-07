@@ -1,7 +1,6 @@
 //@ts-nocheck
 import { XMTP_FEEDBACK_ADDRESS } from "../constants";
 import getFilteredConversations from "../getFilteredConversations";
-import { expect } from "@jest/globals";
 
 let mockConversations = new Map();
 

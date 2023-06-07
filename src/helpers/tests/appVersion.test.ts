@@ -1,6 +1,6 @@
-import { expect, jest } from "@jest/globals";
+import { vi } from "vitest";
 
-jest.unstable_mockModule("../../../package.json", () => ({
+vi.mock("../../../package.json", () => ({
   default: {
     name: "testName",
     version: "1",

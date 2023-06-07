@@ -1,9 +1,9 @@
 //@ts-nocheck
+import { vi } from "vitest";
 import fetchMostRecentMessage from "../fetchMostRecentMessage";
-import { expect, jest } from "@jest/globals";
 
 let mockConvo = {
-  messages: jest.fn().mockResolvedValue(["test1", "test2", "test3"]),
+  messages: vi.fn().mockResolvedValue(["test1", "test2", "test3"]),
 };
 
 describe("fetchMostRecentMessage", () => {
@@ -16,7 +16,7 @@ describe("fetchMostRecentMessage", () => {
     expect(recentMessage).toMatchObject({ key: "" });
   });
   it("returns just key when no new messages", async () => {
-    mockConvo.messages = jest.fn().mockResolvedValue([]);
+    mockConvo.messages = vi.fn().mockResolvedValue([]);
     const recentMessage = await fetchMostRecentMessage(mockConvo);
     expect(recentMessage).toMatchObject({ key: "" });
   });
