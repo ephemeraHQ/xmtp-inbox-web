@@ -52,7 +52,7 @@ export const useAttachmentChange = ({
           setIsDragActive(false);
           return;
         }
-        // Displays error if > 100 MB
+        // Displays error if > 5 MB
         if (humanFileSize(file.size) === ATTACHMENT_ERRORS.FILE_TOO_LARGE) {
           setError(t("status_messaging.file_too_large"));
           setIsDragActive(false);
