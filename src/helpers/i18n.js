@@ -13,7 +13,7 @@ const filenames = Object.keys(localeFiles).map(
 
 const keyValuePairs = await Promise.all(
   filenames.map(async (name) => {
-    const locale = name.match(/\/(\w+)\.json$/)?.[1] || "en_US.json";
+    const locale = name.match(/(\w+)\.json$/)?.[0] || "en_US.json";
     const file = await localeFiles[`../locales/${locale}`]();
     return [locale.split(".json")[0], file];
   }),
