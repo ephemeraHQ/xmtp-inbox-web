@@ -7,7 +7,6 @@ import { HeaderDropdownController } from "../controllers/HeaderDropdownControlle
 import { MessageInputController } from "../controllers/MessageInputController";
 import { SideNavController } from "../controllers/SideNavController";
 import { LearnMore } from "../component-library/components/LearnMore/LearnMore";
-// import router from "next/router";
 import useWindowSize from "../hooks/useWindowSize";
 import { useClient } from "@xmtp/react-sdk";
 import { useDisconnect, useSigner } from "wagmi";
@@ -15,17 +14,19 @@ import { ConversationListController } from "../controllers/ConversationListContr
 import { useAttachmentChange } from "../hooks/useAttachmentChange";
 import { Attachment } from "xmtp-content-type-remote-attachment";
 import { db } from "../helpers/attachment_db";
+import { useNavigate } from "react-router-dom";
 
 export type address = "0x${string}";
 
 const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
+  const navigate = useNavigate();
   const resetXmtpState = useXmtpStore((state) => state.resetXmtpState);
   const { client, disconnect, signer: clientSigner } = useClient();
   const [isDragActive, setIsDragActive] = useState(false);
 
   useEffect(() => {
     if (!client) {
-      // router.push("/");
+      navigate("/");
     }
     // any time the client changes, the attachments cached db should be cleared
     // this is because the contentDataURL is partially derived from client

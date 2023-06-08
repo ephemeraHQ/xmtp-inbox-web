@@ -2,54 +2,16 @@
 // import "@xmtp/react-sdk/style.css";
 import "../../.storybook/styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
-import { fetchEnsAddress } from "@wagmi/core";
 import React, { useEffect } from "react";
-import { isEnsAddress, isValidRecipientAddressFormat } from "../helpers";
 import "../helpers/i18n";
-import { useXmtpStore } from "../store/xmtp";
 import { datadogRum } from "@datadog/browser-rum";
 import { ENVIRONMENT } from "../helpers";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Inbox from "../pages/inbox";
 import Index from "../pages/index";
+import Dm from "../pages/dm";
 
 const AppController: React.FC = () => {
-  const setRecipientWalletAddress = useXmtpStore(
-    (state) => state.setRecipientWalletAddress,
-  );
-  const setConversationId = useXmtpStore((state) => state.setConversationId);
-
-  useEffect(() => {
-    const routeToInbox = async () => {
-      let recipient = window.location.href.split("/").slice(-1)[0];
-      if (isValidRecipientAddressFormat(recipient)) {
-        if (isEnsAddress(recipient)) {
-          recipient =
-            (await fetchEnsAddress({
-              name: recipient,
-            })) ?? "";
-        }
-        if (recipient) {
-          setConversationId(recipient);
-          setRecipientWalletAddress(recipient);
-          <Navigate to="/inbox" replace />;
-        } else {
-          <Navigate to="/" replace />;
-        }
-      } else {
-        <Navigate to="/inbox" replace />;
-      }
-    };
-    if (window?.location?.href.includes("/dm")) {
-      routeToInbox();
-    }
-  }, []);
-
   useEffect(() => {
     /* The initialization below will only happen 
     on our internal testing url (alpha.xmtp.chat)
@@ -82,6 +44,7 @@ const AppController: React.FC = () => {
       <Routes>
         <Route path="/" element={<Index />}></Route>
         <Route path="/inbox" element={<Inbox />}></Route>
+        <Route path="/dm/:address" element={<Dm />}></Route>
       </Routes>
     </Router>
   );

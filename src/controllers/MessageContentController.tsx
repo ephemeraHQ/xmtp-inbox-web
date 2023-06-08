@@ -7,7 +7,7 @@ import RemoteAttachmentMessageTile from "../component-library/components/RemoteA
 import { RemoteAttachment } from "xmtp-content-type-remote-attachment";
 
 interface MessageContentControllerProps {
-  content: string | RemoteAttachment;
+  content: undefined | string | RemoteAttachment;
   isSelf: boolean;
   isLoading: boolean;
   isError: boolean;
@@ -24,10 +24,10 @@ const MessageContentController = ({
     shortcodes: ["emojibase"],
   });
 
-  return typeof content === "string" ? (
+  return content === undefined || typeof content === "string" ? (
     <span className="interweave-content" data-testid="message-tile-text">
       <Interweave
-        content={content}
+        content={content ?? ""}
         newWindow
         escapeHtml
         onClick={(event: MouseEvent<HTMLDivElement>) => event.stopPropagation()}
