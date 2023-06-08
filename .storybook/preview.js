@@ -1,9 +1,9 @@
 import "./styles/globals.css";
 
-import i18n from "../i18n";
+import i18n from "../src/helpers/i18n";
 import React, { Suspense, useEffect } from "react";
 import { I18nextProvider } from "react-i18next";
-import { resourceMap } from "../i18n";
+import { resourceMap } from "../src/helpers/i18n";
 
 const withI18next = (Story, context) => {
   const { locale } = context.globals;
