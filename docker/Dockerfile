@@ -3,8 +3,8 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
-ARG INFURA_ID
-ENV INFURA_ID=${INFURA_ID}
+ARG VITE_INFURA_ID
+ENV VITE_INFURA_ID=${VITE_INFURA_ID}
 RUN npm run build
 
 FROM nginx:alpine
@@ -13,5 +13,5 @@ RUN apk update && \
 COPY docker/entrypoint.sh /opt/
 COPY docker/nginx-default-template.conf /app/
 COPY --from=builder /app/out /app/html-template
-ENV XMTP_API_URL=PLACEHOLDER_XMTP_API_URL
+ENV NEXT_PUBLIC_XMTP_API_URL=PLACEHOLDER_XMTP_API_URL
 CMD ["/opt/entrypoint.sh"]
