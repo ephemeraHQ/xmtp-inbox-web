@@ -18,7 +18,7 @@ export const disconnectWallet = () => {
 };
 
 export const startDemoEnv = () => {
-  cy.visit("http://localhost:3000");
+  cy.visit(Cypress.env("server_url"));
   localStorage.setItem(ENVIRONMENT.DEMO, String(true));
 };
 

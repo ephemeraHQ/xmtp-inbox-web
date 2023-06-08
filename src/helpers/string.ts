@@ -47,13 +47,13 @@ export const isUnsAddress = (address: string): boolean => {
 export const fetchUnsName = async (
   address: string | undefined,
 ): Promise<string | null> => {
-  if (import.meta.env.VITE_UNS_TOKEN && address) {
+  if (process.env.VITE_UNS_TOKEN && address) {
     try {
       const response = await fetch(
         `https://resolve.unstoppabledomains.com/reverse/${address.toLowerCase()}`,
         {
           headers: {
-            Authorization: `Bearer ${import.meta.env.VITE_UNS_TOKEN}`,
+            Authorization: `Bearer ${process.env.VITE_UNS_TOKEN}`,
           },
         },
       );
@@ -71,13 +71,13 @@ export const fetchUnsName = async (
 export const fetchUnsAddress = async (
   name: string | undefined,
 ): Promise<string | null> => {
-  if (import.meta.env.VITE_UNS_TOKEN && name) {
+  if (process.env.VITE_UNS_TOKEN && name) {
     try {
       const response = await fetch(
         `https://resolve.unstoppabledomains.com/domains/${name}`,
         {
           headers: {
-            Authorization: `Bearer ${import.meta.env.VITE_UNS_TOKEN}`,
+            Authorization: `Bearer ${process.env.VITE_UNS_TOKEN}`,
           },
         },
       );
