@@ -1,9 +1,7 @@
-// Temporarily removing until we pull components from the SDK.
-// import "@xmtp/react-sdk/style.css";
 import "../../.storybook/styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
-import React, { useEffect } from "react";
-import "../helpers/i18n";
+import React, { useEffect, useState } from "react";
+import { initialize } from "../helpers/i18n";
 import { datadogRum } from "@datadog/browser-rum";
 import { ENVIRONMENT } from "../helpers";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -12,6 +10,15 @@ import Index from "../pages/index";
 import Dm from "../pages/dm";
 
 const AppController: React.FC = () => {
+  const [initialized, setInitialized] = useState(false);
+  useEffect(() => {
+    const initI18n = async () => {
+      await initialize();
+      setInitialized(true);
+    };
+    initI18n();
+  }, []);
+
   useEffect(() => {
     /* The initialization below will only happen 
     on our internal testing url (alpha.xmtp.chat)
@@ -39,7 +46,7 @@ const AppController: React.FC = () => {
     }
   }, []);
 
-  return (
+  return initialized ? (
     <Router>
       <Routes>
         <Route path="/" element={<Index />}></Route>
@@ -47,7 +54,7 @@ const AppController: React.FC = () => {
         <Route path="/dm/:address" element={<Dm />}></Route>
       </Routes>
     </Router>
-  );
+  ) : null;
 };
 
 export default AppController;

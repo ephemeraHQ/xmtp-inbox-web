@@ -22,7 +22,7 @@ import { Avatar } from "../Avatar/Avatar";
 import { GhostButton } from "../GhostButton/GhostButton";
 import { DisconnectIcon } from "../Icons/DisconnectIcon";
 import { useTranslation } from "react-i18next";
-import i18next, { resourceMap } from "../../../helpers/i18n";
+import i18next, { supportedLocales } from "../../../helpers/i18n";
 import { QRCode } from "react-qrcode-logo";
 
 interface SideNav {
@@ -61,7 +61,7 @@ const SideNav = ({
   ] = useState([]);
   // When language changes, change the modal text to render the corresponding locale selector within that language
   useEffect(() => {
-    const mappedLangs = Object.keys(resourceMap).map((lang: string) => {
+    const mappedLangs = supportedLocales.map((lang: string) => {
       let languageNames = new Intl.DisplayNames([i18next.language], {
         type: "language",
       });

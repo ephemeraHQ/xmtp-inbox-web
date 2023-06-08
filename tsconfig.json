@@ -24,6 +24,6 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src", "index.html"],
+  "include": ["src", "index.html", "./storybook/**/*"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
