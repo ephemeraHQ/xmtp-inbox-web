@@ -6,15 +6,22 @@ import { format as formatDate, isDate, formatDistanceStrict } from "date-fns";
 import * as locales from "date-fns/locale"; // import all locales we need
 
 // Get translated JSON files from locales folder so we don't need to import here individually
-// const webpackContext = require.context("../../src/locales", false, /\.json$/);
-// const filenames = ["./de_DE.json", "./en_US.json"];
-const key_value_pairs = [
-  ["de_DE", "./de_DE.json"],
-  ["en_US", "./en_US.json"],
-];
+const localeFiles = import.meta.glob("../../src/locales/*.json");
+const filenames = Object.keys(localeFiles).map(
+  (item) => item.split("locales/")[1],
+); // => ['./de_DE.json, './en_US.json']
+
+const convertToKeyValuePairs = (filenames) => {
+  return filenames.map((name) => {
+    const locale = name.match(/\/(\w+)\.json$/)?.[1] || "en_US.json";
+    return [locale.split(".json")[0], `./${locale}`];
+  });
+};
+
+const keyValuePairs = convertToKeyValuePairs(filenames);
 
 // Create object with languages and corresponding file mappings
-const messages = Object.fromEntries(key_value_pairs);
+const messages = Object.fromEntries(keyValuePairs);
 
 // Populate mapping of language to locale file resources
 export let resourceMap = {};
