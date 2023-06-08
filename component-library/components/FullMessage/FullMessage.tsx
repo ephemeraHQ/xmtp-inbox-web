@@ -25,6 +25,10 @@ interface FullMessageProps {
    * Should we show the date divider?
    */
   showDateDivider?: boolean;
+  /**
+   * Does this message have an error?
+   */
+  isError?: boolean;
 }
 
 export const FullMessage = ({
@@ -32,6 +36,7 @@ export const FullMessage = ({
   from,
   datetime,
   showDateDivider = false,
+  isError,
 }: FullMessageProps) => {
   const { t } = useTranslation();
   const isOutgoingMessage = from.isSelf;
@@ -57,8 +62,10 @@ export const FullMessage = ({
         )}>
         <div className={classNames("flex", "flex-col", "max-w-full")}>
           <div
-            className={`whitespace-pre-wrap p-2 px-3 rounded-tl-xl rounded-tr-xl my-1 max-w-full break-words text-md pl-3 ${
-              isOutgoingMessage
+            className={`whitespace-pre-wrap p-2 px-3 rounded-tl-xl rounded-tr-xl my-1 max-w-full break-words text-md pl-3  ${
+              isError
+                ? "bg-white"
+                : isOutgoingMessage
                 ? outgoingMessageBackgroundStyles
                 : incomingMessageBackgroundStyles
             }`}>

@@ -12,6 +12,7 @@ import {
 import { address } from "../pages/inbox";
 import { useXmtpStore } from "../store/xmtp";
 import MessageContentWrapper from "./MessageContentWrapper";
+import { useTranslation } from "react-i18next";
 
 interface MessagePreviewCardWrapperProps {
   convo?: Conversation;
@@ -19,6 +20,7 @@ interface MessagePreviewCardWrapperProps {
 export const MessagePreviewCardWrapper = ({
   convo,
 }: MessagePreviewCardWrapperProps) => {
+  const { t } = useTranslation();
   // XMTP State
   const previewMessages = useXmtpStore((state) => state.previewMessages);
   const recipientWalletAddress = useXmtpStore(
@@ -76,7 +78,18 @@ export const MessagePreviewCardWrapper = ({
       key={previewMessage?.id}
       text={
         previewMessage?.content ? (
-          <MessageContentWrapper content={previewMessage?.content} />
+          <MessageContentWrapper
+            content={
+              typeof previewMessage.content !== "string"
+                ? t("messages.attachment") || "Attachment"
+                : previewMessage?.content
+            }
+            // None of these props are needed for this preview view.
+            // If there is an error or loading of attachment, the message preview still has the same view.
+            isSelf={false}
+            isLoading={false}
+            isError={false}
+          />
         ) : undefined
       }
       datetime={previewMessage?.sent}

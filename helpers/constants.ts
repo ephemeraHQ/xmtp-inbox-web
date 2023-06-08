@@ -41,3 +41,7 @@ export const ALLOWED_UNS_SUFFIXES = [
 
 export const XMTP_FEEDBACK_ADDRESS =
   "0x8bcF8AFF8Cb99335CD9f4d9866a40e05E23373ff";
+
+export const ATTACHMENT_ERRORS = {
+  FILE_TOO_LARGE: "File too large",
+};
