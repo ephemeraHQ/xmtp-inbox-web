@@ -27,12 +27,9 @@
   "include": [
     "src",
     "index.html",
-    "./storybook/**/*",
-    "cypress.config.ts",
-    "postcss.config.js",
-    "tailwind.config.js",
-    "vite.config.js",
-    "vitest.config.js"
+    "./storybook/*",
+    "cypress/*",
+    "cypress.config.ts"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
