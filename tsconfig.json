@@ -24,6 +24,15 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src", "index.html", "./storybook/**/*"],
+  "include": [
+    "src",
+    "index.html",
+    "./storybook/**/*",
+    "cypress.config.ts",
+    "postcss.config.js",
+    "tailwind.config.js",
+    "vite.config.js",
+    "vitest.config.js"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
