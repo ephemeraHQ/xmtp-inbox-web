@@ -11,14 +11,13 @@ const filenames = Object.keys(localeFiles).map(
   (item) => item.split("locales/")[1],
 ); // => ['./de_DE.json, './en_US.json']
 
-const convertToKeyValuePairs = (filenames) => {
-  return filenames.map((name) => {
+const keyValuePairs = await Promise.all(
+  filenames.map(async (name) => {
     const locale = name.match(/\/(\w+)\.json$/)?.[1] || "en_US.json";
-    return [locale.split(".json")[0], `./${locale}`];
-  });
-};
-
-const keyValuePairs = convertToKeyValuePairs(filenames);
+    const file = await localeFiles[`../locales/${locale}`]();
+    return [locale.split(".json")[0], file];
+  }),
+);
 
 // Create object with languages and corresponding file mappings
 const messages = Object.fromEntries(keyValuePairs);
