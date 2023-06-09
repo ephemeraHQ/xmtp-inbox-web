@@ -41,7 +41,7 @@ const useSendMessage = (conversationId: address, attachment?: Attachment) => {
     async (message: string | Attachment) => {
       if (attachment) {
         const web3Storage = new Web3Storage({
-          token: process.env.VITE_WEB3_STORAGE_TOKEN as string,
+          token: import.meta.env.VITE_WEB3_STORAGE_TOKEN as string,
         });
 
         const encryptedEncoded = await RemoteAttachmentCodec.encodeEncrypted(

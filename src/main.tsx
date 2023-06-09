@@ -15,7 +15,7 @@ import { mockConnector } from "./helpers/mockConnector";
 const { chains, provider, webSocketProvider } = configureChains(
   [mainnet],
   [
-    infuraProvider({ apiKey: process.env.VITE_INFURA_ID ?? "" }),
+    infuraProvider({ apiKey: import.meta.env.VITE_INFURA_ID ?? "" }),
     publicProvider(),
   ],
 );
