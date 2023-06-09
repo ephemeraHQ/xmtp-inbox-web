@@ -10,7 +10,7 @@ template_dir="/app/html-template"
 out_dir="/usr/share/nginx/html"
 rm -rf "${out_dir}"
 cp -r "${template_dir}" "${out_dir}"
-find "${out_dir}" -type f -print0 | xargs -0 sed -i -e "s|PLACEHOLDER_XMTP_API_URL|${NEXT_PUBLIC_XMTP_API_URL}|g"
+find "${out_dir}" -type f -print0 | xargs -0 sed -i -e "s|PLACEHOLDER_XMTP_API_URL|${XMTP_API_URL}|g"
 
 # Start nginx.
 nginx -g "daemon off;"

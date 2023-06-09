@@ -13,5 +13,5 @@ RUN apk update && \
 COPY docker/entrypoint.sh /opt/
 COPY docker/nginx-default-template.conf /app/
 COPY --from=builder /app/out /app/html-template
-ENV NEXT_PUBLIC_XMTP_API_URL=PLACEHOLDER_XMTP_API_URL
+ENV VITE_XMTP_API_URL=PLACEHOLDER_XMTP_API_URL
 CMD ["/opt/entrypoint.sh"]
