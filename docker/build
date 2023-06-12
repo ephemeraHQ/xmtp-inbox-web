@@ -5,6 +5,6 @@ set -a; source "${script_dir}/.env.default"; set +a
 
 docker build \
     --tag "${BUILD_CONTAINER_IMAGE}" \
-    --build-arg "NEXT_PUBLIC_INFURA_ID=${NEXT_PUBLIC_INFURA_ID:-}" \
+    --build-arg "VITE_INFURA_ID=${VITE_INFURA_ID:-}" \
     -f "${script_dir}/Dockerfile" \
     .

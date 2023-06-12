@@ -69,7 +69,7 @@ describe(
 
 describe("Disconnected Test Cases", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000");
+    cy.visit(Cypress.env("server_url"));
   });
   it("Shows expected fields when disconnected from a wallet", () => {
     const elements = [

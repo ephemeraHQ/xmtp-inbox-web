@@ -53,10 +53,8 @@ coverage
 .npm
 .eslintcache
 
-# Next.js
-.next
-out/
-build/
+# Vite
+dist
 
 # Environment
 .env*

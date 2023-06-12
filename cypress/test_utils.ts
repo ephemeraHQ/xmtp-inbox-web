@@ -1,5 +1,5 @@
 /* eslint-disable cypress/no-unnecessary-waiting */
-import { ENVIRONMENT } from "../helpers";
+import { ENVIRONMENT } from "../src/helpers";
 
 export const TIMEOUT = 40000;
 
@@ -18,7 +18,7 @@ export const disconnectWallet = () => {
 };
 
 export const startDemoEnv = () => {
-  cy.visit("http://localhost:3000");
+  cy.visit(Cypress.env("server_url"));
   localStorage.setItem(ENVIRONMENT.DEMO, String(true));
 };
 
