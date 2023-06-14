@@ -18,5 +18,5 @@ jobs:
       - uses: actions/checkout@v3
       - run: docker/build
         env:
-          NEXT_PUBLIC_INFURA_ID: ${{ secrets.DEV_INFURA_ID }}
+          INFURA_ID: ${{ secrets.DEV_INFURA_ID }}
       - run: docker/push

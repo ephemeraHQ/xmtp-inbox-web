@@ -1,13 +1,26 @@
 {
   "plugins": ["prettier"],
+  "extends": [
+    "plugin:prettier/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "parserOptions": {
+    "project": "./tsconfig.eslint.json"
+  },
   "rules": {
     "prettier/prettier": "error",
-    "jsx-a11y/label-has-associated-control": [
-      "error",
-      {
-        "assert": "either"
-      }
-    ]
-  },
-  "extends": ["next", "next/core-web-vitals", "plugin:prettier/recommended"]
+    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/ban-types": "off",
+    "prefer-const": "off",
+    "no-var": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/no-namespace": "off",
+    "@typescript-eslint/no-this-alias": "off",
+    "@typescript-eslint/no-empty-function": "off"
+  }
 }
