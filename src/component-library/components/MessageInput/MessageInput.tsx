@@ -5,10 +5,7 @@ import { IconButton } from "../IconButton/IconButton";
 import { classNames } from "../../../../src/helpers";
 import { useTranslation } from "react-i18next";
 import { XCircleIcon } from "@heroicons/react/solid";
-import {
-  imageTypes,
-  useAttachmentChange,
-} from "../../../../src/hooks/useAttachmentChange";
+import { useAttachmentChange } from "../../../../src/hooks/useAttachmentChange";
 
 interface InputProps {
   /**
@@ -118,7 +115,6 @@ export const MessageInput = ({
         id="file"
         ref={inputFile}
         onChange={onAttachmentChange}
-        accept={imageTypes.join(", ")}
         aria-label={t("aria_labels.filepicker") || "File picker"}
         hidden
       />
@@ -167,10 +163,30 @@ export const MessageInput = ({
           <div
             // Bottom padding required to preserve aspect ratio
             className="relative pb-[5%]">
-            <img
-              src={attachmentPreview || ""}
-              alt={attachment?.filename}
-              className="relative w-95/100 min-h-[100px] max-h-80 rounded-xl overflow-auto"></img>
+            {attachment?.mimeType.includes("video") ? (
+              <video width="320" height="240" controls autoPlay>
+                <source src={attachmentPreview} type="video/mp4" />
+                {t("attachments.video_messages_not_supported")}
+              </video>
+            ) : attachment?.mimeType.includes("application") ? (
+              <object
+                data={attachmentPreview}
+                type="application/pdf"
+                width="100%"
+                height="500px">
+                <p>{t("attachments.unable_to_display")}</p>
+                <a href={attachmentPreview}>
+                  {t("attachments.download_instead")}
+                </a>
+              </object>
+            ) : (
+              <img
+                src={attachmentPreview || ""}
+                alt={attachment?.filename}
+                className="relative w-95/100 min-h-[100px] max-h-80 rounded-xl overflow-auto"
+              />
+            )}
+
             <XCircleIcon
               width={20}
               fill="gray"

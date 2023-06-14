@@ -4,13 +4,18 @@ import { humanFileSize } from "../helpers/attachments";
 import { ATTACHMENT_ERRORS } from "../helpers";
 import { useTranslation } from "react-i18next";
 
-export const imageTypes = [
-  "image/jpg",
-  "image/jpeg",
-  "image/png",
-  "image/gif",
-  "image/webp",
-];
+export const typeLookup: Record<string, string> = {
+  jpg: "image",
+  jpeg: "image",
+  png: "image",
+  gif: "image",
+  webp: "image",
+  quicktime: "video",
+  mov: "video",
+  mp4: "video",
+  pdf: "application",
+  doc: "application",
+};
 
 interface useAttachmentChangeProps {
   setAttachment: (attachment: Attachment | undefined) => void;
@@ -46,8 +51,8 @@ export const useAttachmentChange = ({
       if (target?.files?.length && setAttachment) {
         const file = target.files[0];
 
-        // Currently images are the only attachment type supported
-        if (!imageTypes.includes(file.type)) {
+        const [type, suffix] = file.type?.split?.("/");
+        if (!typeLookup[suffix] || typeLookup[suffix] !== file.type) {
           setError(t("status_messaging.file_invalid_format"));
           setIsDragActive(false);
           return;
