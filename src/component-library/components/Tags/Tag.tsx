@@ -1,5 +1,5 @@
 import React from "react";
-import { isEnsAddress, isUnsAddress } from "../../../../src/helpers";
+import { isEnsAddress, isUnsAddress } from "../../../helpers";
 import { iconMapping, TagIcon } from "./iconMapping";
 
 interface TagProps {

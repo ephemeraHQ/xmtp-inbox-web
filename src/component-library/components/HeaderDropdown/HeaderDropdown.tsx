@@ -2,7 +2,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { ChevronDownIcon, CogIcon } from "@heroicons/react/outline";
 import { CheckCircleIcon, PlusIcon } from "@heroicons/react/solid";
 import React, { Fragment, useEffect, useState } from "react";
-import { classNames } from "../../../../src/helpers";
+import { classNames } from "../../../helpers";
 import { IconButton } from "../IconButton/IconButton";
 import { useTranslation } from "react-i18next";
 import i18next from "i18next";

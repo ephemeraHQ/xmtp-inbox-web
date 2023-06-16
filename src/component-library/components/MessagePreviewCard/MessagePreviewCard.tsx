@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
 import { IconSkeletonLoader } from "../Loaders/SkeletonLoaders/IconSkeletonLoader";
 import { ShortCopySkeletonLoader } from "../Loaders/SkeletonLoaders/ShortCopySkeletonLoader";
-import { classNames } from "../../../../src/helpers";
+import { classNames } from "../../../helpers";
 import { Avatar } from "../Avatar/Avatar";
 import { useTranslation } from "react-i18next";
 import { StarIcon } from "@heroicons/react/solid";

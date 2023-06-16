@@ -1,7 +1,7 @@
 import React from "react";
 import { ButtonLoader } from "../Loaders/ButtonLoader";
 import { PlusCircleIcon } from "@heroicons/react/outline";
-import { classNames } from "../../../../src/helpers";
+import { classNames } from "../../../helpers";
 
 interface IconButtonProps {
   /**

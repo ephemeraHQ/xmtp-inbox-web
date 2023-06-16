@@ -2,13 +2,13 @@ import React, { ChangeEvent, useEffect, useLayoutEffect, useRef } from "react";
 import { Attachment } from "xmtp-content-type-remote-attachment";
 import { ArrowUpIcon, PaperClipIcon } from "@heroicons/react/outline";
 import { IconButton } from "../IconButton/IconButton";
-import { classNames } from "../../../../src/helpers";
+import { classNames } from "../../../helpers";
 import { useTranslation } from "react-i18next";
 import { XCircleIcon } from "@heroicons/react/solid";
 import {
   imageTypes,
   useAttachmentChange,
-} from "../../../../src/hooks/useAttachmentChange";
+} from "../../../hooks/useAttachmentChange";
 
 interface InputProps {
   /**

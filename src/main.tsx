@@ -39,6 +39,8 @@ const wagmiClient = createClient({
   webSocketProvider,
 });
 
+console.log({ wagmiDemoClient, wagmiClient });
+
 createRoot(document.getElementById("root") as HTMLElement).render(
   <WagmiConfig client={isAppEnvDemo() ? wagmiDemoClient : wagmiClient}>
     <RainbowKitProvider chains={chains}>

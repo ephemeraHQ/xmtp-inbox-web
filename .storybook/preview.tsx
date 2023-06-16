@@ -1,4 +1,4 @@
-import "./styles/globals.css";
+import "../src/globals.css";
 
 import i18n, { initialize, supportedLocales } from "../src/helpers/i18n";
 import React, { useEffect, useState } from "react";

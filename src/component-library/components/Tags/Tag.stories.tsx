@@ -1,7 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { Tag } from "./Tag";
-import { shortAddress } from "../../../../src/helpers";
+import { shortAddress } from "../../../helpers";
 import { TagIcon } from "./iconMapping";
 
 export default {

@@ -1,4 +1,4 @@
-import "../../.storybook/styles/globals.css";
+import "../globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
 import React, { useEffect, useState } from "react";
 import { initialize } from "../helpers/i18n";

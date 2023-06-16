@@ -1,5 +1,5 @@
 import React from "react";
-import { classNames } from "../../../../src/helpers";
+import { classNames } from "../../../helpers";
 import styles from "./Loaders.module.css";
 
 interface ButtonLoaderProps {

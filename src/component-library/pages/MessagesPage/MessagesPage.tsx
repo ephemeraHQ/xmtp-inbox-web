@@ -9,7 +9,7 @@ import { MessagePreviewCard } from "../../components/MessagePreviewCard/MessageP
 import { ProfileDropdown } from "../../components/ProfileDropdown/ProfileDropdown";
 import { HeaderDropdown } from "../../components/HeaderDropdown/HeaderDropdown";
 import { ExpandedWalletCard } from "../../components/ExpandedWalletCard/ExpandedWalletCard";
-import { shortAddress } from "../../../../src/helpers";
+import { shortAddress } from "../../../helpers";
 import { Avatar } from "../../components/Avatar/Avatar";
 import { FullMessage } from "../../components/FullMessage/FullMessage";
 import InfiniteScroll from "react-infinite-scroll-component";

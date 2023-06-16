@@ -1,7 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import SideNav from "./SideNav";
-import { shortAddress } from "../../../../src/helpers";
+import { shortAddress } from "../../../helpers";
 
 export default {
   title: "SideNav",

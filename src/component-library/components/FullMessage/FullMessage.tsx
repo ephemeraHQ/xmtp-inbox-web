@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { DateDivider } from "../DateDivider/DateDivider";
-import { classNames } from "../../../../src/helpers";
+import { classNames } from "../../../helpers";
 import { useTranslation } from "react-i18next";
 
 interface MessageSender {

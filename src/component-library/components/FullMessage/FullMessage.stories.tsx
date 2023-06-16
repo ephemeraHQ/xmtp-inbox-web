@@ -1,7 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { FullMessage } from "./FullMessage";
-import { shortAddress } from "../../../../src/helpers";
+import { shortAddress } from "../../../helpers";
 import MessageContentController from "../../../controllers/MessageContentController";
 import { RemoteAttachment } from "xmtp-content-type-remote-attachment";
 

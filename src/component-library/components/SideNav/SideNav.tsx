@@ -11,11 +11,7 @@ import {
   SparklesIcon,
   XIcon,
 } from "@heroicons/react/outline";
-import {
-  classNames,
-  isAppEnvDemo,
-  shortAddress,
-} from "../../../../src/helpers";
+import { classNames, isAppEnvDemo, shortAddress } from "../../../helpers";
 import { XmtpIcon } from "../Icons/XmtpIcon";
 import { useState } from "react";
 import { Avatar } from "../Avatar/Avatar";

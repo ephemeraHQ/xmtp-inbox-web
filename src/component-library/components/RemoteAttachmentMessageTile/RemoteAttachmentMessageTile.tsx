@@ -6,7 +6,7 @@ import {
 } from "xmtp-content-type-remote-attachment";
 import React from "react";
 import { useClient } from "@xmtp/react-sdk";
-import { humanFileSize } from "../../../../src/helpers/attachments";
+import { humanFileSize } from "../../../helpers/attachments";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { db } from "../../../helpers/attachment_db";
