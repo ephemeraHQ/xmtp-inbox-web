@@ -130,7 +130,7 @@ const RemoteAttachmentMessageTile = ({
               width="100%"
               height="500px">
               <p>{t("attachments.unable_to_display")}</p>
-              <a href={url}>${t("attachments.download_instead")}</a>
+              <a href={url}>{t("attachments.download_instead")}</a>
             </object>
           ) : (
             <img

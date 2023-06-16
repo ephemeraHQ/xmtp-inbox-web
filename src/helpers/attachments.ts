@@ -40,11 +40,11 @@ export const humanFileSize = (bytes: number, si = false, dp = 1) => {
  *
  */
 
-type contentTypes = "image" | "video" | "application" | undefined;
+export type contentTypes = "image" | "video" | "application" | undefined;
 
 export const getContentTypeFromFileName = (filename: string): contentTypes => {
   const suffix = filename.split?.(".")?.pop();
   if (suffix) {
-    return typeLookup[suffix] as contentTypes;
+    return typeLookup[suffix];
   }
 };

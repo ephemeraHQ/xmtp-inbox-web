@@ -1,10 +1,10 @@
 import { ChangeEvent, useCallback, useState } from "react";
 import { Attachment } from "xmtp-content-type-remote-attachment";
-import { humanFileSize } from "../helpers/attachments";
+import { contentTypes, humanFileSize } from "../helpers/attachments";
 import { ATTACHMENT_ERRORS } from "../helpers";
 import { useTranslation } from "react-i18next";
 
-export const typeLookup: Record<string, string> = {
+export const typeLookup: Record<string, contentTypes> = {
   jpg: "image",
   jpeg: "image",
   png: "image",
@@ -52,7 +52,10 @@ export const useAttachmentChange = ({
         const file = target.files[0];
 
         const [type, suffix] = file.type?.split?.("/");
-        if (!typeLookup[suffix] || typeLookup[suffix] !== file.type) {
+        if (
+          !typeLookup[suffix] ||
+          `${typeLookup[suffix]}/${suffix}` !== file.type
+        ) {
           setError(t("status_messaging.file_invalid_format"));
           setIsDragActive(false);
           return;
@@ -71,7 +74,7 @@ export const useAttachmentChange = ({
             return;
           }
 
-          const imageAttachment: Attachment = {
+          const attachment: Attachment = {
             filename: file.name,
             mimeType: file.type,
             data: new Uint8Array(data),
@@ -80,12 +83,12 @@ export const useAttachmentChange = ({
           setAttachmentPreview(
             URL.createObjectURL(
               new Blob([Buffer.from(data)], {
-                type: imageAttachment.mimeType,
+                type: attachment.mimeType,
               }),
             ),
           );
 
-          setAttachment(imageAttachment);
+          setAttachment(attachment);
         });
 
         fileReader.readAsArrayBuffer(file);
