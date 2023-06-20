@@ -30,7 +30,6 @@ export const initialize = async () => {
 
   // Create object with languages and corresponding file mappings
   const messages = Object.fromEntries(keyValuePairs);
-  console.log({ messages });
 
   // Populate mapping of language to locale file resources
   const resourceMap: Record<
