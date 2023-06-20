@@ -23,7 +23,7 @@ export const startDemoEnv = () => {
 };
 
 const enterWalletAddress = (testUser: string) => {
-  checkElement("message-to-input").type(testUser);
+  checkElement("message-to-input").type(testUser, { delay: 1 });
 };
 
 const checkExpectedPreMessageFields = () => {
@@ -41,7 +41,7 @@ const sendMessages = (
 ) => {
   for (let i = 0; i < numberOfTimes; i++) {
     // Enters message
-    checkElement("message-input").type(message);
+    checkElement("message-input").type(message, { delay: 1 });
     checkElement("message-input-submit");
     cy.get(`[data-testid=message-input-submit]`).click();
     cy.wait(100);
@@ -53,7 +53,7 @@ const sendMessages = (
   if (differentMessageText) {
     const differentMessage = "differentMessage";
     // Send additional different message, check that different message was returned in correct order
-    checkElement("message-input").type(differentMessage);
+    checkElement("message-input").type(differentMessage, { delay: 1 });
     checkElement("message-input-submit");
     cy.get(`[data-testid=message-input-submit]`).click();
   }
@@ -62,7 +62,7 @@ const sendMessages = (
   cy.wait(2000);
   checkElement("new-message-icon-cta");
   cy.get(`[data-testid=new-message-icon-cta]`).click({ timeout: TIMEOUT });
-  checkElement("message-to-input").type(testUser);
+  checkElement("message-to-input").type(testUser, { delay: 1 });
 };
 
 const checkMessageOutput = (numberOfTimes: number, message: string) => {
