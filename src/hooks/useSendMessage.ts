@@ -38,8 +38,8 @@ const useSendMessage = (conversationId: address, attachment?: Attachment) => {
   const setConversations = useXmtpStore((state) => state.setConversations);
 
   const sendMessage = useCallback(
-    async (message: string | Attachment) => {
-      if (attachment) {
+    async (message: string | Attachment, type: "text" | "attachment") => {
+      if (attachment && type === "attachment") {
         const web3Storage = new Web3Storage({
           token: import.meta.env.VITE_WEB3_STORAGE_TOKEN as string,
         });

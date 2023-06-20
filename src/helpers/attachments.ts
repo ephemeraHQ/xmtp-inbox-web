@@ -1,3 +1,4 @@
+import { typeLookup } from "../hooks/useAttachmentChange";
 import { ATTACHMENT_ERRORS } from "./constants";
 
 /**
@@ -32,4 +33,18 @@ export const humanFileSize = (bytes: number, si = false, dp = 1) => {
   );
 
   return bytes.toFixed(dp) + " " + units[u];
+};
+
+/*
+ * Returns the content type of a file based on its filename extension.
+ *
+ */
+
+export type contentTypes = "image" | "video" | "application" | undefined;
+
+export const getContentTypeFromFileName = (filename: string): contentTypes => {
+  const suffix = filename.split?.(".")?.pop();
+  if (suffix) {
+    return typeLookup[suffix];
+  }
 };

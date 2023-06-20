@@ -70,7 +70,7 @@ export const IconButton = ({
   const shape =
     variant === "primary"
       ? "rounded-full"
-      : "rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl";
+      : "rounded-tl-2xl rounded-tr-2xl rounded-br-2xl";
 
   return (
     <button
