@@ -19,13 +19,16 @@
     "name": "vite-react",
     "version": 2,
   },
+  "commandPanel": {
+    "initialPosition": "topRight",
+  },
   // Enables nodejs compatibility mode for extensionless imports for JS/TS modules
   "nodejsCompatibility": {
     "omitModuleExtension": true,
     "mapIndexToDirectory": true,
     "packageJson": true,
   },
-  "tailwindCssCompatibility": {
+  "tailwindCompatibility": {
     "theme": {
       "spacing": {
         "84": "21rem",
