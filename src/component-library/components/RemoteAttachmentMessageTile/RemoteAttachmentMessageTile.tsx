@@ -4,7 +4,6 @@ import {
   RemoteAttachment,
   RemoteAttachmentCodec,
 } from "xmtp-content-type-remote-attachment";
-import React from "react";
 import { useClient } from "@xmtp/react-sdk";
 import {
   getContentTypeFromFileName,
@@ -24,6 +23,13 @@ type RemoteAttachmentMessageTileProps = {
 };
 
 type status = "unloaded" | "loadRequested" | "loading" | "loaded" | "error";
+
+/**
+ * Creating object URLs from blobs is non-deterministic, so we store the
+ * generated URLs in a cache so that they can be reused, which results in
+ * a more consistent rendering of images/data and less memory usage.
+ */
+const blobCache = new WeakMap<Uint8Array, string>();
 
 const RemoteAttachmentMessageTile = ({
   content,
@@ -49,27 +55,34 @@ const RemoteAttachmentMessageTile = ({
             client,
           );
 
-          const objectURL = URL.createObjectURL(
-            new Blob([Buffer.from(attachment.data)], {
-              type: attachment.mimeType,
-            }),
-          );
+          if (!blobCache.get(attachment.data)) {
+            blobCache.set(
+              attachment.data,
+              URL.createObjectURL(
+                new Blob([Buffer.from(attachment.data)], {
+                  type: attachment.mimeType,
+                }),
+              ),
+            );
+          }
+
+          const objectURL = blobCache.get(attachment.data);
 
           db.attachments
             .add({
               contentURL: content.url,
               filename: attachment.filename,
               mimetype: attachment.mimeType,
-              contentDataURL: objectURL,
+              contentDataURL: objectURL!,
             })
             .then(() => {
-              setURL(objectURL);
+              setURL(objectURL!);
               setStatus("loaded");
             })
             .catch((e: Error) => {
               // If error adding to cache, can silently fail and no need to display an error
               console.log("Error caching image --> ", e);
-              setURL(objectURL);
+              setURL(objectURL!);
               setStatus("loaded");
             });
         }
