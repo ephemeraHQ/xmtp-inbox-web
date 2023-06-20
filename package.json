@@ -37,7 +37,7 @@
     "@tailwindcss/line-clamp": "^0.4.2",
     "@typescript-eslint/parser": "^5.59.9",
     "@vitejs/plugin-react": "^4.0.0",
-    "@xmtp/react-sdk": "^1.0.0-preview.38",
+    "@xmtp/react-sdk": "^1.0.0-preview.39",
     "buffer": "^6.0.3",
     "date-fns": "^2.29.3",
     "dexie": "^3.2.4",
