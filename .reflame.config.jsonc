@@ -3,7 +3,8 @@
   // It's basically JSON, with the addition of comments, and looser syntax 
   // (trailing commas!).
   // Reflame uses this to identify your app.
-  "appId": "01H30NCV90SQP7ZJDCG9P7RJRG",
+  "appId": "01H30NCV90SQP7ZJDCG9P7RJRG", // prod
+  // "appId": "01H335HJ288YMK1YM60ZTVWF42", // dev
   // This is what shows up in the browser's tab bar.
   "title": "Reflame App",
   // This is the description that shows up in Google search.
@@ -24,8 +25,90 @@
     "mapIndexToDirectory": true,
     "packageJson": true,
   },
+  "tailwindCssCompatibility": {
+    "theme": {
+      "spacing": {
+        "84": "21rem",
+      },
+      "colors": {
+        "b": {
+          "100": "#BFCEFF",
+          "200": "#90A9FF",
+          "300": "#5E80F6",
+          "400": "#3448FF",
+          "500": "#0c2cdc",
+          "600": "#0004a5",
+        },
+        "bt": {
+          "100": "#F5F6FF",
+          "200": "#EDEFFF",
+          "300": "#E1E4FF",
+        },
+        "g": {
+          "100": "#61E979",
+        },
+        "l": {
+          "100": "#ffaa85",
+          "200": "#ff7658",
+          "300": "#FC4F37",
+          "400": "#c91812",
+          "500": "#990101",
+          "600": "#690000",
+        },
+        "n": {
+          "100": "#c2c6d2",
+          "200": "#989ca7",
+          "300": "#70747e",
+          "400": "#4a4e57",
+          "500": "#272b34",
+          "600": "#010613",
+        },
+        "p": {
+          "100": "#ffcfff",
+          "200": "#da9dfd",
+          "300": "#AC73E7",
+          "400": "#824DBD",
+          "500": "#5a2895",
+          "600": "#31006e",
+        },
+        "y": {
+          "100": "#f5e33e",
+          "200": "#c7b902",
+        },
+      },
+      "fontFamily": {
+        "sans": "SF Pro Rounded,Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\",Segoe UI Symbol,\"Noto Color Emoji\"",
+        "mono": "Inconsolata,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace",
+      },
+      "fontSize": {
+        "xs": [
+          "12px",
+          "unset"
+        ],
+        "sm": [
+          "14px",
+          "unset"
+        ],
+        "md": [
+          "15px",
+          "unset"
+        ],
+        "lg": [
+          "18px",
+          "unset"
+        ],
+        "xl": [
+          "20px",
+          "unset"
+        ],
+      },
+    }
+  },
   "scripts": [
     "/main.tsx"
+  ],
+  "stylesheets": [
+    "https://fonts.googleapis.com/css?family=Inter:400,500,600,700|Inconsolata:400,600,700&display=swap"
   ],
   // NPM packages listed here will be installed by Reflame every time you update this file.
   // 
