@@ -31,6 +31,8 @@ const useSendMessage = (conversationId: address, attachment?: Attachment) => {
     error: sendingMessageError,
   } = useSendMessageHook<RemoteAttachment | string>(
     selectedConversation as Conversation,
+    // persist a sent message to the local cache
+    { persist: true },
   );
   const recipientWalletAddress = useXmtpStore(
     (state) => state.recipientWalletAddress,
