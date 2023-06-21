@@ -55,7 +55,7 @@ describe(
     it("Renders error message when sending message to existing user outside of XMTP network", () => {
       checkElement("new-message-icon-cta");
       cy.get(`[data-testid=new-message-icon-cta]`).click({ timeout: TIMEOUT });
-      checkElement("message-to-input").type("invalidUser");
+      checkElement("message-to-input").type("invalidUser", { delay: 1 });
       cy.get(`[data-testid=message-to-subtext]`, { timeout: TIMEOUT }).should(
         "have.text",
         "Please enter a valid 0x wallet, ENS, or UNS address",

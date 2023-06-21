@@ -32,7 +32,7 @@ const MessageContentController = ({
         escapeHtml
         onClick={(event: MouseEvent<HTMLDivElement>) => event.stopPropagation()}
         matchers={[
-          new UrlMatcher("url", { validateTLD: false }),
+          new UrlMatcher("url"),
           new EmojiMatcher("emoji", {
             convertEmoticon: true,
             convertShortcode: true,

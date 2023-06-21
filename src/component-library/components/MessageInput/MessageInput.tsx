@@ -124,7 +124,9 @@ export const MessageInput = ({
   };
 
   useEffect(() => {
-    inputFile?.current?.click();
+    if (acceptedTypes) {
+      inputFile?.current?.click();
+    }
   }, [acceptedTypes]);
 
   const { error, onAttachmentChange } = useAttachmentChange({
