@@ -90,6 +90,7 @@
     "cypress": "^12.3.0",
     "cypress-vite": "^1.4.0",
     "eslint-config-prettier": "^8.6.0",
+    "eslint-config-xmtp-web": "^1.0.0",
     "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-prettier": "^4.2.1",
     "jsdom": "^22.1.0",
