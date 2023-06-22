@@ -1,5 +1,5 @@
 import type { Conversation } from "@xmtp/react-sdk";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useEnsAvatar, useEnsName } from "wagmi";
 import { useTranslation } from "react-i18next";
 import { MessagePreviewCard } from "../component-library/components/MessagePreviewCard/MessagePreviewCard";
@@ -55,7 +55,7 @@ export const MessagePreviewCardController = ({
       }
     };
 
-    getUns();
+    void getUns();
   }, [convo?.peerAddress]);
 
   // Helpers

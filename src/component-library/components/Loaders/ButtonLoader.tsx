@@ -1,4 +1,3 @@
-import React from "react";
 import { classNames } from "../../../helpers";
 import styles from "./Loaders.module.css";
 
@@ -19,19 +18,17 @@ interface ButtonLoaderProps {
 export const ButtonLoader = ({
   size,
   color = "primary",
-}: ButtonLoaderProps) => 
+}: ButtonLoaderProps) => (
   // To-do: Change to proper loader once designs are finished
-   (
-    <div className="flex flex-row">
-      <div
-        className={classNames(
-          "rounded-full",
-          styles.btnLoader,
-          color === "primary" ? styles.btnLoaderLight : styles.btnLoaderDark,
-          size === "small" ? styles.btnLoaderXs : styles.btnLoaderSm,
-          styles.animateSpin,
-        )}
-      />
-    </div>
-  )
-;
+  <div className="flex flex-row">
+    <div
+      className={classNames(
+        "rounded-full",
+        styles.btnLoader,
+        color === "primary" ? styles.btnLoaderLight : styles.btnLoaderDark,
+        size === "small" ? styles.btnLoaderXs : styles.btnLoaderSm,
+        styles.animateSpin,
+      )}
+    />
+  </div>
+);

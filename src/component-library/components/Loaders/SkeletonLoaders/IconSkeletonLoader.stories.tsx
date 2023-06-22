@@ -1,4 +1,3 @@
-import React from "react";
 import type { ComponentStory, ComponentMeta } from "@storybook/react";
 import { IconSkeletonLoader } from "./IconSkeletonLoader";
 
@@ -8,7 +7,7 @@ export default {
   argTypes: {},
 } as ComponentMeta<typeof IconSkeletonLoader>;
 
-const Template: ComponentStory<typeof IconSkeletonLoader> = (args) => (
+const Template: ComponentStory<typeof IconSkeletonLoader> = () => (
   <IconSkeletonLoader />
 );
 

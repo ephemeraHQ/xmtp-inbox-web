@@ -1,4 +1,3 @@
-import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import SideNav from "../../components/SideNav/SideNav";
 import { ConversationList } from "../../components/ConversationList/ConversationList";
@@ -184,13 +183,13 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
                   displayAddress="hi.xmtp.eth"
                   key="preview"
                 />,
-                ...Array(20).fill(
+                ...(Array(20).fill(
                   <MessagePreviewCard
                     text="Here's an existing message"
                     displayAddress="theseWillAllBeTheSame.xmtp.eth"
                     datetime={new Date()}
                   />,
-                ),
+                ) as JSX.Element[]),
               ]}
             />
           </div>
@@ -272,6 +271,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
           />
           <div
             id="scrollableDiv"
+            // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
             tabIndex={0}
             className="h-screen md:h-full w-full flex flex-col flex-col-reverse overflow-y-auto">
             <InfiniteScroll
@@ -321,6 +321,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
           />
           <div
             id="scrollableDiv"
+            // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
             tabIndex={0}
             className="h-screen md:h-full w-full flex flex-col flex-col-reverse overflow-y-auto">
             <InfiniteScroll
@@ -370,6 +371,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
           />
           <div
             id="scrollableDiv"
+            // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
             tabIndex={0}
             className="h-screen md:h-full w-full flex flex-col flex-col-reverse overflow-y-auto">
             <InfiniteScroll
@@ -405,6 +407,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
         <div className="flex w-full overflow-visible md:overflow-hidden flex-col h-screen md:h-full ">
           <div
             id="scrollableDiv"
+            // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
             tabIndex={0}
             className="h-screen md:h-full w-full flex flex-col flex-col-reverse overflow-y-auto">
             <InfiniteScroll

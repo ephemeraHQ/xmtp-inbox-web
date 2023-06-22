@@ -1,5 +1,4 @@
-import React from "react";
-import { useTranslation , Trans } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 import { ExclamationIcon } from "@heroicons/react/solid";
 import { PillButton } from "../PillButton/PillButton";
 
@@ -25,11 +24,7 @@ export const Error = ({ errorText, onConnect }: ErrorProps) => {
           {t("status_messaging.error_1_header")}
         </h1>
         <p>
-          <Trans
-            i18nKey={
-              errorText || "status_messaging.error_1_subheader"
-            }
-          />
+          <Trans i18nKey={errorText || "status_messaging.error_1_subheader"} />
         </p>
         <div className="p-2">
           <PillButton

@@ -19,15 +19,17 @@ const OnboardingPage = () => {
   const { disconnect: disconnectWagmi, reset: resetWagmi } = useDisconnect();
   const { disconnect: disconnectClient } = useClient();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => watchAccount(() => resetXmtpState()), []);
 
   useEffect(() => {
-    const routeToInbox = async () => {
+    const routeToInbox = () => {
       if (client) {
         navigate("/inbox");
       }
     };
     routeToInbox();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [client]);
 
   const step = useMemo(() => {
@@ -57,9 +59,9 @@ const OnboardingPage = () => {
         onConnect={openConnectModal}
         onCreate={resolveCreate}
         onEnable={resolveEnable}
-        onDisconnect={async () => {
+        onDisconnect={() => {
           if (client) {
-            await disconnectClient();
+            disconnectClient();
           }
           setStatus(undefined);
           wipeKeys(address ?? "");

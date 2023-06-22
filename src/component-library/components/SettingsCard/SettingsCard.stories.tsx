@@ -1,4 +1,3 @@
-import React from "react";
 import type { ComponentStory, ComponentMeta } from "@storybook/react";
 import { SettingsCard } from "./SettingsCard";
 import { SettingsIcon } from "./iconMapping";

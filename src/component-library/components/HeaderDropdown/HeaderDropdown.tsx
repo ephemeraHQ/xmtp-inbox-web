@@ -1,7 +1,9 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { Dialog, Transition } from "@headlessui/react";
 import { ChevronDownIcon, CogIcon } from "@heroicons/react/outline";
 import { CheckCircleIcon, PlusIcon } from "@heroicons/react/solid";
-import React, { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import i18next from "i18next";
 import { classNames } from "../../../helpers";
@@ -19,11 +21,11 @@ interface HeaderDropdownProps {
   /**
    * What happens on change?
    */
-  onChange?: Function;
+  onChange?: () => void;
   /**
    * On new message button click?
    */
-  onClick?: Function;
+  onClick?: () => void;
   /**
    * Is this dropdown disabled?
    */
@@ -46,6 +48,7 @@ export const HeaderDropdown = ({
 
   useEffect(() => {
     setCurrentlySelected(defaultSelected || t("messages.filter_none"));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [i18next.language]);
 
   return (
@@ -82,36 +85,36 @@ export const HeaderDropdown = ({
                     t("messages.filter_requests"),
                   ]
                 ).map((item) => (
-                    <div key={item} className="flex w-full justify-between">
-                      <div className="flex">
-                        <CogIcon width={24} className="text-gray-300 mr-4" />
-                        <button
-                          type="button"
-                          onClick={() => {
-                            onChange?.();
-                            setIsOpen(false);
-                            // setCurrentlySelected?.();
-                          }}
-                          className={classNames(
-                            "cursor-pointer",
-                            "my-1",
-                            "outline-none",
-                            item === currentlySelected ? "font-bold my-1" : "",
-                          )}>
-                          {item}
-                        </button>
-                      </div>
-                      <div className="flex items-center">
-                        {item === currentlySelected && (
-                          <CheckCircleIcon
-                            fill="limegreen"
-                            width="24"
-                            className="ml-4"
-                          />
-                        )}
-                      </div>
+                  <div key={item} className="flex w-full justify-between">
+                    <div className="flex">
+                      <CogIcon width={24} className="text-gray-300 mr-4" />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          onChange?.();
+                          setIsOpen(false);
+                          // setCurrentlySelected?.();
+                        }}
+                        className={classNames(
+                          "cursor-pointer",
+                          "my-1",
+                          "outline-none",
+                          item === currentlySelected ? "font-bold my-1" : "",
+                        )}>
+                        {item}
+                      </button>
                     </div>
-                  ))}
+                    <div className="flex items-center">
+                      {item === currentlySelected && (
+                        <CheckCircleIcon
+                          fill="limegreen"
+                          width="24"
+                          className="ml-4"
+                        />
+                      )}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </Dialog>

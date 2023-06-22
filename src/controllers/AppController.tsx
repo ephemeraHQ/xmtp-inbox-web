@@ -17,7 +17,7 @@ const AppController: React.FC = () => {
       await initialize();
       setInitialized(true);
     };
-    initI18n();
+    void initI18n();
   }, []);
 
   useEffect(() => {
@@ -30,8 +30,8 @@ const AppController: React.FC = () => {
     production users. */
     if (window.location.hostname.includes(ENVIRONMENT.ALPHA)) {
       datadogRum.init({
-        applicationId: import.meta.env.VITE_DATA_DOG_ID as string,
-        clientToken: import.meta.env.VITE_DATA_DOG_TOKEN as string,
+        applicationId: import.meta.env.VITE_DATA_DOG_ID,
+        clientToken: import.meta.env.VITE_DATA_DOG_TOKEN,
         site: "datadoghq.com",
         service: "inbox-web",
         env: "prod",

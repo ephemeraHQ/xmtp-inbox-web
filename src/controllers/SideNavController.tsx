@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDisconnect, useEnsAvatar, useEnsName } from "wagmi";
 import { useClient } from "@xmtp/react-sdk";
 import SideNav from "../component-library/components/SideNav/SideNav";
@@ -22,7 +22,8 @@ export const SideNavController = () => {
       }
     };
 
-    getUns();
+    void getUns();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const { data: ensNameConnectedWallet } = useEnsName({

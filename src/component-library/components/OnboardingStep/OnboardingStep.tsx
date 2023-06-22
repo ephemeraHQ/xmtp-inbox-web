@@ -1,4 +1,3 @@
-import React from "react";
 import { useTranslation, Trans } from "react-i18next";
 import { Spinner } from "../Loaders/Spinner";
 import { ctaStep, stepMapping } from "./stepMapping";
@@ -120,7 +119,6 @@ export const OnboardingStep = ({
         ) : null}
       </div>
     );
-  } 
-    return <></>;
-  
+  }
+  return null;
 };

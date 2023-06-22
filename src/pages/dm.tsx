@@ -33,7 +33,8 @@ const DmPage = () => {
         navigate("/inbox");
       }
     };
-    routeToInbox();
+    void routeToInbox();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return null;

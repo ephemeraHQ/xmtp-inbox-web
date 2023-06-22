@@ -10,11 +10,8 @@ import {
 } from "@heroicons/react/outline";
 import { useTranslation } from "react-i18next";
 import { IconButton } from "../IconButton/IconButton";
-import {
-  typeLookup,
-  useAttachmentChange,
-} from "../../../hooks/useAttachmentChange";
-import type { contentTypes } from "../../../helpers/attachments";
+import { useAttachmentChange } from "../../../hooks/useAttachmentChange";
+import { typeLookup, type contentTypes } from "../../../helpers/attachments";
 import { classNames } from "../../../helpers";
 import { useXmtpStore } from "../../../store/xmtp";
 
@@ -104,6 +101,7 @@ export const MessageInput = ({
     textAreaRef.current?.focus();
     setValue("");
     setAttachmentPreview(undefined);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [conversationId]);
 
   const onButtonClick = (contentType: contentTypes) => {
@@ -161,6 +159,7 @@ export const MessageInput = ({
           <p className="text-red-600 w-full m-1 ml-4">{attachmentError}</p>
         ) : (
           <textarea
+            // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus
             id="chat"
             data-testid="message-input"
@@ -170,12 +169,12 @@ export const MessageInput = ({
                 e.preventDefault();
                 if (value || attachment) {
                   if (attachment) {
-                    onSubmit?.(attachment, "attachment");
+                    void onSubmit?.(attachment, "attachment");
                     setAttachment(undefined);
                     setAttachmentPreview(undefined);
                   }
                   if (value) {
-                    onSubmit?.(value, "text");
+                    void onSubmit?.(value, "text");
                     setValue("");
                   }
                 }
@@ -259,12 +258,12 @@ export const MessageInput = ({
             onClick={() => {
               if (value || attachment) {
                 if (attachment) {
-                  onSubmit?.(attachment, "attachment");
+                  void onSubmit?.(attachment, "attachment");
                   setAttachment(undefined);
                   setAttachmentPreview(undefined);
                 }
                 if (value) {
-                  onSubmit?.(value, "text");
+                  void onSubmit?.(value, "text");
                   setValue("");
                 }
                 textAreaRef.current?.focus();

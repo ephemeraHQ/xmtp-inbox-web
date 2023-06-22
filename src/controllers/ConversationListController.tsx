@@ -1,4 +1,3 @@
-import React from "react";
 import type { Conversation } from "@xmtp/react-sdk";
 import { useXmtpStore } from "../store/xmtp";
 import useListConversations from "../hooks/useListConversations";
@@ -59,7 +58,6 @@ export const ConversationListController = ({
                     convo={convo}
                   />
                 )),
-              ,
             ]
           : []
       }

@@ -1,18 +1,13 @@
-import {
-  useClient,
-  useConversations,
-  useStreamConversations} from "@xmtp/react-sdk";
-import type { Conversation 
-} from "@xmtp/react-sdk";
+import { useConversations, useStreamConversations } from "@xmtp/react-sdk";
+import type { Conversation } from "@xmtp/react-sdk";
 import { useCallback } from "react";
 import { useAccount } from "wagmi";
 import { getConversationId } from "../helpers";
 import fetchMostRecentMessage from "../helpers/fetchMostRecentMessage";
 import { useXmtpStore } from "../store/xmtp";
 
-export const useListConversations = () => {
+const useListConversations = () => {
   const { address: walletAddress } = useAccount();
-  const { client } = useClient();
   const setLoadingConversations = useXmtpStore(
     (state) => state.setLoadingConversations,
   );
@@ -42,11 +37,13 @@ export const useListConversations = () => {
     setLoadingConversations(false);
 
     if (Notification.permission === "default") {
-      Notification.requestPermission();
+      void Notification.requestPermission();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useConversations({
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     onConversations: fetchMessagePreviews,
   });
 
@@ -62,6 +59,7 @@ export const useListConversations = () => {
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   useStreamConversations(streamConversations);
 };
 

@@ -4,13 +4,23 @@
   "parserOptions": {
     "project": "./tsconfig.eslint.json"
   },
-  "rules": {},
+  "rules": {
+    "no-plusplus": "off",
+    "jsx-a11y/media-has-caption": "off",
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        "checksConditionals": true
+      }
+    ]
+  },
   "overrides": [
     // allow require in .config.js files
     {
       "files": ["*.config.js"],
       "rules": {
-        "global-require": "off"
+        "global-require": "off",
+        "@typescript-eslint/no-var-requires": "off"
       }
     }
   ]

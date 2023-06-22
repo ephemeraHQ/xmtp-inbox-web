@@ -1,4 +1,3 @@
-import React from "react";
 import { HeaderDropdown } from "../component-library/components/HeaderDropdown/HeaderDropdown";
 import { RecipientInputMode } from "../helpers";
 import useGetRecipientInputMode from "../hooks/useGetRecipientInputMode";

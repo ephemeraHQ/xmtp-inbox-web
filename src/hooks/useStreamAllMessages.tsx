@@ -1,6 +1,6 @@
 import { useClient } from "@xmtp/react-sdk";
-import type { DecodedMessage  } from "@xmtp/react-sdk";
-import { useEffect, useState } from "react";
+import type { DecodedMessage } from "@xmtp/react-sdk";
+import { useEffect } from "react";
 import { fetchEnsName } from "@wagmi/core";
 import { useAccount } from "wagmi";
 import {
@@ -14,7 +14,7 @@ import type { address } from "../pages/inbox";
 
 let latestMsgId: string;
 
-export const useStreamAllMessages = () => {
+const useStreamAllMessages = () => {
   const { address: walletAddress } = useAccount();
 
   const { client } = useClient();
@@ -22,15 +22,10 @@ export const useStreamAllMessages = () => {
   const convoMessages = useXmtpStore((state) => state.convoMessages);
   const addMessages = useXmtpStore((state) => state.addMessages);
   const setPreviewMessage = useXmtpStore((state) => state.setPreviewMessage);
-  const [browserVisible, setBrowserVisible] = useState<boolean>(true);
-  useEffect(() => {
-    window.addEventListener("focus", () => setBrowserVisible(true));
-    window.addEventListener("blur", () => setBrowserVisible(false));
-  }, []);
 
   useEffect(() => {
     if (!client) {
-      return;
+      return () => {};
     }
 
     let messageStream: AsyncGenerator<DecodedMessage>;
@@ -59,17 +54,18 @@ export const useStreamAllMessages = () => {
             latestMsgId !== message.id &&
             Notification.permission === "granted" &&
             message.senderAddress !== walletAddress &&
-            !browserVisible
+            document.hidden
           ) {
             const ensName = await fetchEnsName({
               address: message.senderAddress as address,
             });
             const unsName = await fetchUnsName(message?.senderAddress);
 
+            // eslint-disable-next-line no-new
             new Notification("XMTP", {
               body: `${
                 ensName || unsName || shortAddress(message.senderAddress ?? "")
-              }\n${truncate(message.content, 75)}`,
+              }\n${truncate(message.content as string, 75)}`,
             });
 
             latestMsgId = message.id;
@@ -84,11 +80,12 @@ export const useStreamAllMessages = () => {
       }
     };
 
-    streamAllMessages();
+    void streamAllMessages();
 
     return () => {
-      closeMessageStream();
+      void closeMessageStream();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [client, walletAddress]);
 };
 

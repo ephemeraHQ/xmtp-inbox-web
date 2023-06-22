@@ -17,7 +17,7 @@ import { ConversationListController } from "../controllers/ConversationListContr
 import { useAttachmentChange } from "../hooks/useAttachmentChange";
 import { db } from "../helpers/attachment_db";
 
-export type address = "0x${string}";
+export type address = `0x${string}`;
 
 const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   const navigate = useNavigate();
@@ -32,7 +32,8 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
     // any time the client changes, the attachments cached db should be cleared
     // this is because the contentDataURL is partially derived from client
     // and doesn't render properly if image is in cache with a different client.
-    db.attachments.clear();
+    void db.attachments.clear();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [client]);
 
   const { data: signer } = useSigner();
@@ -88,7 +89,8 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
         resetWagmi();
       }
     };
-    checkSigners();
+    void checkSigners();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clientSigner, disconnect, resetXmtpState, signer]);
 
   if (!client) {

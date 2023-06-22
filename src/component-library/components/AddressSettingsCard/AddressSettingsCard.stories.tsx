@@ -1,4 +1,3 @@
-import React from "react";
 import type { ComponentStory, ComponentMeta } from "@storybook/react";
 import { AddressSettingsCard } from "./AddressSettingsCard";
 import { Avatar } from "../Avatar/Avatar";

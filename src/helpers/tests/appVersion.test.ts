@@ -1,4 +1,4 @@
-import { vi } from "vitest";
+import { vi, expect } from "vitest";
 
 vi.mock("../../../package.json", () => ({
   default: {

@@ -1,4 +1,3 @@
-import React from "react";
 import {
   ChevronLeftIcon,
   InformationCircleIcon,
@@ -113,6 +112,7 @@ export const AddressInput = ({
               autoComplete="off"
               autoCorrect="off"
               autoCapitalize="off"
+              // eslint-disable-next-line jsx-a11y/no-autofocus
               autoFocus
               onChange={(e) =>
                 onChange && onChange((e.target as HTMLInputElement).value)

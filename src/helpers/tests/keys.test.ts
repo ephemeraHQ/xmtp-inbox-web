@@ -1,14 +1,14 @@
-// @ts-nocheck
+import { expect } from "vitest";
 import { buildLocalStorageKey, loadKeys, storeKeys, wipeKeys } from "../keys";
 
 const localStorageMock = (() => {
-  const store = {};
+  const store: { [key: string]: string } = {};
   return {
-    getItem: (key) => store[key],
-    setItem: (key, value) => {
+    getItem: (key: string): string | undefined => store[key],
+    setItem: (key: string, value: string) => {
       store[key] = value.toString();
     },
-    removeItem: (key) => {
+    removeItem: (key: string) => {
       delete store[key];
     },
   };

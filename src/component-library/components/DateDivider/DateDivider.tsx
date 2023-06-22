@@ -1,4 +1,3 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
 
 export const DateDivider = ({ date }: { date: Date }): JSX.Element => {

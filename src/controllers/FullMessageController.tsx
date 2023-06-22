@@ -1,4 +1,3 @@
-import React from "react";
 import { useEnsName } from "wagmi";
 import { useClient } from "@xmtp/react-sdk";
 import { FullMessage } from "../component-library/components/FullMessage/FullMessage";

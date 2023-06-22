@@ -1,4 +1,3 @@
-import React from "react";
 import type { ComponentStory, ComponentMeta } from "@storybook/react";
 import type { RemoteAttachment } from "xmtp-content-type-remote-attachment";
 import { FullMessage } from "./FullMessage";

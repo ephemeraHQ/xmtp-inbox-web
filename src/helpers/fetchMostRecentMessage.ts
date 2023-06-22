@@ -1,9 +1,9 @@
-import type { Conversation, DecodedMessage} from "@xmtp/react-sdk";
+import type { Conversation, DecodedMessage } from "@xmtp/react-sdk";
 import { SortDirection } from "@xmtp/react-sdk";
 import { getConversationId } from "./string";
 
 const fetchMostRecentMessage = async (
-  convo: Conversation,
+  convo?: Conversation,
 ): Promise<{ key: string; message?: DecodedMessage }> => {
   const key = getConversationId(convo);
   const newMessages = await convo?.messages({

@@ -1,5 +1,17 @@
-import { typeLookup } from "../hooks/useAttachmentChange";
 import { ATTACHMENT_ERRORS } from "./constants";
+
+export const typeLookup: Record<string, contentTypes> = {
+  jpg: "image",
+  jpeg: "image",
+  png: "image",
+  gif: "image",
+  webp: "image",
+  quicktime: "video",
+  mov: "video",
+  mp4: "video",
+  pdf: "application",
+  doc: "application",
+};
 
 /**
  * Returns a human readable file size string.
@@ -17,22 +29,24 @@ export const humanFileSize = (bytes: number, si = false, dp = 1) => {
   const thresh = si ? 1000 : 1024;
 
   if (Math.abs(bytes) < thresh) {
-    return `${bytes  } B`;
+    return `${bytes} B`;
   }
 
   const units = ["KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
   let u = -1;
   const r = 10 ** dp;
 
+  let finalBytes = bytes;
+
   do {
-    bytes /= thresh;
+    finalBytes /= thresh;
     ++u;
   } while (
-    Math.round(Math.abs(bytes) * r) / r >= thresh &&
+    Math.round(Math.abs(finalBytes) * r) / r >= thresh &&
     u < units.length - 1
   );
 
-  return `${bytes.toFixed(dp)  } ${  units[u]}`;
+  return `${finalBytes.toFixed(dp)} ${units[u]}`;
 };
 
 /*
@@ -44,7 +58,5 @@ export type contentTypes = "image" | "video" | "application" | undefined;
 
 export const getContentTypeFromFileName = (filename: string): contentTypes => {
   const suffix = filename.split?.(".")?.pop();
-  if (suffix) {
-    return typeLookup[suffix];
-  }
+  return suffix ? typeLookup[suffix] : undefined;
 };

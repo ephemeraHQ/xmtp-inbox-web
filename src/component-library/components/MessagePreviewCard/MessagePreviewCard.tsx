@@ -1,5 +1,4 @@
 import type { ReactElement } from "react";
-import React from "react";
 import { useTranslation } from "react-i18next";
 import { StarIcon } from "@heroicons/react/solid";
 import { IconSkeletonLoader } from "../Loaders/SkeletonLoaders/IconSkeletonLoader";
@@ -7,7 +6,7 @@ import { ShortCopySkeletonLoader } from "../Loaders/SkeletonLoaders/ShortCopySke
 import { classNames } from "../../../helpers";
 import { Avatar } from "../Avatar/Avatar";
 
-interface MessagePreviewCard {
+interface MessagePreviewCardProps {
   /**
    * What is the avatar url?
    */
@@ -62,11 +61,12 @@ export const MessagePreviewCard = ({
   isSelected,
   conversationDomain,
   pinned,
-}: MessagePreviewCard) => {
+}: MessagePreviewCardProps) => {
   const { t } = useTranslation();
 
   return (
     <div
+      role="button"
       className={classNames(
         "flex justify-between items-center border-0 border-b border-gray-200 outline-blue outline-b-0 h-min cursor-pointer",
         isSelected ? "bg-gray-200" : "bg-gray-100",

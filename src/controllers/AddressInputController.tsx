@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useEnsAvatar } from "wagmi";
 import { AddressInput } from "../component-library/components/AddressInput/AddressInput";
 import {
@@ -62,7 +62,7 @@ export const AddressInputController = () => {
       }
     };
 
-    getUns();
+    void getUns();
   }, [recipientWalletAddress]);
 
   const domain = ensName ?? unsName;

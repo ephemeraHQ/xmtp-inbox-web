@@ -1,4 +1,3 @@
-import React from "react";
 import type { ComponentStory, ComponentMeta } from "@storybook/react";
 import { PlusCircleIcon } from "@heroicons/react/outline";
 import { IconButton } from "./IconButton";

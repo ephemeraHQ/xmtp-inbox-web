@@ -44,6 +44,20 @@ export const isUnsAddress = (address: string): boolean => {
   return ALLOWED_UNS_SUFFIXES.some((suffix) => address.endsWith(suffix));
 };
 
+type UnstoppableDomainsDomainResponse = {
+  meta?: {
+    resolver?: string;
+    blockchain?: string;
+    networkId?: number;
+    registry?: string;
+    domain?: string;
+    namehash?: string;
+    tokenId?: string;
+    owner?: string;
+    reverse?: boolean;
+  };
+};
+
 export const fetchUnsName = async (
   address: string | undefined,
 ): Promise<string | null> => {
@@ -58,7 +72,8 @@ export const fetchUnsName = async (
         },
       );
 
-      const domainJson = await response.json();
+      const domainJson =
+        (await response.json()) as UnstoppableDomainsDomainResponse;
       return domainJson?.meta?.domain ? domainJson?.meta?.domain : null;
     } catch {
       return null;
@@ -81,7 +96,8 @@ export const fetchUnsAddress = async (
           },
         },
       );
-      const domainJson = await response.json();
+      const domainJson =
+        (await response.json()) as UnstoppableDomainsDomainResponse;
       if (
         domainJson?.meta?.owner === "0x0000000000000000000000000000000000000000"
       )
@@ -95,26 +111,23 @@ export const fetchUnsAddress = async (
   }
 };
 
-export const isValidRecipientAddressFormat = (
-  recipientWalletAddress: string,
-) => (
-    isEnsAddress(recipientWalletAddress) ||
-    isUnsAddress(recipientWalletAddress) ||
-    (recipientWalletAddress?.startsWith("0x") &&
-      recipientWalletAddress?.length === 42)
-  );
+export const isValidRecipientAddressFormat = (recipientWalletAddress: string) =>
+  isEnsAddress(recipientWalletAddress) ||
+  isUnsAddress(recipientWalletAddress) ||
+  (recipientWalletAddress?.startsWith("0x") &&
+    recipientWalletAddress?.length === 42);
 
-export const isValidLongWalletAddress = (recipientWalletAddress: string) => (
-    recipientWalletAddress?.startsWith("0x") &&
-    recipientWalletAddress?.length === 42
-  );
+export const isValidLongWalletAddress = (recipientWalletAddress: string) =>
+  recipientWalletAddress?.startsWith("0x") &&
+  recipientWalletAddress?.length === 42;
 
 export const shortAddress = (addr: string): string =>
   addr.length > 10 && addr.startsWith("0x")
     ? `${addr.substring(0, 6)}...${addr.substring(addr.length - 4)}`
     : addr;
 
-export const getConversationId = (conversation?: Conversation): string => conversation?.context?.conversationId
+export const getConversationId = (conversation?: Conversation): string =>
+  conversation?.context?.conversationId
     ? `${conversation?.peerAddress}/${conversation?.context?.conversationId}`
     : conversation?.peerAddress ?? "";
 

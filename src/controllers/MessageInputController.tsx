@@ -1,4 +1,3 @@
-import React from "react";
 import type { Attachment } from "xmtp-content-type-remote-attachment";
 import { MessageInput } from "../component-library/components/MessageInput/MessageInput";
 import { RecipientInputMode } from "../helpers";
