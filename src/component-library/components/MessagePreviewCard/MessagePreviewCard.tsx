@@ -1,10 +1,11 @@
-import React, { ReactElement } from "react";
-import { IconSkeletonLoader } from "../Loaders/SkeletonLoaders/IconSkeletonLoader";
-import { ShortCopySkeletonLoader } from "../Loaders/SkeletonLoaders/ShortCopySkeletonLoader";
-import { classNames } from "../../../../src/helpers";
-import { Avatar } from "../Avatar/Avatar";
+import type { ReactElement } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { StarIcon } from "@heroicons/react/solid";
+import { IconSkeletonLoader } from "../Loaders/SkeletonLoaders/IconSkeletonLoader";
+import { ShortCopySkeletonLoader } from "../Loaders/SkeletonLoaders/ShortCopySkeletonLoader";
+import { classNames } from "../../../helpers";
+import { Avatar } from "../Avatar/Avatar";
 
 interface MessagePreviewCard {
   /**

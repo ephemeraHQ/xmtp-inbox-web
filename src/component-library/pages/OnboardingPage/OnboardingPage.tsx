@@ -8,9 +8,9 @@ interface OnboardingPageProps {
 export const OnboardingPage = ({
   step = 1,
   isLoading = false,
-}: OnboardingPageProps) => {
+}: OnboardingPageProps) => 
   // In the app, these props will come from page state
-  return (
+   (
     <div className="bg-white w-full">
       <OnboardingStep
         step={step}
@@ -21,5 +21,5 @@ export const OnboardingPage = ({
         onDisconnect={() => {}}
       />
     </div>
-  );
-};
+  )
+;

@@ -1,6 +1,7 @@
-import { Conversation } from "@xmtp/react-sdk";
+import type { Conversation } from "@xmtp/react-sdk";
 import React, { useEffect, useState } from "react";
 import { useEnsAvatar, useEnsName } from "wagmi";
+import { useTranslation } from "react-i18next";
 import { MessagePreviewCard } from "../component-library/components/MessagePreviewCard/MessagePreviewCard";
 import {
   XMTP_FEEDBACK_ADDRESS,
@@ -9,10 +10,9 @@ import {
   isValidLongWalletAddress,
   shortAddress,
 } from "../helpers";
-import { address } from "../pages/inbox";
+import type { address } from "../pages/inbox";
 import { useXmtpStore } from "../store/xmtp";
 import MessageContentController from "./MessageContentController";
-import { useTranslation } from "react-i18next";
 
 interface MessagePreviewCardControllerProps {
   convo?: Conversation;

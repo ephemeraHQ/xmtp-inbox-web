@@ -1,14 +1,14 @@
-import { Conversation } from "@xmtp/react-sdk";
+import {
+  useClient,
+  useConversations,
+  useStreamConversations} from "@xmtp/react-sdk";
+import type { Conversation 
+} from "@xmtp/react-sdk";
 import { useCallback } from "react";
 import { useAccount } from "wagmi";
 import { getConversationId } from "../helpers";
 import fetchMostRecentMessage from "../helpers/fetchMostRecentMessage";
 import { useXmtpStore } from "../store/xmtp";
-import {
-  useClient,
-  useConversations,
-  useStreamConversations,
-} from "@xmtp/react-sdk";
 
 export const useListConversations = () => {
   const { address: walletAddress } = useAccount();

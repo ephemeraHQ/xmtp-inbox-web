@@ -1,12 +1,12 @@
 import React from "react";
-import { Avatar } from "../Avatar/Avatar";
 import {
   ChevronLeftIcon,
   InformationCircleIcon,
 } from "@heroicons/react/outline";
-import { classNames } from "../../../../src/helpers";
-import { ShortCopySkeletonLoader } from "../Loaders/SkeletonLoaders/ShortCopySkeletonLoader";
 import { useTranslation } from "react-i18next";
+import { Avatar } from "../Avatar/Avatar";
+import { classNames } from "../../../helpers";
+import { ShortCopySkeletonLoader } from "../Loaders/SkeletonLoaders/ShortCopySkeletonLoader";
 
 interface AddressInputProps {
   /**

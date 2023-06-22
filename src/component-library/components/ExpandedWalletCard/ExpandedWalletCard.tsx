@@ -1,5 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
-import React, { Fragment } from "react";
+import type React from "react";
+import { Fragment } from "react";
 import { SettingsIcon } from "../SettingsCard/iconMapping";
 import { SettingsCard } from "../SettingsCard/SettingsCard";
 import { Tag } from "../Tags/Tag";
@@ -33,8 +34,7 @@ export const ExpandedWalletCard = ({
   addresses,
   collectibles,
   isOpen,
-}: ExpandedWalletCardProps) => {
-  return (
+}: ExpandedWalletCardProps) => (
     <Transition.Root show={isOpen} as={Fragment}>
       <Dialog
         as="div"
@@ -67,4 +67,3 @@ export const ExpandedWalletCard = ({
       </Dialog>
     </Transition.Root>
   );
-};

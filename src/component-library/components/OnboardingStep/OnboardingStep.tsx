@@ -1,11 +1,11 @@
 import React from "react";
+import { useTranslation, Trans } from "react-i18next";
 import { Spinner } from "../Loaders/Spinner";
 import { ctaStep, stepMapping } from "./stepMapping";
 import { GhostButton } from "../GhostButton/GhostButton";
 import { DisconnectIcon } from "../Icons/DisconnectIcon";
 import { logoSvg as Logo } from "./logo";
 import { PillButton } from "../PillButton/PillButton";
-import { useTranslation, Trans } from "react-i18next";
 
 interface OnboardingStepProps {
   /**
@@ -120,7 +120,7 @@ export const OnboardingStep = ({
         ) : null}
       </div>
     );
-  } else {
+  } 
     return <></>;
-  }
+  
 };

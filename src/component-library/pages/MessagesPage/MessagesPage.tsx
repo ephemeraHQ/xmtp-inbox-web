@@ -1,4 +1,5 @@
 import React from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import SideNav from "../../components/SideNav/SideNav";
 import { ConversationList } from "../../components/ConversationList/ConversationList";
 import { AddressInput } from "../../components/AddressInput/AddressInput";
@@ -9,10 +10,9 @@ import { MessagePreviewCard } from "../../components/MessagePreviewCard/MessageP
 import { ProfileDropdown } from "../../components/ProfileDropdown/ProfileDropdown";
 import { HeaderDropdown } from "../../components/HeaderDropdown/HeaderDropdown";
 import { ExpandedWalletCard } from "../../components/ExpandedWalletCard/ExpandedWalletCard";
-import { shortAddress } from "../../../../src/helpers";
+import { shortAddress } from "../../../helpers";
 import { Avatar } from "../../components/Avatar/Avatar";
 import { FullMessage } from "../../components/FullMessage/FullMessage";
-import InfiniteScroll from "react-infinite-scroll-component";
 
 interface MessagesPageProps {
   // This exact page is really not intended to be used for anything except storybook, since it shows the different views.
@@ -146,7 +146,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             <HeaderDropdown />
             <ConversationList
               messages={[
-                <MessagePreviewCard key={"preview"} />,
+                <MessagePreviewCard key="preview" />,
                 Array(20).fill(
                   <MessagePreviewCard
                     text="Here's an existing message"
@@ -379,7 +379,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
               endMessage={!20}
               hasMore={false}
               loader={false}>
-              <FullConversation isLoading={true} />
+              <FullConversation isLoading />
             </InfiniteScroll>
           </div>
           <MessageInput
@@ -414,7 +414,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
               endMessage={!20}
               hasMore={false}
               loader={false}>
-              <FullConversation isLoading={true} />
+              <FullConversation isLoading />
             </InfiniteScroll>
           </div>
         </div>

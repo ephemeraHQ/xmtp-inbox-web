@@ -1,6 +1,6 @@
 import React from "react";
-import { MessageSkeletonLoader } from "../Loaders/SkeletonLoaders/MessageSkeletonLoader";
 import { useTranslation } from "react-i18next";
+import { MessageSkeletonLoader } from "../Loaders/SkeletonLoaders/MessageSkeletonLoader";
 
 interface FullConversationProps {
   messages?: Array<JSX.Element>;
@@ -18,7 +18,7 @@ export const FullConversation = ({
   // messages from the network
   if (isLoading && messages.length === 0) {
     return (
-      <div className={"h-full flex flex-col-reverse justify-start p-4"}>
+      <div className="h-full flex flex-col-reverse justify-start p-4">
         {Array.from({ length: 3 }).map((_, idx) => (
           <MessageSkeletonLoader key={idx} incoming={false} />
         ))}

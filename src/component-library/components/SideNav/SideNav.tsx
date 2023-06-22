@@ -1,5 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
-import React, { Fragment, useEffect } from "react";
+import type React from "react";
+import { Fragment, useEffect , useState } from "react";
 import {
   ChatAlt2Icon,
   CheckCircleIcon,
@@ -11,19 +12,18 @@ import {
   SparklesIcon,
   XIcon,
 } from "@heroicons/react/outline";
+import { useTranslation } from "react-i18next";
+import { QRCode } from "react-qrcode-logo";
 import {
   classNames,
   isAppEnvDemo,
   shortAddress,
-} from "../../../../src/helpers";
+} from "../../../helpers";
 import { XmtpIcon } from "../Icons/XmtpIcon";
-import { useState } from "react";
 import { Avatar } from "../Avatar/Avatar";
 import { GhostButton } from "../GhostButton/GhostButton";
 import { DisconnectIcon } from "../Icons/DisconnectIcon";
-import { useTranslation } from "react-i18next";
 import i18next, { supportedLocales } from "../../../helpers/i18n";
-import { QRCode } from "react-qrcode-logo";
 
 interface SideNav {
   /**
@@ -63,7 +63,7 @@ const SideNav = ({
   useEffect(() => {
     const mappedLangs = supportedLocales.map((locale: string) => {
       const lang = locale?.split("-")?.[0] || "en";
-      let languageNames = new Intl.DisplayNames([i18next.language], {
+      const languageNames = new Intl.DisplayNames([i18next.language], {
         type: "language",
       });
 
@@ -118,8 +118,7 @@ const SideNav = ({
   ];
   const [currentIcon, setCurrentIcon] = useState(icons[0].key);
 
-  const mappedButtons = icons.map((icon) => {
-    return (
+  const mappedButtons = icons.map((icon) => (
       <div className="group flex relative w-full" key={icon.key}>
         <button
           type="button"
@@ -143,12 +142,10 @@ const SideNav = ({
             "cursor-pointer",
             isOpen ? "w-[300px]" : "",
           )}>
-          <>
-            <div className="flex justify-center items-center h-fit">
+          <div className="flex justify-center items-center h-fit">
               {icon}
               <span data-testid={icon.key}>{isOpen && icon.key}</span>
             </div>
-          </>
         </button>
         {(icon.key === t("menu.gallery_header") ||
           icon.key === t("menu.settings_header")) && (
@@ -162,8 +159,7 @@ const SideNav = ({
           </div>
         )}
       </div>
-    );
-  });
+    ));
 
   return (
     <div
@@ -271,8 +267,7 @@ const SideNav = ({
           aria-label={t("menu.settings") || ""}>
           <div className="bg-white w-fit rounded-lg absolute bottom-16 left-12 p-2 z-20">
             <div className="max-h-80 overflow-auto">
-              {mappedLangs.map(({ displayText, isSelected, lang }) => {
-                return (
+              {mappedLangs.map(({ displayText, isSelected, lang }) => (
                   <div className="flex p-2 justify-between" key={lang}>
                     <button
                       type="button"
@@ -294,8 +289,7 @@ const SideNav = ({
                       />
                     )}
                   </div>
-                );
-              })}
+                ))}
             </div>
             <hr className="m-2" />
             {!isAppEnvDemo() && (

@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import type { ComponentStory, ComponentMeta } from "@storybook/react";
 import { LearnMore } from "./LearnMore";
 import { Tag } from "../Tags/Tag";
 import { TagIcon } from "../Tags/iconMapping";

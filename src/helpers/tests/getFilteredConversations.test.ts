@@ -1,8 +1,8 @@
-//@ts-nocheck
+// @ts-nocheck
 import { XMTP_FEEDBACK_ADDRESS } from "../constants";
 import getFilteredConversations from "../getFilteredConversations";
 
-let mockConversations = new Map();
+const mockConversations = new Map();
 
 mockConversations.set("key1", {
   peerAddress: XMTP_FEEDBACK_ADDRESS,

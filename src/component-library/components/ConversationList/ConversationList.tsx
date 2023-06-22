@@ -1,7 +1,7 @@
-import React from "react";
+import type React from "react";
+import { Virtuoso } from "react-virtuoso";
 import { EmptyMessage } from "../EmptyMessage/EmptyMessage";
 import { MessagePreviewCard } from "../MessagePreviewCard/MessagePreviewCard";
-import { Virtuoso } from "react-virtuoso";
 
 interface ConversationListProps {
   /**
@@ -27,8 +27,7 @@ export const ConversationList = ({
   isLoading,
   setStartedFirstMessage,
   hasRecipientEnteredValue,
-}: ConversationListProps) => {
-  return !messages?.length && isLoading ? (
+}: ConversationListProps) => !messages?.length && isLoading ? (
     <div className="w-full overflow-hidden h-full flex flex-col justify-start sm:w-full bg-gray-100">
       {Array.from({ length: 12 }).map((_, idx) => (
         <MessagePreviewCard key={idx} isLoading />
@@ -46,4 +45,3 @@ export const ConversationList = ({
       itemContent={(index, message) => message}
     />
   );
-};

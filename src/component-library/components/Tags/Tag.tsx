@@ -1,5 +1,5 @@
 import React from "react";
-import { isEnsAddress, isUnsAddress } from "../../../../src/helpers";
+import { isEnsAddress, isUnsAddress } from "../../../helpers";
 import { iconMapping, TagIcon } from "./iconMapping";
 
 interface TagProps {
@@ -37,7 +37,7 @@ export const Tag = ({ text, icon, isLoading = false }: TagProps) => {
     <div className="flex inline-flex items-center text-xs h-6 font-bold leading-sm shadow-lg p-3 rounded-full m-1">
       {isLoading ? (
         <div role="status" className="max-w-sm animate-pulse m-0 p-1">
-          <div className="h-2 bg-gray-200 rounded-full w-20 m-0"></div>
+          <div className="h-2 bg-gray-200 rounded-full w-20 m-0" />
           <span className="sr-only">Loading...</span>
         </div>
       ) : (

@@ -1,6 +1,11 @@
-import { Client } from "@xmtp/react-sdk";
+import { Client , useClient, useCanMessage } from "@xmtp/react-sdk";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useConnect, useSigner } from "wagmi";
+import type { Signer } from "ethers";
+import {
+  AttachmentCodec,
+  RemoteAttachmentCodec,
+} from "xmtp-content-type-remote-attachment";
 import {
   getAppVersion,
   getEnv,
@@ -8,13 +13,7 @@ import {
   loadKeys,
   storeKeys,
 } from "../helpers";
-import { useClient, useCanMessage } from "@xmtp/react-sdk";
 import { mockConnector } from "../helpers/mockConnector";
-import { Signer } from "ethers";
-import {
-  AttachmentCodec,
-  RemoteAttachmentCodec,
-} from "xmtp-content-type-remote-attachment";
 
 type ClientStatus = "new" | "created" | "enabled";
 

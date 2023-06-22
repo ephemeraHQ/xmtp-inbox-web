@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDisconnect, useEnsAvatar, useEnsName } from "wagmi";
+import { useClient } from "@xmtp/react-sdk";
 import SideNav from "../component-library/components/SideNav/SideNav";
 import { fetchUnsName, isValidLongWalletAddress, wipeKeys } from "../helpers";
-import { address } from "../pages/inbox";
+import type { address } from "../pages/inbox";
 import { useXmtpStore } from "../store/xmtp";
-import { useClient } from "@xmtp/react-sdk";
 
 export const SideNavController = () => {
   const { client, disconnect } = useClient();

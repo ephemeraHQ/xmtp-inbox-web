@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
-import {
+import type {
   Attachment,
-  RemoteAttachment,
+  RemoteAttachment} from "xmtp-content-type-remote-attachment";
+import {
   RemoteAttachmentCodec,
 } from "xmtp-content-type-remote-attachment";
 import { useClient } from "@xmtp/react-sdk";
+import Zoom from "react-medium-image-zoom";
 import {
   getContentTypeFromFileName,
   humanFileSize,
-} from "../../../../src/helpers/attachments";
-import Zoom from "react-medium-image-zoom";
+} from "../../../helpers/attachments";
 import "react-medium-image-zoom/dist/styles.css";
 import { db } from "../../../helpers/attachment_db";
 import { useTranslation } from "react-i18next";
@@ -87,7 +88,7 @@ const RemoteAttachmentMessageTile = ({
             });
         }
 
-        return;
+        
       }
     };
     handleLoading();
@@ -165,11 +166,9 @@ const RemoteAttachmentMessageTile = ({
       fileSize === ATTACHMENT_ERRORS.FILE_TOO_LARGE ? (
         <small>
           {content.filename} - {humanFileSize(content.contentLength)}
-          {
-            <button onClick={() => load(false, true)} type="button">
+          <button onClick={() => load(false, true)} type="button">
               {`- ${t("messages.attachment_cta")}`}
             </button>
-          }
         </small>
       ) : null}
     </div>

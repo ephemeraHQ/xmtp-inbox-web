@@ -1,4 +1,5 @@
-//@ts-nocheck
+// @ts-nocheck
+import { utils } from "ethers";
 import {
   isEnsAddress,
   isUnsAddress,
@@ -8,7 +9,6 @@ import {
   isValidRecipientAddressFormat,
   getAddress,
 } from "../string";
-import { utils } from "ethers";
 
 describe("truncate", () => {
   it("should return the original string if its length is less than the length param", () => {
@@ -83,7 +83,7 @@ describe("isUnsAddress", () => {
 });
 
 describe("getConversationId", () => {
-  let conversation = {
+  const conversation = {
     context: {
       conversationId: "testConversationId",
     },
@@ -99,7 +99,7 @@ describe("getConversationId", () => {
     expect(getConversationId(conversation)).toBe("testPeerAddress");
   });
   it("should handle falsey inputs by returning empty string", () => {
-    let conversation = undefined;
+    const conversation = undefined;
     expect(getConversationId(conversation)).toBe("");
   });
 });

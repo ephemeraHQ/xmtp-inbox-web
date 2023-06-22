@@ -4,7 +4,7 @@ export const getRecipientInputSubtext = (
 ) => {
   if (!recipientMode && !recipientEnteredValue) {
     return "messages.address_field_prompt";
-  } else {
+  } 
     switch (recipientMode) {
       case 0:
         return "messages.address_field_invalid";
@@ -13,5 +13,5 @@ export const getRecipientInputSubtext = (
       case 3:
         return "messages.address_field_not_on_network";
     }
-  }
+  
 };

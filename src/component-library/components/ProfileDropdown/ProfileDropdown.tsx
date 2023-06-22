@@ -1,7 +1,8 @@
-import React, { Fragment } from "react";
+import type React from "react";
+import { Fragment } from "react";
+import { Dialog, Transition } from "@headlessui/react";
 import { SettingsCard } from "../SettingsCard/SettingsCard";
 import { SettingsIcon } from "../SettingsCard/iconMapping";
-import { Dialog, Transition } from "@headlessui/react";
 
 interface ProfileDropdownProps {
   /**
@@ -17,8 +18,7 @@ interface ProfileDropdownProps {
 export const ProfileDropdown = ({
   addressCards = [],
   isOpen = false,
-}: ProfileDropdownProps) => {
-  return (
+}: ProfileDropdownProps) => (
     <Transition.Root show={isOpen} as={Fragment}>
       <Dialog
         as="div"
@@ -28,7 +28,7 @@ export const ProfileDropdown = ({
           <div className="rounded-xl border border-gray-100 max-w-sm">
             <div className="p-4">
               <div className="mb-4">
-                <>{addressCards}</>
+                {addressCards}
                 <SettingsCard
                   variant="secondary"
                   header="Connect existing wallet"
@@ -60,4 +60,3 @@ export const ProfileDropdown = ({
       </Dialog>
     </Transition.Root>
   );
-};

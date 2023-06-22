@@ -25,9 +25,7 @@ export const FullConversationController = () => {
     isLoading,
   } = useGetMessages(conversationId as string);
 
-  const isOnSameDay = (d1?: Date, d2?: Date): boolean => {
-    return d1?.toDateString() === d2?.toDateString();
-  };
+  const isOnSameDay = (d1?: Date, d2?: Date): boolean => d1?.toDateString() === d2?.toDateString();
 
   return (
     <div
@@ -46,7 +44,7 @@ export const FullConversationController = () => {
         endMessage={!messages?.length}
         hasMore={hasMore}
         inverse
-        loader={true}
+        loader
         scrollableTarget="scrollableDiv">
         <FullConversation
           isLoading={isLoading && !initialConversationLoaded}

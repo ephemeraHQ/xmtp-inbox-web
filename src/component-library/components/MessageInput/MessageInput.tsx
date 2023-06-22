@@ -1,27 +1,20 @@
+import type { ChangeEvent, Dispatch, SetStateAction } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import type { Attachment } from "xmtp-content-type-remote-attachment";
 import {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
-import { Attachment } from "xmtp-content-type-remote-attachment";
-import { ArrowUpIcon } from "@heroicons/react/outline";
-import { IconButton } from "../IconButton/IconButton";
-import { useTranslation } from "react-i18next";
-import {
+  ArrowUpIcon,
   DocumentIcon,
   PhotographIcon,
   VideoCameraIcon,
   XCircleIcon,
 } from "@heroicons/react/outline";
+import { useTranslation } from "react-i18next";
+import { IconButton } from "../IconButton/IconButton";
 import {
   typeLookup,
   useAttachmentChange,
-} from "../../../../src/hooks/useAttachmentChange";
-import { contentTypes } from "../../../helpers/attachments";
+} from "../../../hooks/useAttachmentChange";
+import type { contentTypes } from "../../../helpers/attachments";
 import { classNames } from "../../../helpers";
 import { useXmtpStore } from "../../../store/xmtp";
 
@@ -74,7 +67,7 @@ export const MessageInput = ({
   setIsDragActive,
 }: InputProps) => {
   const { t } = useTranslation();
-  let textAreaRef = useRef<HTMLTextAreaElement>(null);
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const [value, setValue] = useState("");
   const [acceptedTypes, setAcceptedTypes]: [
     string | string[] | undefined,
@@ -97,7 +90,7 @@ export const MessageInput = ({
   useLayoutEffect(() => {
     const MIN_TEXTAREA_HEIGHT = 32;
     if (textAreaRef?.current?.value) {
-      let currentScrollHeight = textAreaRef?.current.scrollHeight;
+      const currentScrollHeight = textAreaRef?.current.scrollHeight;
       textAreaRef.current.style.height = `${Math.max(
         currentScrollHeight,
         MIN_TEXTAREA_HEIGHT,
@@ -232,7 +225,8 @@ export const MessageInput = ({
             width={20}
             fill="black"
             className="absolute -top-2 -right-2 cursor-pointer text-white"
-            onClick={() => setAttachmentPreview(undefined)}></XCircleIcon>
+            onClick={() => setAttachmentPreview(undefined)}
+          />
         </div>
       )}
       <div className="flex justify-between bg-gray-100 rounded-b-2xl px-2">

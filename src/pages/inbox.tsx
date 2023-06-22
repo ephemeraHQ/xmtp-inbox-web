@@ -1,4 +1,9 @@
-import React, { useEffect, useState } from "react";
+import type React from "react";
+import { useEffect, useState } from "react";
+import { useClient } from "@xmtp/react-sdk";
+import { useDisconnect, useSigner } from "wagmi";
+import type { Attachment } from "xmtp-content-type-remote-attachment";
+import { useNavigate } from "react-router-dom";
 import { useXmtpStore } from "../store/xmtp";
 import { TAILWIND_MD_BREAKPOINT, wipeKeys } from "../helpers";
 import { FullConversationController } from "../controllers/FullConversationController";
@@ -8,13 +13,9 @@ import { MessageInputController } from "../controllers/MessageInputController";
 import { SideNavController } from "../controllers/SideNavController";
 import { LearnMore } from "../component-library/components/LearnMore/LearnMore";
 import useWindowSize from "../hooks/useWindowSize";
-import { useClient } from "@xmtp/react-sdk";
-import { useDisconnect, useSigner } from "wagmi";
 import { ConversationListController } from "../controllers/ConversationListController";
 import { useAttachmentChange } from "../hooks/useAttachmentChange";
-import { Attachment } from "xmtp-content-type-remote-attachment";
 import { db } from "../helpers/attachment_db";
-import { useNavigate } from "react-router-dom";
 
 export type address = "0x${string}";
 
@@ -134,7 +135,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
             !loadingConversations &&
             !startedFirstMessage ? (
               <LearnMore
-                version={"replace"}
+                version="replace"
                 setStartedFirstMessage={() => setStartedFirstMessage(true)}
               />
             ) : (

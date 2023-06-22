@@ -66,9 +66,9 @@ export const initialize = async () => {
             }
 
             return formatDate(value, format, { locale });
-          } else {
+          } 
             return "";
-          }
+          
         },
       },
     });

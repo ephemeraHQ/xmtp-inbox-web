@@ -1,12 +1,10 @@
-//@ts-nocheck
+// @ts-nocheck
 import { buildLocalStorageKey, loadKeys, storeKeys, wipeKeys } from "../keys";
 
-var localStorageMock = (() => {
-  var store = {};
+const localStorageMock = (() => {
+  const store = {};
   return {
-    getItem: (key) => {
-      return store[key];
-    },
+    getItem: (key) => store[key],
     setItem: (key, value) => {
       store[key] = value.toString();
     },

@@ -3,8 +3,8 @@ import { EmailMatcher, UrlMatcher } from "interweave-autolink";
 import { EmojiMatcher, useEmojiData } from "interweave-emoji";
 import type { MouseEvent } from "react";
 import React from "react";
+import type { RemoteAttachment } from "xmtp-content-type-remote-attachment";
 import RemoteAttachmentMessageTile from "../component-library/components/RemoteAttachmentMessageTile/RemoteAttachmentMessageTile";
-import { RemoteAttachment } from "xmtp-content-type-remote-attachment";
 
 interface MessageContentControllerProps {
   content: undefined | string | RemoteAttachment;

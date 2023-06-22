@@ -1,9 +1,10 @@
 import { ChevronRightIcon } from "@heroicons/react/outline";
 import React from "react";
-import { classNames } from "../../../../src/helpers";
+import { classNames } from "../../../helpers";
 import { ShortCopySkeletonLoader } from "../Loaders/SkeletonLoaders/ShortCopySkeletonLoader";
 import { IconSkeletonLoader } from "../Loaders/SkeletonLoaders/IconSkeletonLoader";
-import { iconMapping, InfoCardIcon } from "./iconMapping";
+import type { InfoCardIcon } from "./iconMapping";
+import { iconMapping } from "./iconMapping";
 
 interface InfoCardProps {
   /**
@@ -66,8 +67,7 @@ export const InfoCard = ({
   styles,
   testId,
   url,
-}: InfoCardProps) => {
-  return (
+}: InfoCardProps) => (
     <div
       className={classNames(
         "w-full",
@@ -129,4 +129,3 @@ export const InfoCard = ({
       </div>
     </div>
   );
-};

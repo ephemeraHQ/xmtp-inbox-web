@@ -1,7 +1,8 @@
-import { Filelike } from "web3.storage";
+import type { Filelike } from "web3.storage";
 
 export default class Upload implements Filelike {
   name: string;
+
   data: Uint8Array;
 
   constructor(name: string, data: Uint8Array) {

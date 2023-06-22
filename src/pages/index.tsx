@@ -1,13 +1,13 @@
 import { useEffect, useMemo } from "react";
-import { useXmtpStore } from "../store/xmtp";
 import { watchAccount } from "@wagmi/core";
-import useInitXmtpClient from "../hooks/useInitXmtpClient";
 import { useAccount, useDisconnect } from "wagmi";
-import { classNames, isAppEnvDemo, wipeKeys } from "../helpers";
-import { OnboardingStep } from "../component-library/components/OnboardingStep/OnboardingStep";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useClient } from "@xmtp/react-sdk";
 import { useNavigate } from "react-router-dom";
+import { OnboardingStep } from "../component-library/components/OnboardingStep/OnboardingStep";
+import { classNames, isAppEnvDemo, wipeKeys } from "../helpers";
+import useInitXmtpClient from "../hooks/useInitXmtpClient";
+import { useXmtpStore } from "../store/xmtp";
 
 const OnboardingPage = () => {
   const navigate = useNavigate();
@@ -19,9 +19,7 @@ const OnboardingPage = () => {
   const { disconnect: disconnectWagmi, reset: resetWagmi } = useDisconnect();
   const { disconnect: disconnectClient } = useClient();
 
-  useEffect(() => {
-    return watchAccount(() => resetXmtpState());
-  }, []);
+  useEffect(() => watchAccount(() => resetXmtpState()), []);
 
   useEffect(() => {
     const routeToInbox = async () => {

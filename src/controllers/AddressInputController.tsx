@@ -10,7 +10,7 @@ import {
 } from "../helpers";
 import useGetRecipientInputMode from "../hooks/useGetRecipientInputMode";
 import useWalletAddress from "../hooks/useWalletAddress";
-import { address } from "../pages/inbox";
+import type { address } from "../pages/inbox";
 import useWindowSize from "../hooks/useWindowSize";
 import { useXmtpStore } from "../store/xmtp";
 

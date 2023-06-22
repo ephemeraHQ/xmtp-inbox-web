@@ -1,5 +1,5 @@
 import { CheckIcon } from "@heroicons/react/outline";
-import React from "react";
+import type React from "react";
 import { WalletAddressIcon } from "../Icons/WalletAddressIcon";
 import { IconSkeletonLoader } from "../Loaders/SkeletonLoaders/IconSkeletonLoader";
 import { ShortCopySkeletonLoader } from "../Loaders/SkeletonLoaders/ShortCopySkeletonLoader";
@@ -36,12 +36,9 @@ export const AddressSettingsCard = ({
   avatar,
   isConnected = false,
   isLoading = false,
-}: AddressSettingsCardProps) => {
-  return (
+}: AddressSettingsCardProps) => (
     <div
-      className={
-        "max-w-full bg-gray-50 flex p-2 flex items-center justify-between"
-      }>
+      className="max-w-full bg-gray-50 flex p-2 flex items-center justify-between">
       <div className="flex items-center">
         {avatar}
         <div className="flex flex-col">
@@ -69,4 +66,3 @@ export const AddressSettingsCard = ({
       </div>
     </div>
   );
-};

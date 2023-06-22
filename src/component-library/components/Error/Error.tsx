@@ -1,8 +1,7 @@
 import React from "react";
-import { PillButton } from "../PillButton/PillButton";
-import { useTranslation } from "react-i18next";
-import { Trans } from "react-i18next";
+import { useTranslation , Trans } from "react-i18next";
 import { ExclamationIcon } from "@heroicons/react/solid";
+import { PillButton } from "../PillButton/PillButton";
 
 interface ErrorProps {
   /**
@@ -28,7 +27,7 @@ export const Error = ({ errorText, onConnect }: ErrorProps) => {
         <p>
           <Trans
             i18nKey={
-              errorText ? errorText : "status_messaging.error_1_subheader"
+              errorText || "status_messaging.error_1_subheader"
             }
           />
         </p>

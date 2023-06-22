@@ -1,4 +1,4 @@
-//@ts-nocheck
+// @ts-nocheck
 import getUniqueMessages from "../getUniqueMessages";
 
 describe("getUniqueMessages", () => {

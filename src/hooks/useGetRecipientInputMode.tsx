@@ -1,5 +1,6 @@
 import { fetchEnsAddress } from "@wagmi/core";
 import { useEffect } from "react";
+import { useCanMessage } from "@xmtp/react-sdk";
 import {
   isEnsAddress,
   isUnsAddress,
@@ -7,9 +8,8 @@ import {
   RecipientInputMode,
   fetchUnsAddress,
 } from "../helpers";
-import { address } from "../pages/inbox";
+import type { address } from "../pages/inbox";
 import { useXmtpStore } from "../store/xmtp";
-import { useCanMessage } from "@xmtp/react-sdk";
 
 const useGetRecipientInputMode = () => {
   const { canMessage: canMessageUser } = useCanMessage();

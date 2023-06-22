@@ -1,10 +1,10 @@
 import React from "react";
 import { useEnsName } from "wagmi";
+import { useClient } from "@xmtp/react-sdk";
 import { FullMessage } from "../component-library/components/FullMessage/FullMessage";
 import { isValidLongWalletAddress, shortAddress } from "../helpers";
-import { address } from "../pages/inbox";
+import type { address } from "../pages/inbox";
 import MessageContentController from "./MessageContentController";
-import { useClient } from "@xmtp/react-sdk";
 import useSendMessage from "../hooks/useSendMessage";
 import { useXmtpStore } from "../store/xmtp";
 

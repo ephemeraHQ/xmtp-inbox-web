@@ -1,7 +1,7 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { IconButton } from "./IconButton";
+import type { ComponentStory, ComponentMeta } from "@storybook/react";
 import { PlusCircleIcon } from "@heroicons/react/outline";
+import { IconButton } from "./IconButton";
 
 export default {
   title: "IconButton",

@@ -1,8 +1,8 @@
-//@ts-nocheck
+// @ts-nocheck
 import { vi } from "vitest";
 import fetchMostRecentMessage from "../fetchMostRecentMessage";
 
-let mockConvo = {
+const mockConvo = {
   messages: vi.fn().mockResolvedValue(["test1", "test2", "test3"]),
 };
 

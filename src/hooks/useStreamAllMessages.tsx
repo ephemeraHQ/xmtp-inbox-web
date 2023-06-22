@@ -1,5 +1,8 @@
-import { DecodedMessage } from "@xmtp/react-sdk";
+import { useClient } from "@xmtp/react-sdk";
+import type { DecodedMessage  } from "@xmtp/react-sdk";
 import { useEffect, useState } from "react";
+import { fetchEnsName } from "@wagmi/core";
+import { useAccount } from "wagmi";
 import {
   getConversationId,
   shortAddress,
@@ -7,10 +10,7 @@ import {
   fetchUnsName,
 } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
-import { fetchEnsName } from "@wagmi/core";
-import { useAccount } from "wagmi";
-import { address } from "../pages/inbox";
-import { useClient } from "@xmtp/react-sdk";
+import type { address } from "../pages/inbox";
 
 let latestMsgId: string;
 
@@ -50,7 +50,7 @@ export const useStreamAllMessages = () => {
           // newMessages array
           const uniqueMessages = [
             ...Array.from(
-              new Map(newMessages.map((item) => [item["id"], item])).values(),
+              new Map(newMessages.map((item) => [item.id, item])).values(),
             ),
           ];
           convoMessages.set(key, uniqueMessages);

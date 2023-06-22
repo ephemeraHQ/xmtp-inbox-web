@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import type { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { ProfileDropdown } from "./ProfileDropdown";
 import { AddressSettingsCard } from "../AddressSettingsCard/AddressSettingsCard";
@@ -22,11 +22,11 @@ ProfileDropdownOpen.args = {
   addressCards: [
     <AddressSettingsCard
       key={1}
-      header={"hi.xmtp.eth"}
+      header="hi.xmtp.eth"
       avatar={<Avatar />}
       isConnected
     />,
-    <AddressSettingsCard key={1} header={"hi2.xmtp.eth"} avatar={<Avatar />} />,
+    <AddressSettingsCard key={1} header="hi2.xmtp.eth" avatar={<Avatar />} />,
   ],
   isOpen: true,
 };

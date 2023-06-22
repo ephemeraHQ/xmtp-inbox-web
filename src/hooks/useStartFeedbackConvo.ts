@@ -1,8 +1,8 @@
-import { DecodedMessage } from "@xmtp/react-sdk";
+import { useClient } from "@xmtp/react-sdk";
+import type { DecodedMessage  } from "@xmtp/react-sdk";
 import { useEffect } from "react";
 import { XMTP_FEEDBACK_ADDRESS, getConversationId } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
-import { useClient } from "@xmtp/react-sdk";
 
 export const useStartFeedbackConvo = () => {
   const { client } = useClient();

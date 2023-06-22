@@ -1,11 +1,11 @@
 import React from "react";
+import type { Attachment } from "xmtp-content-type-remote-attachment";
 import { MessageInput } from "../component-library/components/MessageInput/MessageInput";
 import { RecipientInputMode } from "../helpers";
 import useGetRecipientInputMode from "../hooks/useGetRecipientInputMode";
 import useSendMessage from "../hooks/useSendMessage";
 import { useXmtpStore } from "../store/xmtp";
-import { address } from "../pages/inbox";
-import { Attachment } from "xmtp-content-type-remote-attachment";
+import type { address } from "../pages/inbox";
 
 interface MessageInputControllerProps {
   attachment?: Attachment;
