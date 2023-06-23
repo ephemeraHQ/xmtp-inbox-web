@@ -4,9 +4,11 @@ import {
   RemoteAttachment,
   RemoteAttachmentCodec,
 } from "xmtp-content-type-remote-attachment";
-import React from "react";
 import { useClient } from "@xmtp/react-sdk";
-import { humanFileSize } from "../../../../src/helpers/attachments";
+import {
+  getContentTypeFromFileName,
+  humanFileSize,
+} from "../../../../src/helpers/attachments";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { db } from "../../../helpers/attachment_db";
@@ -21,6 +23,13 @@ type RemoteAttachmentMessageTileProps = {
 };
 
 type status = "unloaded" | "loadRequested" | "loading" | "loaded" | "error";
+
+/**
+ * Creating object URLs from blobs is non-deterministic, so we store the
+ * generated URLs in a cache so that they can be reused, which results in
+ * a more consistent rendering of images/data and less memory usage.
+ */
+const blobCache = new WeakMap<Uint8Array, string>();
 
 const RemoteAttachmentMessageTile = ({
   content,
@@ -46,27 +55,34 @@ const RemoteAttachmentMessageTile = ({
             client,
           );
 
-          const objectURL = URL.createObjectURL(
-            new Blob([Buffer.from(attachment.data)], {
-              type: attachment.mimeType,
-            }),
-          );
+          if (!blobCache.get(attachment.data)) {
+            blobCache.set(
+              attachment.data,
+              URL.createObjectURL(
+                new Blob([Buffer.from(attachment.data)], {
+                  type: attachment.mimeType,
+                }),
+              ),
+            );
+          }
+
+          const objectURL = blobCache.get(attachment.data);
 
           db.attachments
             .add({
               contentURL: content.url,
               filename: attachment.filename,
               mimetype: attachment.mimeType,
-              contentDataURL: objectURL,
+              contentDataURL: objectURL!,
             })
             .then(() => {
-              setURL(objectURL);
+              setURL(objectURL!);
               setStatus("loaded");
             })
             .catch((e: Error) => {
               // If error adding to cache, can silently fail and no need to display an error
               console.log("Error caching image --> ", e);
-              setURL(objectURL);
+              setURL(objectURL!);
               setStatus("loaded");
             });
         }
@@ -106,6 +122,8 @@ const RemoteAttachmentMessageTile = ({
       });
   }, []);
 
+  const contentType = getContentTypeFromFileName(content?.filename);
+
   return isError ? (
     <p className="text-red-600 p-0">{t("status_messaging.error_1_header")}</p>
   ) : (
@@ -113,11 +131,27 @@ const RemoteAttachmentMessageTile = ({
       {status === "loading" || isLoading ? t("status_messaging.loading") : ""}
       {url ? (
         <Zoom>
-          <img
-            src={url}
-            className="max-h-80 rounded-lg"
-            alt={content.filename}
-          />
+          {contentType === "video" ? (
+            <video controls autoPlay>
+              <source src={url} type="video/mp4" />
+              {t("attachments.video_messages_not_supported")}
+            </video>
+          ) : contentType === "application" ? (
+            <object
+              data={url}
+              type="application/pdf"
+              width="100%"
+              height="500px">
+              <p>{t("attachments.unable_to_display")}</p>
+              <a href={url}>{t("attachments.download_instead")}</a>
+            </object>
+          ) : (
+            <img
+              src={url}
+              className="max-h-80 rounded-lg"
+              alt={content.filename}
+            />
+          )}
         </Zoom>
       ) : null}
       {status !== "loaded" &&

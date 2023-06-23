@@ -12,7 +12,11 @@ export const FullConversation = ({
   isLoading = false,
 }: FullConversationProps) => {
   const { t } = useTranslation();
-  if (isLoading) {
+
+  // only show the full loading state when there are no messages to
+  // prevent message rendering from jumping around when trying to load new
+  // messages from the network
+  if (isLoading && messages.length === 0) {
     return (
       <div className={"h-full flex flex-col-reverse justify-start p-4"}>
         {Array.from({ length: 3 }).map((_, idx) => (
