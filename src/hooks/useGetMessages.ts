@@ -2,7 +2,7 @@ import { DecodedMessage, SortDirection } from "@xmtp/react-sdk";
 import { useCallback, useMemo } from "react";
 import { MESSAGE_LIMIT, getAddress } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
-import { useCachedMessages } from "@xmtp/react-sdk";
+import { useMessages } from "@xmtp/react-sdk";
 
 const useGetMessages = (conversationId: string) => {
   const messages = useXmtpStore((state) =>
@@ -21,7 +21,7 @@ const useGetMessages = (conversationId: string) => {
     [addMessages, conversationId],
   );
 
-  const { next, hasMore, isLoading } = useCachedMessages(conversation, {
+  const { next, hasMore, isLoading } = useMessages(conversation, {
     direction: SortDirection.SORT_DIRECTION_DESCENDING,
     limit: MESSAGE_LIMIT,
     onMessages,
