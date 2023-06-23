@@ -1,7 +1,7 @@
 {
   "onboarding": {
     "demo_header": "Initializing demo mode…",
-    "intro_header": "An interoperable web3 inbox",
+    "intro_header": "A universal web3 inbox",
     "intro_subheader": "Access all of your XMTP DMs—no matter where you started them.",
     "intro_button": "Connect your wallet",
     "connect_header": "Connecting to your wallet...",
@@ -32,7 +32,7 @@
     "messages_empty_cta_1_header": "Send a message",
     "messages_empty_cta_1_subheader": "Message someone using their 0x wallet, ENS, or UNS address",
     "messages_empty_cta_2_header": "Find the perfect apps for you",
-    "messages_empty_cta_2_subheader": "Explore a showcase of apps built with XMTP—all giving you access to your interoperable inbox",
+    "messages_empty_cta_2_subheader": "Explore a showcase of apps built with XMTP—all giving you access to your universal inbox",
     "messages_empty_cta_3_header": "Developer docs",
     "messages_empty_cta_3_subheader": "Learn how to build an app with XMTP",
     "address_field_prompt": "Enter a 0x wallet, ENS, or UNS address",
