@@ -21,19 +21,11 @@ const useGetMessages = (conversationId: string) => {
     [addMessages, conversationId],
   );
 
-  const messageOptions = useMemo(
-    () => ({
-      direction: SortDirection.SORT_DIRECTION_DESCENDING,
-      limit: MESSAGE_LIMIT,
-      onMessages,
-    }),
-    [onMessages],
-  );
-
-  const { next, hasMore, isLoading } = useMessages(
-    conversation,
-    messageOptions,
-  );
+  const { next, hasMore, isLoading } = useMessages(conversation, {
+    direction: SortDirection.SORT_DIRECTION_DESCENDING,
+    limit: MESSAGE_LIMIT,
+    onMessages,
+  });
 
   return {
     messages,
