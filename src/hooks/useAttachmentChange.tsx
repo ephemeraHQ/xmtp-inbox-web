@@ -1,8 +1,9 @@
-import { ChangeEvent, useCallback, useState } from "react";
+import { ChangeEvent, useCallback } from "react";
 import { Attachment } from "xmtp-content-type-remote-attachment";
 import { contentTypes, humanFileSize } from "../helpers/attachments";
 import { ATTACHMENT_ERRORS } from "../helpers";
 import { useTranslation } from "react-i18next";
+import { useXmtpStore } from "../store/xmtp";
 
 export const typeLookup: Record<string, contentTypes> = {
   jpg: "image",
@@ -29,9 +30,7 @@ export const useAttachmentChange = ({
   setIsDragActive,
 }: useAttachmentChangeProps) => {
   const { t } = useTranslation();
-
-  const [error, setError]: [string, Function] = useState("");
-
+  const setAttachmentError = useXmtpStore((state) => state.setAttachmentError);
   const onAttachmentChange = useCallback(
     async (
       e: ChangeEvent<HTMLInputElement> | React.DragEvent<HTMLDivElement>,
@@ -39,7 +38,7 @@ export const useAttachmentChange = ({
       e.preventDefault();
       e.stopPropagation();
 
-      setError(undefined);
+      setAttachmentError("");
 
       // Both types needed for drag events or upload events
       const target = (e as ChangeEvent<HTMLInputElement>)?.target.files
@@ -51,50 +50,41 @@ export const useAttachmentChange = ({
       if (target?.files?.length && setAttachment) {
         const file = target.files[0];
 
-        const [type, suffix] = file.type?.split?.("/");
-        if (
-          !typeLookup[suffix] ||
-          `${typeLookup[suffix]}/${suffix}` !== file.type
-        ) {
-          setError(t("status_messaging.file_invalid_format"));
-          setIsDragActive(false);
-          return;
-        }
         // Displays error if > 5 MB
         if (humanFileSize(file.size) === ATTACHMENT_ERRORS.FILE_TOO_LARGE) {
-          setError(t("status_messaging.file_too_large"));
+          setAttachmentError(t("status_messaging.file_too_large"));
           setIsDragActive(false);
-          return;
+        } else {
+          const fileReader = new FileReader();
+          fileReader.addEventListener("load", async () => {
+            const data = fileReader.result;
+
+            if (!(data instanceof ArrayBuffer)) {
+              return;
+            }
+
+            const attachment: Attachment = {
+              filename: file.name,
+              mimeType: file.type,
+              data: new Uint8Array(data),
+            };
+
+            setAttachmentPreview(
+              URL.createObjectURL(
+                new Blob([Buffer.from(data)], {
+                  type: attachment.mimeType,
+                }),
+              ),
+            );
+
+            setAttachment(attachment);
+          });
+
+          fileReader.readAsArrayBuffer(file);
+          // resets the value so the same image can be re-uploaded after a deletion
+          // not needed for drag events
+          (e as ChangeEvent<HTMLInputElement>).target.value = "";
         }
-        const fileReader = new FileReader();
-        fileReader.addEventListener("load", async () => {
-          const data = fileReader.result;
-
-          if (!(data instanceof ArrayBuffer)) {
-            return;
-          }
-
-          const attachment: Attachment = {
-            filename: file.name,
-            mimeType: file.type,
-            data: new Uint8Array(data),
-          };
-
-          setAttachmentPreview(
-            URL.createObjectURL(
-              new Blob([Buffer.from(data)], {
-                type: attachment.mimeType,
-              }),
-            ),
-          );
-
-          setAttachment(attachment);
-        });
-
-        fileReader.readAsArrayBuffer(file);
-        // resets the value so the same image can be re-uploaded after a deletion
-        // not needed for drag events
-        (e as ChangeEvent<HTMLInputElement>).target.value = "";
       } else {
         setAttachment(undefined);
       }
@@ -103,7 +93,6 @@ export const useAttachmentChange = ({
     [setAttachment, setAttachmentPreview, setIsDragActive],
   );
   return {
-    error,
     onAttachmentChange,
   };
 };

@@ -23,6 +23,7 @@ import {
 } from "../../../../src/hooks/useAttachmentChange";
 import { contentTypes } from "../../../helpers/attachments";
 import { classNames } from "../../../helpers";
+import { useXmtpStore } from "../../../store/xmtp";
 
 interface InputProps {
   /**
@@ -76,9 +77,10 @@ export const MessageInput = ({
   let textAreaRef = useRef<HTMLTextAreaElement>(null);
   const [value, setValue] = useState("");
   const [acceptedTypes, setAcceptedTypes]: [
-    string[] | undefined,
-    Dispatch<SetStateAction<string[] | undefined>>,
+    string | string[] | undefined,
+    Dispatch<SetStateAction<string | string[] | undefined>>,
   ] = useState();
+  const attachmentError = useXmtpStore((state) => state.attachmentError);
 
   const inputFile = useRef<HTMLInputElement | null>(null);
 
@@ -112,14 +114,19 @@ export const MessageInput = ({
   }, [conversationId]);
 
   const onButtonClick = (contentType: contentTypes) => {
-    const acceptedFileTypeList = Object.keys(typeLookup).reduce(
-      (acc: string[], key: string) => {
-        if (typeLookup[key] === contentType) acc.push(`.${key}`);
-        return acc;
-      },
-      [],
-    );
-    setAcceptedTypes([...acceptedFileTypeList]);
+    // For document view, we want to accept all file types, even if we can't gracefully render them on the UI.
+    if (contentType === "application") {
+      setAcceptedTypes("all");
+    } else {
+      const acceptedFileTypeList = Object.keys(typeLookup).reduce(
+        (acc: string[], key: string) => {
+          if (typeLookup[key] === contentType) acc.push(`.${key}`);
+          return acc;
+        },
+        [],
+      );
+      setAcceptedTypes([...acceptedFileTypeList]);
+    }
   };
 
   useEffect(() => {
@@ -128,11 +135,13 @@ export const MessageInput = ({
     }
   }, [acceptedTypes]);
 
-  const { error, onAttachmentChange } = useAttachmentChange({
+  const { onAttachmentChange } = useAttachmentChange({
     setAttachment,
     setAttachmentPreview,
     setIsDragActive,
   });
+
+  const extension = attachment?.mimeType.split("/")?.[1] || "";
 
   return (
     <form className="flex flex-col border border-gray-300 rounded-2xl m-4">
@@ -145,7 +154,9 @@ export const MessageInput = ({
         ref={inputFile}
         onChange={onAttachmentChange}
         aria-label={t("aria_labels.filepicker") || "File picker"}
-        accept={acceptedTypes?.join(",")}
+        accept={
+          Array.isArray(acceptedTypes) ? acceptedTypes.join(",") : undefined
+        }
         hidden
       />
       <div
@@ -153,8 +164,8 @@ export const MessageInput = ({
           "m-0 p-2",
           attachment ? "border-b border-gray-200" : "",
         )}>
-        {error ? (
-          <p className="text-red-600 w-full m-1 ml-4">{error ? error : null}</p>
+        {attachmentError ? (
+          <p className="text-red-600 w-full m-1 ml-4">{attachmentError}</p>
         ) : (
           <textarea
             autoFocus
@@ -190,12 +201,12 @@ export const MessageInput = ({
       </div>
       {attachmentPreview && (
         <div className="relative m-8 w-fit">
-          {attachment?.mimeType.includes("video") ? (
+          {typeLookup[extension] === "video" ? (
             <video width="320" height="240" controls autoPlay>
               <source src={attachmentPreview} type="video/mp4" />
               {t("attachments.video_messages_not_supported")}
             </video>
-          ) : attachment?.mimeType.includes("application") ? (
+          ) : typeLookup[extension] === "application" ? (
             <object
               data={attachmentPreview}
               type="application/pdf"
@@ -203,12 +214,18 @@ export const MessageInput = ({
               height="500px">
               <p>{t("attachments.unable_to_display")}</p>
             </object>
-          ) : (
+          ) : typeLookup[extension] === "image" ? (
             <img
               src={attachmentPreview || ""}
               alt={attachment?.filename}
               className="relative w-95/100  max-h-80 rounded-xl overflow-auto"
             />
+          ) : (
+            <div className="flex text-blue-600 font-bold">
+              <a href={attachmentPreview} target="_blank">
+                {attachment?.filename}
+              </a>
+            </div>
           )}
 
           <XCircleIcon
@@ -259,7 +276,9 @@ export const MessageInput = ({
                 textAreaRef.current?.focus();
               }
             }}
-            isDisabled={!(value || attachmentPreview) || isDisabled || !!error}
+            isDisabled={
+              !(value || attachmentPreview) || isDisabled || !!attachmentError
+            }
           />
         </div>
       </div>

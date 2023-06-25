@@ -25,6 +25,8 @@ interface XmtpState {
   resetXmtpState: () => void;
   startedFirstMessage: boolean;
   setStartedFirstMessage: (startedFirstMessage: boolean) => void;
+  attachmentError: string;
+  setAttachmentError: (attachmentError: string) => void;
 }
 
 export const useXmtpStore = create<XmtpState>((set) => ({
@@ -86,4 +88,6 @@ export const useXmtpStore = create<XmtpState>((set) => ({
   startedFirstMessage: false,
   setStartedFirstMessage: (startedFirstMessage) =>
     set(() => ({ startedFirstMessage })),
+  attachmentError: "",
+  setAttachmentError: (attachmentError) => set(() => ({ attachmentError })),
 }));
