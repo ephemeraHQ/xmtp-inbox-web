@@ -1,8 +1,9 @@
-import { ChangeEvent, useCallback } from "react";
-import { Attachment } from "xmtp-content-type-remote-attachment";
-import { contentTypes, humanFileSize } from "../helpers/attachments";
-import { ATTACHMENT_ERRORS } from "../helpers";
+import type { ChangeEvent } from "react";
+import { useCallback } from "react";
+import type { Attachment } from "xmtp-content-type-remote-attachment";
 import { useTranslation } from "react-i18next";
+import { humanFileSize } from "../helpers/attachments";
+import { ATTACHMENT_ERRORS } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
 
 interface useAttachmentChangeProps {
@@ -41,7 +42,7 @@ export const useAttachmentChange = ({
           setIsDragActive(false);
         } else {
           const fileReader = new FileReader();
-          fileReader.addEventListener("load", async () => {
+          fileReader.addEventListener("load", () => {
             const data = fileReader.result;
 
             if (!(data instanceof ArrayBuffer)) {

@@ -214,7 +214,10 @@ export const MessageInput = ({
             />
           ) : (
             <div className="flex text-blue-600 font-bold">
-              <a href={attachmentPreview} target="_blank">
+              <a
+                href={attachmentPreview}
+                target="_blank"
+                rel="noopener noreferrer">
                 {attachment?.filename}
               </a>
             </div>

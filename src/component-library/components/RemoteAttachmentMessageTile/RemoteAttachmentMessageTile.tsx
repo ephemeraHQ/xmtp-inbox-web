@@ -153,7 +153,7 @@ const RemoteAttachmentMessageTile = ({
             />
           ) : (
             <div className="flex text-blue-600 font-bold">
-              <a href={url} target="_blank">
+              <a href={url} target="_blank" rel="noopener noreferrer">
                 {content.filename} ({fileSize})
               </a>
             </div>
