@@ -145,12 +145,18 @@ const RemoteAttachmentMessageTile = ({
               <p>{t("attachments.unable_to_display")}</p>
               <a href={url}>{t("attachments.download_instead")}</a>
             </object>
-          ) : (
+          ) : contentType === "image" ? (
             <img
               src={url}
               className="max-h-80 rounded-lg"
               alt={content.filename}
             />
+          ) : (
+            <div className="flex text-blue-600 font-bold">
+              <a href={url} target="_blank">
+                {content.filename} ({fileSize})
+              </a>
+            </div>
           )}
         </Zoom>
       ) : null}
