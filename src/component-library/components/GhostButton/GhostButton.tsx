@@ -105,9 +105,9 @@ export const GhostButton = ({
       )}
       aria-label={srText}>
       <div className="flex justify-center items-center h-fit space-x-2">
-          <div>{label}</div>
-          {isLoading ? <ButtonLoader color="primary" size={size} /> : icon}
-        </div>
+        <div>{label}</div>
+        {isLoading ? <ButtonLoader color="primary" size={size} /> : icon}
+      </div>
     </button>
   );
 };

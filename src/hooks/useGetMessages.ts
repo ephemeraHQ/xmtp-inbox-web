@@ -1,5 +1,5 @@
 import type { DecodedMessage } from "@xmtp/react-sdk";
-import { SortDirection , useMessages } from "@xmtp/react-sdk";
+import { SortDirection, useMessages } from "@xmtp/react-sdk";
 import { useCallback } from "react";
 import { MESSAGE_LIMIT, getAddress } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";

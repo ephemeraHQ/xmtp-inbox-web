@@ -104,15 +104,15 @@ export const PillButton = ({
       )}
       aria-label={srText || (label as string)}>
       <div className="flex justify-center items-center h-fit space-x-1">
-          <div>{label}</div>
-          {isLoading ? (
-            <ButtonLoader color="primary" size={size} />
-          ) : (
-            iconOverride || (
-              <ArrowCircleRightIcon width={size === "large" ? 24 : 16} />
-            )
-          )}
-        </div>
+        <div>{label}</div>
+        {isLoading ? (
+          <ButtonLoader color="primary" size={size} />
+        ) : (
+          iconOverride || (
+            <ArrowCircleRightIcon width={size === "large" ? 24 : 16} />
+          )
+        )}
+      </div>
     </button>
   );
 };
