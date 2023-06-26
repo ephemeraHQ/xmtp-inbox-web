@@ -1,3 +1,4 @@
+import { expect } from "vitest";
 import { getContentTypeFromFileName, humanFileSize } from "../attachments";
 import { ATTACHMENT_ERRORS } from "../constants";
 

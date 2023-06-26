@@ -1,7 +1,7 @@
-import React from "react";
-import { ButtonLoader } from "../Loaders/ButtonLoader";
+import type React from "react";
 import { ArrowCircleRightIcon } from "@heroicons/react/outline";
-import { classNames } from "../../../../src/helpers";
+import { ButtonLoader } from "../Loaders/ButtonLoader";
+import { classNames } from "../../../helpers";
 
 interface GhostButtonProps {
   /**
@@ -104,12 +104,10 @@ export const GhostButton = ({
         "p-1",
       )}
       aria-label={srText}>
-      <>
-        <div className="flex justify-center items-center h-fit space-x-2">
-          <div>{label}</div>
-          {isLoading ? <ButtonLoader color={"primary"} size={size} /> : icon}
-        </div>
-      </>
+      <div className="flex justify-center items-center h-fit space-x-2">
+        <div>{label}</div>
+        {isLoading ? <ButtonLoader color="primary" size={size} /> : icon}
+      </div>
     </button>
   );
 };

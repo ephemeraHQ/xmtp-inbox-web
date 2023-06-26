@@ -1,8 +1,8 @@
-import { Conversation, DecodedMessage } from "@xmtp/react-sdk";
+import type { Conversation, DecodedMessage } from "@xmtp/react-sdk";
 import { create } from "zustand";
 import { RecipientInputMode } from "../helpers";
 import getUniqueMessages from "../helpers/getUniqueMessages";
-import { address } from "../pages/inbox";
+import type { address } from "../pages/inbox";
 
 interface XmtpState {
   conversations: Map<string, Conversation>;
@@ -73,18 +73,16 @@ export const useXmtpStore = create<XmtpState>((set) => ({
   setRecipientEnteredValue: (recipientEnteredValue) =>
     set(() => ({ recipientEnteredValue })),
   resetXmtpState: () =>
-    set(() => {
-      return {
-        client: undefined,
-        conversations: new Map(),
-        convoMessages: new Map(),
-        previewMessages: new Map(),
-        recipientWalletAddress: "",
-        conversationId: undefined,
-        startedFirstMessage: false,
-        recipientInputMode: RecipientInputMode.InvalidEntry,
-      };
-    }),
+    set(() => ({
+      client: undefined,
+      conversations: new Map(),
+      convoMessages: new Map(),
+      previewMessages: new Map(),
+      recipientWalletAddress: "",
+      conversationId: undefined,
+      startedFirstMessage: false,
+      recipientInputMode: RecipientInputMode.InvalidEntry,
+    })),
   startedFirstMessage: false,
   setStartedFirstMessage: (startedFirstMessage) =>
     set(() => ({ startedFirstMessage })),

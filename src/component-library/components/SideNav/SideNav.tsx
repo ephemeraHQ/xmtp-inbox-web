@@ -1,5 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
-import React, { Fragment, useEffect } from "react";
+import type React from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   ChatAlt2Icon,
   CheckCircleIcon,
@@ -11,21 +12,16 @@ import {
   SparklesIcon,
   XIcon,
 } from "@heroicons/react/outline";
-import {
-  classNames,
-  isAppEnvDemo,
-  shortAddress,
-} from "../../../../src/helpers";
+import { useTranslation } from "react-i18next";
+import { QRCode } from "react-qrcode-logo";
+import { classNames, isAppEnvDemo, shortAddress } from "../../../helpers";
 import { XmtpIcon } from "../Icons/XmtpIcon";
-import { useState } from "react";
 import { Avatar } from "../Avatar/Avatar";
 import { GhostButton } from "../GhostButton/GhostButton";
 import { DisconnectIcon } from "../Icons/DisconnectIcon";
-import { useTranslation } from "react-i18next";
 import i18next, { supportedLocales } from "../../../helpers/i18n";
-import { QRCode } from "react-qrcode-logo";
 
-interface SideNav {
+interface SideNavProps {
   /**
    * Contents inside side nav
    */
@@ -48,22 +44,25 @@ interface SideNav {
   onDisconnect?: () => void;
 }
 
+type Lang = {
+  displayText: string | undefined;
+  isSelected: boolean;
+  lang: string;
+};
+
 const SideNav = ({
   icon = <XmtpIcon />,
   displayAddress,
   walletAddress,
   avatarUrl,
   onDisconnect,
-}: SideNav) => {
-  const [mappedLangs, setMappedLangs]: [
-    Array<{ displayText?: string; isSelected?: boolean; lang?: string }>,
-    Function,
-  ] = useState([]);
+}: SideNavProps) => {
+  const [mappedLangs, setMappedLangs] = useState<Lang[]>([]);
   // When language changes, change the modal text to render the corresponding locale selector within that language
   useEffect(() => {
-    const mappedLangs = supportedLocales.map((locale: string) => {
+    const langs = supportedLocales.map((locale: string) => {
       const lang = locale?.split("-")?.[0] || "en";
-      let languageNames = new Intl.DisplayNames([i18next.language], {
+      const languageNames = new Intl.DisplayNames([i18next.language], {
         type: "language",
       });
 
@@ -73,8 +72,8 @@ const SideNav = ({
         lang,
       };
     });
-    setMappedLangs(mappedLangs);
-  }, [i18next.language]);
+    setMappedLangs(langs);
+  }, []);
 
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
@@ -118,52 +117,48 @@ const SideNav = ({
   ];
   const [currentIcon, setCurrentIcon] = useState(icons[0].key);
 
-  const mappedButtons = icons.map((icon) => {
-    return (
-      <div className="group flex relative w-full" key={icon.key}>
-        <button
-          type="button"
-          onClick={(event) => {
-            setCurrentIcon((event.target as HTMLElement).innerText);
-            onSideNavBtnClick(icon.key as string);
-          }}
-          aria-label={icon.key as string}
+  const mappedButtons = icons.map((icn) => (
+    <div className="group flex relative w-full" key={icn.key}>
+      <button
+        type="button"
+        onClick={(event) => {
+          setCurrentIcon((event.target as HTMLElement).innerText);
+          onSideNavBtnClick(icn.key as string);
+        }}
+        aria-label={icn.key as string}
+        className={classNames(
+          currentIcon === icn.key ? "font-bold" : "",
+          "hover:bg-gray-200",
+          "p-2",
+          "hover:text-black",
+          "text-gray-500",
+          "rounded-lg",
+          "w-full",
+          "flex",
+          "item-center",
+          "h-fit",
+          "rounded",
+          "cursor-pointer",
+          isOpen ? "w-[300px]" : "",
+        )}>
+        <div className="flex justify-center items-center h-fit">
+          {icn}
+          <span data-testid={icn.key}>{isOpen && icn.key}</span>
+        </div>
+      </button>
+      {(icn.key === t("menu.gallery_header") ||
+        icn.key === t("menu.settings_header")) && (
+        <div
+          role="tooltip"
           className={classNames(
-            currentIcon === icon.key ? "font-bold" : "",
-            "hover:bg-gray-200",
-            "p-2",
-            "hover:text-black",
-            "text-gray-500",
-            "rounded-lg",
-            "w-full",
-            "flex",
-            "item-center",
-            "h-fit",
-            "rounded",
-            "cursor-pointer",
-            isOpen ? "w-[300px]" : "",
+            "group-hover:opacity-100 w-max transition-opacity bg-gray-800 p-2 text-sm text-gray-100 rounded-md absolute opacity-0 m-4 mx-auto z-20",
+            isOpen ? "left-32" : "left-10",
           )}>
-          <>
-            <div className="flex justify-center items-center h-fit">
-              {icon}
-              <span data-testid={icon.key}>{isOpen && icon.key}</span>
-            </div>
-          </>
-        </button>
-        {(icon.key === t("menu.gallery_header") ||
-          icon.key === t("menu.settings_header")) && (
-          <div
-            role="tooltip"
-            className={classNames(
-              "group-hover:opacity-100 w-max transition-opacity bg-gray-800 p-2 text-sm text-gray-100 rounded-md absolute opacity-0 m-4 mx-auto z-20",
-              isOpen ? "left-32" : "left-10",
-            )}>
-            {t("menu.coming_soon")}
-          </div>
-        )}
-      </div>
-    );
-  });
+          {t("menu.coming_soon")}
+        </div>
+      )}
+    </div>
+  ));
 
   return (
     <div
@@ -207,6 +202,7 @@ const SideNav = ({
       </div>
       <div className="flex justify-center items-center font-bold w-full pb-8">
         <div
+          role="button"
           onClick={onXmtpIconClick}
           onKeyDown={onXmtpIconClick}
           tabIndex={0}
@@ -225,7 +221,14 @@ const SideNav = ({
             className="bg-[#ffffffa3] w-[100vw] h-[100vh] flex items-center justify-center absolute top-0 z-20">
             <div className="bg-[url('/shareQrBg.png')] bg-repeat-round m-4 lg:w-[35%] sm:w-[90%] md:w-[50%] h-[90vh] text-white flex flex-col items-center p-4 rounded-3xl drop-shadow-lg">
               <div
+                role="button"
+                tabIndex={0}
                 onClick={() => setIsQrCodeDialogOpen(false)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    setIsQrCodeDialogOpen(false);
+                  }
+                }}
                 className="w-[100%] flex justify-end cursor-pointer mb-20">
                 <XIcon width={24} />
               </div>
@@ -245,15 +248,24 @@ const SideNav = ({
                   logoImage="/xmtp-icon.png"
                   removeQrCodeBehindLogo
                   logoPadding={10}
-                  value={`${window.location.origin}/dm/${walletAddress}`}
+                  value={`${window.location.origin}/dm/${walletAddress ?? ""}`}
                 />
               </div>
               <div
-                onClick={() =>
-                  navigator.clipboard.writeText(
-                    `${window.location.origin}/dm/${walletAddress}`,
-                  )
-                }
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    void navigator.clipboard.writeText(
+                      `${window.location.origin}/dm/${walletAddress ?? ""}`,
+                    );
+                  }
+                }}
+                onClick={() => {
+                  void navigator.clipboard.writeText(
+                    `${window.location.origin}/dm/${walletAddress ?? ""}`,
+                  );
+                }}
                 className="flex text-sm mt-5 cursor-pointer">
                 <span data-testid="share-qr-link" className="underline">
                   {t("common.share_link")}
@@ -271,39 +283,45 @@ const SideNav = ({
           aria-label={t("menu.settings") || ""}>
           <div className="bg-white w-fit rounded-lg absolute bottom-16 left-12 p-2 z-20">
             <div className="max-h-80 overflow-auto">
-              {mappedLangs.map(({ displayText, isSelected, lang }) => {
-                return (
-                  <div className="flex p-2 justify-between" key={lang}>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        i18next.changeLanguage(lang);
-                        onXmtpIconClick();
-                      }}
-                      className={classNames(
-                        "text-sm",
-                        isSelected ? "font-bold" : "",
-                      )}>
-                      {displayText}
-                    </button>
-                    {isSelected && (
-                      <CheckCircleIcon
-                        width="16"
-                        fill="limegreen"
-                        className="ml-4"
-                      />
-                    )}
-                  </div>
-                );
-              })}
+              {mappedLangs.map(({ displayText, isSelected, lang }) => (
+                <div className="flex p-2 justify-between" key={lang}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      void i18next.changeLanguage(lang);
+                      onXmtpIconClick();
+                    }}
+                    className={classNames(
+                      "text-sm",
+                      isSelected ? "font-bold" : "",
+                    )}>
+                    {displayText}
+                  </button>
+                  {isSelected && (
+                    <CheckCircleIcon
+                      width="16"
+                      fill="limegreen"
+                      className="ml-4"
+                    />
+                  )}
+                </div>
+              ))}
             </div>
             <hr className="m-2" />
             {!isAppEnvDemo() && (
               <>
                 <span
+                  role="button"
+                  tabIndex={0}
                   onClick={() => {
                     setIsQrCodeDialogOpen(true);
                     setIsDialogOpen(false);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      setIsQrCodeDialogOpen(true);
+                      setIsDialogOpen(false);
+                    }
                   }}
                   data-testid="share-qr"
                   className="text-sm ml-2 cursor-pointer text-indigo-600 hover:text-indigo-800">
