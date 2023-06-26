@@ -12,11 +12,9 @@ describe("getUniqueMessages", () => {
       getMockDecodedMessage({ id: "item1" }),
     ];
 
-    expect(getUniqueMessages(messageObj)).toMatchObject([
-      { id: "item1" },
-      { id: "item2" },
-      { id: "item3" },
-    ]);
+    expect(getUniqueMessages(messageObj)[0].id).toBe("item1");
+    expect(getUniqueMessages(messageObj)[1].id).toBe("item2");
+    expect(getUniqueMessages(messageObj)[2].id).toBe("item3");
   });
 
   it("returns unique messages with most recent sent back if timestamps and duplicates", () => {

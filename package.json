@@ -15,7 +15,7 @@
     "fmt:check": "prettier -c --ignore-path .gitignore .",
     "fmt:fix": "prettier -w --ignore-path .gitignore .",
     "e2e:headless": "start-server-and-test dev http://localhost:5173 cypress",
-    "test": "vitest",
+    "test": "vitest run",
     "storybook": "storybook dev",
     "build-storybook": "build-storybook",
     "postinstall": "patch-package"
