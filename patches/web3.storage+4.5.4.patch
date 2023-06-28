@@ -1,0 +1,12 @@
+diff --git a/node_modules/web3.storage/package.json b/node_modules/web3.storage/package.json
+index 16d5a62..546d49a 100644
+--- a/node_modules/web3.storage/package.json
++++ b/node_modules/web3.storage/package.json
+@@ -75,6 +75,7 @@
+   "main": "./dist/src/lib.cjs",
+   "exports": {
+     ".": {
++      "types": "./dist/src/lib.d.ts",
+       "browser": "./src/lib.js",
+       "require": "./dist/src/lib.cjs",
+       "node": "./src/lib.js"

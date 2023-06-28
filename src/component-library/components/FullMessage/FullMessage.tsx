@@ -1,7 +1,7 @@
-import React, { ReactElement } from "react";
+import type { ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { DateDivider } from "../DateDivider/DateDivider";
 import { classNames } from "../../../helpers";
-import { useTranslation } from "react-i18next";
 
 interface MessageSender {
   displayAddress: string;

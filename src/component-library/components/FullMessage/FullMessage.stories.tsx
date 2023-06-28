@@ -1,9 +1,8 @@
-import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import type { ComponentStory, ComponentMeta } from "@storybook/react";
+import type { RemoteAttachment } from "xmtp-content-type-remote-attachment";
 import { FullMessage } from "./FullMessage";
 import { shortAddress } from "../../../helpers";
 import MessageContentController from "../../../controllers/MessageContentController";
-import { RemoteAttachment } from "xmtp-content-type-remote-attachment";
 
 export default {
   title: "FullMessage",
@@ -23,8 +22,8 @@ export const FullOutgoingMessage = Template.bind({});
 FullOutgoingMessage.args = {
   text: (
     <MessageContentController
-      content={"Hello there"}
-      isSelf={true}
+      content="Hello there"
+      isSelf
       isLoading={false}
       isError={false}
     />
@@ -40,7 +39,7 @@ export const FullIncomingMessage = Template.bind({});
 FullIncomingMessage.args = {
   text: (
     <MessageContentController
-      content={"Hello there"}
+      content="Hello there"
       isSelf={false}
       isLoading={false}
       isError={false}
@@ -69,8 +68,8 @@ FullOutgoingMessageAttachmentLoading.args = {
   text: (
     <MessageContentController
       content={remoteAttachment}
-      isSelf={true}
-      isLoading={true}
+      isSelf
+      isLoading
       isError={false}
     />
   ),
@@ -105,7 +104,7 @@ FullIncomingAttachmentError.args = {
       content={remoteAttachment}
       isSelf={false}
       isLoading={false}
-      isError={true}
+      isError
     />
   ),
   from: {

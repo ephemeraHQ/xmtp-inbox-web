@@ -6,9 +6,9 @@ import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
 import { XMTPProvider } from "@xmtp/react-sdk";
-import App from "./controllers/AppController";
 import { mainnet } from "wagmi/chains";
 import { infuraProvider } from "wagmi/providers/infura";
+import App from "./controllers/AppController";
 import { isAppEnvDemo } from "./helpers";
 import { mockConnector } from "./helpers/mockConnector";
 

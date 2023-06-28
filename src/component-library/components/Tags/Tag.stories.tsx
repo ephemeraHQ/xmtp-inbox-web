@@ -1,5 +1,4 @@
-import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import type { ComponentStory, ComponentMeta } from "@storybook/react";
 import { Tag } from "./Tag";
 import { shortAddress } from "../../../helpers";
 import { TagIcon } from "./iconMapping";

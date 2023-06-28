@@ -6,7 +6,7 @@ import {
   isValidRecipientAddressFormat,
 } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
-import { address } from "../pages/inbox";
+import type { address } from "../pages/inbox";
 
 const useWalletAddress = (address?: address | string) => {
   const recipientWalletAddress = useXmtpStore(

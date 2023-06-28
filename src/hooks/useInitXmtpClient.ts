@@ -1,6 +1,11 @@
-import { Client } from "@xmtp/react-sdk";
+import { Client, useClient, useCanMessage } from "@xmtp/react-sdk";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useConnect, useSigner } from "wagmi";
+import type { Signer } from "ethers";
+import {
+  AttachmentCodec,
+  RemoteAttachmentCodec,
+} from "xmtp-content-type-remote-attachment";
 import {
   getAppVersion,
   getEnv,
@@ -8,13 +13,7 @@ import {
   loadKeys,
   storeKeys,
 } from "../helpers";
-import { useClient, useCanMessage } from "@xmtp/react-sdk";
 import { mockConnector } from "../helpers/mockConnector";
-import { Signer } from "ethers";
-import {
-  AttachmentCodec,
-  RemoteAttachmentCodec,
-} from "xmtp-content-type-remote-attachment";
 
 type ClientStatus = "new" | "created" | "enabled";
 
@@ -68,9 +67,9 @@ const useInitXmtpClient = () => {
   // create account signature.
   const { createResolve, preCreateIdentityCallback, resolveCreate } =
     useMemo(() => {
-      const { promise: createPromise, resolve: createResolve } = makePromise();
+      const { promise: createPromise, resolve } = makePromise();
       return {
-        createResolve,
+        createResolve: resolve,
         preCreateIdentityCallback: () => createPromise,
         // executing this function will result in displaying the create account
         // signature prompt
@@ -80,15 +79,16 @@ const useInitXmtpClient = () => {
         },
       };
       // if the signer changes during the onboarding process, reset the promise
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [signer]);
 
   // create promise, callback, and resolver for controlling the display of the
   // enable account signature.
   const { enableResolve, preEnableIdentityCallback, resolveEnable } =
     useMemo(() => {
-      const { promise: enablePromise, resolve: enableResolve } = makePromise();
+      const { promise: enablePromise, resolve } = makePromise();
       return {
-        enableResolve,
+        enableResolve: resolve,
         // this is called right after signing the create identity signature
         preEnableIdentityCallback: () => {
           setSigning(false);
@@ -103,6 +103,7 @@ const useInitXmtpClient = () => {
         },
       };
       // if the signer changes during the onboarding process, reset the promise
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [signer]);
 
   const { client, isLoading, initialize } = useClient();
@@ -116,6 +117,7 @@ const useInitXmtpClient = () => {
     if (!client) {
       setStatus(undefined);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // the code in this effect should only run once
@@ -187,7 +189,8 @@ const useInitXmtpClient = () => {
         onboardingRef.current = false;
       }
     };
-    updateStatus();
+    void updateStatus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [client, signer]);
 
   // it's important that this effect runs last

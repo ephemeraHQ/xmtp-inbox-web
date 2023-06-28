@@ -3,11 +3,11 @@ import {
   ShoppingBagIcon,
   SpeakerphoneIcon,
 } from "@heroicons/react/outline";
+import { ChatIcon } from "@heroicons/react/solid";
 import { EnsAddressIcon } from "../Icons/EnsAddressIcon";
 import { UnsAddressIcon } from "../Icons/UnsAddressIcon";
 import { LensAddressIcon } from "../Icons/LensAddressIcon";
 import { WalletAddressIcon } from "../Icons/WalletAddressIcon";
-import { ChatIcon } from "@heroicons/react/solid";
 
 export const enum TagIcon {
   AUDIO = "audio",

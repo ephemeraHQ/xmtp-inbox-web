@@ -1,3 +1,4 @@
+import { expect } from "vitest";
 import { isAppEnvDemo } from "../env";
 import { ENVIRONMENT } from "../constants";
 

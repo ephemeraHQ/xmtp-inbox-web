@@ -8,5 +8,5 @@ export const getAppVersion = () => {
     name: "xmtp-inbox-web",
     version: "1.0.0",
   };
-  return name + "/" + version;
+  return `${name}/${version}`;
 };

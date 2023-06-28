@@ -1,5 +1,4 @@
-import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import type { ComponentStory, ComponentMeta } from "@storybook/react";
 import { Image } from "./Image";
 import { PillButton } from "../PillButton/PillButton";
 
@@ -19,7 +18,7 @@ const Template: ComponentStory<typeof Image> = (args) => (
   <Image
     {...args}
     alt="Placeholder alt text"
-    src={"https://picsum.photos/2000/1000"}
+    src="https://picsum.photos/2000/1000"
   />
 );
 

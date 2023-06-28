@@ -1,18 +1,19 @@
 import { useState, useEffect } from "react";
-import {
+import type {
   Attachment,
   RemoteAttachment,
-  RemoteAttachmentCodec,
 } from "xmtp-content-type-remote-attachment";
+import { RemoteAttachmentCodec } from "xmtp-content-type-remote-attachment";
 import { useClient } from "@xmtp/react-sdk";
+import Zoom from "react-medium-image-zoom";
+import { useTranslation } from "react-i18next";
 import {
   getContentTypeFromFileName,
   humanFileSize,
 } from "../../../helpers/attachments";
-import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { db } from "../../../helpers/attachment_db";
-import { useTranslation } from "react-i18next";
+
 import { ATTACHMENT_ERRORS } from "../../../helpers";
 
 type RemoteAttachmentMessageTileProps = {
@@ -81,16 +82,14 @@ const RemoteAttachmentMessageTile = ({
             })
             .catch((e: Error) => {
               // If error adding to cache, can silently fail and no need to display an error
-              console.log("Error caching image --> ", e);
+              console.error("Error caching image --> ", e);
               setURL(objectURL!);
               setStatus("loaded");
             });
         }
-
-        return;
       }
     };
-    handleLoading();
+    void handleLoading();
   }, [status, client, content]);
 
   const load = (inCache = false, clickedToLoad = false) => {
@@ -120,6 +119,7 @@ const RemoteAttachmentMessageTile = ({
         // If error retrieving from cache, can silently fail and no need to display an error
         load();
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const contentType = getContentTypeFromFileName(content?.filename);
@@ -145,12 +145,18 @@ const RemoteAttachmentMessageTile = ({
               <p>{t("attachments.unable_to_display")}</p>
               <a href={url}>{t("attachments.download_instead")}</a>
             </object>
-          ) : (
+          ) : contentType === "image" ? (
             <img
               src={url}
               className="max-h-80 rounded-lg"
               alt={content.filename}
             />
+          ) : (
+            <div className="flex text-blue-600 font-bold">
+              <a href={url} target="_blank" rel="noopener noreferrer">
+                {content.filename} ({fileSize})
+              </a>
+            </div>
           )}
         </Zoom>
       ) : null}
@@ -159,11 +165,9 @@ const RemoteAttachmentMessageTile = ({
       fileSize === ATTACHMENT_ERRORS.FILE_TOO_LARGE ? (
         <small>
           {content.filename} - {humanFileSize(content.contentLength)}
-          {
-            <button onClick={() => load(false, true)} type="button">
-              {`- ${t("messages.attachment_cta")}`}
-            </button>
-          }
+          <button onClick={() => load(false, true)} type="button">
+            {`- ${t("messages.attachment_cta")}`}
+          </button>
         </small>
       ) : null}
     </div>

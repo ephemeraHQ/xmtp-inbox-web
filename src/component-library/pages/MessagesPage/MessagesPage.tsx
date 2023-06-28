@@ -1,4 +1,4 @@
-import React from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import SideNav from "../../components/SideNav/SideNav";
 import { ConversationList } from "../../components/ConversationList/ConversationList";
 import { AddressInput } from "../../components/AddressInput/AddressInput";
@@ -12,7 +12,6 @@ import { ExpandedWalletCard } from "../../components/ExpandedWalletCard/Expanded
 import { shortAddress } from "../../../helpers";
 import { Avatar } from "../../components/Avatar/Avatar";
 import { FullMessage } from "../../components/FullMessage/FullMessage";
-import InfiniteScroll from "react-infinite-scroll-component";
 
 interface MessagesPageProps {
   // This exact page is really not intended to be used for anything except storybook, since it shows the different views.
@@ -146,7 +145,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             <HeaderDropdown />
             <ConversationList
               messages={[
-                <MessagePreviewCard key={"preview"} />,
+                <MessagePreviewCard key="preview" />,
                 Array(20).fill(
                   <MessagePreviewCard
                     text="Here's an existing message"
@@ -184,13 +183,13 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
                   displayAddress="hi.xmtp.eth"
                   key="preview"
                 />,
-                ...Array(20).fill(
+                ...(Array(20).fill(
                   <MessagePreviewCard
                     text="Here's an existing message"
                     displayAddress="theseWillAllBeTheSame.xmtp.eth"
                     datetime={new Date()}
                   />,
-                ),
+                ) as JSX.Element[]),
               ]}
             />
           </div>
@@ -272,6 +271,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
           />
           <div
             id="scrollableDiv"
+            // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
             tabIndex={0}
             className="h-screen md:h-full w-full flex flex-col flex-col-reverse overflow-y-auto">
             <InfiniteScroll
@@ -321,6 +321,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
           />
           <div
             id="scrollableDiv"
+            // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
             tabIndex={0}
             className="h-screen md:h-full w-full flex flex-col flex-col-reverse overflow-y-auto">
             <InfiniteScroll
@@ -370,6 +371,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
           />
           <div
             id="scrollableDiv"
+            // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
             tabIndex={0}
             className="h-screen md:h-full w-full flex flex-col flex-col-reverse overflow-y-auto">
             <InfiniteScroll
@@ -379,7 +381,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
               endMessage={!20}
               hasMore={false}
               loader={false}>
-              <FullConversation isLoading={true} />
+              <FullConversation isLoading />
             </InfiniteScroll>
           </div>
           <MessageInput
@@ -405,6 +407,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
         <div className="flex w-full overflow-visible md:overflow-hidden flex-col h-screen md:h-full ">
           <div
             id="scrollableDiv"
+            // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
             tabIndex={0}
             className="h-screen md:h-full w-full flex flex-col flex-col-reverse overflow-y-auto">
             <InfiniteScroll
@@ -414,7 +417,7 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
               endMessage={!20}
               hasMore={false}
               loader={false}>
-              <FullConversation isLoading={true} />
+              <FullConversation isLoading />
             </InfiniteScroll>
           </div>
         </div>

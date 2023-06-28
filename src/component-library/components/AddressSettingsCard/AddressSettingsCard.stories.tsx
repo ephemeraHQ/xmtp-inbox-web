@@ -1,5 +1,4 @@
-import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import type { ComponentStory, ComponentMeta } from "@storybook/react";
 import { AddressSettingsCard } from "./AddressSettingsCard";
 import { Avatar } from "../Avatar/Avatar";
 import { shortAddress } from "../../../helpers";

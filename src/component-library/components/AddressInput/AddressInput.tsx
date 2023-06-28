@@ -1,12 +1,11 @@
-import React from "react";
-import { Avatar } from "../Avatar/Avatar";
 import {
   ChevronLeftIcon,
   InformationCircleIcon,
 } from "@heroicons/react/outline";
+import { useTranslation } from "react-i18next";
+import { Avatar } from "../Avatar/Avatar";
 import { classNames } from "../../../helpers";
 import { ShortCopySkeletonLoader } from "../Loaders/SkeletonLoaders/ShortCopySkeletonLoader";
-import { useTranslation } from "react-i18next";
 
 interface AddressInputProps {
   /**
@@ -113,6 +112,7 @@ export const AddressInput = ({
               autoComplete="off"
               autoCorrect="off"
               autoCapitalize="off"
+              // eslint-disable-next-line jsx-a11y/no-autofocus
               autoFocus
               onChange={(e) =>
                 onChange && onChange((e.target as HTMLInputElement).value)

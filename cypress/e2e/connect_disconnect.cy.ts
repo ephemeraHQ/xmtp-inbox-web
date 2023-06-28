@@ -28,7 +28,9 @@ describe(
         "conversations-list-panel",
       ];
 
-      elements.forEach((element) => checkElement(element));
+      elements.forEach((element) => {
+        checkElement(element);
+      });
     });
 
     it("Shows feedback convo with a preview message", () => {
@@ -51,7 +53,9 @@ describe(
         "wallet-address",
       ];
 
-      elements.forEach((element) => checkElement(element));
+      elements.forEach((element) => {
+        checkElement(element);
+      });
 
       cy.get(`[data-testid="icon"]`).click();
       cy.get(`[data-testid="disconnect-wallet-cta"]`).click();
@@ -80,6 +84,8 @@ describe("Disconnected Test Cases", () => {
       "no-wallet-connected-subtext",
     ];
 
-    elements.forEach((element) => checkElement(element));
+    elements.forEach((element) => {
+      checkElement(element);
+    });
   });
 });

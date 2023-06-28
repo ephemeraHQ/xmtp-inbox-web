@@ -2,10 +2,22 @@ import i18next from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import backend from "i18next-http-backend";
-import { format as formatDate, isDate, formatDistanceStrict } from "date-fns";
+import { format as formatDate, formatDistanceStrict } from "date-fns";
 import * as locales from "date-fns/locale"; // import all locales we need
 
+// this is a copy of `isDate` with the correct type
+// @see https://github.com/date-fns/date-fns/blob/main/src/isDate/index.ts
+// @see https://github.com/date-fns/date-fns/issues/1907#issuecomment-866825832
+function isDate(value: unknown): value is Date {
+  return (
+    value instanceof Date ||
+    (typeof value === "object" &&
+      Object.prototype.toString.call(value) === "[object Date]")
+  );
+}
+
 type Locales = Record<string, Locale>;
+type TranslationObject = Record<string, Record<string, string>>;
 
 export const supportedLocales = ["en-US", "hi-IN"];
 
@@ -23,8 +35,10 @@ export const initialize = async () => {
   const keyValuePairs = await Promise.all(
     filenames.map(async (name) => {
       const locale = name.match(/(\w+)\.json$/)?.[0] || "en_US.json";
-      const file = (await localeFiles[`../locales/${locale}`]()).default;
-      return [locale.split(".json")[0], file];
+      const file = (
+        await localeFiles[`../locales/${locale}` as keyof typeof localeFiles]()
+      ).default as TranslationObject;
+      return [locale.split(".json")[0], file] as [string, TranslationObject];
     }),
   );
 
@@ -35,7 +49,7 @@ export const initialize = async () => {
   const resourceMap: Record<
     string,
     {
-      translation: Record<string, Record<string, string>>;
+      translation: TranslationObject;
     }
   > = {};
 
@@ -44,7 +58,7 @@ export const initialize = async () => {
     resourceMap[lang] = { translation: messages[locale] };
   });
 
-  i18next
+  void i18next
     .use(initReactI18next)
     .use(LanguageDetector)
     .use(backend)
@@ -70,9 +84,8 @@ export const initialize = async () => {
             }
 
             return formatDate(value, format, { locale });
-          } else {
-            return "";
           }
+          return "";
         },
       },
     });
