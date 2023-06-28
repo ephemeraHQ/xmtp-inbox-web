@@ -29,6 +29,7 @@
     "packageJson": true,
   },
   "tailwindCompatibility": {
+    "stylesheetPathname": "/globals.css",
     "theme": {
       "spacing": {
         "84": "21rem",
