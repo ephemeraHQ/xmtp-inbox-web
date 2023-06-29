@@ -1,13 +1,13 @@
 import { useEffect, useMemo } from "react";
-import { useXmtpStore } from "../store/xmtp";
 import { watchAccount } from "@wagmi/core";
-import useInitXmtpClient from "../hooks/useInitXmtpClient";
 import { useAccount, useDisconnect } from "wagmi";
-import { classNames, isAppEnvDemo, wipeKeys } from "../helpers";
-import { OnboardingStep } from "../component-library/components/OnboardingStep/OnboardingStep";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useClient } from "@xmtp/react-sdk";
 import { useNavigate } from "react-router-dom";
+import { OnboardingStep } from "../component-library/components/OnboardingStep/OnboardingStep";
+import { classNames, isAppEnvDemo, wipeKeys } from "../helpers";
+import useInitXmtpClient from "../hooks/useInitXmtpClient";
+import { useXmtpStore } from "../store/xmtp";
 
 const OnboardingPage = () => {
   const navigate = useNavigate();
@@ -19,17 +19,17 @@ const OnboardingPage = () => {
   const { disconnect: disconnectWagmi, reset: resetWagmi } = useDisconnect();
   const { disconnect: disconnectClient } = useClient();
 
-  useEffect(() => {
-    return watchAccount(() => resetXmtpState());
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => watchAccount(() => resetXmtpState()), []);
 
   useEffect(() => {
-    const routeToInbox = async () => {
+    const routeToInbox = () => {
       if (client) {
         navigate("/inbox");
       }
     };
     routeToInbox();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [client]);
 
   const step = useMemo(() => {
@@ -59,9 +59,9 @@ const OnboardingPage = () => {
         onConnect={openConnectModal}
         onCreate={resolveCreate}
         onEnable={resolveEnable}
-        onDisconnect={async () => {
+        onDisconnect={() => {
           if (client) {
-            await disconnectClient();
+            disconnectClient();
           }
           setStatus(undefined);
           wipeKeys(address ?? "");

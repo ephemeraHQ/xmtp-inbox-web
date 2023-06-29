@@ -1,4 +1,5 @@
-//@ts-nocheck
+import { expect } from "vitest";
+import { utils } from "ethers";
 import {
   isEnsAddress,
   isUnsAddress,
@@ -8,7 +9,7 @@ import {
   isValidRecipientAddressFormat,
   getAddress,
 } from "../string";
-import { utils } from "ethers";
+import { getMockConversation } from "../mocks";
 
 describe("truncate", () => {
   it("should return the original string if its length is less than the length param", () => {
@@ -83,23 +84,26 @@ describe("isUnsAddress", () => {
 });
 
 describe("getConversationId", () => {
-  let conversation = {
-    context: {
-      conversationId: "testConversationId",
-    },
-    peerAddress: "testPeerAddress",
-  };
   it("should send back formatted conversation key if conversation id exists", () => {
+    const conversation = getMockConversation({
+      context: {
+        conversationId: "testConversationId",
+        metadata: {},
+      },
+      peerAddress: "testPeerAddress",
+    });
     expect(getConversationId(conversation)).toBe(
       "testPeerAddress/testConversationId",
     );
   });
   it("should send back peer address only if conversation key if conversation id does not exist", () => {
-    conversation.context.conversationId = undefined;
+    const conversation = getMockConversation({
+      peerAddress: "testPeerAddress",
+    });
     expect(getConversationId(conversation)).toBe("testPeerAddress");
   });
   it("should handle falsey inputs by returning empty string", () => {
-    let conversation = undefined;
+    const conversation = undefined;
     expect(getConversationId(conversation)).toBe("");
   });
 });

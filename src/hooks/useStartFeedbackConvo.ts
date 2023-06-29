@@ -1,10 +1,10 @@
-import { DecodedMessage } from "@xmtp/react-sdk";
+import { useClient } from "@xmtp/react-sdk";
+import type { DecodedMessage } from "@xmtp/react-sdk";
 import { useEffect } from "react";
 import { XMTP_FEEDBACK_ADDRESS, getConversationId } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
-import { useClient } from "@xmtp/react-sdk";
 
-export const useStartFeedbackConvo = () => {
+const useStartFeedbackConvo = () => {
   const { client } = useClient();
 
   const loadingConversations = useXmtpStore(
@@ -42,7 +42,8 @@ export const useStartFeedbackConvo = () => {
         setRecipientWalletAddress(XMTP_FEEDBACK_ADDRESS);
       }
     };
-    startFeedbackConvo();
+    void startFeedbackConvo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadingConversations, client, conversations]);
 };
 

@@ -1,7 +1,7 @@
-import React from "react";
-import { ButtonLoader } from "../Loaders/ButtonLoader";
+import type React from "react";
 import { ArrowCircleRightIcon } from "@heroicons/react/outline";
-import { classNames } from "../../../../src/helpers";
+import { ButtonLoader } from "../Loaders/ButtonLoader";
+import { classNames } from "../../../helpers";
 
 interface PillButtonProps {
   /**
@@ -103,18 +103,16 @@ export const PillButton = ({
         "m-4",
       )}
       aria-label={srText || (label as string)}>
-      <>
-        <div className="flex justify-center items-center h-fit space-x-1">
-          <div>{label}</div>
-          {isLoading ? (
-            <ButtonLoader color={"primary"} size={size} />
-          ) : (
-            iconOverride || (
-              <ArrowCircleRightIcon width={size === "large" ? 24 : 16} />
-            )
-          )}
-        </div>
-      </>
+      <div className="flex justify-center items-center h-fit space-x-1">
+        <div>{label}</div>
+        {isLoading ? (
+          <ButtonLoader color="primary" size={size} />
+        ) : (
+          iconOverride || (
+            <ArrowCircleRightIcon width={size === "large" ? 24 : 16} />
+          )
+        )}
+      </div>
     </button>
   );
 };

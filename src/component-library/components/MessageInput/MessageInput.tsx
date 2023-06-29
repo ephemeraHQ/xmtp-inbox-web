@@ -1,27 +1,17 @@
+import type { ChangeEvent, Dispatch, SetStateAction } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import type { Attachment } from "xmtp-content-type-remote-attachment";
 import {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
-import { Attachment } from "xmtp-content-type-remote-attachment";
-import { ArrowUpIcon } from "@heroicons/react/outline";
-import { IconButton } from "../IconButton/IconButton";
-import { useTranslation } from "react-i18next";
-import {
+  ArrowUpIcon,
   DocumentIcon,
   PhotographIcon,
   VideoCameraIcon,
   XCircleIcon,
 } from "@heroicons/react/outline";
-import {
-  typeLookup,
-  useAttachmentChange,
-} from "../../../../src/hooks/useAttachmentChange";
-import { contentTypes } from "../../../helpers/attachments";
+import { useTranslation } from "react-i18next";
+import { IconButton } from "../IconButton/IconButton";
+import { useAttachmentChange } from "../../../hooks/useAttachmentChange";
+import { typeLookup, type contentTypes } from "../../../helpers/attachments";
 import { classNames } from "../../../helpers";
 import { useXmtpStore } from "../../../store/xmtp";
 
@@ -74,7 +64,7 @@ export const MessageInput = ({
   setIsDragActive,
 }: InputProps) => {
   const { t } = useTranslation();
-  let textAreaRef = useRef<HTMLTextAreaElement>(null);
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const [value, setValue] = useState("");
   const [acceptedTypes, setAcceptedTypes]: [
     string | string[] | undefined,
@@ -97,7 +87,7 @@ export const MessageInput = ({
   useLayoutEffect(() => {
     const MIN_TEXTAREA_HEIGHT = 32;
     if (textAreaRef?.current?.value) {
-      let currentScrollHeight = textAreaRef?.current.scrollHeight;
+      const currentScrollHeight = textAreaRef?.current.scrollHeight;
       textAreaRef.current.style.height = `${Math.max(
         currentScrollHeight,
         MIN_TEXTAREA_HEIGHT,
@@ -111,6 +101,7 @@ export const MessageInput = ({
     textAreaRef.current?.focus();
     setValue("");
     setAttachmentPreview(undefined);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [conversationId]);
 
   const onButtonClick = (contentType: contentTypes) => {
@@ -168,6 +159,7 @@ export const MessageInput = ({
           <p className="text-red-600 w-full m-1 ml-4">{attachmentError}</p>
         ) : (
           <textarea
+            // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus
             id="chat"
             data-testid="message-input"
@@ -177,12 +169,12 @@ export const MessageInput = ({
                 e.preventDefault();
                 if (value || attachment) {
                   if (attachment) {
-                    onSubmit?.(attachment, "attachment");
+                    void onSubmit?.(attachment, "attachment");
                     setAttachment(undefined);
                     setAttachmentPreview(undefined);
                   }
                   if (value) {
-                    onSubmit?.(value, "text");
+                    void onSubmit?.(value, "text");
                     setValue("");
                   }
                 }
@@ -222,7 +214,10 @@ export const MessageInput = ({
             />
           ) : (
             <div className="flex text-blue-600 font-bold">
-              <a href={attachmentPreview} target="_blank">
+              <a
+                href={attachmentPreview}
+                target="_blank"
+                rel="noopener noreferrer">
                 {attachment?.filename}
               </a>
             </div>
@@ -232,7 +227,8 @@ export const MessageInput = ({
             width={20}
             fill="black"
             className="absolute -top-2 -right-2 cursor-pointer text-white"
-            onClick={() => setAttachmentPreview(undefined)}></XCircleIcon>
+            onClick={() => setAttachmentPreview(undefined)}
+          />
         </div>
       )}
       <div className="flex justify-between bg-gray-100 rounded-b-2xl px-2">
@@ -265,12 +261,12 @@ export const MessageInput = ({
             onClick={() => {
               if (value || attachment) {
                 if (attachment) {
-                  onSubmit?.(attachment, "attachment");
+                  void onSubmit?.(attachment, "attachment");
                   setAttachment(undefined);
                   setAttachmentPreview(undefined);
                 }
                 if (value) {
-                  onSubmit?.(value, "text");
+                  void onSubmit?.(value, "text");
                   setValue("");
                 }
                 textAreaRef.current?.focus();

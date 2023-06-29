@@ -1,8 +1,8 @@
-import { DecodedMessage, SortDirection } from "@xmtp/react-sdk";
-import { useCallback, useMemo } from "react";
+import type { DecodedMessage } from "@xmtp/react-sdk";
+import { SortDirection, useMessages } from "@xmtp/react-sdk";
+import { useCallback } from "react";
 import { MESSAGE_LIMIT, getAddress } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
-import { useMessages } from "@xmtp/react-sdk";
 
 const useGetMessages = (conversationId: string) => {
   const messages = useXmtpStore((state) =>
@@ -15,8 +15,8 @@ const useGetMessages = (conversationId: string) => {
   const addMessages = useXmtpStore((state) => state.addMessages);
 
   const onMessages = useCallback(
-    (messages: DecodedMessage[]) => {
-      addMessages(conversationId, messages);
+    (msgs: DecodedMessage[]) => {
+      addMessages(conversationId, msgs);
     },
     [addMessages, conversationId],
   );

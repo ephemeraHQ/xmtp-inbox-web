@@ -1,10 +1,8 @@
-//@ts-nocheck
-import { vi } from "vitest";
+import { vi, expect } from "vitest";
 import fetchMostRecentMessage from "../fetchMostRecentMessage";
+import { getMockConversation } from "../mocks";
 
-let mockConvo = {
-  messages: vi.fn().mockResolvedValue(["test1", "test2", "test3"]),
-};
+const mockConvo = getMockConversation();
 
 describe("fetchMostRecentMessage", () => {
   it("returns most recent message with multiple messages", async () => {

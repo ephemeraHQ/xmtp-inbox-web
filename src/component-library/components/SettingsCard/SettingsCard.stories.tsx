@@ -1,6 +1,5 @@
-import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { SettingsCard } from "../SettingsCard/SettingsCard";
+import type { ComponentStory, ComponentMeta } from "@storybook/react";
+import { SettingsCard } from "./SettingsCard";
 import { SettingsIcon } from "./iconMapping";
 
 export default {

@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 
 interface ImageProps {
   /**
@@ -34,16 +34,14 @@ export const Image = ({
   eyebrowText,
   cta,
   alt,
-}: ImageProps) => {
-  return (
-    <div className={"relative w-fit text-white"}>
-      <img src={src} alt={alt} className="rounded-lg" />
-      <div className={"absolute top-0 left-0 p-8 w-6/12"}>
-        <p className={"text-xs font-bold"}>{eyebrowText?.toUpperCase()}</p>
-        <h3 className={"text-3xl font-bold"}>{header}</h3>
-        <p className={"text-s mb-2"}>{subtext}</p>
-        <span>{cta}</span>
-      </div>
+}: ImageProps) => (
+  <div className="relative w-fit text-white">
+    <img src={src} alt={alt} className="rounded-lg" />
+    <div className="absolute top-0 left-0 p-8 w-6/12">
+      <p className="text-xs font-bold">{eyebrowText?.toUpperCase()}</p>
+      <h3 className="text-3xl font-bold">{header}</h3>
+      <p className="text-s mb-2">{subtext}</p>
+      <span>{cta}</span>
     </div>
-  );
-};
+  </div>
+);

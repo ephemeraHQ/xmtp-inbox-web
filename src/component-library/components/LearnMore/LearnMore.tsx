@@ -1,8 +1,7 @@
-import React from "react";
+import { useTranslation } from "react-i18next";
 import { Image } from "../Images/Image";
 import { InfoCardIcon } from "../InfoCard/iconMapping";
 import { InfoCard } from "../InfoCard/InfoCard";
-import { useTranslation } from "react-i18next";
 
 interface LearnMoreProps {
   highlightedCompanies?: Array<{
@@ -16,6 +15,7 @@ interface LearnMoreProps {
 
 export const LearnMore = ({
   highlightedCompanies = [],
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   version,
   setStartedFirstMessage,
 }: LearnMoreProps) => {
@@ -29,18 +29,16 @@ export const LearnMore = ({
         </h1>
       </div>
       <div className="flex flex-col md:flex-row w-full">
-        {highlightedCompanies.map(({ name, description, tags }) => {
-          return (
-            <div className="flex" key={name}>
-              <div className="flex flex-col max-w-sm p-2">
-                <Image src="https://picsum.photos/350/150" alt="Company 1" />
-                <h2 className="text-lg font-extrabold">{name}</h2>
-                <p className="text-md">{description}</p>
-                <div className="flex justify-start">{tags}</div>
-              </div>
+        {highlightedCompanies.map(({ name, description, tags }) => (
+          <div className="flex" key={name}>
+            <div className="flex flex-col max-w-sm p-2">
+              <Image src="https://picsum.photos/350/150" alt="Company 1" />
+              <h2 className="text-lg font-extrabold">{name}</h2>
+              <p className="text-md">{description}</p>
+              <div className="flex justify-start">{tags}</div>
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
       <div>
         <h2 className="text-lg font-bold my-4" data-testid="get-started-header">
@@ -57,7 +55,7 @@ export const LearnMore = ({
           header={t("messages.messages_empty_cta_2_header")}
           subtext={t("messages.messages_empty_cta_2_subheader") || ""}
           leftIcon={InfoCardIcon.GALLERY}
-          styles={"border-t-0"}
+          styles="border-t-0"
           testId="community"
           url="https://community.xmtp.org"
         />
@@ -65,7 +63,7 @@ export const LearnMore = ({
           header={t("messages.messages_empty_cta_3_header")}
           subtext={t("messages.messages_empty_cta_3_subheader") || ""}
           leftIcon={InfoCardIcon.DOCUMENTATION}
-          styles={"border-t-0"}
+          styles="border-t-0"
           testId="docs"
           url="https://docs.xmtp.org"
         />

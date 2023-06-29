@@ -1,22 +1,10 @@
-import { ChangeEvent, useCallback } from "react";
-import { Attachment } from "xmtp-content-type-remote-attachment";
-import { contentTypes, humanFileSize } from "../helpers/attachments";
-import { ATTACHMENT_ERRORS } from "../helpers";
+import type { ChangeEvent } from "react";
+import { useCallback } from "react";
+import type { Attachment } from "xmtp-content-type-remote-attachment";
 import { useTranslation } from "react-i18next";
+import { humanFileSize } from "../helpers/attachments";
+import { ATTACHMENT_ERRORS } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
-
-export const typeLookup: Record<string, contentTypes> = {
-  jpg: "image",
-  jpeg: "image",
-  png: "image",
-  gif: "image",
-  webp: "image",
-  quicktime: "video",
-  mov: "video",
-  mp4: "video",
-  pdf: "application",
-  doc: "application",
-};
 
 interface useAttachmentChangeProps {
   setAttachment: (attachment: Attachment | undefined) => void;
@@ -32,9 +20,7 @@ export const useAttachmentChange = ({
   const { t } = useTranslation();
   const setAttachmentError = useXmtpStore((state) => state.setAttachmentError);
   const onAttachmentChange = useCallback(
-    async (
-      e: ChangeEvent<HTMLInputElement> | React.DragEvent<HTMLDivElement>,
-    ) => {
+    (e: ChangeEvent<HTMLInputElement> | React.DragEvent<HTMLDivElement>) => {
       e.preventDefault();
       e.stopPropagation();
 
@@ -56,7 +42,7 @@ export const useAttachmentChange = ({
           setIsDragActive(false);
         } else {
           const fileReader = new FileReader();
-          fileReader.addEventListener("load", async () => {
+          fileReader.addEventListener("load", () => {
             const data = fileReader.result;
 
             if (!(data instanceof ArrayBuffer)) {
@@ -90,6 +76,7 @@ export const useAttachmentChange = ({
       }
       setIsDragActive(false);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [setAttachment, setAttachmentPreview, setIsDragActive],
   );
   return {
