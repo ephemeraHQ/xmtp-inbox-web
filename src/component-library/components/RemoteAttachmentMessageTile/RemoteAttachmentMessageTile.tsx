@@ -14,6 +14,7 @@ import "react-medium-image-zoom/dist/styles.css";
 import { db } from "../../../helpers/attachment_db";
 import { useTranslation } from "react-i18next";
 import { ATTACHMENT_ERRORS } from "../../../helpers";
+import { PaperClipIcon } from "@heroicons/react/outline";
 
 type RemoteAttachmentMessageTileProps = {
   content: RemoteAttachment;
@@ -152,7 +153,8 @@ const RemoteAttachmentMessageTile = ({
               alt={content.filename}
             />
           ) : (
-            <div className="flex text-blue-600 font-bold">
+            <div className="flex font-bold underline">
+              <PaperClipIcon width={16} />
               <a href={url} target="_blank">
                 {content.filename} ({fileSize})
               </a>
