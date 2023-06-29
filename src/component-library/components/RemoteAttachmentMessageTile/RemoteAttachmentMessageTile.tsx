@@ -7,6 +7,7 @@ import { RemoteAttachmentCodec } from "xmtp-content-type-remote-attachment";
 import { useClient } from "@xmtp/react-sdk";
 import Zoom from "react-medium-image-zoom";
 import { useTranslation } from "react-i18next";
+import { PaperClipIcon } from "@heroicons/react/outline";
 import {
   getContentTypeFromFileName,
   humanFileSize,
@@ -152,7 +153,8 @@ const RemoteAttachmentMessageTile = ({
               alt={content.filename}
             />
           ) : (
-            <div className="flex text-blue-600 font-bold">
+            <div className="flex font-bold underline">
+              <PaperClipIcon width={16} />
               <a href={url} target="_blank" rel="noopener noreferrer">
                 {content.filename} ({fileSize})
               </a>
