@@ -1,5 +1,6 @@
 import { fetchEnsAddress } from "@wagmi/core";
 import { useEffect } from "react";
+import { useCanMessage } from "@xmtp/react-sdk";
 import {
   isEnsAddress,
   isUnsAddress,
@@ -7,9 +8,8 @@ import {
   RecipientInputMode,
   fetchUnsAddress,
 } from "../helpers";
-import { address } from "../pages/inbox";
+import type { address } from "../pages/inbox";
 import { useXmtpStore } from "../store/xmtp";
-import { useCanMessage } from "@xmtp/react-sdk";
 
 const useGetRecipientInputMode = () => {
   const { canMessage: canMessageUser } = useCanMessage();
@@ -69,8 +69,9 @@ const useGetRecipientInputMode = () => {
       recipientWalletAddress &&
       recipientInputMode !== RecipientInputMode.OnNetwork
     ) {
-      checkRecipient();
+      void checkRecipient();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recipientInputMode, recipientWalletAddress]);
 
   useEffect(() => {
@@ -82,7 +83,7 @@ const useGetRecipientInputMode = () => {
             name: recipientEnteredValue,
           });
           if (address) {
-            checkIfOnNetwork(address);
+            void checkIfOnNetwork(address);
           } else {
             setRecipientInputMode(RecipientInputMode.InvalidEntry);
           }
@@ -90,18 +91,19 @@ const useGetRecipientInputMode = () => {
           setRecipientInputMode(RecipientInputMode.FindingEntry);
           const address = await fetchUnsAddress(recipientEnteredValue);
           if (address) {
-            checkIfOnNetwork(address);
+            void checkIfOnNetwork(address);
           } else {
             setRecipientInputMode(RecipientInputMode.InvalidEntry);
           }
         } else if (isValidLongWalletAddress(recipientEnteredValue)) {
-          checkIfOnNetwork(recipientEnteredValue as address);
+          void checkIfOnNetwork(recipientEnteredValue as address);
         } else {
           setRecipientInputMode(RecipientInputMode.InvalidEntry);
         }
       }
     };
-    handleSubmit();
+    void handleSubmit();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recipientEnteredValue]);
 
   return {

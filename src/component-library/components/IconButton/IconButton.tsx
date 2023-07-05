@@ -1,7 +1,7 @@
-import React from "react";
-import { ButtonLoader } from "../Loaders/ButtonLoader";
+import type React from "react";
 import { PlusCircleIcon } from "@heroicons/react/outline";
-import { classNames } from "../../../../src/helpers";
+import { ButtonLoader } from "../Loaders/ButtonLoader";
+import { classNames } from "../../../helpers";
 
 interface IconButtonProps {
   /**
@@ -90,17 +90,15 @@ export const IconButton = ({
         "h-fit",
       )}
       aria-label={srText}>
-      <>
-        <div
-          className={classNames(
-            "bg-indigo-600",
-            "hover:bg-indigo-800",
-            size === "small" ? "p-1 min-h-20" : "p-1 min-h-24",
-            shape,
-          )}>
-          {isLoading ? <ButtonLoader color={"primary"} size={size} /> : label}
-        </div>
-      </>
+      <div
+        className={classNames(
+          "bg-indigo-600",
+          "hover:bg-indigo-800",
+          size === "small" ? "p-1 min-h-20" : "p-1 min-h-24",
+          shape,
+        )}>
+        {isLoading ? <ButtonLoader color="primary" size={size} /> : label}
+      </div>
     </button>
   );
 };

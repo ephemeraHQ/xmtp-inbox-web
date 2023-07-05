@@ -1,7 +1,6 @@
 import { ExclamationIcon } from "@heroicons/react/solid";
+import { useTranslation, Trans } from "react-i18next";
 import { PillButton } from "../../components/PillButton/PillButton";
-import { useTranslation } from "react-i18next";
-import { Trans } from "react-i18next";
 
 interface ErrorPageProps {
   icon?: React.ReactNode;
@@ -12,7 +11,7 @@ interface ErrorPageProps {
 }
 
 export const ErrorPage = ({
-  icon = <ExclamationIcon width={"60"} className="text-red-600" />,
+  icon = <ExclamationIcon width="60" className="text-red-600" />,
   header,
   description,
   cta,
@@ -31,7 +30,8 @@ export const ErrorPage = ({
           <Trans
             t={t}
             i18nKey="status_messaging.error_1_subheader"
-            components={[<a key={0} href="mailto:hi@xmtp.com"></a>]}
+            // eslint-disable-next-line jsx-a11y/control-has-associated-label, jsx-a11y/anchor-has-content
+            components={[<a key={0} href="mailto:hi@xmtp.com" />]}
           />
         </div>
       )}

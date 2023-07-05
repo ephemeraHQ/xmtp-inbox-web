@@ -1,26 +1,27 @@
 {
-  "plugins": ["prettier"],
-  "extends": [
-    "plugin:prettier/recommended",
-    "plugin:@typescript-eslint/recommended"
-  ],
-  "env": {
-    "browser": true,
-    "es2021": true
-  },
+  "root": true,
+  "extends": ["xmtp-web"],
   "parserOptions": {
     "project": "./tsconfig.eslint.json"
   },
   "rules": {
-    "prettier/prettier": "error",
-    "@typescript-eslint/ban-ts-comment": "off",
-    "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/ban-types": "off",
-    "prefer-const": "off",
-    "no-var": "off",
-    "@typescript-eslint/no-var-requires": "off",
-    "@typescript-eslint/no-namespace": "off",
-    "@typescript-eslint/no-this-alias": "off",
-    "@typescript-eslint/no-empty-function": "off"
-  }
+    "no-plusplus": "off",
+    "jsx-a11y/media-has-caption": "off",
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        "checksConditionals": true
+      }
+    ]
+  },
+  "overrides": [
+    // allow require in .config.js files
+    {
+      "files": ["*.config.js"],
+      "rules": {
+        "global-require": "off",
+        "@typescript-eslint/no-var-requires": "off"
+      }
+    }
+  ]
 }

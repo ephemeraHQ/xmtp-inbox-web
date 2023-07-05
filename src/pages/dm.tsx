@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { useXmtpStore } from "../store/xmtp";
-import { isEnsAddress, isValidRecipientAddressFormat } from "../helpers";
 import { fetchEnsAddress } from "wagmi/actions";
 import { useNavigate, useParams } from "react-router-dom";
+import { useXmtpStore } from "../store/xmtp";
+import { isEnsAddress, isValidRecipientAddressFormat } from "../helpers";
 
 const DmPage = () => {
   const navigate = useNavigate();
@@ -33,7 +33,8 @@ const DmPage = () => {
         navigate("/inbox");
       }
     };
-    routeToInbox();
+    void routeToInbox();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return null;

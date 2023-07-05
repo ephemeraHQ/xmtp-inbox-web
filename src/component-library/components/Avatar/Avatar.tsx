@@ -1,4 +1,3 @@
-import React from "react";
 import Blockies from "react-blockies";
 
 interface AvatarProps {
@@ -27,14 +26,12 @@ export const Avatar = ({ url, isLoading, address }: AvatarProps) => {
 
   if (url) {
     return (
-      <>
-        <img
-          data-testid="avatar"
-          className="min-w-[40px] max-w-[40px] h-[40px] rounded-full"
-          src={url}
-          alt={address}
-        />
-      </>
+      <img
+        data-testid="avatar"
+        className="min-w-[40px] max-w-[40px] h-[40px] rounded-full"
+        src={url}
+        alt={address}
+      />
     );
   }
 

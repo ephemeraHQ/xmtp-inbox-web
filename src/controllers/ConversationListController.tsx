@@ -1,6 +1,5 @@
-import React from "react";
+import type { Conversation } from "@xmtp/react-sdk";
 import { useXmtpStore } from "../store/xmtp";
-import { Conversation } from "@xmtp/react-sdk";
 import useListConversations from "../hooks/useListConversations";
 import { ConversationList } from "../component-library/components/ConversationList/ConversationList";
 import getFilteredConversations from "../helpers/getFilteredConversations";
@@ -59,7 +58,6 @@ export const ConversationListController = ({
                     convo={convo}
                   />
                 )),
-              ,
             ]
           : []
       }

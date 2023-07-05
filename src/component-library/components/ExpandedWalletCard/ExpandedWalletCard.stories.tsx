@@ -1,9 +1,8 @@
-import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import type { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { ExpandedWalletCard } from "./ExpandedWalletCard";
 import { Avatar } from "../Avatar/Avatar";
-import { shortAddress } from "../../../../src/helpers";
+import { shortAddress } from "../../../helpers";
 
 export default {
   title: "ExpandedWalletCard",

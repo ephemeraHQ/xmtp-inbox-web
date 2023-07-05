@@ -14,7 +14,8 @@ declare module "*.jpeg" {
 }
 
 declare module "react-blockies" {
-  import React from "react";
+  import type React from "react";
+
   interface BlockiesProps {
     seed: string;
     size?: number;
@@ -27,4 +28,17 @@ declare module "react-blockies" {
   const Blockies: React.FC<BlockiesProps>;
 
   export default Blockies;
+}
+
+interface ImportMeta {
+  env: {
+    VITE_INFURA_ID: string;
+    VITE_DATA_DOG_ID: string;
+    VITE_DATA_DOG_TOKEN: string;
+    VITE_WEB3_STORAGE_TOKEN: string;
+    VITE_XMTP_API_URL: string;
+    VITE_XMTP_ENVIRONMENT: string;
+    VITE_GOOGLE_TAG_ID: string | undefined;
+    VITE_UNS_TOKEN: string;
+  };
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useEnsAvatar } from "wagmi";
 import { AddressInput } from "../component-library/components/AddressInput/AddressInput";
 import {
@@ -10,7 +10,7 @@ import {
 } from "../helpers";
 import useGetRecipientInputMode from "../hooks/useGetRecipientInputMode";
 import useWalletAddress from "../hooks/useWalletAddress";
-import { address } from "../pages/inbox";
+import type { address } from "../pages/inbox";
 import useWindowSize from "../hooks/useWindowSize";
 import { useXmtpStore } from "../store/xmtp";
 
@@ -62,7 +62,7 @@ export const AddressInputController = () => {
       }
     };
 
-    getUns();
+    void getUns();
   }, [recipientWalletAddress]);
 
   const domain = ensName ?? unsName;

@@ -1,5 +1,4 @@
-import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import type { ComponentStory, ComponentMeta } from "@storybook/react";
 import { Spinner } from "./Spinner";
 
 export default {
@@ -8,6 +7,6 @@ export default {
   argTypes: {},
 } as ComponentMeta<typeof Spinner>;
 
-const Template: ComponentStory<typeof Spinner> = (args) => <Spinner />;
+const Template: ComponentStory<typeof Spinner> = () => <Spinner />;
 
 export const SpinnerDefault = Template.bind({});
