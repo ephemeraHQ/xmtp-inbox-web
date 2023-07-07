@@ -12,8 +12,8 @@ describe("humanFileSize", () => {
   it("should return '1 MB' for 1048576 bytes", () => {
     expect(humanFileSize(1048576)).toBe("1.0 MB");
   });
-  it("should throw an error if file is > 5 MB", () => {
-    expect(humanFileSize(5000001)).toBe(ATTACHMENT_ERRORS.FILE_TOO_LARGE);
+  it("should throw an error if file is > 10 MB", () => {
+    expect(humanFileSize(10000001)).toBe(ATTACHMENT_ERRORS.FILE_TOO_LARGE);
   });
 });
 
