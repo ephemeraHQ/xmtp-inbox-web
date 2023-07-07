@@ -57,6 +57,6 @@ export const humanFileSize = (bytes: number, si = false, dp = 1) => {
 export type contentTypes = "image" | "video" | "application" | undefined;
 
 export const getContentTypeFromFileName = (filename: string): contentTypes => {
-  const suffix = filename.split?.(".")?.pop();
+  const suffix = filename.split?.(".")?.pop()?.toLowerCase();
   return suffix ? typeLookup[suffix] : undefined;
 };
