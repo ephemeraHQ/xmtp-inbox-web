@@ -22,6 +22,10 @@ describe("getContentTypeFromFileName", () => {
     expect(getContentTypeFromFileName("file.jpg")).toEqual("image");
   });
 
+  test("should return image for .JPG extension", () => {
+    expect(getContentTypeFromFileName("file.JPG")).toEqual("image");
+  });
+
   test("should return video for .mp4 extension", () => {
     expect(getContentTypeFromFileName("video.mp4")).toEqual("video");
   });
