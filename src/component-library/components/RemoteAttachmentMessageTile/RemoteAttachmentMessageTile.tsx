@@ -95,10 +95,12 @@ const RemoteAttachmentMessageTile = ({
 
   const load = (inCache = false, clickedToLoad = false) => {
     // If attachment is not in cache and it is the appropriate file size,
-    // or it's too large and user has initiated this anyway, run handleLoading
+    // or it's too large and user has initiated this anyway,
+    // or if it's an outgoing message, run handleLoading
     const loadImage =
       clickedToLoad === true ||
-      (!inCache && fileSize !== ATTACHMENT_ERRORS.FILE_TOO_LARGE);
+      (!inCache && fileSize !== ATTACHMENT_ERRORS.FILE_TOO_LARGE) ||
+      isSelf;
     if (loadImage) {
       setStatus("loadRequested");
     }

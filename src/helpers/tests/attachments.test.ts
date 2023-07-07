@@ -12,14 +12,18 @@ describe("humanFileSize", () => {
   it("should return '1 MB' for 1048576 bytes", () => {
     expect(humanFileSize(1048576)).toBe("1.0 MB");
   });
-  it("should throw an error if file is > 5 MB", () => {
-    expect(humanFileSize(5000001)).toBe(ATTACHMENT_ERRORS.FILE_TOO_LARGE);
+  it("should throw an error if file is > 10 MB", () => {
+    expect(humanFileSize(10000001)).toBe(ATTACHMENT_ERRORS.FILE_TOO_LARGE);
   });
 });
 
 describe("getContentTypeFromFileName", () => {
   test("should return image for .jpg extension", () => {
     expect(getContentTypeFromFileName("file.jpg")).toEqual("image");
+  });
+
+  test("should return image for .JPG extension", () => {
+    expect(getContentTypeFromFileName("file.JPG")).toEqual("image");
   });
 
   test("should return video for .mp4 extension", () => {
