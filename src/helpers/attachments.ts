@@ -11,6 +11,7 @@ export const typeLookup: Record<string, contentTypes> = {
   mp4: "video",
   pdf: "application",
   doc: "application",
+  wav: "audio",
 };
 
 /**
@@ -54,7 +55,12 @@ export const humanFileSize = (bytes: number, si = false, dp = 1) => {
  *
  */
 
-export type contentTypes = "image" | "video" | "application" | undefined;
+export type contentTypes =
+  | "image"
+  | "video"
+  | "application"
+  | "audio"
+  | undefined;
 
 export const getContentTypeFromFileName = (filename: string): contentTypes => {
   const suffix = filename.split?.(".")?.pop()?.toLowerCase();

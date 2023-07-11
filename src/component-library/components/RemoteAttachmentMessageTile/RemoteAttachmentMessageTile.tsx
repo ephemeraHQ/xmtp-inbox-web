@@ -51,46 +51,42 @@ const RemoteAttachmentMessageTile = ({
       if (status === "loadRequested") {
         setStatus("loading");
 
-        try {
-          if (client) {
-            const attachment: Attachment = await RemoteAttachmentCodec.load(
-              content,
-              client,
+        if (client) {
+          const attachment: Attachment = await RemoteAttachmentCodec.load(
+            content,
+            client,
+          );
+
+          if (!blobCache.get(attachment.data)) {
+            blobCache.set(
+              attachment.data,
+              URL.createObjectURL(
+                new Blob([Buffer.from(attachment.data)], {
+                  type: attachment.mimeType,
+                }),
+              ),
             );
-
-            if (!blobCache.get(attachment.data)) {
-              blobCache.set(
-                attachment.data,
-                URL.createObjectURL(
-                  new Blob([Buffer.from(attachment.data)], {
-                    type: attachment.mimeType,
-                  }),
-                ),
-              );
-            }
-
-            const objectURL = blobCache.get(attachment.data);
-
-            db.attachments
-              .add({
-                contentURL: content.url,
-                filename: attachment.filename,
-                mimetype: attachment.mimeType,
-                contentDataURL: objectURL!,
-              })
-              .then(() => {
-                setURL(objectURL!);
-                setStatus("loaded");
-              })
-              .catch((e: Error) => {
-                // If error adding to cache, can silently fail and no need to display an error
-                console.error("Error caching image --> ", e);
-                setURL(objectURL!);
-                setStatus("loaded");
-              });
           }
-        } catch {
-          setStatus("unloaded");
+
+          const objectURL = blobCache.get(attachment.data);
+
+          db.attachments
+            .add({
+              contentURL: content.url,
+              filename: attachment.filename,
+              mimetype: attachment.mimeType,
+              contentDataURL: objectURL!,
+            })
+            .then(() => {
+              setURL(objectURL!);
+              setStatus("loaded");
+            })
+            .catch((e: Error) => {
+              // If error adding to cache, can silently fail and no need to display an error
+              console.error("Error caching image --> ", e);
+              setURL(objectURL!);
+              setStatus("loaded");
+            });
         }
       }
     };
@@ -158,6 +154,10 @@ const RemoteAttachmentMessageTile = ({
               className="max-h-80 rounded-lg"
               alt={content.filename}
             />
+          ) : contentType === "audio" ? (
+            <audio controls src={url}>
+              <a href={url}>{t("attachments.download_instead")}</a>
+            </audio>
           ) : (
             <div className="flex font-bold underline">
               <PaperClipIcon width={16} />

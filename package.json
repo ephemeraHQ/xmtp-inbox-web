@@ -59,6 +59,7 @@
     "react-emoji-render": "^1.2.4",
     "react-i18next": "^12.2.0",
     "react-infinite-scroll-component": "^6.1.0",
+    "react-media-recorder": "^1.6.6",
     "react-medium-image-zoom": "^5.1.6",
     "react-qrcode-logo": "^2.9.0",
     "react-router-dom": "^6.12.0",

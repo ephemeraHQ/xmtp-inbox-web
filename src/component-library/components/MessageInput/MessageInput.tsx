@@ -4,6 +4,8 @@ import type { Attachment } from "xmtp-content-type-remote-attachment";
 import {
   ArrowUpIcon,
   DocumentIcon,
+  MicrophoneIcon,
+  StopIcon,
   PhotographIcon,
   VideoCameraIcon,
   XCircleIcon,
@@ -14,6 +16,7 @@ import { useAttachmentChange } from "../../../hooks/useAttachmentChange";
 import { typeLookup, type contentTypes } from "../../../helpers/attachments";
 import { classNames } from "../../../helpers";
 import { useXmtpStore } from "../../../store/xmtp";
+import { useVoiceRecording } from "../../../hooks/useVoiceRecording";
 
 interface InputProps {
   /**
@@ -126,11 +129,19 @@ export const MessageInput = ({
     }
   }, [acceptedTypes]);
 
+  // For attachments from file reader
   const { onAttachmentChange } = useAttachmentChange({
     setAttachment,
     setAttachmentPreview,
     setIsDragActive,
   });
+
+  // For voice recording
+  const { status, startRecording, stopRecording, mediaBlobUrl } =
+    useVoiceRecording({
+      setAttachment,
+      setAttachmentPreview,
+    });
 
   const extension = attachment?.mimeType.split("/")?.[1] || "";
 
@@ -212,6 +223,10 @@ export const MessageInput = ({
               alt={attachment?.filename}
               className="relative w-95/100  max-h-80 rounded-xl overflow-auto"
             />
+          ) : typeLookup[extension] === "audio" ? (
+            <audio controls src={mediaBlobUrl}>
+              <a href={mediaBlobUrl}>{t("attachments.unable_to_display")}</a>
+            </audio>
           ) : (
             <div className="flex text-blue-600 font-bold">
               <a
@@ -251,6 +266,21 @@ export const MessageInput = ({
             className="m-2 cursor-pointer text-gray-400 hover:text-black"
             onClick={() => onButtonClick("application")}
           />
+          {status === "recording" ? (
+            <StopIcon
+              width={24}
+              height={24}
+              className="m-2 cursor-pointer text-gray-400 hover:text-black"
+              onClick={stopRecording}
+            />
+          ) : (
+            <MicrophoneIcon
+              width={24}
+              height={24}
+              className="m-2 cursor-pointer text-gray-400 hover:text-black"
+              onClick={startRecording}
+            />
+          )}
         </div>
         <div className="flex items-center">
           <IconButton
