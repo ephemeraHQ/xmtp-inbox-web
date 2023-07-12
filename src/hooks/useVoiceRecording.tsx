@@ -1,5 +1,5 @@
-import type { Attachment } from "xmtp-content-type-remote-attachment";
-import { useReactMediaRecorder } from "react-media-recorder";
+import type { Attachment } from "@xmtp/content-type-remote-attachment";
+import { useReactMediaRecorder } from "react-media-recorder-2";
 import { useTranslation } from "react-i18next";
 import { ATTACHMENT_ERRORS } from "../helpers";
 import { humanFileSize } from "../helpers/attachments";
