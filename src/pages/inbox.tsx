@@ -2,7 +2,7 @@ import type React from "react";
 import { useEffect, useState } from "react";
 import { useClient } from "@xmtp/react-sdk";
 import { useDisconnect, useSigner } from "wagmi";
-import type { Attachment } from "xmtp-content-type-remote-attachment";
+import type { Attachment } from "@xmtp/content-type-remote-attachment";
 import { useNavigate } from "react-router-dom";
 import { useXmtpStore } from "../store/xmtp";
 import { TAILWIND_MD_BREAKPOINT, wipeKeys } from "../helpers";
