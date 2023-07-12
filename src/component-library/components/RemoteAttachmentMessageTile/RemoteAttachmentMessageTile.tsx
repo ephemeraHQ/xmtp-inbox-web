@@ -155,7 +155,7 @@ const RemoteAttachmentMessageTile = ({
               alt={content.filename}
             />
           ) : contentType === "audio" ? (
-            <audio controls src={url}>
+            <audio controls src={url} className="max-w-full">
               <a href={url}>{t("attachments.download_instead")}</a>
             </audio>
           ) : (
