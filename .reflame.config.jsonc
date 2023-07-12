@@ -95,6 +95,7 @@
     },
   },
   "scripts": [
+    "/polyfills.ts",
     "/main.tsx"
   ],
   "stylesheets": [
@@ -151,18 +152,5 @@
         "/dist/styles.css"
       ]
     },
-    // "xmtp-content-type-remote-attachment": {
-    //   "config": {
-    //     "v": 2,
-    //     "mainFieldsOverride": [
-    //       "module"
-    //     ]
-    //   }
-    // },
-    // // Specify npm packages in the same format as you would with package.json
-    // "framer-motion": "^6.2.8",
   },
-  "npmPackageOverrides": {
-    "@wagmi/core": "0.10.11",
-  }
 }
