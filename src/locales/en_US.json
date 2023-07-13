@@ -45,7 +45,8 @@
   "attachments": {
     "unable_to_display": "Unable to display attachment.",
     "download_instead": "Download instead.",
-    "video_messages_not_supported": "Your browser does not support the video tag."
+    "video_messages_not_supported": "Your browser does not support the video tag.",
+    "recording": "Recording..."
   },
   "menu": {
     "collapse_header": "Collapse",

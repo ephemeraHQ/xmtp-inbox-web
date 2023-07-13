@@ -5,7 +5,6 @@ import {
   ArrowUpIcon,
   DocumentIcon,
   MicrophoneIcon,
-  StopIcon,
   PhotographIcon,
   VideoCameraIcon,
   XCircleIcon,
@@ -17,6 +16,7 @@ import { typeLookup, type contentTypes } from "../../../helpers/attachments";
 import { classNames } from "../../../helpers";
 import { useXmtpStore } from "../../../store/xmtp";
 import { useVoiceRecording } from "../../../hooks/useVoiceRecording";
+import { useRecordingTimer } from "../../../hooks/useRecordingTimer";
 
 interface InputProps {
   /**
@@ -143,6 +143,12 @@ export const MessageInput = ({
       setAttachmentPreview,
     });
 
+  const { start, pause, reset, recordingValue } = useRecordingTimer({
+    startRecording,
+    stopRecording,
+    status,
+  });
+
   const extension = attachment?.mimeType.split("/")?.[1] || "";
 
   return (
@@ -165,6 +171,7 @@ export const MessageInput = ({
         className={classNames(
           "m-0 p-2",
           attachment ? "border-b border-gray-200" : "",
+          status === "recording" ? "bg-red-100 text-red-600 rounded-t-2xl" : "",
         )}>
         {attachmentError ? (
           <p className="text-red-600 w-full m-1 ml-4">{attachmentError}</p>
@@ -196,9 +203,10 @@ export const MessageInput = ({
             className={classNames(
               textAreaStyles,
               "border-b-8 border-gray-50 m-0 bg-transparent",
+              recordingValue && "text-red-500",
             )}
             placeholder={t("messages.message_field_prompt") || ""}
-            value={value}
+            value={recordingValue || value}
           />
         )}
       </div>
@@ -249,38 +257,52 @@ export const MessageInput = ({
       <div className="flex justify-between bg-gray-100 rounded-b-2xl px-2">
         <div className="flex flex-row">
           <PhotographIcon
+            tabIndex={0}
             width={24}
             height={24}
-            className="m-2 cursor-pointer text-gray-400 hover:text-black"
+            className="m-2 cursor-pointer text-gray-400 hover:text-black focus:outline-none focus-visible:ring"
             onClick={() => onButtonClick("image")}
+            onKeyDown={(e) =>
+              e.key === "Enter" && !e.shiftKey && onButtonClick("image")
+            }
           />
           <VideoCameraIcon
+            tabIndex={0}
             width={26}
             height={26}
-            className="m-2 cursor-pointer text-gray-400 hover:text-black"
+            className="m-2 cursor-pointer text-gray-400 hover:text-black focus:outline-none focus-visible:ring"
             onClick={() => onButtonClick("video")}
+            onKeyDown={(e) =>
+              e.key === "Enter" && !e.shiftKey && onButtonClick("video")
+            }
           />
           <DocumentIcon
+            tabIndex={0}
             width={24}
             height={24}
-            className="m-2 cursor-pointer text-gray-400 hover:text-black"
+            className="m-2 cursor-pointer text-gray-400 hover:text-black focus:outline-none focus-visible:ring"
             onClick={() => onButtonClick("application")}
+            onKeyDown={(e) =>
+              e.key === "Enter" && !e.shiftKey && onButtonClick("application")
+            }
           />
-          {status === "recording" ? (
-            <StopIcon
-              width={24}
-              height={24}
-              className="m-2 cursor-pointer text-gray-400 hover:text-black"
-              onClick={stopRecording}
-            />
-          ) : (
-            <MicrophoneIcon
-              width={24}
-              height={24}
-              className="m-2 cursor-pointer text-gray-400 hover:text-black"
-              onClick={startRecording}
-            />
-          )}
+          <MicrophoneIcon
+            tabIndex={0}
+            id="mic"
+            width={24}
+            height={24}
+            className="m-2 cursor-pointer text-gray-400 hover:text-black focus:outline-none focus-visible:ring"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey && status === "recording") {
+                stopRecording();
+                pause();
+                reset();
+              } else {
+                startRecording();
+                start();
+              }
+            }}
+          />
         </div>
         <div className="flex items-center">
           <IconButton
