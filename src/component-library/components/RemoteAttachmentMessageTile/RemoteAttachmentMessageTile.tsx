@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import type {
   Attachment,
   RemoteAttachment,
-} from "xmtp-content-type-remote-attachment";
-import { RemoteAttachmentCodec } from "xmtp-content-type-remote-attachment";
+} from "@xmtp/content-type-remote-attachment";
+import { RemoteAttachmentCodec } from "@xmtp/content-type-remote-attachment";
 import { useClient } from "@xmtp/react-sdk";
 import Zoom from "react-medium-image-zoom";
 import { useTranslation } from "react-i18next";
@@ -154,6 +154,10 @@ const RemoteAttachmentMessageTile = ({
               className="max-h-80 rounded-lg"
               alt={content.filename}
             />
+          ) : contentType === "audio" ? (
+            <audio controls src={url} className="max-w-full">
+              <a href={url}>{t("attachments.download_instead")}</a>
+            </audio>
           ) : (
             <div className="flex font-bold underline">
               <PaperClipIcon width={16} />

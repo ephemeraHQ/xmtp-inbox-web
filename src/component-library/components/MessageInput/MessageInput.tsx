@@ -1,9 +1,10 @@
 import type { ChangeEvent, Dispatch, SetStateAction } from "react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import type { Attachment } from "xmtp-content-type-remote-attachment";
+import type { Attachment } from "@xmtp/content-type-remote-attachment";
 import {
   ArrowUpIcon,
   DocumentIcon,
+  MicrophoneIcon,
   PhotographIcon,
   VideoCameraIcon,
   XCircleIcon,
@@ -14,6 +15,8 @@ import { useAttachmentChange } from "../../../hooks/useAttachmentChange";
 import { typeLookup, type contentTypes } from "../../../helpers/attachments";
 import { classNames } from "../../../helpers";
 import { useXmtpStore } from "../../../store/xmtp";
+import { useVoiceRecording } from "../../../hooks/useVoiceRecording";
+import { useRecordingTimer } from "../../../hooks/useRecordingTimer";
 
 interface InputProps {
   /**
@@ -126,10 +129,24 @@ export const MessageInput = ({
     }
   }, [acceptedTypes]);
 
+  // For attachments from file reader
   const { onAttachmentChange } = useAttachmentChange({
     setAttachment,
     setAttachmentPreview,
     setIsDragActive,
+  });
+
+  // For voice recording
+  const { status, startRecording, stopRecording, mediaBlobUrl } =
+    useVoiceRecording({
+      setAttachment,
+      setAttachmentPreview,
+    });
+
+  const { start, pause, reset, recordingValue } = useRecordingTimer({
+    startRecording,
+    stopRecording,
+    status,
   });
 
   const extension = attachment?.mimeType.split("/")?.[1] || "";
@@ -154,6 +171,7 @@ export const MessageInput = ({
         className={classNames(
           "m-0 p-2",
           attachment ? "border-b border-gray-200" : "",
+          status === "recording" ? "bg-red-100 text-red-600 rounded-t-2xl" : "",
         )}>
         {attachmentError ? (
           <p className="text-red-600 w-full m-1 ml-4">{attachmentError}</p>
@@ -185,9 +203,10 @@ export const MessageInput = ({
             className={classNames(
               textAreaStyles,
               "border-b-8 border-gray-50 m-0 bg-transparent",
+              recordingValue && "text-red-500",
             )}
             placeholder={t("messages.message_field_prompt") || ""}
-            value={value}
+            value={recordingValue || value}
           />
         )}
       </div>
@@ -212,6 +231,10 @@ export const MessageInput = ({
               alt={attachment?.filename}
               className="relative w-95/100  max-h-80 rounded-xl overflow-auto"
             />
+          ) : typeLookup[extension] === "audio" ? (
+            <audio controls src={mediaBlobUrl}>
+              <a href={mediaBlobUrl}>{t("attachments.unable_to_display")}</a>
+            </audio>
           ) : (
             <div className="flex text-blue-600 font-bold">
               <a
@@ -234,22 +257,51 @@ export const MessageInput = ({
       <div className="flex justify-between bg-gray-100 rounded-b-2xl px-2">
         <div className="flex flex-row">
           <PhotographIcon
+            tabIndex={0}
             width={24}
             height={24}
-            className="m-2 cursor-pointer text-gray-400 hover:text-black"
+            className="m-2 cursor-pointer text-gray-400 hover:text-black focus:outline-none focus-visible:ring"
             onClick={() => onButtonClick("image")}
+            onKeyDown={(e) =>
+              e.key === "Enter" && !e.shiftKey && onButtonClick("image")
+            }
           />
           <VideoCameraIcon
+            tabIndex={0}
             width={26}
             height={26}
-            className="m-2 cursor-pointer text-gray-400 hover:text-black"
+            className="m-2 cursor-pointer text-gray-400 hover:text-black focus:outline-none focus-visible:ring"
             onClick={() => onButtonClick("video")}
+            onKeyDown={(e) =>
+              e.key === "Enter" && !e.shiftKey && onButtonClick("video")
+            }
           />
           <DocumentIcon
+            tabIndex={0}
             width={24}
             height={24}
-            className="m-2 cursor-pointer text-gray-400 hover:text-black"
+            className="m-2 cursor-pointer text-gray-400 hover:text-black focus:outline-none focus-visible:ring"
             onClick={() => onButtonClick("application")}
+            onKeyDown={(e) =>
+              e.key === "Enter" && !e.shiftKey && onButtonClick("application")
+            }
+          />
+          <MicrophoneIcon
+            tabIndex={0}
+            id="mic"
+            width={24}
+            height={24}
+            className="m-2 cursor-pointer text-gray-400 hover:text-black focus:outline-none focus-visible:ring"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey && status === "recording") {
+                stopRecording();
+                pause();
+                reset();
+              } else {
+                startRecording();
+                start();
+              }
+            }}
           />
         </div>
         <div className="flex items-center">

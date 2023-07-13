@@ -38,6 +38,7 @@
     "@typescript-eslint/parser": "^5.59.9",
     "@vitejs/plugin-react": "^4.0.0",
     "@wagmi/core": "^0.10.11",
+    "@xmtp/content-type-remote-attachment": "^1.0.7",
     "@xmtp/react-sdk": "^1.0.0-preview.39",
     "buffer": "^6.0.3",
     "date-fns": "^2.29.3",
@@ -59,13 +60,14 @@
     "react-emoji-render": "^1.2.4",
     "react-i18next": "^12.2.0",
     "react-infinite-scroll-component": "^6.1.0",
+    "react-media-recorder-2": "^1.6.23",
     "react-medium-image-zoom": "^5.1.6",
     "react-qrcode-logo": "^2.9.0",
     "react-router-dom": "^6.12.0",
+    "react-timer-hook": "^3.0.6",
     "react-virtuoso": "^4.3.4",
     "wagmi": "^0.12.10",
     "web3.storage": "^4.5.4",
-    "xmtp-content-type-remote-attachment": "^1.0.7",
     "zustand": "^4.3.2"
   },
   "devDependencies": {
