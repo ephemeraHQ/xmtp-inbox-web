@@ -22,6 +22,7 @@ const { chains, provider, webSocketProvider } = configureChains(
 
 const { connectors } = getDefaultWallets({
   appName: "XMTP Inbox Web",
+  projectId: import.meta.env.VITE_PROJECT_ID,
   chains,
 });
 
