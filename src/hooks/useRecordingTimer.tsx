@@ -6,7 +6,7 @@ import { getRecordingValue } from "../helpers/recordingValue";
 interface useRecordingTimerProps {
   startRecording: () => void;
   stopRecording: () => void;
-  status: string;
+  status: "recording" | "stopped";
 }
 
 export const useRecordingTimer = ({

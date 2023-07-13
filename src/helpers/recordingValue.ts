@@ -1,7 +1,7 @@
 /*
  * Returns a formatted recording value string based on status and timer values
  *
- * @param status - The current recording status, 'recording' or other value
+ * @param status - The current recording status, 'recording' or 'stopped'
  * @param minutes - The current recording timer minutes
  * @param seconds - The current recording timer seconds
  * @param text - The text to display before the timer value
@@ -17,7 +17,7 @@
  */
 
 export const getRecordingValue = (
-  status: string,
+  status: "recording" | "stopped",
   minutes: number,
   seconds: number,
   text: string,
