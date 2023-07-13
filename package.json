@@ -34,7 +34,7 @@
     "@datadog/browser-rum": "^4.38.0",
     "@headlessui/react": "^1.4.3",
     "@heroicons/react": "^1.0.5",
-    "@rainbow-me/rainbowkit": "0.12.14",
+    "@rainbow-me/rainbowkit": "0.12.17",
     "@wagmi/core": "^0.10.11",
     "@xmtp/content-type-remote-attachment": "^1.0.7",
     "@xmtp/react-sdk": "^1.0.0-preview.39",
