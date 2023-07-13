@@ -24,6 +24,6 @@ export const getRecordingValue = (
 ): string | null =>
   status === "recording"
     ? `${text} (${minutes < 10 ? "0" : ""}${minutes}:${
-        seconds < 9 ? "0" : ""
+        seconds < 10 ? "0" : ""
       }${seconds})`
     : null;
