@@ -20,5 +20,4 @@ jobs:
           build: npm run build
           start: npm run dev
         env:
-          INFURA_ID: ${{ secrets.INFURA_ID }}
-          PROJECT_ID: ${{ secrets.PROJECT_ID }}
+          VITE_PROJECT_ID: ${{ secrets.PROJECT_ID }}
