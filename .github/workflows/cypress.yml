@@ -21,3 +21,4 @@ jobs:
           start: npm run dev
         env:
           INFURA_ID: ${{ secrets.INFURA_ID }}
+          PROJECT_ID: ${{ secrets.PROJECT_ID }}
