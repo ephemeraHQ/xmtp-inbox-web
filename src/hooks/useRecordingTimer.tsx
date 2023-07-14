@@ -1,12 +1,13 @@
 import { useTranslation } from "react-i18next";
 import { useStopwatch } from "react-timer-hook";
 import { useEffect } from "react";
+import type { StatusMessages } from "react-media-recorder-2";
 import { getRecordingValue } from "../helpers/recordingValue";
 
 interface useRecordingTimerProps {
   startRecording: () => void;
   stopRecording: () => void;
-  status: "recording" | "stopped";
+  status: StatusMessages;
 }
 
 export const useRecordingTimer = ({

@@ -50,7 +50,8 @@ const RemoteAttachmentMessageTile = ({
     const handleLoading = async () => {
       if (status === "loadRequested") {
         setStatus("loading");
-
+      }
+      try {
         if (client) {
           const attachment: Attachment = await RemoteAttachmentCodec.load(
             content,
@@ -88,6 +89,8 @@ const RemoteAttachmentMessageTile = ({
               setStatus("loaded");
             });
         }
+      } catch (e) {
+        setStatus("error");
       }
     };
     void handleLoading();
@@ -127,8 +130,14 @@ const RemoteAttachmentMessageTile = ({
 
   const contentType = getContentTypeFromFileName(content?.filename);
 
-  return isError ? (
-    <p className="text-red-600 p-0">{t("status_messaging.error_1_header")}</p>
+  const errorText = isError
+    ? t("status_messaging.error_1_header")
+    : status === "error"
+    ? t("status_messaging.gateway_error")
+    : null;
+
+  return isError || status === "error" ? (
+    <p className="text-red-600 p-0">{errorText}</p>
   ) : (
     <div>
       {status === "loading" || isLoading ? t("status_messaging.loading") : ""}
