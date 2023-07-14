@@ -1,7 +1,9 @@
+import type { StatusMessages } from "react-media-recorder-2";
+
 /*
  * Returns a formatted recording value string based on status and timer values
  *
- * @param status - The current recording status, 'recording' or 'stopped'
+ * @param status - The current recording status
  * @param minutes - The current recording timer minutes
  * @param seconds - The current recording timer seconds
  * @param text - The text to display before the timer value
@@ -17,7 +19,7 @@
  */
 
 export const getRecordingValue = (
-  status: "recording" | "stopped",
+  status: StatusMessages,
   minutes: number,
   seconds: number,
   text: string,
