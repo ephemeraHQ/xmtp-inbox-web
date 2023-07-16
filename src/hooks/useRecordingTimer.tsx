@@ -1,16 +1,7 @@
 import { useTranslation } from "react-i18next";
-import * as reactTimerHookModule from "react-timer-hook";
+import { useStopwatch } from "react-timer-hook";
 import { useEffect } from "react";
 import { getRecordingValue } from "../helpers/recordingValue";
-
-// Temporary workaround to unbreak Reflame previews
-// react-timer-hook exposes a minified UMD module which throws off
-// Reflame's exports analysis for named exports conversion
-const reactTimerHook =
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  (reactTimerHookModule.default as typeof reactTimerHookModule) ??
-  reactTimerHookModule;
 
 interface useRecordingTimerProps {
   startRecording: () => void;
@@ -25,11 +16,9 @@ export const useRecordingTimer = ({
 }: useRecordingTimerProps) => {
   const { t } = useTranslation();
 
-  const { start, pause, minutes, seconds, reset } = reactTimerHook.useStopwatch(
-    {
-      autoStart: false,
-    },
-  );
+  const { start, pause, minutes, seconds, reset } = useStopwatch({
+    autoStart: false,
+  });
 
   useEffect(() => {
     const handleKeyDown = () => {
