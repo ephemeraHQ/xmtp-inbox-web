@@ -250,7 +250,10 @@ export const MessageInput = ({
             width={20}
             fill="black"
             className="absolute -top-2 -right-2 cursor-pointer text-white"
-            onClick={() => setAttachmentPreview(undefined)}
+            onClick={() => {
+              setAttachmentPreview(undefined);
+              setAttachment(undefined);
+            }}
           />
         </div>
       )}
