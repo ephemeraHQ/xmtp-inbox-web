@@ -26,6 +26,11 @@ export const MessagePreviewCardController = ({
   const recipientWalletAddress = useXmtpStore(
     (state) => state.recipientWalletAddress,
   );
+
+  const previewKeys = Array.from(previewMessages.keys());
+  // eslint-disable-next-line no-console
+  console.log("ADDRESSES", previewKeys);
+
   const setRecipientWalletAddress = useXmtpStore(
     (state) => state.setRecipientWalletAddress,
   );
