@@ -50,7 +50,7 @@ export const useVoiceRecording = ({
           setAttachment(newAttachment);
         });
       },
-      askPermissionOnMount: true,
+      askPermissionOnMount: false,
     });
 
   return {
