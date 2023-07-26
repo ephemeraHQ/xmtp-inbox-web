@@ -40,5 +40,6 @@ interface ImportMeta {
     VITE_XMTP_ENVIRONMENT: string;
     VITE_GOOGLE_TAG_ID: string | undefined;
     VITE_UNS_TOKEN: string;
+    VITE_PROJECT_ID: string;
   };
 }
