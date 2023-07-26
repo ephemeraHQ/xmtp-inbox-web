@@ -5,13 +5,11 @@ import type { StatusMessages } from "react-media-recorder-2";
 import { getRecordingValue } from "../helpers/recordingValue";
 
 interface useRecordingTimerProps {
-  startRecording: () => void;
   stopRecording: () => void;
   status: StatusMessages;
 }
 
 export const useRecordingTimer = ({
-  startRecording,
   stopRecording,
   status,
 }: useRecordingTimerProps) => {
@@ -22,33 +20,12 @@ export const useRecordingTimer = ({
   });
 
   useEffect(() => {
-    const handleKeyDown = () => {
-      startRecording();
-      start();
-    };
-
-    const handleKeyUp = () => {
-      stopRecording();
-      pause();
-      reset();
-    };
-
     // Cap recordings at 10 minutes
     if (minutes === 10) {
       stopRecording();
       pause();
     }
-
-    const micEle = document.getElementById("mic");
-
-    micEle?.addEventListener("mousedown", handleKeyDown);
-    micEle?.addEventListener("mouseup", handleKeyUp);
-
-    return function cleanup() {
-      micEle?.removeEventListener("mousedown", handleKeyDown);
-      micEle?.removeEventListener("mouseup", handleKeyUp);
-    };
-  }, [startRecording, stopRecording, start, pause, reset, minutes]);
+  }, [stopRecording, pause, minutes]);
 
   const recordingValue = getRecordingValue(
     status,

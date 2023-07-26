@@ -63,7 +63,8 @@
     "file_invalid_format": "File must be of valid file format",
     "file_too_large": "Please choose attachments smaller than 5 MB",
     "file_unsupported": "[Attachment] Cannot display \"{{FILENAME}}\". This app does not support attachments yet.",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "microphone_not_enabled": "Make sure your microphone is enabled"
   },
   "common": {
     "disconnect": "Disconnect wallet",
