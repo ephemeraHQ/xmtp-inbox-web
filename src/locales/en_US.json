@@ -45,7 +45,8 @@
   "attachments": {
     "unable_to_display": "Unable to display attachment.",
     "download_instead": "Download instead.",
-    "video_messages_not_supported": "Your browser does not support the video tag."
+    "video_messages_not_supported": "Your browser does not support the video tag.",
+    "recording": "Recording…"
   },
   "menu": {
     "collapse_header": "Collapse",
@@ -58,10 +59,12 @@
     "error_1_header": "Sorry, the app encountered an error",
     "error_1_subheader": "Not to worry. Let’s try again. If the error persists, <0>we're here to help!</0>",
     "error_1_button": "Try again",
+    "gateway_error": "Gateway Error — Could not load attachment.",
     "file_invalid_format": "File must be of valid file format",
     "file_too_large": "Please choose attachments smaller than 5 MB",
     "file_unsupported": "[Attachment] Cannot display \"{{FILENAME}}\". This app does not support attachments yet.",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "microphone_not_enabled": "Make sure your microphone is enabled"
   },
   "common": {
     "disconnect": "Disconnect wallet",

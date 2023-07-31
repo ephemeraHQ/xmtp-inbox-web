@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import type {
   Attachment,
   RemoteAttachment,
-} from "xmtp-content-type-remote-attachment";
-import { RemoteAttachmentCodec } from "xmtp-content-type-remote-attachment";
+} from "@xmtp/content-type-remote-attachment";
+import { RemoteAttachmentCodec } from "@xmtp/content-type-remote-attachment";
 import { useClient } from "@xmtp/react-sdk";
 import Zoom from "react-medium-image-zoom";
 import { useTranslation } from "react-i18next";
@@ -50,7 +50,8 @@ const RemoteAttachmentMessageTile = ({
     const handleLoading = async () => {
       if (status === "loadRequested") {
         setStatus("loading");
-
+      }
+      try {
         if (client) {
           const attachment: Attachment = await RemoteAttachmentCodec.load(
             content,
@@ -88,6 +89,8 @@ const RemoteAttachmentMessageTile = ({
               setStatus("loaded");
             });
         }
+      } catch (e) {
+        setStatus("error");
       }
     };
     void handleLoading();
@@ -127,8 +130,14 @@ const RemoteAttachmentMessageTile = ({
 
   const contentType = getContentTypeFromFileName(content?.filename);
 
-  return isError ? (
-    <p className="text-red-600 p-0">{t("status_messaging.error_1_header")}</p>
+  const errorText = isError
+    ? t("status_messaging.error_1_header")
+    : status === "error"
+    ? t("status_messaging.gateway_error")
+    : null;
+
+  return isError || status === "error" ? (
+    <p className="text-red-600 p-0">{errorText}</p>
   ) : (
     <div>
       {status === "loading" || isLoading ? t("status_messaging.loading") : ""}
@@ -154,6 +163,10 @@ const RemoteAttachmentMessageTile = ({
               className="max-h-80 rounded-lg"
               alt={content.filename}
             />
+          ) : contentType === "audio" ? (
+            <audio controls src={url} className="max-w-full">
+              <a href={url}>{t("attachments.download_instead")}</a>
+            </audio>
           ) : (
             <div className="flex font-bold underline">
               <PaperClipIcon width={16} />
