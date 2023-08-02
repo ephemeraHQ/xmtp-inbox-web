@@ -26,6 +26,7 @@ export const MessagePreviewCardController = ({
   const recipientWalletAddress = useXmtpStore(
     (state) => state.recipientWalletAddress,
   );
+
   const setRecipientWalletAddress = useXmtpStore(
     (state) => state.setRecipientWalletAddress,
   );

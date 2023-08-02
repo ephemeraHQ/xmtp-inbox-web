@@ -20,7 +20,7 @@ export const useVoiceRecording = ({
 
   const setAttachmentError = useXmtpStore((state) => state.setAttachmentError);
 
-  const { status, startRecording, stopRecording, mediaBlobUrl } =
+  const { status, startRecording, stopRecording, mediaBlobUrl, error } =
     useReactMediaRecorder({
       audio: true,
       onStop: (blobUrl, blob) => {
@@ -50,7 +50,7 @@ export const useVoiceRecording = ({
           setAttachment(newAttachment);
         });
       },
-      askPermissionOnMount: true,
+      askPermissionOnMount: false,
     });
 
   return {
@@ -58,5 +58,6 @@ export const useVoiceRecording = ({
     startRecording,
     stopRecording,
     mediaBlobUrl,
+    error,
   };
 };

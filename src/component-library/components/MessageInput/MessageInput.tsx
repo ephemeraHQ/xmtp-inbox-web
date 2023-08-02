@@ -6,10 +6,12 @@ import {
   DocumentIcon,
   MicrophoneIcon,
   PhotographIcon,
+  StopIcon,
   VideoCameraIcon,
   XCircleIcon,
 } from "@heroicons/react/outline";
 import { useTranslation } from "react-i18next";
+import { Tooltip } from "react-tooltip";
 import { IconButton } from "../IconButton/IconButton";
 import { useAttachmentChange } from "../../../hooks/useAttachmentChange";
 import { typeLookup, type contentTypes } from "../../../helpers/attachments";
@@ -17,6 +19,7 @@ import { classNames } from "../../../helpers";
 import { useXmtpStore } from "../../../store/xmtp";
 import { useVoiceRecording } from "../../../hooks/useVoiceRecording";
 import { useRecordingTimer } from "../../../hooks/useRecordingTimer";
+import "react-tooltip/dist/react-tooltip.css";
 
 interface InputProps {
   /**
@@ -137,14 +140,13 @@ export const MessageInput = ({
   });
 
   // For voice recording
-  const { status, startRecording, stopRecording, mediaBlobUrl } =
+  const { status, startRecording, stopRecording, mediaBlobUrl, error } =
     useVoiceRecording({
       setAttachment,
       setAttachmentPreview,
     });
 
   const { start, pause, reset, recordingValue } = useRecordingTimer({
-    startRecording,
     stopRecording,
     status,
   });
@@ -289,23 +291,39 @@ export const MessageInput = ({
               e.key === "Enter" && !e.shiftKey && onButtonClick("application")
             }
           />
-          <MicrophoneIcon
-            tabIndex={0}
-            id="mic"
-            width={24}
-            height={24}
-            className="m-2 cursor-pointer text-gray-400 hover:text-black focus:outline-none focus-visible:ring"
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey && status === "recording") {
+          {status !== "recording" ? (
+            <>
+              <MicrophoneIcon
+                data-tooltip-id="mic"
+                tabIndex={0}
+                width={24}
+                height={24}
+                className="m-2 cursor-pointer text-gray-400 hover:text-black focus:outline-none focus-visible:ring"
+                onClick={() => {
+                  startRecording();
+                  start();
+                }}
+              />
+              {error === "permission_denied" ? (
+                <Tooltip id="mic">
+                  {t("status_messaging.microphone_not_enabled")}
+                </Tooltip>
+              ) : null}
+            </>
+          ) : (
+            <StopIcon
+              tabIndex={0}
+              id="mic"
+              width={24}
+              height={24}
+              className="m-2 cursor-pointer text-gray-400 hover:text-black focus:outline-none focus-visible:ring"
+              onClick={() => {
                 stopRecording();
                 pause();
                 reset();
-              } else {
-                startRecording();
-                start();
-              }
-            }}
-          />
+              }}
+            />
+          )}
         </div>
         <div className="flex items-center">
           <IconButton

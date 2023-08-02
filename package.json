@@ -61,6 +61,7 @@
     "react-qrcode-logo": "^2.9.0",
     "react-router-dom": "^6.12.0",
     "react-timer-hook": "^3.0.6",
+    "react-tooltip": "^5.19.0",
     "react-virtuoso": "^4.3.4",
     "wagmi": "^0.12.10",
     "web3.storage": "^4.5.4",
