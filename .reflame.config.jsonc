@@ -158,6 +158,12 @@
         "/",
         "/dist/styles.css"
       ]
+    },
+    "react-tooltip": {
+      "entryPoints": [
+        "/dist/react-tooltip.css",
+        "/"
+      ]
     }
   }
 }
