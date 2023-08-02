@@ -3,8 +3,8 @@
   // It's basically JSON, with the addition of comments, and looser syntax
   // (trailing commas!).
   // Reflame uses this to identify your app.
-  "appId": "01H3N3HTS2MAWNK33P0K6QF386", // prod
-  // "appId": "01H30NCV90SQP7ZJDCG9P7RJRG", // prod fork
+  // "appId": "01H3N3HTS2MAWNK33P0K6QF386", // prod
+  "appId": "01H30NCV90SQP7ZJDCG9P7RJRG", // prod fork
   // "appId": "01H335HJ288YMK1YM60ZTVWF42", // dev
   // This is what shows up in the browser's tab bar.
   "title": "Reflame App",
@@ -20,10 +20,12 @@
     "name": "vite-react",
     "version": 2
   },
-  "environment": {
-    // A random projectId I made up to prevent the app from crashing on start
-    // TODO: migrate over to XMTP's actual projectId after hidden config is implemented
-    "VITE_PROJECT_ID": "1234"
+  "environments": {
+    "production": {
+      // A random projectId I made up to prevent the app from crashing on start
+      // TODO: migrate over to XMTP's actual projectId after hidden config is implemented
+      "VITE_PROJECT_ID": "1234"
+    },
   },
   "commandPanel": {
     "initialPosition": "topRight"
@@ -99,7 +101,10 @@
       }
     }
   },
-  "scripts": ["/polyfills.ts", "/main.tsx"],
+  "scripts": [
+    "/polyfills.ts",
+    "/main.tsx"
+  ],
   "stylesheets": [
     "https://fonts.googleapis.com/css?family=Inter:400,500,600,700|Inconsolata:400,600,700&display=swap"
   ],
@@ -110,10 +115,16 @@
   // performance.
   "npmPackages": {
     "@heroicons/react": {
-      "entryPoints": ["/outline", "/solid"]
+      "entryPoints": [
+        "/outline",
+        "/solid"
+      ]
     },
     "@wagmi/core": {
-      "entryPoints": ["/", "/connectors/mock"]
+      "entryPoints": [
+        "/",
+        "/connectors/mock"
+      ]
     },
     "wagmi": {
       "entryPoints": [
@@ -125,16 +136,28 @@
       ]
     },
     "ethers": {
-      "entryPoints": ["/", "/lib"]
+      "entryPoints": [
+        "/",
+        "/lib"
+      ]
     },
     "date-fns": {
-      "entryPoints": ["/", "/locale"]
+      "entryPoints": [
+        "/",
+        "/locale"
+      ]
     },
     "@rainbow-me/rainbowkit": {
-      "entryPoints": ["/", "/styles.css"]
+      "entryPoints": [
+        "/",
+        "/styles.css"
+      ]
     },
     "react-medium-image-zoom": {
-      "entryPoints": ["/", "/dist/styles.css"]
+      "entryPoints": [
+        "/",
+        "/dist/styles.css"
+      ]
     }
   }
 }
