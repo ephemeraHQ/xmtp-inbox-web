@@ -84,7 +84,7 @@ export const AddressInput = ({
         className="flex w-full items-center"
         onSubmit={(e) => e.preventDefault()}>
         <div className="mr-2 font-bold text-sm">{t("common.input_label")}:</div>
-        <Avatar {...avatarUrlProps} />
+        {resolvedAddress?.displayAddress && <Avatar {...avatarUrlProps} />}
         <div className="ml-2 md:ml-4 flex flex-col justify-center">
           {isLoading ? (
             <ShortCopySkeletonLoader lines={1} />
