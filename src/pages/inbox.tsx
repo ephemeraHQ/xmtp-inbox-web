@@ -120,7 +120,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
           (!recipientWalletAddress && !startedFirstMessage) ? (
             <>
               <SideNavController />
-              <div className="flex flex-col w-full h-screen overflow-y-auto md:min-w-min">
+              <div className="flex flex-col w-full h-screen overflow-y-auto md:min-w-[350px]">
                 <HeaderDropdownController />
                 <ConversationListController
                   setStartedFirstMessage={setStartedFirstMessage}
