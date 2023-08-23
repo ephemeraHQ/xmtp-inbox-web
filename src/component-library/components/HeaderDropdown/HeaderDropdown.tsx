@@ -30,6 +30,10 @@ interface HeaderDropdownProps {
    * Is this dropdown disabled?
    */
   disabled?: boolean;
+  /**
+   * Conversation id from store, if any
+   */
+  conversationId?: string;
 }
 
 export const HeaderDropdown = ({
@@ -38,6 +42,7 @@ export const HeaderDropdown = ({
   onChange,
   onClick,
   disabled,
+  conversationId,
 }: HeaderDropdownProps) => {
   const { t } = useTranslation();
 
@@ -61,12 +66,14 @@ export const HeaderDropdown = ({
           <h1 className="font-bold text-lg mr-2">{currentlySelected}</h1>
           {!disabled && <ChevronDownIcon width="24" />}
         </span>
-        <IconButton
-          onClick={() => onClick?.()}
-          label={<PlusIcon color="white" width="20" />}
-          testId="new-message-icon-cta"
-          srText={t("aria_labels.start_new_message") || ""}
-        />
+        {conversationId && (
+          <IconButton
+            onClick={() => onClick?.()}
+            label={<PlusIcon color="white" width="20" />}
+            testId="new-message-icon-cta"
+            srText={t("aria_labels.start_new_message") || ""}
+          />
+        )}
       </div>
 
       {!disabled && isOpen && (

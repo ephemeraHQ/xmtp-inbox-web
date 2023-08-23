@@ -7,6 +7,9 @@ import { isEnsAddress, isValidRecipientAddressFormat } from "../helpers";
 const DmPage = () => {
   const navigate = useNavigate();
   const { address } = useParams();
+  const recipientWalletAddress = useXmtpStore(
+    (state) => state.recipientWalletAddress,
+  );
   const setRecipientWalletAddress = useXmtpStore(
     (state) => state.setRecipientWalletAddress,
   );
@@ -35,7 +38,7 @@ const DmPage = () => {
     };
     void routeToInbox();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [recipientWalletAddress]);
 
   return null;
 };
