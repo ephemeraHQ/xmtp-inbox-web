@@ -20,13 +20,6 @@
     "name": "vite-react",
     "version": 2
   },
-  "environments": {
-    "production": {
-      // A random projectId I made up to prevent the app from crashing on start
-      // TODO: migrate over to XMTP's actual projectId after hidden config is implemented
-      "VITE_PROJECT_ID": "1234"
-    },
-  },
   "commandPanel": {
     "initialPosition": "topRight"
   },
