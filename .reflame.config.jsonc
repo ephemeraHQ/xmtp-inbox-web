@@ -7,9 +7,9 @@
   // "appId": "01H30NCV90SQP7ZJDCG9P7RJRG", // prod fork
   // "appId": "01H335HJ288YMK1YM60ZTVWF42", // dev
   // This is what shows up in the browser's tab bar.
-  "title": "Reflame App",
+  "title": "Chat via XMTP",
   // This is the description that shows up in Google search.
-  "description": "A new Reflame app.",
+  "description": "Chat via XMTP",
   // Reflame will watch this directory for your React source code and deploy changes
   // instantly.
   //
