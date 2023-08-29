@@ -18,7 +18,7 @@ You are free to customize and deploy the app.
 This app has not undergone a formal security audit.
 
 > **Note**  
-> You might also be interested in the [XMTP Quickstart React chat app](https://github.com/xmtp/xmtp-quickstart-react), which provides lighter-weight code than the XMTP Inbox app. You can use the Quickstart app to learn to build a basic messaging app.
+> You might also be interested in the [XMTP React playground app](https://github.com/xmtp/xmtp-react-playground/) that you can use as a tool to start building an app with XMTP. This basic messaging app has an intentionally unopinionated UI to help make it easier for you to build with.
 
 ## Get started
 
