@@ -104,7 +104,9 @@ export const MessageInput = ({
   }, [value]);
 
   useEffect(() => {
-    textAreaRef.current?.focus();
+    if (conversationId) {
+      textAreaRef.current?.focus();
+    }
     setValue("");
     setAttachmentPreview(undefined);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -179,8 +181,6 @@ export const MessageInput = ({
           <p className="text-red-600 w-full m-1 ml-4">{attachmentError}</p>
         ) : (
           <textarea
-            // eslint-disable-next-line jsx-a11y/no-autofocus
-            autoFocus
             id="chat"
             data-testid="message-input"
             onChange={onChange}

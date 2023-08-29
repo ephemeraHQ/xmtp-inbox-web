@@ -127,9 +127,9 @@ const SideNav = ({
         }}
         aria-label={icn.key as string}
         className={classNames(
-          currentIcon === icn.key ? "font-bold" : "",
           "hover:bg-gray-200",
           "p-2",
+          isOpen ? "pr-8" : "",
           "hover:text-black",
           "text-gray-500",
           "rounded-lg",
@@ -141,7 +141,14 @@ const SideNav = ({
           "cursor-pointer",
           isOpen ? "w-[300px]" : "",
         )}>
-        <div className="flex justify-center items-center h-fit">
+        <div
+          className={classNames(
+            "flex justify-center items-center h-fit",
+            currentIcon === icn.key ||
+              (!currentIcon && icons[3].key === icn.key)
+              ? "font-bold"
+              : "",
+          )}>
           {icn}
           <span data-testid={icn.key}>{isOpen && icn.key}</span>
         </div>
@@ -168,16 +175,17 @@ const SideNav = ({
         "justify-between",
         "items-center",
         "h-screen",
-        "bg-gray-50",
-        "px-3",
+        "bg-white",
+        isOpen ? "px-6" : "px-3",
         "border-r",
         "border-gray-200",
-        !isOpen ? "w-[64px]" : "absolute z-10 w-[300px]",
+        "shadow-lg",
+        !isOpen ? "w-[64px]" : "absolute w-[80vw] lg:w-full lg:relative z-50",
       )}>
       <div className="flex flex-col items-start space-y-4 w-full">
-        <div className="py-4 flex">
-          <div>
-            <div className="flex mb-12">
+        <div className="py-4 flex w-full">
+          <div className="w-full">
+            <div className="flex mb-12 items-center">
               <Avatar url={avatarUrl} address={walletAddress} />
               {isOpen && (
                 <div className="flex items-center">
@@ -186,9 +194,14 @@ const SideNav = ({
                       {shortAddress(displayAddress ?? "")}
                     </span>
                     {walletAddress && displayAddress !== walletAddress && (
-                      <span className="font-sm">
+                      <button
+                        type="button"
+                        className="font-sm"
+                        onClick={() => {
+                          void navigator.clipboard.writeText(walletAddress);
+                        }}>
                         {shortAddress(walletAddress)}
-                      </span>
+                      </button>
                     )}
                   </div>
                 </div>
@@ -200,7 +213,7 @@ const SideNav = ({
           </div>
         </div>
       </div>
-      <div className="flex justify-center items-center font-bold w-full pb-8">
+      <div className="flex justify-start items-center font-bold w-full pb-8">
         <div
           role="button"
           onClick={onXmtpIconClick}
@@ -281,7 +294,7 @@ const SideNav = ({
           as="div"
           onClose={onXmtpIconClick}
           aria-label={t("menu.settings") || ""}>
-          <div className="bg-white w-fit rounded-lg absolute bottom-16 left-12 p-2 z-20">
+          <div className="bg-gray-50 w-fit rounded-lg absolute bottom-16 left-12 p-2 z-50">
             <div className="max-h-80 overflow-auto">
               {mappedLangs.map(({ displayText, isSelected, lang }) => (
                 <div className="flex p-2 justify-between" key={lang}>

@@ -1,6 +1,7 @@
 import { HeaderDropdown } from "../component-library/components/HeaderDropdown/HeaderDropdown";
-import { RecipientInputMode } from "../helpers";
+import { RecipientInputMode, TAILWIND_MD_BREAKPOINT } from "../helpers";
 import useGetRecipientInputMode from "../hooks/useGetRecipientInputMode";
+import useWindowSize from "../hooks/useWindowSize";
 import { useXmtpStore } from "../store/xmtp";
 
 export const HeaderDropdownController = () => {
@@ -8,10 +9,12 @@ export const HeaderDropdownController = () => {
   const setRecipientWalletAddress = useXmtpStore(
     (state) => state.setRecipientWalletAddress,
   );
+  const conversationId = useXmtpStore((state) => state.conversationId);
   const setConversationId = useXmtpStore((state) => state.setConversationId);
   const setStartedFirstMessage = useXmtpStore(
     (state) => state.setStartedFirstMessage,
   );
+  const [width] = useWindowSize();
 
   // XMTP Hooks
   const { setRecipientInputMode, setRecipientEnteredValue } =
@@ -19,14 +22,16 @@ export const HeaderDropdownController = () => {
 
   return (
     <HeaderDropdown
+      conversationId={conversationId}
       onClick={() => {
         setRecipientWalletAddress("");
         setRecipientInputMode(RecipientInputMode.InvalidEntry);
-        setConversationId();
+        setConversationId("");
         setRecipientEnteredValue("");
         setStartedFirstMessage(true);
       }}
       disabled
+      isMobileView={width <= TAILWIND_MD_BREAKPOINT}
     />
   );
 };

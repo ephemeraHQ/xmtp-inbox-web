@@ -84,14 +84,11 @@ export const AddressInputController = () => {
         walletAddress: domain ? recipientWalletAddress : "",
       }}
       onChange={setRecipientEnteredValue}
-      isLoading={
-        RecipientInputMode.FindingEntry === recipientInputMode ||
-        loadingConversations
-      }
+      isLoading={RecipientInputMode.FindingEntry === recipientInputMode}
       value={recipientEnteredValue}
       avatarUrlProps={{
         url: recipientAvatarUrl || "",
-        isLoading: avatarLoading || loadingConversations,
+        isLoading: avatarLoading,
         address: recipientWalletAddress,
       }}
       onLeftIconClick={() => {

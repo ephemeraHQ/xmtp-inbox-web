@@ -1,5 +1,5 @@
 import { Interweave } from "interweave";
-import { EmailMatcher, UrlMatcher } from "interweave-autolink";
+import { UrlMatcher } from "interweave-autolink";
 import { EmojiMatcher, useEmojiData } from "interweave-emoji";
 import type { MouseEvent } from "react";
 import type { RemoteAttachment } from "@xmtp/content-type-remote-attachment";
@@ -37,7 +37,9 @@ const MessageContentController = ({
             convertShortcode: true,
             renderUnicode: true,
           }),
-          new EmailMatcher("email"),
+          // Commenting out email matching until this issue is resolved: https://github.com/milesj/interweave/issues/201
+          // In the meantime, the experience still properly displays emails, just doesn't link to the expected `mailto:` view.
+          // new EmailMatcher("email"),
         ]}
         emojiSource={source}
       />

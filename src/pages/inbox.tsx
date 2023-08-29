@@ -115,12 +115,12 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
       onDragLeave={handleDrag}
       onDrop={onAttachmentChange}>
       <div className="w-full md:h-full overflow-auto flex flex-col md:flex-row">
-        <div className="flex md:w-1/2 md:max-w-md">
+        <div className="flex">
           {size[0] > TAILWIND_MD_BREAKPOINT ||
           (!recipientWalletAddress && !startedFirstMessage) ? (
             <>
               <SideNavController />
-              <div className="flex flex-col w-full h-screen overflow-y-auto">
+              <div className="flex flex-col w-full h-screen overflow-y-auto md:min-w-[350px]">
                 <HeaderDropdownController />
                 <ConversationListController
                   setStartedFirstMessage={setStartedFirstMessage}
