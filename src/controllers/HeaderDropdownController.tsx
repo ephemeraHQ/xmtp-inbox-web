@@ -9,8 +9,10 @@ export const HeaderDropdownController = () => {
   const setRecipientWalletAddress = useXmtpStore(
     (state) => state.setRecipientWalletAddress,
   );
-  const conversationId = useXmtpStore((state) => state.conversationId);
-  const setConversationId = useXmtpStore((state) => state.setConversationId);
+  const setConversationTopic = useXmtpStore(
+    (state) => state.setConversationTopic,
+  );
+  const conversationTopic = useXmtpStore((state) => state.conversationTopic);
   const setStartedFirstMessage = useXmtpStore(
     (state) => state.setStartedFirstMessage,
   );
@@ -22,11 +24,11 @@ export const HeaderDropdownController = () => {
 
   return (
     <HeaderDropdown
-      conversationId={conversationId}
+      conversationTopic={conversationTopic}
       onClick={() => {
         setRecipientWalletAddress("");
         setRecipientInputMode(RecipientInputMode.InvalidEntry);
-        setConversationId("");
+        setConversationTopic();
         setRecipientEnteredValue("");
         setStartedFirstMessage(true);
       }}

@@ -77,6 +77,15 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             setAttachment={() => {}}
             setAttachmentPreview={() => {}}
             setIsDragActive={() => {}}
+            peerAddress="0x1234"
+            sendMessage={() => Promise.resolve()}
+            startConversation={() =>
+              Promise.resolve({
+                cachedConversation: undefined,
+                conversation: undefined,
+                cachedMessage: undefined,
+              })
+            }
           />
         </div>
       </div>
@@ -99,6 +108,15 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             setAttachment={() => {}}
             setAttachmentPreview={() => {}}
             setIsDragActive={() => {}}
+            peerAddress="0x1234"
+            sendMessage={() => Promise.resolve()}
+            startConversation={() =>
+              Promise.resolve({
+                cachedConversation: undefined,
+                conversation: undefined,
+                cachedMessage: undefined,
+              })
+            }
           />
         </div>
       </div>
@@ -130,6 +148,15 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             setAttachment={() => {}}
             setAttachmentPreview={() => {}}
             setIsDragActive={() => {}}
+            peerAddress="0x1234"
+            sendMessage={() => Promise.resolve()}
+            startConversation={() =>
+              Promise.resolve({
+                cachedConversation: undefined,
+                conversation: undefined,
+                cachedMessage: undefined,
+              })
+            }
           />
         </div>
       </div>
@@ -164,6 +191,15 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             setAttachment={() => {}}
             setAttachmentPreview={() => {}}
             setIsDragActive={() => {}}
+            peerAddress="0x1234"
+            sendMessage={() => Promise.resolve()}
+            startConversation={() =>
+              Promise.resolve({
+                cachedConversation: undefined,
+                conversation: undefined,
+                cachedMessage: undefined,
+              })
+            }
           />
         </div>
       </div>
@@ -206,6 +242,15 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             setAttachment={() => {}}
             setAttachmentPreview={() => {}}
             setIsDragActive={() => {}}
+            peerAddress="0x1234"
+            sendMessage={() => Promise.resolve()}
+            startConversation={() =>
+              Promise.resolve({
+                cachedConversation: undefined,
+                conversation: undefined,
+                cachedMessage: undefined,
+              })
+            }
           />
         </div>
       </div>
@@ -238,6 +283,15 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             setAttachment={() => {}}
             setAttachmentPreview={() => {}}
             setIsDragActive={() => {}}
+            peerAddress="0x1234"
+            sendMessage={() => Promise.resolve()}
+            startConversation={() =>
+              Promise.resolve({
+                cachedConversation: undefined,
+                conversation: undefined,
+                cachedMessage: undefined,
+              })
+            }
           />
         </div>
       </div>
@@ -288,6 +342,15 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             setAttachment={() => {}}
             setAttachmentPreview={() => {}}
             setIsDragActive={() => {}}
+            peerAddress="0x1234"
+            sendMessage={() => Promise.resolve()}
+            startConversation={() =>
+              Promise.resolve({
+                cachedConversation: undefined,
+                conversation: undefined,
+                cachedMessage: undefined,
+              })
+            }
           />
         </div>
       </div>
@@ -338,6 +401,15 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             setAttachment={() => {}}
             setAttachmentPreview={() => {}}
             setIsDragActive={() => {}}
+            peerAddress="0x1234"
+            sendMessage={() => Promise.resolve()}
+            startConversation={() =>
+              Promise.resolve({
+                cachedConversation: undefined,
+                conversation: undefined,
+                cachedMessage: undefined,
+              })
+            }
           />
         </div>
       </div>
@@ -389,6 +461,15 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             setAttachmentPreview={() => {}}
             setIsDragActive={() => {}}
             isDisabled
+            peerAddress="0x1234"
+            sendMessage={() => Promise.resolve()}
+            startConversation={() =>
+              Promise.resolve({
+                cachedConversation: undefined,
+                conversation: undefined,
+                cachedMessage: undefined,
+              })
+            }
           />
         </div>
       </div>
@@ -456,6 +537,15 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             setAttachment={() => {}}
             setAttachmentPreview={() => {}}
             setIsDragActive={() => {}}
+            peerAddress="0x1234"
+            sendMessage={() => Promise.resolve()}
+            startConversation={() =>
+              Promise.resolve({
+                cachedConversation: undefined,
+                conversation: undefined,
+                cachedMessage: undefined,
+              })
+            }
           />
         </div>
       </div>
@@ -508,6 +598,15 @@ export const MessagesPage = ({ type }: MessagesPageProps) => {
             setAttachment={() => {}}
             setAttachmentPreview={() => {}}
             setIsDragActive={() => {}}
+            peerAddress="0x1234"
+            sendMessage={() => Promise.resolve()}
+            startConversation={() =>
+              Promise.resolve({
+                cachedConversation: undefined,
+                conversation: undefined,
+                cachedMessage: undefined,
+              })
+            }
           />
         </div>
       </div>

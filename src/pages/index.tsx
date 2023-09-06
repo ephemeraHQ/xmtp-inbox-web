@@ -61,7 +61,7 @@ const OnboardingPage = () => {
         onEnable={resolveEnable}
         onDisconnect={() => {
           if (client) {
-            disconnectClient();
+            void disconnectClient();
           }
           setStatus(undefined);
           wipeKeys(address ?? "");

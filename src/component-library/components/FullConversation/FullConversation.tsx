@@ -1,40 +1,61 @@
 import { useTranslation } from "react-i18next";
-import { MessageSkeletonLoader } from "../Loaders/SkeletonLoaders/MessageSkeletonLoader";
+import type { VirtuosoHandle } from "react-virtuoso";
+import { Virtuoso } from "react-virtuoso";
+import { useMemo, useRef } from "react";
 
 interface FullConversationProps {
-  messages?: Array<JSX.Element>;
+  messages?: Array<JSX.Element | null>;
   isLoading?: boolean;
 }
+
+const LoadingMessage: React.FC = () => {
+  const { t } = useTranslation();
+  return (
+    <div className="flex align-center justify-center text-gray-500 font-regular text-sm animate-pulse">
+      {t("messages.conversation_loading")}
+    </div>
+  );
+};
+
+const BeginningMessage: React.FC = () => {
+  const { t } = useTranslation();
+  return (
+    <div
+      className="text-gray-500 font-regular text-sm w-full py-2 text-center"
+      data-testid="message-beginning-text">
+      {t("messages.conversation_start")}
+    </div>
+  );
+};
 
 export const FullConversation = ({
   messages = [],
   isLoading = false,
 }: FullConversationProps) => {
-  const { t } = useTranslation();
-
-  // only show the full loading state when there are no messages to
-  // prevent message rendering from jumping around when trying to load new
-  // messages from the network
-  if (isLoading && messages.length === 0) {
-    return (
-      <div className="h-full flex flex-col-reverse justify-start p-4">
-        {Array.from({ length: 3 }).map((_, idx) => (
-          <MessageSkeletonLoader key={idx} incoming={false} />
-        ))}
-      </div>
-    );
-  }
+  const virtuosoRef = useRef<VirtuosoHandle>(null);
+  const filteredMessages = useMemo(() => {
+    const filtered = messages.filter((msg) => msg !== null);
+    return [
+      isLoading ? (
+        <LoadingMessage key="loading" />
+      ) : (
+        <BeginningMessage key="beginning" />
+      ),
+      ...filtered,
+    ];
+  }, [isLoading, messages]);
 
   return (
-    <div
+    <Virtuoso
+      alignToBottom
       data-testid="message-tile-container"
-      className="w-full h-full flex flex-col-reverse pt-8 px-4 md:px-8">
-      {messages}
-      <div
-        className="text-gray-500 font-regular text-sm w-full py-2 text-center"
-        data-testid="message-beginning-text">
-        {t("messages.conversation_start")}
-      </div>
-    </div>
+      data={filteredMessages}
+      totalCount={filteredMessages.length}
+      initialTopMostItemIndex={filteredMessages.length - 1}
+      followOutput="auto"
+      className="w-full h-full flex flex-col"
+      itemContent={(index, message) => message}
+      ref={virtuosoRef}
+    />
   );
 };

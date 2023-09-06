@@ -2,9 +2,8 @@ import type { ChangeEvent } from "react";
 import { useCallback } from "react";
 import type { Attachment } from "@xmtp/content-type-remote-attachment";
 import { useTranslation } from "react-i18next";
-import { humanFileSize } from "../helpers/attachments";
-import { ATTACHMENT_ERRORS } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
+import { MAX_FILE_SIZE } from "../helpers";
 
 interface useAttachmentChangeProps {
   setAttachment: (attachment: Attachment | undefined) => void;
@@ -37,7 +36,7 @@ export const useAttachmentChange = ({
         const file = target.files[0];
 
         // Displays error if > 10 MB
-        if (humanFileSize(file.size) === ATTACHMENT_ERRORS.FILE_TOO_LARGE) {
+        if (file.size > MAX_FILE_SIZE) {
           setAttachmentError(t("status_messaging.file_too_large"));
           setIsDragActive(false);
         } else {

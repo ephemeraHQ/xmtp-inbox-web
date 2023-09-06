@@ -1,4 +1,3 @@
-import type { Conversation } from "@xmtp/react-sdk";
 import { utils } from "ethers";
 import { ALLOWED_ENS_SUFFIXES, ALLOWED_UNS_SUFFIXES } from "./constants";
 
@@ -126,17 +125,12 @@ export const shortAddress = (addr: string): string =>
     ? `${addr.substring(0, 6)}...${addr.substring(addr.length - 4)}`
     : addr;
 
-export const getConversationId = (conversation?: Conversation): string =>
-  conversation?.context?.conversationId
-    ? `${conversation?.peerAddress}/${conversation?.context?.conversationId}`
-    : conversation?.peerAddress ?? "";
-
-export const getAddress = (conversationId: string) => {
+export const getAddress = (conversationTopic: string) => {
   let addr;
   try {
-    addr = utils.getAddress(conversationId);
+    addr = utils.getAddress(conversationTopic);
   } catch {
-    addr = conversationId;
+    addr = conversationTopic;
   }
   return addr;
 };

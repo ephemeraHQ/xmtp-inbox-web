@@ -20,6 +20,7 @@
   "messages": {
     "attachment": "Attachment",
     "attachment_cta": "Click to load",
+    "attachment_reload": "Retry",
     "filter_none": "All messages",
     "filter_requests": "Message requests",
     "convos_empty_header": "No messages? No problem.",
@@ -40,10 +41,14 @@
     "address_field_invalid": "Please enter a valid 0x wallet, ENS, or UNS address",
     "address_field_not_on_network": "Sorry, we can't message this address because its owner hasn't used it with XMTP yet",
     "message_field_prompt": "Write a message",
-    "conversation_start": "This is the beginning of the conversation"
+    "conversation_start": "This is the beginning of the conversation",
+    "conversation_loading": "Loading messages...",
+    "message_not_delivered": "Not delivered",
+    "message_retry": "Retry",
+    "message_cancel": "Cancel"
   },
   "attachments": {
-    "unable_to_display": "Unable to display attachment.",
+    "unable_to_display": "Unable to display attachment",
     "download_instead": "Download instead.",
     "video_messages_not_supported": "Your browser does not support the video tag.",
     "recording": "Recording…"
@@ -59,7 +64,7 @@
     "error_1_header": "Sorry, the app encountered an error",
     "error_1_subheader": "Not to worry. Let’s try again. If the error persists, <0>we're here to help!</0>",
     "error_1_button": "Try again",
-    "gateway_error": "Gateway Error — Could not load attachment.",
+    "gateway_error": "Unable to load attachment",
     "file_invalid_format": "File must be of valid file format",
     "file_too_large": "Please choose attachments smaller than 5 MB",
     "file_unsupported": "[Attachment] Cannot display \"{{FILENAME}}\". This app does not support attachments yet.",
