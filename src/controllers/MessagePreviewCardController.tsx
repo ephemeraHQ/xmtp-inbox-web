@@ -88,7 +88,7 @@ export const MessagePreviewCardController = ({
     : undefined;
 
   if (convo.peerAddress === XMTP_FEEDBACK_ADDRESS) {
-    content = "Send feedback";
+    content = t("messages.send_feedback") ?? "Send feedback";
   }
 
   return (

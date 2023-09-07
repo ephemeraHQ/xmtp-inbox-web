@@ -99,6 +99,7 @@ export const MessageInput = ({
   const setConversationTopic = useXmtpStore(
     (state) => state.setConversationTopic,
   );
+  const conversationTopic = useXmtpStore((state) => state.conversationTopic);
 
   const inputFile = useRef<HTMLInputElement | null>(null);
 
@@ -126,7 +127,7 @@ export const MessageInput = ({
   }, [value]);
 
   useEffect(() => {
-    if (conversationId) {
+    if (conversationTopic) {
       textAreaRef.current?.focus();
     }
     setValue("");
@@ -177,6 +178,7 @@ export const MessageInput = ({
 
   const send = useCallback(async () => {
     if (value || attachment) {
+      // save reference to these values before clearing them from state
       const val = value;
       const attach = attachment;
 

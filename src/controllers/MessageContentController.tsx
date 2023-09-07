@@ -58,7 +58,8 @@ const MessageContentController = ({
     return <RemoteAttachmentMessageTile message={message} isSelf={isSelf} />;
   }
 
-  return null;
+  // message content type not supported, display fallback
+  return message.contentFallback;
 };
 
 export default MessageContentController;

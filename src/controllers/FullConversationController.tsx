@@ -20,9 +20,6 @@ export const FullConversationController: React.FC<
   const messagesWithDates = useMemo(
     () =>
       messages?.map((msg, index) => {
-        if (msg.content === undefined) {
-          return null;
-        }
         if (renderedDatesRef.current.length === 0) {
           renderedDatesRef.current.push(msg.sentAt);
         }
