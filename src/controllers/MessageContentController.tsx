@@ -59,7 +59,7 @@ const MessageContentController = ({
   }
 
   // message content type not supported, display fallback
-  return message.contentFallback;
+  return <span>{message.contentFallback}</span>;
 };
 
 export default MessageContentController;

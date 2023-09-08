@@ -4,6 +4,7 @@ import { isSameDay } from "date-fns";
 import { DateDivider } from "../component-library/components/DateDivider/DateDivider";
 import { FullConversation } from "../component-library/components/FullConversation/FullConversation";
 import { FullMessageController } from "./FullMessageController";
+import { isMessageSupported } from "../helpers/isMessagerSupported";
 
 type FullConversationControllerProps = {
   conversation: CachedConversation;
@@ -20,6 +21,11 @@ export const FullConversationController: React.FC<
   const messagesWithDates = useMemo(
     () =>
       messages?.map((msg, index) => {
+        // if the message content type is not support and has no fallback,
+        // disregard it
+        if (!isMessageSupported(msg) && !msg.contentFallback) {
+          return null;
+        }
         if (renderedDatesRef.current.length === 0) {
           renderedDatesRef.current.push(msg.sentAt);
         }

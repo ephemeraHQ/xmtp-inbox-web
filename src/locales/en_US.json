@@ -20,7 +20,7 @@
   "messages": {
     "attachment": "Attachment",
     "attachment_cta": "Click to load",
-    "attachment_reload": "Retry",
+    "attachment_reload": "Reload",
     "filter_none": "All messages",
     "filter_requests": "Message requests",
     "convos_empty_header": "No messages? No problem.",

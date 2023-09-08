@@ -77,7 +77,7 @@ const RemoteAttachmentMessageTile = ({
 
   return hasError ? (
     <div
-      className={`text-red-600 flex gap-1 flex-col ${
+      className={`text-gray-500 flex gap-1 flex-col ${
         isSelf ? "items-end" : "items-start"
       }`}>
       <div>{t("status_messaging.gateway_error")}</div>
@@ -87,7 +87,7 @@ const RemoteAttachmentMessageTile = ({
           tabIndex={0}
           onClick={handleReload}
           onKeyDown={handleReloadKeyDown}
-          className="underline">
+          className="underline text-indigo-600">
           {t("messages.attachment_reload")}
         </div>
       </div>

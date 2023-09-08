@@ -31,7 +31,7 @@ const incomingMessageBackgroundStyles = "bg-gray-200 rounded-br-lg pl-2";
 const outgoingMessageBackgroundStyles =
   "bg-indigo-600 text-white rounded-bl-lg message-sender";
 const errorMessageBackgroundStyles =
-  "bg-white rounded-bl-lg pl-2 border-red-600 border";
+  "bg-white rounded-bl-lg pl-2 border-gray-200 border";
 
 export const FullMessage = ({
   children,
