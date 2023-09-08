@@ -37,7 +37,7 @@ describe(
       checkElement("conversations-list-panel");
       // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(500);
-      cy.get(`[data-testid=message-tile-text]`, { timeout: TIMEOUT })
+      cy.get(`[data-testid=message-preview-text]`, { timeout: TIMEOUT })
         .first()
         .should("exist");
     });
