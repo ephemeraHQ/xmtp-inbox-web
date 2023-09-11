@@ -81,6 +81,7 @@ export const FullMessage = ({
 
   return (
     <div
+      data-testid="message-tile-container"
       className={classNames(
         "flex flex-col w-full px-4 md:px-8",
         from.isSelf ? "items-end" : "items-start",

@@ -28,29 +28,32 @@ export const ConversationListController = ({
     [conversations],
   );
 
+  const filteredConversations = useMemo(() => {
+    const filtered = getFilteredConversations(conversations).map(
+      (conversation) => (
+        <MessagePreviewCardController
+          key={conversation.topic}
+          convo={conversation}
+        />
+      ),
+    );
+    return feedbackConversation
+      ? [
+          <MessagePreviewCardController
+            key={XMTP_FEEDBACK_ADDRESS}
+            convo={feedbackConversation}
+          />,
+          ...filtered,
+        ]
+      : filtered;
+  }, [conversations, feedbackConversation]);
+
   return (
     <ConversationList
       hasRecipientEnteredValue={!!recipientEnteredValue}
       setStartedFirstMessage={() => setStartedFirstMessage(true)}
       isLoading={isLoading}
-      messages={
-        !isLoading
-          ? [
-              feedbackConversation && (
-                <MessagePreviewCardController
-                  key={XMTP_FEEDBACK_ADDRESS}
-                  convo={feedbackConversation}
-                />
-              ),
-              ...getFilteredConversations(conversations).map((conversation) => (
-                <MessagePreviewCardController
-                  key={conversation.topic}
-                  convo={conversation}
-                />
-              )),
-            ]
-          : []
-      }
+      messages={!isLoading ? filteredConversations : []}
     />
   );
 };

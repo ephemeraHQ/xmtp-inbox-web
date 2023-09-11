@@ -42,9 +42,10 @@ const sendMessages = (
   for (let i = 0; i < numberOfTimes; i++) {
     // Enters message
     checkElement("message-input").type(message, { delay: 1 });
+    cy.wait(100);
     checkElement("message-input-submit");
     cy.get(`[data-testid=message-input-submit]`).click();
-    cy.wait(100);
+    cy.wait(1000);
     cy.get(`[data-testid=conversations-list-panel]`, {
       timeout: TIMEOUT,
     }).should("have.length", 1);
@@ -54,6 +55,7 @@ const sendMessages = (
     const differentMessage = "differentMessage";
     // Send additional different message, check that different message was returned in correct order
     checkElement("message-input").type(differentMessage, { delay: 1 });
+    cy.wait(1000);
     checkElement("message-input-submit");
     cy.get(`[data-testid=message-input-submit]`).click();
   }
@@ -82,11 +84,11 @@ const checkMostRecentMessageOutput = (
 ) => {
   cy.get(`[data-testid=message-tile-container]`, { timeout: TIMEOUT })
     .children()
-    .should("have.length", numberOfTimes + 1);
+    .should("have.length", numberOfTimes);
 
   cy.get(`[data-testid=message-tile-text]`, { timeout: TIMEOUT })
     .children()
-    .eq(1)
+    .eq(numberOfTimes - 1)
     .should("have.text", differentMessage);
 };
 
@@ -107,6 +109,6 @@ export const sendAndEnterMessage = (
     // Send additional different message, check that different message was returned in correct order
     checkMostRecentMessageOutput(numberOfTimes + 1, differentMessage);
   } else {
-    checkMessageOutput(numberOfTimes + 1, message);
+    checkMessageOutput(numberOfTimes, message);
   }
 };

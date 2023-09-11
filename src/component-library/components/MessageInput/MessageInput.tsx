@@ -187,7 +187,7 @@ export const MessageInput = ({
       setAttachmentPreview(undefined);
 
       let convo = conversation;
-      if (!conversation) {
+      if (!convo) {
         // check for cached conversation with the same peer address
         const existing = await getCachedByPeerAddress(peerAddress);
         if (existing) {

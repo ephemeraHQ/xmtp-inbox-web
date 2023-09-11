@@ -1,10 +1,11 @@
-import { useConversation, type CachedConversation } from "@xmtp/react-sdk";
+import { useConversation } from "@xmtp/react-sdk";
+import type { CachedConversationWithId } from "@xmtp/react-sdk";
 import { useEffect, useState } from "react";
 import { useXmtpStore } from "../store/xmtp";
 
 const useSelectedConversation = () => {
   const [selectedConversation, setSelectedConversation] = useState<
-    CachedConversation | undefined
+    CachedConversationWithId | undefined
   >();
   const { getCachedByTopic } = useConversation();
   const conversationTopic = useXmtpStore((state) => state.conversationTopic);

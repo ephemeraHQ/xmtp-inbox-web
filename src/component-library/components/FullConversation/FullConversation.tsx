@@ -48,7 +48,6 @@ export const FullConversation = ({
   return (
     <Virtuoso
       alignToBottom
-      data-testid="message-tile-container"
       data={filteredMessages}
       totalCount={filteredMessages.length}
       initialTopMostItemIndex={filteredMessages.length - 1}
