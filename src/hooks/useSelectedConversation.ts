@@ -15,6 +15,8 @@ const useSelectedConversation = () => {
       if (conversationTopic) {
         const conversation = await getCachedByTopic(conversationTopic);
         setSelectedConversation(conversation);
+      } else {
+        setSelectedConversation(undefined);
       }
     };
     void getSelectedConversation();
