@@ -3,10 +3,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useConnect, useSigner } from "wagmi";
 import type { Signer } from "ethers";
 import {
-  AttachmentCodec,
-  RemoteAttachmentCodec,
-} from "@xmtp/content-type-remote-attachment";
-import {
   getAppVersion,
   getEnv,
   isAppEnvDemo,
@@ -42,7 +38,6 @@ const clientOptions = {
   apiUrl: import.meta.env.VITE_XMTP_API_URL,
   env: getEnv(),
   appVersion: getAppVersion(),
-  codecs: [new AttachmentCodec(), new RemoteAttachmentCodec()],
 };
 
 const useInitXmtpClient = () => {

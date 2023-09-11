@@ -13,7 +13,9 @@ const DmPage = () => {
   const setRecipientWalletAddress = useXmtpStore(
     (state) => state.setRecipientWalletAddress,
   );
-  const setConversationId = useXmtpStore((state) => state.setConversationId);
+  const setConversationTopic = useXmtpStore(
+    (state) => state.setConversationTopic,
+  );
 
   useEffect(() => {
     const routeToInbox = async () => {
@@ -26,7 +28,7 @@ const DmPage = () => {
             })) ?? "";
         }
         if (recipient) {
-          setConversationId(recipient);
+          setConversationTopic(recipient);
           setRecipientWalletAddress(recipient);
           navigate("/inbox");
         } else {

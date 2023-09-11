@@ -20,7 +20,9 @@ const useGetRecipientInputMode = () => {
   const setRecipientWalletAddress = useXmtpStore(
     (state) => state.setRecipientWalletAddress,
   );
-  const setConversationId = useXmtpStore((state) => state.setConversationId);
+  const setConversationTopic = useXmtpStore(
+    (state) => state.setConversationTopic,
+  );
 
   const recipientInputMode = useXmtpStore((state) => state.recipientInputMode);
   const setRecipientInputMode = useXmtpStore(
@@ -43,7 +45,7 @@ const useGetRecipientInputMode = () => {
         setRecipientInputMode(RecipientInputMode.OnNetwork);
         setRecipientWalletAddress(address);
         // When coming from the input (vs the preview panel), conversation ids will always be in XMTP format.
-        setConversationId(address);
+        setConversationTopic(address);
       }
     } catch (e) {
       setRecipientInputMode(RecipientInputMode.NotOnNetwork);

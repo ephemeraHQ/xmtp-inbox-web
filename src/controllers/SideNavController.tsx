@@ -44,7 +44,7 @@ export const SideNavController = () => {
       walletAddress={client?.address}
       avatarUrl={selfAvatarUrl || ""}
       onDisconnect={() => {
-        disconnect();
+        void disconnect();
         wipeKeys(client?.address ?? "");
         disconnectWagmi();
         resetWagmi();

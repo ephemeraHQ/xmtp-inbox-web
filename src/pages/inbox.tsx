@@ -1,6 +1,6 @@
 import type React from "react";
 import { useEffect, useState } from "react";
-import { useClient } from "@xmtp/react-sdk";
+import { useClient, useConversations } from "@xmtp/react-sdk";
 import { useDisconnect, useSigner } from "wagmi";
 import type { Attachment } from "@xmtp/content-type-remote-attachment";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +15,7 @@ import { LearnMore } from "../component-library/components/LearnMore/LearnMore";
 import useWindowSize from "../hooks/useWindowSize";
 import { ConversationListController } from "../controllers/ConversationListController";
 import { useAttachmentChange } from "../hooks/useAttachmentChange";
-import { db } from "../helpers/attachment_db";
+import useSelectedConversation from "../hooks/useSelectedConversation";
 
 export type address = `0x${string}`;
 
@@ -24,22 +24,17 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   const resetXmtpState = useXmtpStore((state) => state.resetXmtpState);
   const { client, disconnect, signer: clientSigner } = useClient();
   const [isDragActive, setIsDragActive] = useState(false);
+  const { conversations } = useConversations();
+  const selectedConversation = useSelectedConversation();
 
   useEffect(() => {
     if (!client) {
       navigate("/");
     }
-    // any time the client changes, the attachments cached db should be cleared
-    // this is because the contentDataURL is partially derived from client
-    // and doesn't render properly if image is in cache with a different client.
-    void db.attachments.clear();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [client]);
 
   const { data: signer } = useSigner();
-  // XMTP Store
-  const conversations = useXmtpStore((state) => state.conversations);
-  const conversationId = useXmtpStore((state) => state.conversationId);
 
   const recipientWalletAddress = useXmtpStore(
     (state) => state.recipientWalletAddress,
@@ -83,7 +78,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
       // addresses must be defined before comparing
       if (address1 && address2 && address1 !== address2) {
         resetXmtpState();
-        disconnect();
+        void disconnect();
         wipeKeys(address1 ?? "");
         disconnectWagmi();
         resetWagmi();
@@ -133,7 +128,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
         recipientWalletAddress ||
         startedFirstMessage ? (
           <div className="flex w-full flex-col h-screen overflow-hidden">
-            {!conversations.size &&
+            {!conversations.length &&
             !loadingConversations &&
             !startedFirstMessage ? (
               <LearnMore
@@ -146,7 +141,11 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
                   <AddressInputController />
                 </div>
                 <div className="h-full overflow-auto flex flex-col">
-                  {conversationId && <FullConversationController />}
+                  {selectedConversation && (
+                    <FullConversationController
+                      conversation={selectedConversation}
+                    />
+                  )}
                 </div>
                 {/* Drag event handling needing for content attachments */}
                 <MessageInputController

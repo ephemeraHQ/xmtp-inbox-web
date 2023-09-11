@@ -1,50 +1,53 @@
-import { useClient } from "@xmtp/react-sdk";
-import type { DecodedMessage } from "@xmtp/react-sdk";
-import { useEffect } from "react";
-import { XMTP_FEEDBACK_ADDRESS, getConversationId } from "../helpers";
+import { useStartConversation } from "@xmtp/react-sdk";
+import { useEffect, useMemo } from "react";
+import { XMTP_FEEDBACK_ADDRESS } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
+import { findFeedbackConversation } from "../helpers/findFeedbackConversation";
+import useListConversations from "./useListConversations";
 
 const useStartFeedbackConvo = () => {
-  const { client } = useClient();
+  const { conversations } = useListConversations();
+  const { startConversation } = useStartConversation();
 
   const loadingConversations = useXmtpStore(
     (state) => state.loadingConversations,
   );
 
-  const conversations = useXmtpStore((state) => state.conversations);
-  const setConversations = useXmtpStore((state) => state.setConversations);
-  const setPreviewMessage = useXmtpStore((state) => state.setPreviewMessage);
   const setRecipientWalletAddress = useXmtpStore(
     (state) => state.setRecipientWalletAddress,
   );
-  const setConversationId = useXmtpStore((state) => state.setConversationId);
+  const setConversationTopic = useXmtpStore(
+    (state) => state.setConversationTopic,
+  );
+
+  const feedbackConversation = useMemo(
+    () => findFeedbackConversation(conversations),
+    [conversations],
+  );
 
   useEffect(() => {
     const startFeedbackConvo = async () => {
-      if (
-        !loadingConversations &&
-        client &&
-        !conversations.has(XMTP_FEEDBACK_ADDRESS)
-      ) {
-        const conversation = await client?.conversations.newConversation(
+      if (!loadingConversations && !feedbackConversation) {
+        // start the conversation, but don't send an initial message
+        const { cachedConversation } = await startConversation(
           XMTP_FEEDBACK_ADDRESS,
+          undefined,
         );
 
-        conversations.set(getConversationId(conversation), conversation);
-
-        setPreviewMessage(XMTP_FEEDBACK_ADDRESS, {
-          content: "Send feedback",
-          id: "Feedback_Msg",
-        } as DecodedMessage);
-
-        setConversations(new Map(conversations));
-        setConversationId(XMTP_FEEDBACK_ADDRESS);
-        setRecipientWalletAddress(XMTP_FEEDBACK_ADDRESS);
+        if (cachedConversation) {
+          setConversationTopic(cachedConversation.topic);
+          setRecipientWalletAddress(XMTP_FEEDBACK_ADDRESS);
+        }
       }
     };
     void startFeedbackConvo();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadingConversations, client, conversations]);
+  }, [
+    feedbackConversation,
+    loadingConversations,
+    setConversationTopic,
+    setRecipientWalletAddress,
+    startConversation,
+  ]);
 };
 
 export default useStartFeedbackConvo;

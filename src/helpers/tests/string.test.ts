@@ -3,13 +3,11 @@ import { utils } from "ethers";
 import {
   isEnsAddress,
   isUnsAddress,
-  getConversationId,
   shortAddress,
   truncate,
   isValidRecipientAddressFormat,
   getAddress,
 } from "../string";
-import { getMockConversation } from "../mocks";
 
 describe("truncate", () => {
   it("should return the original string if its length is less than the length param", () => {
@@ -83,31 +81,6 @@ describe("isUnsAddress", () => {
   });
 });
 
-describe("getConversationId", () => {
-  it("should send back formatted conversation key if conversation id exists", () => {
-    const conversation = getMockConversation({
-      context: {
-        conversationId: "testConversationId",
-        metadata: {},
-      },
-      peerAddress: "testPeerAddress",
-    });
-    expect(getConversationId(conversation)).toBe(
-      "testPeerAddress/testConversationId",
-    );
-  });
-  it("should send back peer address only if conversation key if conversation id does not exist", () => {
-    const conversation = getMockConversation({
-      peerAddress: "testPeerAddress",
-    });
-    expect(getConversationId(conversation)).toBe("testPeerAddress");
-  });
-  it("should handle falsey inputs by returning empty string", () => {
-    const conversation = undefined;
-    expect(getConversationId(conversation)).toBe("");
-  });
-});
-
 describe("isValidRecipientAddressFormat", () => {
   it("should return true if address ends with .eth", () => {
     expect(isValidRecipientAddressFormat("test.eth")).toBe(true);
@@ -128,15 +101,17 @@ describe("isValidRecipientAddressFormat", () => {
 });
 
 describe("getAddress", () => {
-  it("should return a valid checksum'd address if conversationId is in expected format", () => {
-    const conversationId = "0x78bfd39428c32be149892d64bee6c6f90aedeec1";
-    expect(getAddress(conversationId)).toBe(utils.getAddress(conversationId));
+  it("should return a valid checksum'd address if conversationTopic is in expected format", () => {
+    const conversationTopic = "0x78bfd39428c32be149892d64bee6c6f90aedeec1";
+    expect(getAddress(conversationTopic)).toBe(
+      utils.getAddress(conversationTopic),
+    );
   });
-  it("should return the input if conversationId is not in expected format", () => {
-    const conversationId =
+  it("should return the input if conversationTopic is not in expected format", () => {
+    const conversationTopic =
       "0x78bfd39428c32be149892d64bee6c6f90aedeec1/lens.dev/dm/12345";
 
-    expect(getAddress(conversationId)).toBe(conversationId);
+    expect(getAddress(conversationTopic)).toBe(conversationTopic);
   });
   it("should handle empty string input and return empty string", () => {
     expect(getAddress("")).toBe("");

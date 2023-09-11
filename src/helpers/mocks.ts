@@ -1,49 +1,33 @@
 import { ContentTypeText } from "@xmtp/react-sdk";
-import type { DecodedMessage, Stream, Conversation } from "@xmtp/react-sdk";
+import type { CachedConversation, CachedMessage } from "@xmtp/react-sdk";
 
 export const getMockConversation = (
-  values?: Partial<Conversation>,
-): Conversation => ({
-  clientAddress: "",
+  values?: Partial<CachedConversation>,
+): CachedConversation => ({
   createdAt: new Date(),
-  ephemeralTopic: "",
   peerAddress: "",
   topic: "",
-  decodeMessage: () => Promise.resolve() as unknown as Promise<DecodedMessage>,
-  messages: vi.fn().mockResolvedValue(["test1", "test2", "test3"]),
-  messagesPaginated: () =>
-    Promise.resolve() as unknown as AsyncGenerator<
-      DecodedMessage[],
-      any,
-      unknown
-    >,
-  prepareMessage: () =>
-    Promise.resolve() as unknown as ReturnType<Conversation["prepareMessage"]>,
-  send: () => Promise.resolve() as unknown as Promise<DecodedMessage>,
-  streamEphemeral: () =>
-    Promise.resolve() as unknown as Promise<Stream<DecodedMessage>>,
-  streamMessages: () =>
-    Promise.resolve() as unknown as Promise<Stream<DecodedMessage>>,
+  isReady: true,
+  updatedAt: new Date(),
+  walletAddress: values?.walletAddress ?? "",
   ...values,
 });
 
-type DecodedStringMessage = Omit<DecodedMessage, "content"> & {
-  content: string;
-};
-
-export const getMockDecodedMessage = (
-  values?: Partial<DecodedStringMessage>,
-): DecodedStringMessage => ({
-  id: "",
-  messageVersion: "v2",
+export const getMockMessage = (
+  values?: Partial<CachedMessage>,
+): CachedMessage => ({
   senderAddress: "",
-  recipientAddress: "",
-  sent: new Date(),
-  contentTopic: "",
-  conversation: getMockConversation(),
-  contentType: ContentTypeText,
-  content: "",
-  contentBytes: new TextEncoder().encode(values?.content ?? ""),
-  toBytes: () => new TextEncoder().encode(""),
+  hasLoadError: false,
+  hasSendError: false,
+  isSending: false,
+  status: "processed",
+  xmtpID: window.crypto.randomUUID(),
+  uuid: window.crypto.randomUUID(),
+  sentAt: new Date(),
+  conversationTopic: "",
+  contentType: ContentTypeText.toString(),
+  walletAddress: values?.walletAddress ?? "",
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  content: values?.content,
   ...values,
 });

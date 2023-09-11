@@ -1,5 +1,11 @@
 import type { ChangeEvent, Dispatch, SetStateAction } from "react";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import type { Attachment } from "@xmtp/content-type-remote-attachment";
 import {
   ArrowUpIcon,
@@ -12,6 +18,11 @@ import {
 } from "@heroicons/react/outline";
 import { useTranslation } from "react-i18next";
 import { Tooltip } from "react-tooltip";
+import {
+  useConversation,
+  type CachedConversation,
+  type useStartConversation,
+} from "@xmtp/react-sdk";
 import { IconButton } from "../IconButton/IconButton";
 import { useAttachmentChange } from "../../../hooks/useAttachmentChange";
 import { typeLookup, type contentTypes } from "../../../helpers/attachments";
@@ -21,14 +32,19 @@ import { useVoiceRecording } from "../../../hooks/useVoiceRecording";
 import { useRecordingTimer } from "../../../hooks/useRecordingTimer";
 import "react-tooltip/dist/react-tooltip.css";
 
-interface InputProps {
+type InputProps = {
   /**
    * What happens on a submit?
    */
-  onSubmit?: (
+  sendMessage: (
+    conversation: CachedConversation,
     msg: string | Attachment,
     type: "attachment" | "text",
   ) => Promise<void>;
+  startConversation: ReturnType<
+    typeof useStartConversation
+  >["startConversation"];
+  peerAddress: string;
   /**
    * Is the CTA button disabled?
    */
@@ -36,7 +52,7 @@ interface InputProps {
   /**
    * Rerender component?
    */
-  conversationId?: string;
+  conversation?: CachedConversation;
   /**
    * Content attachment
    */
@@ -57,18 +73,21 @@ interface InputProps {
    * Function to set whether content is being dragged over the draggable area, including the message input
    */
   setIsDragActive: (status: boolean) => void;
-}
+};
 
 export const MessageInput = ({
-  onSubmit,
+  sendMessage,
+  startConversation,
+  peerAddress,
   isDisabled,
-  conversationId,
+  conversation,
   attachment,
   setAttachment,
   attachmentPreview,
   setAttachmentPreview,
   setIsDragActive,
 }: InputProps) => {
+  const { getCachedByPeerAddress } = useConversation();
   const { t } = useTranslation();
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const [value, setValue] = useState("");
@@ -77,6 +96,10 @@ export const MessageInput = ({
     Dispatch<SetStateAction<string | string[] | undefined>>,
   ] = useState();
   const attachmentError = useXmtpStore((state) => state.attachmentError);
+  const setConversationTopic = useXmtpStore(
+    (state) => state.setConversationTopic,
+  );
+  const conversationTopic = useXmtpStore((state) => state.conversationTopic);
 
   const inputFile = useRef<HTMLInputElement | null>(null);
 
@@ -104,13 +127,13 @@ export const MessageInput = ({
   }, [value]);
 
   useEffect(() => {
-    if (conversationId) {
+    if (conversationTopic) {
       textAreaRef.current?.focus();
     }
     setValue("");
     setAttachmentPreview(undefined);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [conversationId]);
+  }, [conversation]);
 
   const onButtonClick = (contentType: contentTypes) => {
     // For document view, we want to accept all file types, even if we can't gracefully render them on the UI.
@@ -153,6 +176,57 @@ export const MessageInput = ({
     status,
   });
 
+  const send = useCallback(async () => {
+    if (value || attachment) {
+      // save reference to these values before clearing them from state
+      const val = value;
+      const attach = attachment;
+
+      setValue("");
+      setAttachment(undefined);
+      setAttachmentPreview(undefined);
+
+      let convo = conversation;
+      if (!convo) {
+        // check for cached conversation with the same peer address
+        const existing = await getCachedByPeerAddress(peerAddress);
+        if (existing) {
+          convo = existing;
+        } else {
+          // create new conversation
+          const { cachedConversation } = await startConversation(
+            peerAddress,
+            undefined,
+          );
+          convo = cachedConversation;
+        }
+        // select existing or new conversation
+        if (convo) {
+          setConversationTopic(convo.topic);
+        }
+      }
+      if (attach && convo) {
+        void sendMessage(convo, attach, "attachment");
+      }
+      if (val && convo) {
+        void sendMessage(convo, val, "text");
+      }
+      // focus on message input after sending
+      textAreaRef.current?.focus();
+    }
+  }, [
+    attachment,
+    conversation,
+    getCachedByPeerAddress,
+    peerAddress,
+    sendMessage,
+    setAttachment,
+    setAttachmentPreview,
+    setConversationTopic,
+    startConversation,
+    value,
+  ]);
+
   const extension = attachment?.mimeType.split("/")?.[1] || "";
 
   return (
@@ -187,17 +261,7 @@ export const MessageInput = ({
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
-                if (value || attachment) {
-                  if (attachment) {
-                    void onSubmit?.(attachment, "attachment");
-                    setAttachment(undefined);
-                    setAttachmentPreview(undefined);
-                  }
-                  if (value) {
-                    void onSubmit?.(value, "text");
-                    setValue("");
-                  }
-                }
+                void send();
               }
             }}
             ref={textAreaRef}
@@ -332,18 +396,7 @@ export const MessageInput = ({
             label={<ArrowUpIcon color="white" width="20" />}
             srText={t("aria_labels.submit_message") || ""}
             onClick={() => {
-              if (value || attachment) {
-                if (attachment) {
-                  void onSubmit?.(attachment, "attachment");
-                  setAttachment(undefined);
-                  setAttachmentPreview(undefined);
-                }
-                if (value) {
-                  void onSubmit?.(value, "text");
-                  setValue("");
-                }
-                textAreaRef.current?.focus();
-              }
+              void send();
             }}
             isDisabled={
               !(value || attachmentPreview) || isDisabled || !!attachmentError

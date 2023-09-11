@@ -1,73 +1,64 @@
-import { useEffect, useState } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
+import { useMessages, type CachedConversation } from "@xmtp/react-sdk";
+import { useMemo, useRef } from "react";
+import { isSameDay } from "date-fns";
 import { DateDivider } from "../component-library/components/DateDivider/DateDivider";
 import { FullConversation } from "../component-library/components/FullConversation/FullConversation";
-import { useXmtpStore } from "../store/xmtp";
 import { FullMessageController } from "./FullMessageController";
-import useGetMessages from "../hooks/useGetMessages";
+import { isMessageSupported } from "../helpers/isMessagerSupported";
 
-export const FullConversationController = () => {
-  let lastMessageDate: Date;
-  const [initialConversationLoaded, setInitialConversationLoaded] =
-    useState(false);
-
-  const conversationId = useXmtpStore((state) => state.conversationId);
-
-  useEffect(() => {
-    setInitialConversationLoaded(false);
-  }, [conversationId]);
+type FullConversationControllerProps = {
+  conversation: CachedConversation;
+};
+export const FullConversationController: React.FC<
+  FullConversationControllerProps
+> = ({ conversation }) => {
+  const lastMessageDateRef = useRef<Date>();
+  const renderedDatesRef = useRef<Date[]>([]);
 
   // XMTP Hooks
-  const {
-    messages = [],
-    hasMore,
-    next,
-    isLoading,
-  } = useGetMessages(conversationId as string);
+  const { messages, isLoading } = useMessages(conversation);
 
-  const isOnSameDay = (d1?: Date, d2?: Date): boolean =>
-    d1?.toDateString() === d2?.toDateString();
+  const messagesWithDates = useMemo(
+    () =>
+      messages?.map((msg, index) => {
+        // if the message content type is not support and has no fallback,
+        // disregard it
+        if (!isMessageSupported(msg) && !msg.contentFallback) {
+          return null;
+        }
+        if (renderedDatesRef.current.length === 0) {
+          renderedDatesRef.current.push(msg.sentAt);
+        }
+        const lastRenderedDate = renderedDatesRef.current.at(-1) as Date;
+        const isFirstMessage = index === 0;
+        const isSameDate = isSameDay(lastRenderedDate, msg.sentAt);
+        const shouldDisplayDate = isFirstMessage || !isSameDate;
+
+        if (shouldDisplayDate) {
+          renderedDatesRef.current.push(msg.sentAt);
+        }
+
+        const messageDiv = (
+          <div key={msg.uuid}>
+            {shouldDisplayDate && (
+              <DateDivider date={renderedDatesRef.current.at(-1) as Date} />
+            )}
+            <FullMessageController message={msg} />
+          </div>
+        );
+        lastMessageDateRef.current = msg.sentAt;
+        return messageDiv;
+      }),
+    [messages],
+  );
 
   return (
     <div
       id="scrollableDiv"
       // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
       tabIndex={0}
-      className="w-full h-full flex flex-col flex-col-reverse overflow-auto">
-      <InfiniteScroll
-        className="flex flex-col flex-col-reverse"
-        dataLength={messages.length}
-        next={() => {
-          if (!initialConversationLoaded) {
-            setInitialConversationLoaded(true);
-          }
-          void next();
-        }}
-        endMessage={!messages?.length}
-        hasMore={hasMore}
-        inverse
-        loader
-        scrollableTarget="scrollableDiv">
-        <FullConversation
-          isLoading={isLoading && !initialConversationLoaded}
-          messages={messages?.map((msg, index) => {
-            const dateHasChanged = lastMessageDate
-              ? !isOnSameDay(lastMessageDate, msg.sent)
-              : false;
-            const messageDiv = (
-              <div key={`${msg.id}_${index}`}>
-                {messages.length === 1 || index === messages.length - 1 ? (
-                  <DateDivider date={msg.sent} />
-                ) : null}
-                <FullMessageController msg={msg} idx={index} />
-                {dateHasChanged ? <DateDivider date={lastMessageDate} /> : null}
-              </div>
-            );
-            lastMessageDate = msg.sent;
-            return messageDiv;
-          })}
-        />
-      </InfiniteScroll>
+      className="w-full h-full flex flex-col overflow-auto">
+      <FullConversation isLoading={isLoading} messages={messagesWithDates} />
     </div>
   );
 };

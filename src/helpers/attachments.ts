@@ -1,5 +1,3 @@
-import { ATTACHMENT_ERRORS } from "./constants";
-
 export const typeLookup: Record<string, contentTypes> = {
   jpg: "image",
   jpeg: "image",
@@ -23,10 +21,6 @@ export const typeLookup: Record<string, contentTypes> = {
  * @returns The human readable file size string.
  */
 export const humanFileSize = (bytes: number, si = false, dp = 1) => {
-  // Throws error if > 10 MB
-  if (bytes > 10000000) {
-    return ATTACHMENT_ERRORS.FILE_TOO_LARGE;
-  }
   const thresh = si ? 1000 : 1024;
 
   if (Math.abs(bytes) < thresh) {

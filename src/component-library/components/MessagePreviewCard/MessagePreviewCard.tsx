@@ -101,7 +101,9 @@ export const MessagePreviewCard = ({
         {isLoading ? (
           <ShortCopySkeletonLoader />
         ) : (
-          <span className="text-md text-gray-600 line-clamp-1 w-full break-all">
+          <span
+            className="text-md text-gray-600 line-clamp-1 w-full break-all"
+            data-testid="message-preview-text">
             {text ?? t("messages.convos_empty_text_placeholder")}
           </span>
         )}
