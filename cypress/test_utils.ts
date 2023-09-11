@@ -28,7 +28,6 @@ const enterWalletAddress = (testUser: string) => {
 
 const checkExpectedPreMessageFields = () => {
   cy.wait(1000);
-  // checkElement("message-beginning-text");
   checkElement("message-input");
   checkElement("message-input-submit");
 };
