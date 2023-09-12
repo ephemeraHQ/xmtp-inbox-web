@@ -1,3 +1,4 @@
+import type { ClientOptions } from "@xmtp/react-sdk";
 import { Client, useClient, useCanMessage } from "@xmtp/react-sdk";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useConnect, useSigner } from "wagmi";
@@ -38,7 +39,7 @@ const clientOptions = {
   apiUrl: import.meta.env.VITE_XMTP_API_URL,
   env: getEnv(),
   appVersion: getAppVersion(),
-};
+} as Partial<ClientOptions>;
 
 const useInitXmtpClient = () => {
   // track if onboarding is in progress
@@ -133,7 +134,7 @@ const useInitXmtpClient = () => {
       if (!client && signer) {
         onboardingRef.current = true;
         const address = await signer.getAddress();
-        let keys = loadKeys(address);
+        let keys: Uint8Array | null | undefined = loadKeys(address);
         // check if we already have the keys
         if (keys) {
           // resolve client promises
@@ -161,23 +162,29 @@ const useInitXmtpClient = () => {
               setStatus("new");
             }
           }
-          // get client keys
-          keys = await Client.getKeys(signer, {
-            ...clientOptions,
-            // we don't need to publish the contact here since it
-            // will happen when we create the client later
-            skipContactPublishing: true,
-            // we can skip persistence on the keystore for this short-lived
-            // instance
-            persistConversations: false,
-            preCreateIdentityCallback,
-            preEnableIdentityCallback,
-          });
-          // all signatures have been accepted
-          setStatus("enabled");
-          setSigning(false);
-          // persist client keys
-          storeKeys(address, keys);
+          if (await Client.isSnapsReady()) {
+            keys = undefined;
+            clientOptions.useSnaps = true;
+            clientOptions.preCreateIdentityCallback = preCreateIdentityCallback;
+            clientOptions.preEnableIdentityCallback = preEnableIdentityCallback;
+          } else {
+            keys = await Client.getKeys(signer, {
+              ...clientOptions,
+              // we don't need to publish the contact here since it
+              // will happen when we create the client later
+              skipContactPublishing: true,
+              // we can skip persistence on the keystore for this short-lived
+              // instance
+              persistConversations: false,
+              preCreateIdentityCallback,
+              preEnableIdentityCallback,
+            });
+            // all signatures have been accepted
+            setStatus("enabled");
+            setSigning(false);
+            // persist client keys
+            storeKeys(address, keys);
+          }
         }
         // initialize client
         await initialize({ keys, options: clientOptions, signer });
