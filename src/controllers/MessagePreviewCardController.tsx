@@ -41,7 +41,6 @@ export const MessagePreviewCardController = ({
   });
 
   // Get UNS name
-  // const [previewUnsName, setPreviewUnsName] = useState<string | null>();
   const previewUnsName =
     unsNames && convo?.peerAddress.toLowerCase() in unsNames
       ? unsNames[convo?.peerAddress.toLowerCase()]
