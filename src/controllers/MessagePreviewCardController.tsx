@@ -1,23 +1,20 @@
 import { useLastMessage, type CachedConversation } from "@xmtp/react-sdk";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import { useEnsAvatar, useEnsName } from "wagmi";
 import { useTranslation } from "react-i18next";
 import { MessagePreviewCard } from "../component-library/components/MessagePreviewCard/MessagePreviewCard";
-import {
-  XMTP_FEEDBACK_ADDRESS,
-  fetchUnsName,
-  isValidLongWalletAddress,
-  shortAddress,
-} from "../helpers";
+import { XMTP_FEEDBACK_ADDRESS, shortAddress } from "../helpers";
 import type { address } from "../pages/inbox";
 import { useXmtpStore } from "../store/xmtp";
 
 interface MessagePreviewCardControllerProps {
   convo: CachedConversation;
+  unsNames?: { [key: string]: string } | null;
 }
 
 export const MessagePreviewCardController = ({
   convo,
+  unsNames,
 }: MessagePreviewCardControllerProps) => {
   const { t } = useTranslation();
   const lastMessage = useLastMessage(convo.topic);
@@ -44,20 +41,11 @@ export const MessagePreviewCardController = ({
   });
 
   // Get UNS name
-  const [previewUnsName, setPreviewUnsName] = useState<string | null>();
-
-  useEffect(() => {
-    const getUns = async () => {
-      if (isValidLongWalletAddress(convo?.peerAddress || "")) {
-        const name = await fetchUnsName(convo?.peerAddress);
-        setPreviewUnsName(name);
-      } else {
-        setPreviewUnsName(null);
-      }
-    };
-
-    void getUns();
-  }, [convo?.peerAddress]);
+  // const [previewUnsName, setPreviewUnsName] = useState<string | null>();
+  const previewUnsName =
+    unsNames && convo?.peerAddress.toLowerCase() in unsNames
+      ? unsNames[convo?.peerAddress.toLowerCase()]
+      : null;
 
   // Helpers
   const isSelected = conversationTopic === convo.topic;
