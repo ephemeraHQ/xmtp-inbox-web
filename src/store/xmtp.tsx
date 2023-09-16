@@ -1,28 +1,33 @@
-import type { Conversation, DecodedMessage } from "@xmtp/react-sdk";
 import { create } from "zustand";
-import { RecipientInputMode } from "../helpers";
-import getUniqueMessages from "../helpers/getUniqueMessages";
-import type { address } from "../pages/inbox";
+import type { ETHAddress } from "../helpers";
+
+export type RecipientState = "invalid" | "loading" | "error" | "valid";
+
+export type RecipientAddress = ETHAddress | null;
 
 interface XmtpState {
-  conversations: Map<string, Conversation>;
-  setConversations: (conversations: Map<string, Conversation>) => void;
   loadingConversations: boolean;
   setLoadingConversations: (loadingConversations: boolean) => void;
-  convoMessages: Map<string, DecodedMessage[]>;
-  previewMessages: Map<string, DecodedMessage>;
-  setPreviewMessage: (key: string, message: DecodedMessage) => void;
-  setPreviewMessages: (previewMessages: Map<string, DecodedMessage>) => void;
-  addMessages: (key: string, newMessages: DecodedMessage[]) => number;
-  recipientWalletAddress: string | address;
-  setRecipientWalletAddress: (address: string) => void;
-  conversationId?: string;
-  setConversationId: (conversationId?: string) => void;
-  recipientInputMode: number;
-  setRecipientInputMode: (recipientInputMode?: number) => void;
-  recipientEnteredValue: string;
-  setRecipientEnteredValue: (recipientEnteredValue?: string) => void;
+  clientName: string | null;
+  setClientName: (name: string | null) => void;
+  clientAvatar: string | null;
+  setClientAvatar: (avatar: string | null) => void;
+  recipientInput: string;
+  setRecipientInput: (input: string) => void;
+  recipientAddress: RecipientAddress;
+  setRecipientAddress: (address: RecipientAddress) => void;
+  recipientName: string | null;
+  setRecipientName: (address: string | null) => void;
+  recipientAvatar: string | null;
+  setRecipientAvatar: (avatar: string | null) => void;
+  recipientState: RecipientState;
+  setRecipientState: (state: RecipientState) => void;
+  recipientOnNetwork: boolean;
+  setRecipientOnNetwork: (onNetwork: boolean) => void;
+  conversationTopic?: string;
+  setConversationTopic: (conversationTopic?: string) => void;
   resetXmtpState: () => void;
+  resetRecipient: () => void;
   startedFirstMessage: boolean;
   setStartedFirstMessage: (startedFirstMessage: boolean) => void;
   attachmentError: string;
@@ -30,58 +35,47 @@ interface XmtpState {
 }
 
 export const useXmtpStore = create<XmtpState>((set) => ({
-  conversations: new Map(),
-  setConversations: (conversations: Map<string, Conversation>) =>
-    set(() => ({ conversations })),
   loadingConversations: true,
   setLoadingConversations: (loadingConversations: boolean) =>
     set(() => ({ loadingConversations })),
-  convoMessages: new Map(),
-  previewMessages: new Map(),
-  setPreviewMessage: (key: string, message: DecodedMessage) =>
-    set((state) => {
-      const newPreviewMessages = new Map(state.previewMessages);
-      newPreviewMessages.set(key, message);
-      return { previewMessages: newPreviewMessages };
-    }),
-  setPreviewMessages: (previewMessages) => set(() => ({ previewMessages })),
-  addMessages: (key: string, newMessages: DecodedMessage[]) => {
-    let numAdded = 0;
-    set((state) => {
-      const convoMessages = new Map(state.convoMessages);
-      const existing = state.convoMessages.get(key) || [];
-      const updated = getUniqueMessages([...existing, ...newMessages]);
-      numAdded = updated.length - existing.length;
-      // If nothing has been added, return the old item to avoid unnecessary refresh
-      if (!numAdded) {
-        return { convoMessages: state.convoMessages };
-      }
-      convoMessages.set(key, updated);
-      return { convoMessages };
-    });
-    return numAdded;
-  },
-  recipientWalletAddress: "",
-  setRecipientWalletAddress: (address) =>
-    set(() => ({ recipientWalletAddress: address })),
-  conversationId: "",
-  setConversationId: (conversationId) => set(() => ({ conversationId })),
-  recipientInputMode: RecipientInputMode.InvalidEntry,
-  setRecipientInputMode: (recipientInputMode) =>
-    set(() => ({ recipientInputMode })),
-  recipientEnteredValue: "",
-  setRecipientEnteredValue: (recipientEnteredValue) =>
-    set(() => ({ recipientEnteredValue })),
+  clientName: null,
+  setClientName: (name) => set(() => ({ clientName: name })),
+  clientAvatar: null,
+  setClientAvatar: (avatar) => set(() => ({ clientAvatar: avatar })),
+  recipientInput: "",
+  setRecipientInput: (input) => set(() => ({ recipientInput: input })),
+  recipientAddress: null,
+  setRecipientAddress: (address) => set(() => ({ recipientAddress: address })),
+  recipientName: null,
+  setRecipientName: (name) => set(() => ({ recipientName: name })),
+  recipientAvatar: null,
+  setRecipientAvatar: (avatar) => set(() => ({ recipientAvatar: avatar })),
+  recipientState: "invalid",
+  setRecipientState: (state) => set(() => ({ recipientState: state })),
+  recipientOnNetwork: false,
+  setRecipientOnNetwork: (onNetwork) =>
+    set(() => ({ recipientOnNetwork: onNetwork })),
+  conversationTopic: "",
+  setConversationTopic: (conversationTopic) =>
+    set(() => ({ conversationTopic })),
   resetXmtpState: () =>
     set(() => ({
       client: undefined,
-      conversations: new Map(),
-      convoMessages: new Map(),
-      previewMessages: new Map(),
-      recipientWalletAddress: "",
-      conversationId: undefined,
+      recipientInput: "",
+      recipientAddress: null,
+      recipientName: null,
+      recipientAvatar: null,
+      recipientState: "invalid",
+      conversationTopic: undefined,
       startedFirstMessage: false,
-      recipientInputMode: RecipientInputMode.InvalidEntry,
+    })),
+  resetRecipient: () =>
+    set(() => ({
+      recipientInput: "",
+      recipientAddress: null,
+      recipientName: null,
+      recipientAvatar: null,
+      recipientState: "invalid",
     })),
   startedFirstMessage: false,
   setStartedFirstMessage: (startedFirstMessage) =>

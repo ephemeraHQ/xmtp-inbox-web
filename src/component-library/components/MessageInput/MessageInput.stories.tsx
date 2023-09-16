@@ -19,6 +19,15 @@ const Template: ComponentStory<typeof MessageInput> = () => (
     setAttachment={() => {}}
     setAttachmentPreview={() => {}}
     setIsDragActive={() => {}}
+    peerAddress="0x1234"
+    sendMessage={() => Promise.resolve()}
+    startConversation={() =>
+      Promise.resolve({
+        cachedConversation: undefined,
+        conversation: undefined,
+        cachedMessage: undefined,
+      })
+    }
   />
 );
 

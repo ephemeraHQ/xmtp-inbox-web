@@ -1,92 +1,50 @@
-import { useClient } from "@xmtp/react-sdk";
-import type { DecodedMessage } from "@xmtp/react-sdk";
-import { useEffect } from "react";
-import { fetchEnsName } from "@wagmi/core";
-import { useAccount } from "wagmi";
 import {
-  getConversationId,
-  shortAddress,
-  truncate,
-  fetchUnsName,
-} from "../helpers";
-import { useXmtpStore } from "../store/xmtp";
-import type { address } from "../pages/inbox";
-
-let latestMsgId: string;
+  useStreamAllMessages as _useStreamAllMessages,
+  useConversation,
+} from "@xmtp/react-sdk";
+import type { DecodedMessage } from "@xmtp/react-sdk";
+import { useCallback, useRef } from "react";
+import { useAccount } from "wagmi";
+import { shortAddress, truncate } from "../helpers";
+import { getCachedPeerAddressName } from "../helpers/conversation";
 
 const useStreamAllMessages = () => {
   const { address: walletAddress } = useAccount();
+  const { getCachedByTopic } = useConversation();
+  const latestMsgId = useRef<string>();
 
-  const { client } = useClient();
+  const onMessage = useCallback(
+    async (message: DecodedMessage) => {
+      if (
+        latestMsgId.current !== message.id &&
+        "Notification" in window &&
+        window.Notification.permission === "granted" &&
+        message.senderAddress !== walletAddress &&
+        document.hidden
+      ) {
+        // look for name in cached conversation
+        const cachedConversation = await getCachedByTopic(
+          message.conversation.topic,
+        );
 
-  const convoMessages = useXmtpStore((state) => state.convoMessages);
-  const addMessages = useXmtpStore((state) => state.addMessages);
-  const setPreviewMessage = useXmtpStore((state) => state.setPreviewMessage);
+        if (cachedConversation) {
+          const name = getCachedPeerAddressName(cachedConversation);
 
-  useEffect(() => {
-    if (!client) {
-      return () => {};
-    }
-
-    let messageStream: AsyncGenerator<DecodedMessage>;
-
-    const streamAllMessages = async () => {
-      messageStream = await client?.conversations?.streamAllMessages();
-
-      for await (const message of messageStream) {
-        const key = getConversationId(message.conversation);
-        setPreviewMessage(key, message);
-
-        const numAdded = addMessages(key, [message]);
-        if (numAdded > 0) {
-          const newMessages = convoMessages.get(key) ?? [];
-          newMessages.push(message);
-          // Below code is to remove duplicate messages from the
-          // newMessages array
-          const uniqueMessages = [
-            ...Array.from(
-              new Map(newMessages.map((item) => [item.id, item])).values(),
-            ),
-          ];
-          convoMessages.set(key, uniqueMessages);
-
-          if (
-            latestMsgId !== message.id &&
-            Notification.permission === "granted" &&
-            message.senderAddress !== walletAddress &&
-            document.hidden
-          ) {
-            const ensName = await fetchEnsName({
-              address: message.senderAddress as address,
-            });
-            const unsName = await fetchUnsName(message?.senderAddress);
-
-            // eslint-disable-next-line no-new
-            new Notification("XMTP", {
-              body: `${
-                ensName || unsName || shortAddress(message.senderAddress ?? "")
-              }\n${truncate(message.content as string, 75)}`,
-            });
-
-            latestMsgId = message.id;
-          }
+          // eslint-disable-next-line no-new
+          new window.Notification("XMTP", {
+            body: `${
+              name || shortAddress(message.senderAddress ?? "")
+            }\n${truncate(message.content as string, 75)}`,
+          });
         }
+
+        latestMsgId.current = message.id;
       }
-    };
+    },
+    [getCachedByTopic, walletAddress],
+  );
 
-    const closeMessageStream = async () => {
-      if (messageStream) {
-        await messageStream.return(undefined);
-      }
-    };
-
-    void streamAllMessages();
-
-    return () => {
-      void closeMessageStream();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [client, walletAddress]);
+  void _useStreamAllMessages(onMessage);
 };
 
 export default useStreamAllMessages;

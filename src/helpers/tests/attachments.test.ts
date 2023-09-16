@@ -1,6 +1,5 @@
 import { expect } from "vitest";
 import { getContentTypeFromFileName, humanFileSize } from "../attachments";
-import { ATTACHMENT_ERRORS } from "../constants";
 
 describe("humanFileSize", () => {
   it("should return '0 B' for 0 bytes", () => {
@@ -11,9 +10,6 @@ describe("humanFileSize", () => {
   });
   it("should return '1 MB' for 1048576 bytes", () => {
     expect(humanFileSize(1048576)).toBe("1.0 MB");
-  });
-  it("should throw an error if file is > 10 MB", () => {
-    expect(humanFileSize(10000001)).toBe(ATTACHMENT_ERRORS.FILE_TOO_LARGE);
   });
 });
 

@@ -1,7 +1,7 @@
 import type React from "react";
 import { useEffect, useState } from "react";
-import { useClient } from "@xmtp/react-sdk";
-import { useDisconnect, useSigner } from "wagmi";
+import { useClient, useConversations } from "@xmtp/react-sdk";
+import { useDisconnect, useWalletClient } from "wagmi";
 import type { Attachment } from "@xmtp/content-type-remote-attachment";
 import { useNavigate } from "react-router-dom";
 import { useXmtpStore } from "../store/xmtp";
@@ -15,35 +15,25 @@ import { LearnMore } from "../component-library/components/LearnMore/LearnMore";
 import useWindowSize from "../hooks/useWindowSize";
 import { ConversationListController } from "../controllers/ConversationListController";
 import { useAttachmentChange } from "../hooks/useAttachmentChange";
-import { db } from "../helpers/attachment_db";
-
-export type address = `0x${string}`;
+import useSelectedConversation from "../hooks/useSelectedConversation";
 
 const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   const navigate = useNavigate();
   const resetXmtpState = useXmtpStore((state) => state.resetXmtpState);
-  const { client, disconnect, signer: clientSigner } = useClient();
+  const { client, disconnect } = useClient();
   const [isDragActive, setIsDragActive] = useState(false);
+  const { conversations } = useConversations();
+  const selectedConversation = useSelectedConversation();
+  const { data: walletClient } = useWalletClient();
 
   useEffect(() => {
     if (!client) {
       navigate("/");
     }
-    // any time the client changes, the attachments cached db should be cleared
-    // this is because the contentDataURL is partially derived from client
-    // and doesn't render properly if image is in cache with a different client.
-    void db.attachments.clear();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [client]);
 
-  const { data: signer } = useSigner();
-  // XMTP Store
-  const conversations = useXmtpStore((state) => state.conversations);
-  const conversationId = useXmtpStore((state) => state.conversationId);
-
-  const recipientWalletAddress = useXmtpStore(
-    (state) => state.recipientWalletAddress,
-  );
+  const recipientAddress = useXmtpStore((s) => s.recipientAddress);
 
   const size = useWindowSize();
 
@@ -77,21 +67,27 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
 
   // if the wallet address changes, disconnect the XMTP client
   useEffect(() => {
-    const checkSigners = async () => {
-      const address1 = await signer?.getAddress();
-      const address2 = await clientSigner?.getAddress();
+    const checkSigners = () => {
+      const address1 = walletClient?.account.address;
+      const address2 = client?.address;
       // addresses must be defined before comparing
       if (address1 && address2 && address1 !== address2) {
         resetXmtpState();
-        disconnect();
+        void disconnect();
         wipeKeys(address1 ?? "");
         disconnectWagmi();
         resetWagmi();
       }
     };
     void checkSigners();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [clientSigner, disconnect, resetXmtpState, signer]);
+  }, [
+    disconnect,
+    resetXmtpState,
+    walletClient,
+    client?.address,
+    resetWagmi,
+    disconnectWagmi,
+  ]);
 
   if (!client) {
     return <div />;
@@ -117,7 +113,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
       <div className="w-full md:h-full overflow-auto flex flex-col md:flex-row">
         <div className="flex">
           {size[0] > TAILWIND_MD_BREAKPOINT ||
-          (!recipientWalletAddress && !startedFirstMessage) ? (
+          (!recipientAddress && !startedFirstMessage) ? (
             <>
               <SideNavController />
               <div className="flex flex-col w-full h-screen overflow-y-auto md:min-w-[350px]">
@@ -130,10 +126,10 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
           ) : null}
         </div>
         {size[0] > TAILWIND_MD_BREAKPOINT ||
-        recipientWalletAddress ||
+        recipientAddress ||
         startedFirstMessage ? (
           <div className="flex w-full flex-col h-screen overflow-hidden">
-            {!conversations.size &&
+            {!conversations.length &&
             !loadingConversations &&
             !startedFirstMessage ? (
               <LearnMore
@@ -146,7 +142,11 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
                   <AddressInputController />
                 </div>
                 <div className="h-full overflow-auto flex flex-col">
-                  {conversationId && <FullConversationController />}
+                  {selectedConversation && (
+                    <FullConversationController
+                      conversation={selectedConversation}
+                    />
+                  )}
                 </div>
                 {/* Drag event handling needing for content attachments */}
                 <MessageInputController

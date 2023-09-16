@@ -1,113 +1,89 @@
-import type { Conversation } from "@xmtp/react-sdk";
-import { useEffect, useState } from "react";
-import { useEnsAvatar, useEnsName } from "wagmi";
+import { useLastMessage, type CachedConversation } from "@xmtp/react-sdk";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { MessagePreviewCard } from "../component-library/components/MessagePreviewCard/MessagePreviewCard";
-import {
-  XMTP_FEEDBACK_ADDRESS,
-  fetchUnsName,
-  getConversationId,
-  isValidLongWalletAddress,
-  shortAddress,
-} from "../helpers";
-import type { address } from "../pages/inbox";
+import { shortAddress } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
-import MessageContentController from "./MessageContentController";
+import {
+  getCachedPeerAddressAvatar,
+  getCachedPeerAddressName,
+} from "../helpers/conversation";
 
 interface MessagePreviewCardControllerProps {
-  convo?: Conversation;
+  convo: CachedConversation;
 }
+
 export const MessagePreviewCardController = ({
   convo,
 }: MessagePreviewCardControllerProps) => {
   const { t } = useTranslation();
+  const lastMessage = useLastMessage(convo.topic);
   // XMTP State
-  const previewMessages = useXmtpStore((state) => state.previewMessages);
-  const recipientWalletAddress = useXmtpStore(
-    (state) => state.recipientWalletAddress,
-  );
-
-  const setRecipientWalletAddress = useXmtpStore(
-    (state) => state.setRecipientWalletAddress,
-  );
-  const conversationId = useXmtpStore((state) => state.conversationId);
-
-  const setConversationId = useXmtpStore((state) => state.setConversationId);
-  const previewMessage = previewMessages.get(getConversationId(convo));
-
-  // Get ENS name and avatar from Wagmi
-  const { data: previewEnsName } = useEnsName({
-    address: convo?.peerAddress as address,
-  });
-  const { data: convoAvatarUrl, isLoading: convoAvatarLoading } = useEnsAvatar({
-    address: convo?.peerAddress as address,
-  });
-
-  // Get UNS name
-  const [previewUnsName, setPreviewUnsName] = useState<string | null>();
-
-  useEffect(() => {
-    const getUns = async () => {
-      if (isValidLongWalletAddress(convo?.peerAddress || "")) {
-        const name = await fetchUnsName(convo?.peerAddress);
-        setPreviewUnsName(name);
-      } else {
-        setPreviewUnsName(null);
-      }
-    };
-
-    void getUns();
-  }, [convo?.peerAddress]);
+  const recipientAddress = useXmtpStore((s) => s.recipientAddress);
+  const setRecipientInput = useXmtpStore((s) => s.setRecipientInput);
+  const setRecipientAddress = useXmtpStore((s) => s.setRecipientAddress);
+  const setRecipientName = useXmtpStore((s) => s.setRecipientName);
+  const setRecipientAvatar = useXmtpStore((s) => s.setRecipientAvatar);
+  const setRecipientState = useXmtpStore((s) => s.setRecipientState);
+  const setRecipientOnNetwork = useXmtpStore((s) => s.setRecipientOnNetwork);
+  const setConversationTopic = useXmtpStore((s) => s.setConversationTopic);
+  const conversationTopic = useXmtpStore((state) => state.conversationTopic);
 
   // Helpers
-  const isSelected = conversationId === getConversationId(convo);
+  const isSelected = conversationTopic === convo.topic;
 
-  const onConvoClick = (conversation: Conversation) => {
-    if (recipientWalletAddress !== conversation.peerAddress) {
-      setRecipientWalletAddress(conversation.peerAddress);
-    }
-    if (conversationId !== getConversationId(conversation)) {
-      setConversationId(getConversationId(conversation));
-    }
-  };
+  const onConvoClick = useCallback(
+    (conversation: CachedConversation) => {
+      if (recipientAddress !== conversation.peerAddress) {
+        const peerAddress = conversation.peerAddress as `0x${string}`;
+        const avatar = getCachedPeerAddressAvatar(conversation);
+        setRecipientAvatar(avatar);
+        const name = getCachedPeerAddressName(conversation);
+        setRecipientName(name);
+        setRecipientAddress(peerAddress);
+        setRecipientOnNetwork(true);
+        setRecipientState("valid");
+        setRecipientInput(peerAddress);
+        setConversationTopic(conversation.topic);
+      }
+    },
+    [
+      recipientAddress,
+      setConversationTopic,
+      setRecipientAddress,
+      setRecipientAvatar,
+      setRecipientInput,
+      setRecipientName,
+      setRecipientOnNetwork,
+      setRecipientState,
+    ],
+  );
 
   const conversationDomain = convo?.context?.conversationId.split("/")[0] ?? "";
+
+  const content = lastMessage?.content
+    ? typeof lastMessage.content !== "string"
+      ? t("messages.attachment") || "Attachment"
+      : lastMessage?.content
+    : undefined;
 
   return (
     <MessagePreviewCard
       isSelected={isSelected}
-      key={previewMessage?.id}
-      text={
-        previewMessage?.content ? (
-          <MessageContentController
-            content={
-              typeof previewMessage.content !== "string"
-                ? t("messages.attachment") || "Attachment"
-                : previewMessage?.content
-            }
-            // None of these props are needed for this preview view.
-            // If there is an error or loading of attachment, the message preview still has the same view.
-            isSelf={false}
-            isLoading={false}
-            isError={false}
-          />
-        ) : undefined
-      }
-      datetime={previewMessage?.sent}
+      key={lastMessage?.xmtpID}
+      text={content}
+      datetime={convo?.updatedAt}
       displayAddress={
-        previewEnsName ||
-        previewUnsName ||
+        getCachedPeerAddressName(convo) ??
         shortAddress(convo?.peerAddress || "")
       }
       onClick={() => {
         if (convo) {
-          onConvoClick?.(convo);
+          void onConvoClick?.(convo);
         }
       }}
-      isLoading={convoAvatarLoading}
-      avatarUrl={convoAvatarUrl || ""}
+      avatarUrl={getCachedPeerAddressAvatar(convo) || ""}
       conversationDomain={shortAddress(conversationDomain)}
-      pinned={convo?.peerAddress === XMTP_FEEDBACK_ADDRESS}
       address={convo?.peerAddress}
     />
   );

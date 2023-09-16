@@ -1,15 +1,11 @@
 import { expect } from "vitest";
-import { utils } from "ethers";
 import {
-  isEnsAddress,
-  isUnsAddress,
-  getConversationId,
+  isEnsName,
+  isUnsName,
   shortAddress,
   truncate,
   isValidRecipientAddressFormat,
-  getAddress,
 } from "../string";
-import { getMockConversation } from "../mocks";
 
 describe("truncate", () => {
   it("should return the original string if its length is less than the length param", () => {
@@ -23,88 +19,70 @@ describe("truncate", () => {
   });
 });
 
-describe("isEnsAddress", () => {
-  it("should return true if address ends with .eth", () => {
-    expect(isEnsAddress("test.eth")).toBe(true);
+describe("isEnsName", () => {
+  it("should return true if name ends with .eth", () => {
+    expect(isEnsName("test.eth")).toBe(true);
   });
-  it("should return false if address does not include eth", () => {
-    expect(isEnsAddress("01201209483434")).toBe(false);
+  it("should return false if name does not include a period", () => {
+    expect(isEnsName("01201209483434")).toBe(false);
   });
-  it("should return false if address includes but does not end with .eth", () => {
-    expect(isEnsAddress("test.noteth")).toBe(false);
-    expect(isEnsAddress("eth.test")).toBe(false);
+  it("should return false if name includes a period but is only 2 characters", () => {
+    expect(isEnsName("t.")).toBe(false);
+    expect(isEnsName(".x")).toBe(false);
   });
-  it("should return false if invalid address", () => {
-    expect(isEnsAddress("")).toBe(false);
+  it("should return false if invalid name", () => {
+    expect(isEnsName("")).toBe(false);
   });
-  it("should return true for cb.id addresses", () => {
-    expect(isEnsAddress("test.cb.id")).toBe(true);
+  it("should return true for cb.id names", () => {
+    expect(isEnsName("test.cb.id")).toBe(true);
   });
-
-  describe("shortAddress", () => {
-    it("should return properly formatted address with long addresses that start with 0x", () => {
-      const address = "0x3843594754958459849584232930";
-      expect(shortAddress(address)).toBe("0x3843...2930");
-    });
-    it("should not format long addresses that do not start with 0x", () => {
-      const address = "123843594754958459849584232930";
-      expect(shortAddress(address)).toBe(address);
-    });
-    it("should not format short addresses that start with 0x", () => {
-      const address = "0xabc";
-      expect(shortAddress(address)).toBe(address);
-    });
-    it("should not format short addresses that do not start with 0x", () => {
-      const address = "abc";
-      expect(shortAddress(address)).toBe(address);
-    });
-    it("should handle empty string inputs by returning an empty string", () => {
-      expect(shortAddress("")).toBe("");
-    });
+  it("should return true for any TLD", () => {
+    expect(isEnsName("test.chat")).toBe(true);
+    expect(isEnsName("test.org")).toBe(true);
+    expect(isEnsName("test.eth")).toBe(true);
+    expect(isEnsName("test.com")).toBe(true);
+    expect(isEnsName("test.net")).toBe(true);
   });
 });
 
-describe("isUnsAddress", () => {
-  it("should return true if address ends with .wallet", () => {
-    expect(isUnsAddress("test.wallet")).toBe(true);
+describe("shortAddress", () => {
+  it("should return properly formatted address with long addresses that start with 0x", () => {
+    const address = "0x3843594754958459849584232930739572065843";
+    expect(shortAddress(address)).toBe("0x3843...5843");
   });
-  it("should return false if address does not end with any UNS suffix", () => {
-    expect(isUnsAddress("01201209483434")).toBe(false);
+  it("should not format long addresses that do not start with 0x", () => {
+    const address = "123843594754958459849584232930";
+    expect(shortAddress(address)).toBe(address);
   });
-  it("should return false if address includes but does not end with .wallet", () => {
-    expect(isUnsAddress("test.notwallet")).toBe(false);
-    expect(isUnsAddress("wallet.test")).toBe(false);
+  it("should not format short addresses that start with 0x", () => {
+    const address = "0xabc";
+    expect(shortAddress(address)).toBe(address);
   });
-  it("should return false if invalid address", () => {
-    expect(isUnsAddress("")).toBe(false);
+  it("should not format short addresses that do not start with 0x", () => {
+    const address = "abc";
+    expect(shortAddress(address)).toBe(address);
   });
-  it("should return true for subdomain .wallet addresses", () => {
-    expect(isUnsAddress("test.test.wallet")).toBe(true);
+  it("should handle empty string inputs by returning an empty string", () => {
+    expect(shortAddress("")).toBe("");
   });
 });
 
-describe("getConversationId", () => {
-  it("should send back formatted conversation key if conversation id exists", () => {
-    const conversation = getMockConversation({
-      context: {
-        conversationId: "testConversationId",
-        metadata: {},
-      },
-      peerAddress: "testPeerAddress",
-    });
-    expect(getConversationId(conversation)).toBe(
-      "testPeerAddress/testConversationId",
-    );
+describe("isUnsName", () => {
+  it("should return true if name ends with .wallet", () => {
+    expect(isUnsName("test.wallet")).toBe(true);
   });
-  it("should send back peer address only if conversation key if conversation id does not exist", () => {
-    const conversation = getMockConversation({
-      peerAddress: "testPeerAddress",
-    });
-    expect(getConversationId(conversation)).toBe("testPeerAddress");
+  it("should return false if name does not end with any UNS suffix", () => {
+    expect(isUnsName("01201209483434")).toBe(false);
   });
-  it("should handle falsey inputs by returning empty string", () => {
-    const conversation = undefined;
-    expect(getConversationId(conversation)).toBe("");
+  it("should return false if name includes but does not end with .wallet", () => {
+    expect(isUnsName("test.notwallet")).toBe(false);
+    expect(isUnsName("wallet.test")).toBe(false);
+  });
+  it("should return false if invalid name", () => {
+    expect(isUnsName("")).toBe(false);
+  });
+  it("should return true for subdomain .wallet names", () => {
+    expect(isUnsName("test.test.wallet")).toBe(true);
   });
 });
 
@@ -124,21 +102,5 @@ describe("isValidRecipientAddressFormat", () => {
   });
   it("should return false if invalid address", () => {
     expect(isValidRecipientAddressFormat("")).toBe(false);
-  });
-});
-
-describe("getAddress", () => {
-  it("should return a valid checksum'd address if conversationId is in expected format", () => {
-    const conversationId = "0x78bfd39428c32be149892d64bee6c6f90aedeec1";
-    expect(getAddress(conversationId)).toBe(utils.getAddress(conversationId));
-  });
-  it("should return the input if conversationId is not in expected format", () => {
-    const conversationId =
-      "0x78bfd39428c32be149892d64bee6c6f90aedeec1/lens.dev/dm/12345";
-
-    expect(getAddress(conversationId)).toBe(conversationId);
-  });
-  it("should handle empty string input and return empty string", () => {
-    expect(getAddress("")).toBe("");
   });
 });
