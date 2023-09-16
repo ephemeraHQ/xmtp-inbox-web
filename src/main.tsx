@@ -29,7 +29,7 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
   ],
 );
 
-const projectId = import.meta.env.VITE_PROJECT_ID;
+const projectId = import.meta.env.VITE_PROJECT_ID ?? "1";
 const appName = "XMTP Inbox Web";
 
 const { wallets } = getDefaultWallets({
