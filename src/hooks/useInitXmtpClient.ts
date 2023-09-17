@@ -2,14 +2,17 @@ import { Client, useClient, useCanMessage } from "@xmtp/react-sdk";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useConnect, useSigner } from "wagmi";
 import type { Signer } from "ethers";
+import type { ETHAddress } from "../helpers";
 import {
   getAppVersion,
   getEnv,
   isAppEnvDemo,
   loadKeys,
   storeKeys,
+  throttledFetchAddressIdentity,
 } from "../helpers";
 import { mockConnector } from "../helpers/mockConnector";
+import { useXmtpStore } from "../store/xmtp";
 
 type ClientStatus = "new" | "created" | "enabled";
 
@@ -50,6 +53,8 @@ const useInitXmtpClient = () => {
   const [signing, setSigning] = useState(false);
   const { data: signer } = useSigner();
   const { connect: connectWallet } = useConnect();
+  const setClientName = useXmtpStore((s) => s.setClientName);
+  const setClientAvatar = useXmtpStore((s) => s.setClientAvatar);
 
   /**
    * In order to have more granular control of the onboarding process, we must
@@ -180,7 +185,19 @@ const useInitXmtpClient = () => {
           storeKeys(address, keys);
         }
         // initialize client
-        await initialize({ keys, options: clientOptions, signer });
+        const xmtpClient = await initialize({
+          keys,
+          options: clientOptions,
+          signer,
+        });
+        if (xmtpClient) {
+          const { name, avatar } = await throttledFetchAddressIdentity(
+            xmtpClient.address as ETHAddress,
+          );
+          setClientAvatar(avatar);
+          setClientName(name);
+        }
+
         onboardingRef.current = false;
       }
     };

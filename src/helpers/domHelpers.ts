@@ -1,17 +1,23 @@
+import type { RecipientState } from "../store/xmtp";
+
 export const getRecipientInputSubtext = (
-  recipientMode: number,
-  recipientEnteredValue: string | undefined,
+  recipientState: RecipientState,
+  recipientInput: string,
+  recipientOnNetwork: boolean,
 ) => {
-  if (!recipientMode && !recipientEnteredValue) {
+  if (!recipientInput) {
     return "messages.address_field_prompt";
   }
-  switch (recipientMode) {
-    case 0:
+
+  if (!recipientOnNetwork) {
+    return "messages.address_field_not_on_network";
+  }
+
+  switch (recipientState) {
+    case "invalid":
       return "messages.address_field_invalid";
-    case 1:
+    case "loading":
       return "messages.address_field_loading";
-    case 3:
-      return "messages.address_field_not_on_network";
     // no default
   }
   return undefined;

@@ -13,6 +13,9 @@ export const RecipientInputMode = {
   OnNetwork: 4,
 };
 
+// 15 minutes
+export const API_FETCH_THROTTLE = 1000 * 60 * 15;
+
 export const CONVERSATION_CACHE_VERSION = 1;
 
 /* The number below 767 is to match tailwinds breakpoint for md that is of 768 */
