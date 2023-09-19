@@ -1,13 +1,13 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useCanMessage } from "@xmtp/react-sdk";
 import debounce from "lodash/debounce";
 import {
   isEnsName,
   isUnsName,
   isValidLongWalletAddress,
-  throttledFetchAddressIdentity,
   throttledFetchEnsAddress,
   throttledFetchEnsAvatar,
+  throttledFetchEnsName,
   throttledFetchUnsAddress,
 } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
@@ -18,7 +18,6 @@ import { useXmtpStore } from "../store/xmtp";
  * DO NOT RENDER THIS HOOK MORE THAN ONCE
  */
 export const useAddressInput = () => {
-  const validatingRef = useRef(false);
   const { canMessage } = useCanMessage();
   const recipientInput = useXmtpStore((s) => s.recipientInput);
   const recipientAddress = useXmtpStore((s) => s.recipientAddress);
@@ -31,53 +30,60 @@ export const useAddressInput = () => {
   const setRecipientAvatar = useXmtpStore((s) => s.setRecipientAvatar);
   const setRecipientOnNetwork = useXmtpStore((s) => s.setRecipientOnNetwork);
 
+  /**
+   * When the recipient address is updated with a valid address, fetch the
+   * recipient's name and avatar if necessary, then verify the address is
+   * on the network
+   */
+  useEffect(() => {
+    const fetchAddressIdentity = async () => {
+      // must have a valid recipient address
+      if (recipientAddress) {
+        // no name
+        if (!recipientName) {
+          setRecipientState("loading");
+          // check for name
+          const name = await throttledFetchEnsName({
+            address: recipientAddress,
+          });
+          setRecipientName(name);
+        }
+        // no avatar
+        if (!recipientAvatar) {
+          setRecipientState("loading");
+          // check for avatar
+          const avatar = await throttledFetchEnsAvatar({
+            address: recipientAddress,
+          });
+          setRecipientAvatar(avatar);
+        }
+        // make sure we can message the recipient
+        if (!recipientOnNetwork) {
+          setRecipientState("loading");
+          const validRecipient = await canMessage(recipientAddress);
+          if (validRecipient) {
+            setRecipientOnNetwork(true);
+          } else {
+            setRecipientOnNetwork(false);
+          }
+        }
+        setRecipientState("valid");
+      }
+    };
+    void fetchAddressIdentity();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [recipientAddress]);
+
+  /**
+   * When the recipient input changes, check for a valid ETH address, ENS name,
+   * or UNS name, and update the recipient address accordingly
+   */
   useEffect(() => {
     const validateAddress = debounce(async () => {
-      // if we're currently validating, don't do anything
-      if (validatingRef.current) {
-        return;
-      }
-      validatingRef.current = true;
       try {
-        // we have a valid address
-        if (recipientAddress) {
-          // but no name
-          if (!recipientName) {
-            setRecipientState("loading");
-            // check for name and avatar
-            const { name, avatar } = await throttledFetchAddressIdentity(
-              recipientAddress,
-            );
-            setRecipientName(name);
-            setRecipientAvatar(avatar);
-            // we have a name, but no avatar
-          } else if (!recipientAvatar) {
-            setRecipientState("loading");
-            // check for avatar
-            const avatar = await throttledFetchEnsAvatar({
-              address: recipientAddress,
-            });
-            setRecipientAvatar(avatar);
-          }
-          setRecipientState("valid");
-          // make sure we can message the recipient
-          if (!recipientOnNetwork) {
-            const validRecipient = await canMessage(recipientAddress);
-            if (validRecipient) {
-              setRecipientOnNetwork(true);
-            }
-          }
-          // we don't yet have a valid address, check input for address
-        } else if (isValidLongWalletAddress(recipientInput)) {
-          setRecipientState("loading");
-          // check for name and avatar
-          const { name, avatar } = await throttledFetchAddressIdentity(
-            recipientInput,
-          );
+        // input is a valid ETH address
+        if (isValidLongWalletAddress(recipientInput)) {
           setRecipientAddress(recipientInput);
-          setRecipientName(name);
-          setRecipientAvatar(avatar);
-          setRecipientState("valid");
           // if input is an ens name
         } else if (isEnsName(recipientInput)) {
           setRecipientState("loading");
@@ -88,9 +94,6 @@ export const useAddressInput = () => {
           if (address) {
             setRecipientAddress(address);
             setRecipientName(recipientInput);
-            setRecipientState("valid");
-          } else {
-            setRecipientState("invalid");
           }
           // if input is a uns name
         } else if (isUnsName(recipientInput)) {
@@ -100,18 +103,13 @@ export const useAddressInput = () => {
           if (address) {
             setRecipientAddress(address);
             setRecipientName(recipientInput);
-            setRecipientState("valid");
-          } else {
-            setRecipientState("invalid");
           }
         }
       } catch {
         setRecipientState("error");
-      } finally {
-        validatingRef.current = false;
       }
     }, 500);
     void validateAddress();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [recipientInput, recipientAddress]);
+  }, [recipientInput]);
 };

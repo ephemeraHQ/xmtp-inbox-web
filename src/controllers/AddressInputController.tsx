@@ -53,8 +53,9 @@ export const AddressInputController = () => {
       subtext={
         !loadingConversations
           ? getRecipientInputSubtext(
-              recipientState,
               recipientInput,
+              recipientAddress,
+              recipientState,
               recipientOnNetwork,
             )
           : ""
