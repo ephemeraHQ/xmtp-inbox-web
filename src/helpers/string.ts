@@ -38,7 +38,7 @@ const getMinimumNameLength = (suffixes: string[]) =>
   suffixes.reduce((result, suffix) => Math.min(result, suffix.length), 0);
 
 export const isEnsName = (value: string): boolean => {
-  // value must have a minimun length and contain a dot
+  // value must have a minimum length and contain a dot
   if (
     value.length < getMinimumNameLength(ALLOWED_ENS_SUFFIXES) ||
     !value.includes(".")
@@ -49,7 +49,7 @@ export const isEnsName = (value: string): boolean => {
 };
 
 export const isUnsName = (value: string): boolean => {
-  // value must have a minimun length and contain a dot
+  // value must have a minimum length and contain a dot
   if (
     value.length < getMinimumNameLength(ALLOWED_UNS_SUFFIXES) ||
     !value.includes(".")
@@ -208,14 +208,12 @@ export const throttledFetchUnsAddress = memoizeThrottle(
   API_FETCH_THROTTLE,
 );
 
-export const isValidRecipientAddressFormat = (address: string) =>
-  isEnsName(address) ||
-  isUnsName(address) ||
-  (address.startsWith("0x") && address.length === 42);
-
 export const isValidLongWalletAddress = (
   address: string,
 ): address is ETHAddress => address.startsWith("0x") && address.length === 42;
+
+export const isValidRecipientAddressFormat = (address: string) =>
+  isEnsName(address) || isUnsName(address) || isValidLongWalletAddress(address);
 
 export const shortAddress = (address: string): string =>
   isValidLongWalletAddress(address)

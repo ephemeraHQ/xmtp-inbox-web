@@ -5,16 +5,8 @@ export const ENVIRONMENT = {
   ALPHA: "alpha.xmtp.chat",
 };
 
-export const RecipientInputMode = {
-  InvalidEntry: 0,
-  FindingEntry: 1,
-  Submitted: 2,
-  NotOnNetwork: 3,
-  OnNetwork: 4,
-};
-
-// 15 minutes
-export const API_FETCH_THROTTLE = 1000 * 60 * 15;
+// 30 seconds
+export const API_FETCH_THROTTLE = 1000 * 30;
 
 export const CONVERSATION_CACHE_VERSION = 1;
 

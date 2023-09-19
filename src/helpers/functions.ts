@@ -1,4 +1,5 @@
-import { memoize, throttle } from "lodash";
+import memoize from "lodash/memoize";
+import throttle from "lodash/throttle";
 
 /**
  * Throttle a function and memoize the result

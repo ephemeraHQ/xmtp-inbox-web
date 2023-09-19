@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useCanMessage } from "@xmtp/react-sdk";
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
 import {
   isEnsName,
   isUnsName,

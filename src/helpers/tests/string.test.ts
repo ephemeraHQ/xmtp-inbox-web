@@ -20,20 +20,20 @@ describe("truncate", () => {
 });
 
 describe("isEnsName", () => {
-  it("should return true if address ends with .eth", () => {
+  it("should return true if name ends with .eth", () => {
     expect(isEnsName("test.eth")).toBe(true);
   });
-  it("should return false if address does not include eth", () => {
+  it("should return false if name does not include eth", () => {
     expect(isEnsName("01201209483434")).toBe(false);
   });
-  it("should return false if address includes but does not end with .eth", () => {
+  it("should return false if name includes but does not end with .eth", () => {
     expect(isEnsName("test.noteth")).toBe(false);
     expect(isEnsName("eth.test")).toBe(false);
   });
-  it("should return false if invalid address", () => {
+  it("should return false if invalid name", () => {
     expect(isEnsName("")).toBe(false);
   });
-  it("should return true for cb.id addresses", () => {
+  it("should return true for cb.id names", () => {
     expect(isEnsName("test.cb.id")).toBe(true);
   });
 
@@ -61,20 +61,20 @@ describe("isEnsName", () => {
 });
 
 describe("isUnsName", () => {
-  it("should return true if address ends with .wallet", () => {
+  it("should return true if name ends with .wallet", () => {
     expect(isUnsName("test.wallet")).toBe(true);
   });
-  it("should return false if address does not end with any UNS suffix", () => {
+  it("should return false if name does not end with any UNS suffix", () => {
     expect(isUnsName("01201209483434")).toBe(false);
   });
-  it("should return false if address includes but does not end with .wallet", () => {
+  it("should return false if name includes but does not end with .wallet", () => {
     expect(isUnsName("test.notwallet")).toBe(false);
     expect(isUnsName("wallet.test")).toBe(false);
   });
-  it("should return false if invalid address", () => {
+  it("should return false if invalid name", () => {
     expect(isUnsName("")).toBe(false);
   });
-  it("should return true for subdomain .wallet addresses", () => {
+  it("should return true for subdomain .wallet names", () => {
     expect(isUnsName("test.test.wallet")).toBe(true);
   });
 });
