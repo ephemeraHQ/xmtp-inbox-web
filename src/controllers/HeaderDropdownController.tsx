@@ -6,13 +6,13 @@ import { useXmtpStore } from "../store/xmtp";
 export const HeaderDropdownController = () => {
   const resetRecipient = useXmtpStore((s) => s.resetRecipient);
   const setConversationTopic = useXmtpStore((s) => s.setConversationTopic);
-  const conversationTopic = useXmtpStore((s) => s.conversationTopic);
+  const recipientInput = useXmtpStore((s) => s.recipientInput);
   const setStartedFirstMessage = useXmtpStore((s) => s.setStartedFirstMessage);
   const [width] = useWindowSize();
 
   return (
     <HeaderDropdown
-      conversationTopic={conversationTopic}
+      recipientInput={recipientInput}
       onClick={() => {
         resetRecipient();
         setConversationTopic();
