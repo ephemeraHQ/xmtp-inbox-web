@@ -122,6 +122,19 @@ export const throttledFetchUnsName = memoizeThrottle(
   API_FETCH_THROTTLE,
 );
 
+const fetchAddressName = async (address: ETHAddress) => {
+  let name = await throttledFetchEnsName({ address });
+  if (!name) {
+    name = await throttledFetchUnsName(address);
+  }
+  return name;
+};
+
+export const throttledFetchAddressName = memoizeThrottle(
+  fetchAddressName,
+  API_FETCH_THROTTLE,
+);
+
 type UnstoppableDomainsBulkDomainResponse = {
   data: Array<UnstoppableDomainsDomainResponse>;
 };
@@ -219,30 +232,3 @@ export const shortAddress = (address: string): string =>
   isValidLongWalletAddress(address)
     ? `${address.substring(0, 6)}...${address.substring(address.length - 4)}`
     : address;
-
-/**
- * Returns a resolved name and avatar for a given ETH address, if available
- */
-const fetchAddressIdentity = async (address: ETHAddress) => {
-  let name: string | null = null;
-  let avatar: string | null = null;
-  if (isValidLongWalletAddress(address)) {
-    // look for ENS name
-    name = await throttledFetchEnsName({ address });
-    if (!name) {
-      // look for UNS name
-      name = await throttledFetchUnsName(address);
-    }
-    // look for ENS avatar
-    avatar = await throttledFetchEnsAvatar({ address });
-  }
-  return {
-    name,
-    avatar,
-  };
-};
-
-export const throttledFetchAddressIdentity = memoizeThrottle(
-  fetchAddressIdentity,
-  API_FETCH_THROTTLE,
-);

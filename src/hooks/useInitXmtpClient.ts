@@ -9,7 +9,8 @@ import {
   isAppEnvDemo,
   loadKeys,
   storeKeys,
-  throttledFetchAddressIdentity,
+  throttledFetchAddressName,
+  throttledFetchEnsAvatar,
 } from "../helpers";
 import { mockConnector } from "../helpers/mockConnector";
 import { useXmtpStore } from "../store/xmtp";
@@ -191,11 +192,14 @@ const useInitXmtpClient = () => {
           signer,
         });
         if (xmtpClient) {
-          const { name, avatar } = await throttledFetchAddressIdentity(
+          const name = await throttledFetchAddressName(
             xmtpClient.address as ETHAddress,
           );
-          setClientAvatar(avatar);
+          const avatar = await throttledFetchEnsAvatar({
+            address: xmtpClient.address as ETHAddress,
+          });
           setClientName(name);
+          setClientAvatar(avatar);
         }
 
         onboardingRef.current = false;

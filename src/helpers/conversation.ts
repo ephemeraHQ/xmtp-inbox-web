@@ -7,9 +7,9 @@ import type Dexie from "dexie";
 import type { ETHAddress } from "./string";
 import {
   throttledFetchUnsNames,
-  throttledFetchAddressIdentity,
   throttledFetchEnsAvatar,
   throttledFetchEnsName,
+  throttledFetchAddressName,
 } from "./string";
 import { chunkArray, memoizeThrottle } from "./functions";
 import { API_FETCH_THROTTLE } from "./constants";
@@ -44,19 +44,17 @@ export const getPeerAddressIdentity = (conversation: CachedConversation) => {
 export const fetchPeerAddressIdentity = async (
   conversation: CachedConversation,
 ) => {
-  let name: string | null = null;
-  let avatar: string | null = null;
-  // first check if the peer identity is already cached
-  const identity = getPeerAddressIdentity(conversation);
-  if (identity) {
-    name = identity.name;
-    avatar = identity.avatar;
-  } else {
-    const data = await throttledFetchAddressIdentity(
+  // first check if the peer identity is cached
+  let { name, avatar } = getPeerAddressIdentity(conversation);
+  if (!name) {
+    name = await throttledFetchAddressName(
       conversation.peerAddress as ETHAddress,
     );
-    name = data.name;
-    avatar = data.avatar;
+  }
+  if (!avatar) {
+    avatar = await throttledFetchEnsAvatar({
+      address: conversation.peerAddress as ETHAddress,
+    });
   }
   return {
     name,
@@ -79,13 +77,13 @@ export const setPeerAddressIdentity = async (
   db: Dexie,
 ) => {
   // always use the most up-to-date conversation
-  const latestConveration = await getCachedConversationByTopic(
+  const latestConversation = await getCachedConversationByTopic(
     conversation.walletAddress,
     conversation.topic,
     db,
   );
-  if (latestConveration) {
-    const identity = getPeerAddressIdentity(latestConveration);
+  if (latestConversation) {
+    const identity = getPeerAddressIdentity(latestConversation);
     // store peer address identity in conversation metadata
     await updateConversationMetadata(
       conversation.walletAddress,
@@ -113,10 +111,13 @@ export const updatePeerAddressIdentity = async (
   db: Dexie,
 ) => {
   const { name, avatar } = await fetchPeerAddressIdentity(conversation);
-  if (!name && !avatar) {
-    return;
+  if (name || avatar) {
+    await setPeerAddressIdentity(name, avatar, conversation, db);
   }
-  await setPeerAddressIdentity(name, avatar, conversation, db);
+  return {
+    name,
+    avatar,
+  };
 };
 
 /**
