@@ -8,7 +8,11 @@ import useListConversations from "./useListConversations";
 const useStartFeedbackConvo = () => {
   const { conversations, isLoaded } = useListConversations();
   const { startConversation } = useStartConversation();
+  const setRecipientOnNetwork = useXmtpStore((s) => s.setRecipientOnNetwork);
   const setRecipientAddress = useXmtpStore((s) => s.setRecipientAddress);
+  const setRecipientState = useXmtpStore((s) => s.setRecipientState);
+  const setRecipientInput = useXmtpStore((s) => s.setRecipientInput);
+  const setConversationTopic = useXmtpStore((s) => s.setConversationTopic);
 
   const feedbackConversation = useMemo(
     () => findFeedbackConversation(conversations),
@@ -24,14 +28,27 @@ const useStartFeedbackConvo = () => {
           undefined,
         );
 
+        // conversation started, select it
         if (cachedConversation) {
-          // set recipient address, which will set the conversation topic
+          setRecipientState("valid");
+          setRecipientInput(XMTP_FEEDBACK_ADDRESS);
+          setRecipientOnNetwork(true);
           setRecipientAddress(XMTP_FEEDBACK_ADDRESS);
+          setConversationTopic(cachedConversation.topic);
         }
       }
     };
     void startFeedbackConvo();
-  }, [feedbackConversation, isLoaded, setRecipientAddress, startConversation]);
+  }, [
+    feedbackConversation,
+    isLoaded,
+    setConversationTopic,
+    setRecipientAddress,
+    setRecipientInput,
+    setRecipientOnNetwork,
+    setRecipientState,
+    startConversation,
+  ]);
 };
 
 export default useStartFeedbackConvo;
