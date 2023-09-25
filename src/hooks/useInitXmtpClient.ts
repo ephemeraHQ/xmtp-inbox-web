@@ -182,7 +182,7 @@ const useInitXmtpClient = () => {
           }
 
           if (window.ethereum?.isMetaMask) {
-            // Check snaps flow
+            // Snaps flow — TODO: move to SDK side after ironing out all edge cases.
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
             const browserSupportSnaps = await Client.isSnapsReady();
             if (browserSupportSnaps) {
