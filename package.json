@@ -39,7 +39,7 @@
     "@vitejs/plugin-react": "^4.0.0",
     "@wagmi/core": "^0.10.11",
     "@xmtp/content-type-remote-attachment": "^1.0.7",
-    "@xmtp/react-sdk": "^1.4.0-beta.1",
+    "@xmtp/react-sdk": "^1.4.0-beta.2",
     "buffer": "^6.0.3",
     "date-fns": "^2.29.3",
     "dexie": "^3.2.4",
