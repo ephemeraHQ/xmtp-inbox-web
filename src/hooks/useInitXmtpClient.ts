@@ -22,7 +22,7 @@ type ResolveReject<T = void> = (value: T | PromiseLike<T>) => void;
 
 interface Ethereum {
   request(args: {
-    method: "wallet_requestSnaps";
+    method: string;
     params: {
       [snapName: string]: object;
     };
