@@ -10,7 +10,7 @@ export const SideNavController = () => {
   const resetXmtpState = useXmtpStore((s) => s.resetXmtpState);
   const clientName = useXmtpStore((s) => s.clientName);
   const clientAvatar = useXmtpStore((s) => s.clientAvatar);
-  const { disconnect: disconnectWagmi, reset: resetWagmi } = useDisconnect();
+  const { reset: resetWagmi } = useDisconnect();
 
   return (
     <SideNav
@@ -20,7 +20,6 @@ export const SideNavController = () => {
       onDisconnect={() => {
         void disconnect();
         wipeKeys(client?.address ?? "");
-        disconnectWagmi();
         resetWagmi();
         resetXmtpState();
       }}
