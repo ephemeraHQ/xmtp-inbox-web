@@ -1,7 +1,11 @@
+// TODO: Remove when SDK types are updated
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import type React from "react";
 import { useEffect, useState } from "react";
 import { useClient, useConversations } from "@xmtp/react-sdk";
-import { useDisconnect, useSigner } from "wagmi";
+import { useDisconnect, useWalletClient } from "wagmi";
 import type { Attachment } from "@xmtp/content-type-remote-attachment";
 import { useNavigate } from "react-router-dom";
 import { useXmtpStore } from "../store/xmtp";
@@ -32,7 +36,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [client]);
 
-  const { data: signer } = useSigner();
+  const { data: signer } = useWalletClient();
 
   const recipientAddress = useXmtpStore((s) => s.recipientAddress);
 
@@ -69,8 +73,8 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   // if the wallet address changes, disconnect the XMTP client
   useEffect(() => {
     const checkSigners = async () => {
-      const address1 = await signer?.getAddress();
-      const address2 = await clientSigner?.getAddress();
+      const address1 = (await signer?.getAddresses())?.[0];
+      const address2 = await clientSigner.getAddress();
       // addresses must be defined before comparing
       if (address1 && address2 && address1 !== address2) {
         resetXmtpState();

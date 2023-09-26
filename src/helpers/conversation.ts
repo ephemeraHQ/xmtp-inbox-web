@@ -51,9 +51,9 @@ export const fetchPeerAddressIdentity = async (
       conversation.peerAddress as ETHAddress,
     );
   }
-  if (!avatar) {
+  if (!avatar && name) {
     avatar = await throttledFetchEnsAvatar({
-      address: conversation.peerAddress as ETHAddress,
+      name,
     });
   }
   return {
@@ -216,7 +216,7 @@ const updateConversationIdentities = async (
       await Promise.all(
         chunk.map(async (address) => {
           let avatar: string | null = null;
-          avatar = await throttledFetchEnsAvatar({ address });
+          avatar = await throttledFetchEnsAvatar({ name: address });
           const conversation = conversationsWithoutAvatarMap[address];
           if (conversation) {
             await setPeerAddressIdentity(undefined, avatar, conversation, db);

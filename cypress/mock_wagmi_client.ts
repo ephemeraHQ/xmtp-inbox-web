@@ -1,22 +1,28 @@
-import { configureChains, createClient, mainnet } from "wagmi";
+import { configureChains, createConfig } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
 import { MockConnector } from "@wagmi/core/connectors/mock";
-import { Wallet } from "ethers/lib";
+import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";
+import { createWalletClient, http } from "viem";
+import { mainnet } from "viem/chains";
 
-const { chains, provider, webSocketProvider } = configureChains(
+const { chains, publicClient, webSocketPublicClient } = configureChains(
   [mainnet],
   [publicProvider()],
 );
 
-const signer = Wallet.createRandom();
+const walletClient = createWalletClient({
+  account: privateKeyToAccount(generatePrivateKey()),
+  chain: mainnet,
+  transport: http(),
+});
 
-const mockConnector = new MockConnector({ options: { signer } });
+const mockConnector = new MockConnector({ options: { walletClient } });
 
-export const mockClient = createClient({
+export const mockClient = createConfig({
   autoConnect: true,
   connectors: [mockConnector],
-  provider,
-  webSocketProvider,
+  publicClient,
+  webSocketPublicClient,
 });
 
 export const providerChains = chains;

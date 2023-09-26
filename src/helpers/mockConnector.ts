@@ -1,9 +1,15 @@
 import { MockConnector } from "@wagmi/core/connectors/mock";
-import { Wallet } from "ethers/lib";
-
-const createWallet = Wallet.createRandom();
+import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";
+import { createWalletClient, http } from "viem";
+import { mainnet } from "viem/chains";
 
 // mock connector for demos
 export const mockConnector = new MockConnector({
-  options: { signer: createWallet },
+  options: {
+    walletClient: createWalletClient({
+      account: privateKeyToAccount(generatePrivateKey()),
+      chain: mainnet,
+      transport: http(),
+    }),
+  },
 });

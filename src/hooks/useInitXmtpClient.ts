@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import type { ClientOptions } from "@xmtp/react-sdk";
 import { Client, useClient, useCanMessage } from "@xmtp/react-sdk";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useConnect, useSigner } from "wagmi";
-import type { Signer } from "ethers";
+import { useConnect, useWalletClient } from "wagmi";
+import type { WalletClient } from "viem";
 import type { ETHAddress } from "../helpers";
 import {
   getAppVersion,
@@ -15,6 +16,7 @@ import {
 } from "../helpers";
 import { mockConnector } from "../helpers/mockConnector";
 import { useXmtpStore } from "../store/xmtp";
+import "wagmi/window";
 
 type ClientStatus = "new" | "created" | "enabled";
 
@@ -60,12 +62,12 @@ const clientOptions = {
 const useInitXmtpClient = () => {
   // track if onboarding is in progress
   const onboardingRef = useRef(false);
-  const signerRef = useRef<Signer | null>();
+  const walletClientRef = useRef<WalletClient | null>();
   // XMTP address status
   const [status, setStatus] = useState<ClientStatus | undefined>();
   // is there a pending signature?
   const [signing, setSigning] = useState(false);
-  const { data: signer } = useSigner();
+  const { data: walletClient } = useWalletClient();
   const { connect: connectWallet } = useConnect();
   const setClientName = useXmtpStore((s) => s.setClientName);
   const setClientAvatar = useXmtpStore((s) => s.setClientAvatar);
@@ -92,9 +94,9 @@ const useInitXmtpClient = () => {
           setSigning(true);
         },
       };
-      // if the signer changes during the onboarding process, reset the promise
+      // if the walletClient changes during the onboarding process, reset the promise
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [signer]);
+    }, [walletClient]);
 
   // create promise, callback, and resolver for controlling the display of the
   // enable account signature.
@@ -116,9 +118,9 @@ const useInitXmtpClient = () => {
           setSigning(true);
         },
       };
-      // if the signer changes during the onboarding process, reset the promise
+      // if the walletClient changes during the onboarding process, reset the promise
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [signer]);
+    }, [walletClient]);
 
   const { client, isLoading, initialize } = useClient();
   const { canMessageStatic: canMessageUser } = useCanMessage();
@@ -139,20 +141,20 @@ const useInitXmtpClient = () => {
     const updateStatus = async () => {
       // onboarding is in progress
       if (onboardingRef.current) {
-        // the signer has changed, restart the onboarding process
-        if (signer !== signerRef.current) {
+        // the walletClient has changed, restart the onboarding process
+        if (walletClient !== walletClientRef.current) {
           setStatus(undefined);
           setSigning(false);
         } else {
-          // onboarding in progress and signer is the same, do nothing
+          // onboarding in progress and walletClient is the same, do nothing
           return;
         }
       }
-      // skip this if we already have a client and ensure we have a signer
-      if (!client && signer) {
+      // skip this if we already have a client and ensure we have a walletClient
+      if (!client && walletClient) {
         onboardingRef.current = true;
-        const address = await signer.getAddress();
-        let keys: Uint8Array | undefined = loadKeys(address);
+        const addresses = await walletClient.getAddresses();
+        let keys: Uint8Array | undefined = loadKeys(addresses?.[0]);
         // check if we already have the keys
         if (keys) {
           // resolve client promises
@@ -169,7 +171,10 @@ const useInitXmtpClient = () => {
           } else {
             // no keys found, but maybe the address has already been created
             // let's check
-            const canMessage = await canMessageUser(address, clientOptions);
+            const canMessage = await canMessageUser(
+              addresses?.[0],
+              clientOptions,
+            );
             if (canMessage) {
               // resolve client promise
               createResolve();
@@ -218,7 +223,8 @@ const useInitXmtpClient = () => {
             }
           } else {
             // get client keys
-            keys = await Client.getKeys(signer, {
+            // @ts-ignore - type needs to be updated in SDK
+            keys = await Client.getKeys(walletClient, {
               ...clientOptions,
               // we don't need to publish the contact here since it
               // will happen when we create the client later
@@ -233,21 +239,23 @@ const useInitXmtpClient = () => {
             setStatus("enabled");
             setSigning(false);
             // persist client keys
-            storeKeys(address, keys);
+            storeKeys(addresses?.[0], keys);
           }
         }
         // initialize client
         const xmtpClient = await initialize({
           keys,
           options: clientOptions,
-          signer,
+          // @ts-ignore
+          // Type needs to be updated in SDK
+          signer: walletClient,
         });
         if (xmtpClient) {
           const name = await throttledFetchAddressName(
             xmtpClient.address as ETHAddress,
           );
           const avatar = await throttledFetchEnsAvatar({
-            address: xmtpClient.address as ETHAddress,
+            name: name || "",
           });
           setClientName(name);
           setClientAvatar(avatar);
@@ -258,12 +266,12 @@ const useInitXmtpClient = () => {
     };
     void updateStatus();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [client, signer]);
+  }, [client, walletClient]);
 
   // it's important that this effect runs last
   useEffect(() => {
-    signerRef.current = signer;
-  }, [signer]);
+    walletClientRef.current = walletClient;
+  }, [walletClient]);
 
   return {
     client,

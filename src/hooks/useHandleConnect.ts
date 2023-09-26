@@ -1,7 +1,9 @@
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { MockConnector } from "@wagmi/core/connectors/mock";
-import { Wallet } from "ethers/lib";
 import { useConnect } from "wagmi";
+import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";
+import { createWalletClient, http } from "viem";
+import { mainnet } from "viem/chains";
 import { isAppEnvDemo } from "../helpers";
 
 const useHandleConnect = () => {
@@ -10,9 +12,14 @@ const useHandleConnect = () => {
   const { connect: connectWallet } = useConnect();
 
   const handleConnectDemo = () => {
-    const createWallet = (() => Wallet.createRandom())();
+    const walletClient = (() =>
+      createWalletClient({
+        account: privateKeyToAccount(generatePrivateKey()),
+        chain: mainnet,
+        transport: http(),
+      }))();
     const mockConnector = new MockConnector({
-      options: { signer: createWallet },
+      options: { walletClient },
     });
     connectWallet({ connector: mockConnector });
   };
