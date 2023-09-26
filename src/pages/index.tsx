@@ -15,7 +15,7 @@ const OnboardingPage = () => {
   const { openConnectModal } = useConnectModal();
   const { client, isLoading, status, setStatus, resolveCreate, resolveEnable } =
     useInitXmtpClient();
-  const { reset: resetWagmi } = useDisconnect();
+  const { disconnect: disconnectWagmi, reset: resetWagmi } = useDisconnect();
   const { disconnect: disconnectClient } = useClient();
 
   useEffect(() => {
@@ -47,6 +47,21 @@ const OnboardingPage = () => {
     }
   }, [status]);
 
+  const onDisconnect = () => {
+    try {
+      if (client) {
+        void disconnectClient();
+      }
+      disconnectWagmi();
+      setStatus(undefined);
+      wipeKeys(address ?? "");
+      resetWagmi();
+      resetXmtpState();
+    } catch (e) {
+      console.log("e", e);
+    }
+  };
+
   return (
     <div className={classNames("h-screen", "w-full", "overflow-auto")}>
       <OnboardingStep
@@ -55,15 +70,7 @@ const OnboardingPage = () => {
         onConnect={openConnectModal}
         onCreate={resolveCreate}
         onEnable={resolveEnable}
-        onDisconnect={() => {
-          if (client) {
-            void disconnectClient();
-          }
-          setStatus(undefined);
-          wipeKeys(address ?? "");
-          resetWagmi();
-          resetXmtpState();
-        }}
+        onDisconnect={onDisconnect}
       />
     </div>
   );
