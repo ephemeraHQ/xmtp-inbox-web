@@ -2,8 +2,18 @@ import "./polyfills";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "@rainbow-me/rainbowkit/styles.css";
-import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import {
+  connectorsForWallets,
+  RainbowKitProvider,
+} from "@rainbow-me/rainbowkit";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
+import {
+  coinbaseWallet,
+  metaMaskWallet,
+  rainbowWallet,
+  trustWallet,
+  walletConnectWallet,
+} from "@rainbow-me/rainbowkit/wallets";
 import { publicProvider } from "wagmi/providers/public";
 import { attachmentContentTypeConfig, XMTPProvider } from "@xmtp/react-sdk";
 import { mainnet } from "wagmi/chains";
@@ -24,11 +34,25 @@ const { chains, provider, webSocketProvider } = configureChains(
   ],
 );
 
-const { connectors } = getDefaultWallets({
-  appName: "XMTP Inbox Web",
-  projectId: import.meta.env.VITE_PROJECT_ID,
-  chains,
-});
+const projectId = import.meta.env.VITE_PROJECT_ID;
+const appName = "XMTP Inbox Web";
+
+const connectors = connectorsForWallets([
+  {
+    groupName: "Default",
+    wallets: [
+      // Alpha order of default wallets
+      coinbaseWallet({ appName, chains }),
+      metaMaskWallet({ projectId, chains }),
+      rainbowWallet({ projectId, chains }),
+      walletConnectWallet({ projectId, chains }),
+    ],
+  },
+  {
+    groupName: "Others",
+    wallets: [trustWallet({ projectId, chains })],
+  },
+]);
 
 const wagmiDemoClient = createClient({
   autoConnect: true,
