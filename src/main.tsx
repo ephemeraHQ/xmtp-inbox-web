@@ -41,16 +41,13 @@ const connectors = connectorsForWallets([
   {
     groupName: "Default",
     wallets: [
-      // Alpha order of default wallets
+      // Alpha order
       coinbaseWallet({ appName, chains }),
       metaMaskWallet({ projectId, chains }),
       rainbowWallet({ projectId, chains }),
+      trustWallet({ projectId, chains }),
       walletConnectWallet({ projectId, chains }),
     ],
-  },
-  {
-    groupName: "Others",
-    wallets: [trustWallet({ projectId, chains })],
   },
 ]);
 
