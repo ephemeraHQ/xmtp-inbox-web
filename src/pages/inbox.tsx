@@ -1,7 +1,3 @@
-// TODO: Remove when SDK types are updated
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import type React from "react";
 import { useEffect, useState } from "react";
 import { useClient, useConversations } from "@xmtp/react-sdk";
@@ -24,7 +20,7 @@ import useSelectedConversation from "../hooks/useSelectedConversation";
 const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   const navigate = useNavigate();
   const resetXmtpState = useXmtpStore((state) => state.resetXmtpState);
-  const { client, disconnect, signer: clientSigner } = useClient();
+  const { client, disconnect } = useClient();
   const [isDragActive, setIsDragActive] = useState(false);
   const { conversations } = useConversations();
   const selectedConversation = useSelectedConversation();
@@ -74,7 +70,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   useEffect(() => {
     const checkSigners = async () => {
       const address1 = (await signer?.getAddresses())?.[0];
-      const address2 = await clientSigner.getAddress();
+      const address2 = client?.address;
       // addresses must be defined before comparing
       if (address1 && address2 && address1 !== address2) {
         resetXmtpState();
@@ -86,7 +82,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
     };
     void checkSigners();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [clientSigner, disconnect, resetXmtpState, signer]);
+  }, [disconnect, resetXmtpState, signer]);
 
   if (!client) {
     return <div />;

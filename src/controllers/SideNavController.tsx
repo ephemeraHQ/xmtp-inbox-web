@@ -13,24 +13,18 @@ export const SideNavController = () => {
   const { reset: resetWagmi } = useDisconnect();
   const { disconnect: disconnectWagmi } = useDisconnect();
 
-  const onDisconnect = () => {
-    try {
-      void disconnect();
-      disconnectWagmi();
-      wipeKeys(client?.address ?? "");
-      resetWagmi();
-      resetXmtpState();
-    } catch (e) {
-      console.log("e", e);
-    }
-  };
-
   return (
     <SideNav
       displayAddress={clientName ?? client?.address}
       walletAddress={client?.address as ETHAddress | undefined}
       avatarUrl={clientAvatar || ""}
-      onDisconnect={onDisconnect}
+      onDisconnect={() => {
+        void disconnect();
+        disconnectWagmi();
+        wipeKeys(client?.address ?? "");
+        resetWagmi();
+        resetXmtpState();
+      }}
     />
   );
 };

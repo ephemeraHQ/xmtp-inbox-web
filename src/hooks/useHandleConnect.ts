@@ -12,12 +12,12 @@ const useHandleConnect = () => {
   const { connect: connectWallet } = useConnect();
 
   const handleConnectDemo = () => {
-    const walletClient = (() =>
-      createWalletClient({
-        account: privateKeyToAccount(generatePrivateKey()),
-        chain: mainnet,
-        transport: http(),
-      }))();
+    const walletClient = createWalletClient({
+      account: privateKeyToAccount(generatePrivateKey()),
+      chain: mainnet,
+      transport: http(),
+    });
+
     const mockConnector = new MockConnector({
       options: { walletClient },
     });

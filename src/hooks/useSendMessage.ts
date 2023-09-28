@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { useCallback } from "react";
 import type { CachedConversation } from "@xmtp/react-sdk";
 import { useSendMessage as _useSendMessage } from "@xmtp/react-sdk";
@@ -62,19 +61,12 @@ const useSendMessage = (attachment?: Attachment) => {
           conversation,
           remoteAttachment,
           ContentTypeRemoteAttachment,
-          {
-            // @ts-ignore
-            contentFallback:
-              t("status_messaging.file_unsupported", {
-                FILENAME: remoteAttachment.filename,
-              }) || remoteAttachment.filename,
-          },
         );
       } else if (type === "text") {
         void _sendMessage(conversation, message);
       }
     },
-    [recipientOnNetwork, attachment, _sendMessage, t],
+    [recipientOnNetwork, attachment, _sendMessage],
   );
 
   return {

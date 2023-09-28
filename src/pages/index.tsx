@@ -47,21 +47,6 @@ const OnboardingPage = () => {
     }
   }, [status]);
 
-  const onDisconnect = () => {
-    try {
-      if (client) {
-        void disconnectClient();
-      }
-      disconnectWagmi();
-      setStatus(undefined);
-      wipeKeys(address ?? "");
-      resetWagmi();
-      resetXmtpState();
-    } catch (e) {
-      console.log("e", e);
-    }
-  };
-
   return (
     <div className={classNames("h-screen", "w-full", "overflow-auto")}>
       <OnboardingStep
@@ -70,7 +55,16 @@ const OnboardingPage = () => {
         onConnect={openConnectModal}
         onCreate={resolveCreate}
         onEnable={resolveEnable}
-        onDisconnect={onDisconnect}
+        onDisconnect={() => {
+          if (client) {
+            void disconnectClient();
+          }
+          disconnectWagmi();
+          setStatus(undefined);
+          wipeKeys(address ?? "");
+          resetWagmi();
+          resetXmtpState();
+        }}
       />
     </div>
   );

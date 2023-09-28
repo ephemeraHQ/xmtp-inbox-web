@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import type { ClientOptions } from "@xmtp/react-sdk";
 import { Client, useClient, useCanMessage } from "@xmtp/react-sdk";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -223,7 +222,6 @@ const useInitXmtpClient = () => {
             }
           } else {
             // get client keys
-            // @ts-ignore - type needs to be updated in SDK
             keys = await Client.getKeys(walletClient, {
               ...clientOptions,
               // we don't need to publish the contact here since it
@@ -246,8 +244,6 @@ const useInitXmtpClient = () => {
         const xmtpClient = await initialize({
           keys,
           options: clientOptions,
-          // @ts-ignore
-          // Type needs to be updated in SDK
           signer: walletClient,
         });
         if (xmtpClient) {
