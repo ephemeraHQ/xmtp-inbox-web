@@ -40,7 +40,7 @@ export const useAddressInput = () => {
       // must have a valid recipient address
       if (recipientAddress) {
         // no name
-        if (!recipientName) {
+        if (!recipientName && recipientAddress) {
           setRecipientState("loading");
           // check for name
           const name = await throttledFetchEnsName({
