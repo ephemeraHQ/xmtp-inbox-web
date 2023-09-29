@@ -13,13 +13,6 @@ import { publicProvider } from "wagmi/providers/public";
 import { attachmentContentTypeConfig, XMTPProvider } from "@xmtp/react-sdk";
 import { mainnet } from "wagmi/chains";
 import { infuraProvider } from "wagmi/providers/infura";
-import {
-  coinbaseWallet,
-  metaMaskWallet,
-  rainbowWallet,
-  trustWallet,
-  walletConnectWallet,
-} from "@rainbow-me/rainbowkit/wallets";
 import App from "./controllers/AppController";
 import { isAppEnvDemo } from "./helpers";
 import { mockConnector } from "./helpers/mockConnector";

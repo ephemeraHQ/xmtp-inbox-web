@@ -11,12 +11,10 @@ import {
   AttachmentCodec,
 } from "@xmtp/content-type-remote-attachment";
 import { Web3Storage } from "web3.storage";
-import { useTranslation } from "react-i18next";
 import Upload from "../helpers/classes/Upload";
 import { useXmtpStore } from "../store/xmtp";
 
 const useSendMessage = (attachment?: Attachment) => {
-  const { t } = useTranslation();
   const { sendMessage: _sendMessage, isLoading, error } = _useSendMessage();
   const recipientOnNetwork = useXmtpStore((s) => s.recipientOnNetwork);
 
