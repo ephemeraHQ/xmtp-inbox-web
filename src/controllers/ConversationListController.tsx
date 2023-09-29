@@ -31,13 +31,13 @@ export const ConversationListController = ({
   }, [isLoaded]);
 
   const filteredConversations = useMemo(() => {
-    const filtered = conversations.map((conversation) => (
+    const convos = conversations.map((conversation) => (
       <MessagePreviewCardController
         key={conversation.topic}
         convo={conversation}
       />
     ));
-    return filtered;
+    return convos;
   }, [conversations]);
 
   return (
