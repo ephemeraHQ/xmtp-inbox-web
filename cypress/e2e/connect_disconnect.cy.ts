@@ -72,8 +72,6 @@ describe(
     it("Opens new message view when clicking the CTA from left panel", () => {
       // Need to break up the click chain for GitHub actions
       cy.get(`[data-testid=empty-message-cta]`).click();
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(500);
       checkElement("message-input");
     });
   },
