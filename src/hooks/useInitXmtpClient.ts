@@ -243,7 +243,7 @@ const useInitXmtpClient = () => {
           options: clientOptions,
           signer: walletClient,
         });
-        if (xmtpClient?.address) {
+        if (xmtpClient) {
           const name = await throttledFetchAddressName(
             xmtpClient.address as ETHAddress,
           );
