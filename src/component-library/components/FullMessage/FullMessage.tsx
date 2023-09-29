@@ -1,5 +1,8 @@
-import type { ReactElement } from "react";
+import { useCallback, useMemo } from "react";
+import type { KeyboardEventHandler, PropsWithChildren } from "react";
 import { useTranslation } from "react-i18next";
+import { useResendMessage } from "@xmtp/react-sdk";
+import type { CachedMessageWithId } from "@xmtp/react-sdk";
 import { DateDivider } from "../DateDivider/DateDivider";
 import { classNames } from "../../../helpers";
 
@@ -8,11 +11,8 @@ interface MessageSender {
   isSelf?: boolean;
 }
 
-interface FullMessageProps {
-  /**
-   * What is the message text?
-   */
-  text: ReactElement;
+type FullMessageProps = PropsWithChildren & {
+  message: CachedMessageWithId;
   /**
    * who is the message from?
    */
@@ -25,31 +25,66 @@ interface FullMessageProps {
    * Should we show the date divider?
    */
   showDateDivider?: boolean;
-  /**
-   * Does this message have an error?
-   */
-  isError?: boolean;
-}
+};
+
+const incomingMessageBackgroundStyles = "bg-gray-200 rounded-br-lg pl-2";
+const outgoingMessageBackgroundStyles =
+  "bg-indigo-600 text-white rounded-bl-lg message-sender";
+const errorMessageBackgroundStyles =
+  "bg-white rounded-bl-lg pl-2 border-gray-200 border";
 
 export const FullMessage = ({
-  text,
+  children,
+  message,
   from,
   datetime,
   showDateDivider = false,
-  isError,
 }: FullMessageProps) => {
   const { t } = useTranslation();
-  const isOutgoingMessage = from.isSelf;
+  const { resend, cancel } = useResendMessage();
 
-  const incomingMessageBackgroundStyles = "bg-gray-200 rounded-br-lg pl-2";
-  const outgoingMessageBackgroundStyles =
-    "bg-indigo-600 text-white rounded-bl-lg message-sender";
+  const handleResend = useCallback(() => {
+    void resend(message);
+  }, [message, resend]);
+
+  const handleResendKeyDown = useCallback<KeyboardEventHandler<HTMLDivElement>>(
+    (e) => {
+      if (e.key === "Enter") {
+        void handleResend();
+      }
+    },
+    [handleResend],
+  );
+
+  const handleCancel = useCallback(() => {
+    void cancel(message);
+  }, [message, cancel]);
+
+  const handleCancelKeyDown = useCallback<KeyboardEventHandler<HTMLDivElement>>(
+    (e) => {
+      if (e.key === "Enter") {
+        void handleCancel();
+      }
+    },
+    [handleCancel],
+  );
+
+  const messageBackgroundStyles = useMemo(() => {
+    if (message.hasLoadError) {
+      return errorMessageBackgroundStyles;
+    }
+    if (from.isSelf) {
+      return outgoingMessageBackgroundStyles;
+    }
+    return incomingMessageBackgroundStyles;
+  }, [from.isSelf, message.hasLoadError]);
 
   return (
     <div
+      data-testid="message-tile-container"
       className={classNames(
-        "flex flex-col w-full",
-        isOutgoingMessage ? "items-end" : "items-start",
+        "flex flex-col w-full px-4 md:px-8",
+        from.isSelf ? "items-end" : "items-start",
       )}>
       <div
         className={classNames(
@@ -59,23 +94,42 @@ export const FullMessage = ({
           "max-w-[80%]",
           "md:max-w-[50%]",
           "w-fit",
+          from.isSelf ? "justify-end" : "justify-start",
         )}>
-        <div className={classNames("flex", "flex-col", "max-w-full")}>
+        <div className="flex flex-col max-w-full">
           <div
-            className={`whitespace-pre-wrap p-2 px-3 rounded-tl-xl rounded-tr-xl my-1 max-w-full break-words text-md pl-3  ${
-              isError
-                ? "bg-white"
-                : isOutgoingMessage
-                ? outgoingMessageBackgroundStyles
-                : incomingMessageBackgroundStyles
-            }`}>
-            {text}
+            className={`whitespace-pre-wrap p-2 px-3 rounded-tl-xl rounded-tr-xl my-1 max-w-full break-words text-md pl-3 ${messageBackgroundStyles}`}>
+            {children}
           </div>
           <div
             className={`text-xs text-gray-500 w-full flex mb-4 ${
-              isOutgoingMessage ? "justify-end" : "justify-start"
+              from.isSelf ? "justify-end" : "justify-start"
             }`}>
-            {t("{{datetime, time}}", { datetime })}
+            {message.hasSendError ? (
+              <div className="text-red-600 flex align-center font-bold gap-1">
+                <div>{t("messages.message_not_delivered")}</div>
+                <div>&bull;</div>
+                <div
+                  role="button"
+                  tabIndex={0}
+                  className="underline"
+                  onKeyDown={handleResendKeyDown}
+                  onClick={handleResend}>
+                  {t("messages.message_retry")}
+                </div>
+                <div>&bull;</div>
+                <div
+                  role="button"
+                  tabIndex={0}
+                  className="underline"
+                  onKeyDown={handleCancelKeyDown}
+                  onClick={handleCancel}>
+                  {t("messages.message_cancel")}
+                </div>
+              </div>
+            ) : (
+              t("{{datetime, time}}", { datetime })
+            )}
           </div>
         </div>
       </div>

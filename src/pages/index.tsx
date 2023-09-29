@@ -1,5 +1,4 @@
 import { useEffect, useMemo } from "react";
-import { watchAccount } from "@wagmi/core";
 import { useAccount, useDisconnect } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useClient } from "@xmtp/react-sdk";
@@ -16,11 +15,8 @@ const OnboardingPage = () => {
   const { openConnectModal } = useConnectModal();
   const { client, isLoading, status, setStatus, resolveCreate, resolveEnable } =
     useInitXmtpClient();
-  const { disconnect: disconnectWagmi, reset: resetWagmi } = useDisconnect();
+  const { reset: resetWagmi } = useDisconnect();
   const { disconnect: disconnectClient } = useClient();
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => watchAccount(() => resetXmtpState()), []);
 
   useEffect(() => {
     const routeToInbox = () => {
@@ -61,11 +57,10 @@ const OnboardingPage = () => {
         onEnable={resolveEnable}
         onDisconnect={() => {
           if (client) {
-            disconnectClient();
+            void disconnectClient();
           }
           setStatus(undefined);
           wipeKeys(address ?? "");
-          disconnectWagmi();
           resetWagmi();
           resetXmtpState();
         }}

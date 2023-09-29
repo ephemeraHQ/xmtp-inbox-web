@@ -1,24 +1,37 @@
+import type { ClientOptions } from "@xmtp/react-sdk";
 import { Client, useClient, useCanMessage } from "@xmtp/react-sdk";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useConnect, useSigner } from "wagmi";
 import type { Signer } from "ethers";
-import {
-  AttachmentCodec,
-  RemoteAttachmentCodec,
-} from "@xmtp/content-type-remote-attachment";
+import type { ETHAddress } from "../helpers";
 import {
   getAppVersion,
   getEnv,
   isAppEnvDemo,
   loadKeys,
   storeKeys,
+  throttledFetchAddressName,
+  throttledFetchEnsAvatar,
 } from "../helpers";
 import { mockConnector } from "../helpers/mockConnector";
+import { useXmtpStore } from "../store/xmtp";
 
 type ClientStatus = "new" | "created" | "enabled";
 
 type ResolveReject<T = void> = (value: T | PromiseLike<T>) => void;
 
+interface Ethereum {
+  request(args: {
+    method: string;
+    params: {
+      [snapName: string]: object;
+    };
+  }): Promise<{
+    [snapName: string]: {
+      enabled: boolean;
+    };
+  }>;
+}
 /**
  * This is a helper function for creating a new promise and getting access
  * to the resolve and reject callbacks for external use.
@@ -42,8 +55,7 @@ const clientOptions = {
   apiUrl: import.meta.env.VITE_XMTP_API_URL,
   env: getEnv(),
   appVersion: getAppVersion(),
-  codecs: [new AttachmentCodec(), new RemoteAttachmentCodec()],
-};
+} as Partial<ClientOptions>;
 
 const useInitXmtpClient = () => {
   // track if onboarding is in progress
@@ -55,6 +67,8 @@ const useInitXmtpClient = () => {
   const [signing, setSigning] = useState(false);
   const { data: signer } = useSigner();
   const { connect: connectWallet } = useConnect();
+  const setClientName = useXmtpStore((s) => s.setClientName);
+  const setClientAvatar = useXmtpStore((s) => s.setClientAvatar);
 
   /**
    * In order to have more granular control of the onboarding process, we must
@@ -138,7 +152,7 @@ const useInitXmtpClient = () => {
       if (!client && signer) {
         onboardingRef.current = true;
         const address = await signer.getAddress();
-        let keys = loadKeys(address);
+        let keys: Uint8Array | undefined = loadKeys(address);
         // check if we already have the keys
         if (keys) {
           // resolve client promises
@@ -166,26 +180,79 @@ const useInitXmtpClient = () => {
               setStatus("new");
             }
           }
-          // get client keys
-          keys = await Client.getKeys(signer, {
-            ...clientOptions,
-            // we don't need to publish the contact here since it
-            // will happen when we create the client later
-            skipContactPublishing: true,
-            // we can skip persistence on the keystore for this short-lived
-            // instance
-            persistConversations: false,
-            preCreateIdentityCallback,
-            preEnableIdentityCallback,
-          });
-          // all signatures have been accepted
-          setStatus("enabled");
-          setSigning(false);
-          // persist client keys
-          storeKeys(address, keys);
+
+          if (window.ethereum?.isMetaMask) {
+            // Snaps flow — TODO: move to SDK side after ironing out all edge cases.
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+            const browserSupportSnaps = await Client.isSnapsReady();
+            if (browserSupportSnaps) {
+              try {
+                const result = await (
+                  window.ethereum as unknown as Ethereum
+                ).request({
+                  method: "wallet_requestSnaps",
+                  params: {
+                    "npm:@xmtp/snap": {},
+                  },
+                });
+
+                if (result && result?.["npm:@xmtp/snap"].enabled) {
+                  createResolve();
+                  enableResolve();
+                  setStatus("enabled");
+
+                  keys = undefined;
+                  clientOptions.useSnaps = true;
+                  clientOptions.preCreateIdentityCallback =
+                    preCreateIdentityCallback;
+                  clientOptions.preEnableIdentityCallback =
+                    preEnableIdentityCallback;
+                } else if (result && !result.enabled) {
+                  throw new Error("snaps not enabled with XMTP");
+                }
+              } catch (error) {
+                await updateStatus();
+              }
+            } else {
+              await updateStatus();
+            }
+          } else {
+            // get client keys
+            keys = await Client.getKeys(signer, {
+              ...clientOptions,
+              // we don't need to publish the contact here since it
+              // will happen when we create the client later
+              skipContactPublishing: true,
+              // we can skip persistence on the keystore for this short-lived
+              // instance
+              persistConversations: false,
+              preCreateIdentityCallback,
+              preEnableIdentityCallback,
+            });
+            // all signatures have been accepted
+            setStatus("enabled");
+            setSigning(false);
+            // persist client keys
+            storeKeys(address, keys);
+          }
         }
         // initialize client
-        await initialize({ keys, options: clientOptions, signer });
+        const xmtpClient = await initialize({
+          keys,
+          options: clientOptions,
+          signer,
+        });
+        if (xmtpClient) {
+          const name = await throttledFetchAddressName(
+            xmtpClient.address as ETHAddress,
+          );
+          const avatar = await throttledFetchEnsAvatar({
+            address: xmtpClient.address as ETHAddress,
+          });
+          setClientName(name);
+          setClientAvatar(avatar);
+        }
+
         onboardingRef.current = false;
       }
     };

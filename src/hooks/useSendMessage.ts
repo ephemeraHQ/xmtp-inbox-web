@@ -1,9 +1,6 @@
 import { useCallback } from "react";
-import type { Conversation } from "@xmtp/react-sdk";
-import {
-  useSendMessage as useSendMessageHook,
-  useStartConversation,
-} from "@xmtp/react-sdk";
+import type { CachedConversation } from "@xmtp/react-sdk";
+import { useSendMessage as _useSendMessage } from "@xmtp/react-sdk";
 import type {
   Attachment,
   RemoteAttachment,
@@ -16,32 +13,22 @@ import {
 import { Web3Storage } from "web3.storage";
 import { useTranslation } from "react-i18next";
 import Upload from "../helpers/classes/Upload";
-import type { address } from "../pages/inbox";
 import { useXmtpStore } from "../store/xmtp";
-import { getConversationId, isValidLongWalletAddress } from "../helpers";
 
-const useSendMessage = (conversationId: address, attachment?: Attachment) => {
+const useSendMessage = (attachment?: Attachment) => {
   const { t } = useTranslation();
-  const conversations = useXmtpStore((state) => state.conversations);
-  const selectedConversation = conversations.get(conversationId);
-  const { startConversation, error, isLoading } = useStartConversation<
-    RemoteAttachment | string
-  >();
-  const {
-    sendMessage: sendMessageFromHook,
-    isLoading: sendingMessageLoading,
-    error: sendingMessageError,
-  } = useSendMessageHook<RemoteAttachment | string>(
-    selectedConversation as Conversation,
-  );
-  const recipientWalletAddress = useXmtpStore(
-    (state) => state.recipientWalletAddress,
-  );
-  const setConversations = useXmtpStore((state) => state.setConversations);
+  const { sendMessage: _sendMessage, isLoading, error } = _useSendMessage();
+  const recipientOnNetwork = useXmtpStore((s) => s.recipientOnNetwork);
 
   const sendMessage = useCallback(
-    async (message: string | Attachment, type: "text" | "attachment") => {
-      let selectedConvo = conversations.get(conversationId);
+    async (
+      conversation: CachedConversation,
+      message: string | Attachment,
+      type: "text" | "attachment",
+    ) => {
+      if (!recipientOnNetwork) {
+        return;
+      }
       if (attachment && type === "attachment") {
         const web3Storage = new Web3Storage({
           token: import.meta.env.VITE_WEB3_STORAGE_TOKEN,
@@ -70,61 +57,28 @@ const useSendMessage = (conversationId: address, attachment?: Attachment) => {
           contentLength: attachment.data.byteLength,
         };
 
-        if (
-          isValidLongWalletAddress(recipientWalletAddress) &&
-          (!selectedConvo || !selectedConvo?.messages)
-        ) {
-          const conversation = await startConversation(
-            recipientWalletAddress,
-            remoteAttachment,
-            {
-              contentFallback:
-                t("status_messaging.file_unsupported", {
-                  FILENAME: remoteAttachment.filename,
-                }) || remoteAttachment.filename,
-              contentType: ContentTypeRemoteAttachment,
-            },
-          );
-          if (conversation) {
-            selectedConvo = conversation;
-            conversations.set(getConversationId(conversation), conversation);
-            setConversations(new Map(conversations));
-          }
-        } else {
-          await sendMessageFromHook(remoteAttachment, {
+        void _sendMessage(
+          conversation,
+          remoteAttachment,
+          ContentTypeRemoteAttachment,
+          {
             contentFallback:
               t("status_messaging.file_unsupported", {
                 FILENAME: remoteAttachment.filename,
               }) || remoteAttachment.filename,
-            contentType: ContentTypeRemoteAttachment,
-          });
-        }
-      } else if (
-        isValidLongWalletAddress(recipientWalletAddress) &&
-        (!selectedConvo || !selectedConvo?.messages)
-      ) {
-        const conversation = await startConversation(
-          recipientWalletAddress,
-          message as string,
+          },
         );
-
-        if (conversation) {
-          selectedConvo = conversation;
-          conversations.set(getConversationId(conversation), conversation);
-          setConversations(new Map(conversations));
-        }
-      } else {
-        await sendMessageFromHook(message as string);
+      } else if (type === "text") {
+        void _sendMessage(conversation, message);
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [conversationId, recipientWalletAddress, conversations, attachment],
+    [recipientOnNetwork, attachment, _sendMessage, t],
   );
 
   return {
     sendMessage,
-    loading: isLoading || sendingMessageLoading,
-    error: error || sendingMessageError,
+    loading: isLoading,
+    error,
   };
 };
 

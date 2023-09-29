@@ -1,9 +1,8 @@
 import type { Attachment } from "@xmtp/content-type-remote-attachment";
 import { useReactMediaRecorder } from "react-media-recorder-2";
 import { useTranslation } from "react-i18next";
-import { ATTACHMENT_ERRORS } from "../helpers";
-import { humanFileSize } from "../helpers/attachments";
 import { useXmtpStore } from "../store/xmtp";
+import { MAX_FILE_SIZE } from "../helpers";
 
 interface useVoiceRecordingProps {
   setAttachment: (attachment: Attachment | undefined) => void;
@@ -27,7 +26,7 @@ export const useVoiceRecording = ({
         setAttachmentPreview(blobUrl);
         const file = new File([blob], "audio", { type: fileType });
 
-        if (humanFileSize(file.size) === ATTACHMENT_ERRORS.FILE_TOO_LARGE) {
+        if (file.size > MAX_FILE_SIZE) {
           setAttachmentError(t("status_messaging.file_too_large"));
         }
 

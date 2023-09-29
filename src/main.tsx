@@ -2,15 +2,29 @@ import "./polyfills";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "@rainbow-me/rainbowkit/styles.css";
-import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import {
+  connectorsForWallets,
+  RainbowKitProvider,
+} from "@rainbow-me/rainbowkit";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
-import { XMTPProvider } from "@xmtp/react-sdk";
+import { attachmentContentTypeConfig, XMTPProvider } from "@xmtp/react-sdk";
 import { mainnet } from "wagmi/chains";
 import { infuraProvider } from "wagmi/providers/infura";
+import {
+  coinbaseWallet,
+  metaMaskWallet,
+  rainbowWallet,
+  trustWallet,
+  walletConnectWallet,
+} from "@rainbow-me/rainbowkit/wallets";
 import App from "./controllers/AppController";
 import { isAppEnvDemo } from "./helpers";
 import { mockConnector } from "./helpers/mockConnector";
+
+const DB_VERSION = 1;
+
+const contentTypeConfigs = [attachmentContentTypeConfig];
 
 const { chains, provider, webSocketProvider } = configureChains(
   [mainnet],
@@ -20,11 +34,22 @@ const { chains, provider, webSocketProvider } = configureChains(
   ],
 );
 
-const { connectors } = getDefaultWallets({
-  appName: "XMTP Inbox Web",
-  projectId: import.meta.env.VITE_PROJECT_ID,
-  chains,
-});
+const projectId = import.meta.env.VITE_PROJECT_ID;
+const appName = "XMTP Inbox Web";
+
+const connectors = connectorsForWallets([
+  {
+    groupName: "Wallets",
+    wallets: [
+      // Alpha order
+      coinbaseWallet({ appName, chains }),
+      metaMaskWallet({ chains, projectId }),
+      rainbowWallet({ chains, projectId }),
+      trustWallet({ projectId, chains }),
+      walletConnectWallet({ chains, projectId }),
+    ],
+  },
+]);
 
 const wagmiDemoClient = createClient({
   autoConnect: true,
@@ -44,7 +69,9 @@ createRoot(document.getElementById("root") as HTMLElement).render(
   <WagmiConfig client={isAppEnvDemo() ? wagmiDemoClient : wagmiClient}>
     <RainbowKitProvider chains={chains}>
       <StrictMode>
-        <XMTPProvider>
+        <XMTPProvider
+          contentTypeConfigs={contentTypeConfigs}
+          dbVersion={DB_VERSION}>
           <App />
         </XMTPProvider>
       </StrictMode>

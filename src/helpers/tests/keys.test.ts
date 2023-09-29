@@ -42,12 +42,12 @@ describe("loadKeys", () => {
       '{"type":"Buffer","data":[0,0]}',
     );
   });
-  it("returns null when wallet address exists but key not found in localStorage", () => {
+  it("returns undefined when wallet address exists but key not found in localStorage", () => {
     const walletAddress = "differentWalletAddress";
-    expect(loadKeys(walletAddress)).toBe(null);
+    expect(loadKeys(walletAddress)).toBe(undefined);
   });
-  it("handles empty input by returning null", () => {
-    expect(loadKeys()).toBe(null);
+  it("handles empty input by returning undefined", () => {
+    expect(loadKeys()).toBe(undefined);
   });
 });
 
@@ -55,6 +55,6 @@ describe("wipeKeys", () => {
   it("removes address key from local storage", () => {
     const walletAddress = "testWalletAddress";
     wipeKeys(walletAddress);
-    expect(loadKeys(walletAddress)).toBe(null);
+    expect(loadKeys(walletAddress)).toBe(undefined);
   });
 });

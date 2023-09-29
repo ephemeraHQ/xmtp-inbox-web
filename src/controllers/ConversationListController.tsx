@@ -1,12 +1,15 @@
-import type { Conversation } from "@xmtp/react-sdk";
+import { useEffect, useMemo } from "react";
+import { useDb } from "@xmtp/react-sdk";
 import { useXmtpStore } from "../store/xmtp";
 import useListConversations from "../hooks/useListConversations";
 import { ConversationList } from "../component-library/components/ConversationList/ConversationList";
 import getFilteredConversations from "../helpers/getFilteredConversations";
 import { MessagePreviewCardController } from "./MessagePreviewCardController";
-import { XMTP_FEEDBACK_ADDRESS, getConversationId } from "../helpers";
+import { XMTP_FEEDBACK_ADDRESS } from "../helpers";
 import useStartFeedbackConvo from "../hooks/useStartFeedbackConvo";
 import useStreamAllMessages from "../hooks/useStreamAllMessages";
+import { findFeedbackConversation } from "../helpers/findFeedbackConversation";
+import { throttledUpdateConversationIdentities } from "../helpers/conversation";
 
 type ConversationListControllerProps = {
   setStartedFirstMessage: (startedFirstMessage: boolean) => void;
@@ -15,52 +18,54 @@ type ConversationListControllerProps = {
 export const ConversationListController = ({
   setStartedFirstMessage,
 }: ConversationListControllerProps) => {
-  useListConversations();
+  const { isLoaded, isLoading, conversations } = useListConversations();
+  const { db } = useDb();
   useStartFeedbackConvo();
   useStreamAllMessages();
-  const recipientEnteredValue = useXmtpStore(
-    (state) => state.recipientEnteredValue,
-  );
-  const loadingConversations = useXmtpStore(
-    (state) => state.loadingConversations,
-  );
-  const conversations = useXmtpStore((state) => state.conversations);
-  const previewMessages = useXmtpStore((state) => state.previewMessages);
+  const recipientInput = useXmtpStore((s) => s.recipientInput);
 
-  const orderByLatestMessage = (
-    convoA: Conversation,
-    convoB: Conversation,
-  ): number => {
-    const convoALastMessageDate =
-      previewMessages.get(getConversationId(convoA))?.sent || new Date();
-    const convoBLastMessageDate =
-      previewMessages.get(getConversationId(convoB))?.sent || new Date();
-    return convoALastMessageDate < convoBLastMessageDate ? 1 : -1;
-  };
+  // when the conversations are loaded, update their identities
+  useEffect(() => {
+    const updateConversationIdentities = async () => {
+      if (isLoaded) {
+        await throttledUpdateConversationIdentities(conversations, db);
+      }
+    };
+    void updateConversationIdentities();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoaded]);
+
+  const feedbackConversation = useMemo(
+    () => findFeedbackConversation(conversations),
+    [conversations],
+  );
+
+  const filteredConversations = useMemo(() => {
+    const filtered = getFilteredConversations(conversations).map(
+      (conversation) => (
+        <MessagePreviewCardController
+          key={conversation.topic}
+          convo={conversation}
+        />
+      ),
+    );
+    return feedbackConversation
+      ? [
+          <MessagePreviewCardController
+            key={XMTP_FEEDBACK_ADDRESS}
+            convo={feedbackConversation}
+          />,
+          ...filtered,
+        ]
+      : filtered;
+  }, [conversations, feedbackConversation]);
 
   return (
     <ConversationList
-      hasRecipientEnteredValue={!!recipientEnteredValue}
+      hasRecipientEnteredValue={!!recipientInput}
       setStartedFirstMessage={() => setStartedFirstMessage(true)}
-      isLoading={loadingConversations}
-      messages={
-        !loadingConversations
-          ? [
-              <MessagePreviewCardController
-                key={XMTP_FEEDBACK_ADDRESS}
-                convo={conversations.get(XMTP_FEEDBACK_ADDRESS)}
-              />,
-              ...getFilteredConversations(conversations)
-                .sort(orderByLatestMessage)
-                .map((convo) => (
-                  <MessagePreviewCardController
-                    key={getConversationId(convo)}
-                    convo={convo}
-                  />
-                )),
-            ]
-          : []
-      }
+      isLoading={isLoading}
+      messages={!isLoading ? filteredConversations : []}
     />
   );
 };
