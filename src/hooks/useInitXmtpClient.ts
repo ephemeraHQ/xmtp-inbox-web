@@ -252,8 +252,8 @@ const useInitXmtpClient = () => {
               name,
             });
             setClientAvatar(avatar);
+            setClientName(name);
           }
-          setClientName(name);
         }
 
         onboardingRef.current = false;
