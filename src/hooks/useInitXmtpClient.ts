@@ -152,8 +152,8 @@ const useInitXmtpClient = () => {
       // skip this if we already have a client and ensure we have a walletClient
       if (!client && walletClient) {
         onboardingRef.current = true;
-        const addresses = await walletClient.getAddresses();
-        let keys: Uint8Array | undefined = loadKeys(addresses?.[0]);
+        const { address } = walletClient.account;
+        let keys: Uint8Array | undefined = loadKeys(address);
         // check if we already have the keys
         if (keys) {
           // resolve client promises
@@ -170,10 +170,7 @@ const useInitXmtpClient = () => {
           } else {
             // no keys found, but maybe the address has already been created
             // let's check
-            const canMessage = await canMessageUser(
-              addresses?.[0],
-              clientOptions,
-            );
+            const canMessage = await canMessageUser(address, clientOptions);
             if (canMessage) {
               // resolve client promise
               createResolve();
@@ -237,7 +234,7 @@ const useInitXmtpClient = () => {
             setStatus("enabled");
             setSigning(false);
             // persist client keys
-            storeKeys(addresses?.[0], keys);
+            storeKeys(address, keys);
           }
         }
         // initialize client
@@ -250,11 +247,13 @@ const useInitXmtpClient = () => {
           const name = await throttledFetchAddressName(
             xmtpClient.address as ETHAddress,
           );
-          const avatar = await throttledFetchEnsAvatar({
-            name: name || "",
-          });
+          if (name) {
+            const avatar = await throttledFetchEnsAvatar({
+              name,
+            });
+            setClientAvatar(avatar);
+          }
           setClientName(name);
-          setClientAvatar(avatar);
         }
 
         onboardingRef.current = false;

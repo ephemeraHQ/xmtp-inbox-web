@@ -67,7 +67,7 @@
     "react-timer-hook": "^3.0.6",
     "react-tooltip": "^5.19.0",
     "react-virtuoso": "^4.3.4",
-    "viem": "^1.13.1",
+    "viem": "^1.13.2",
     "wagmi": "^1.4.2",
     "web3.storage": "^4.5.4",
     "zustand": "^4.3.2"

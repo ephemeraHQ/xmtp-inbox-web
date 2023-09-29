@@ -24,6 +24,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   const [isDragActive, setIsDragActive] = useState(false);
   const { conversations } = useConversations();
   const selectedConversation = useSelectedConversation();
+  const { data: walletClient } = useWalletClient();
 
   useEffect(() => {
     if (!client) {
@@ -68,8 +69,8 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
 
   // if the wallet address changes, disconnect the XMTP client
   useEffect(() => {
-    const checkSigners = async () => {
-      const address1 = (await signer?.getAddresses())?.[0];
+    const checkSigners = () => {
+      const address1 = walletClient?.account.address;
       const address2 = client?.address;
       // addresses must be defined before comparing
       if (address1 && address2 && address1 !== address2) {

@@ -6,7 +6,6 @@ import { ConversationList } from "../component-library/components/ConversationLi
 import getFilteredConversations from "../helpers/getFilteredConversations";
 import { MessagePreviewCardController } from "./MessagePreviewCardController";
 import { XMTP_FEEDBACK_ADDRESS } from "../helpers";
-import useStartFeedbackConvo from "../hooks/useStartFeedbackConvo";
 import useStreamAllMessages from "../hooks/useStreamAllMessages";
 import { findFeedbackConversation } from "../helpers/findFeedbackConversation";
 import { throttledUpdateConversationIdentities } from "../helpers/conversation";
@@ -20,7 +19,6 @@ export const ConversationListController = ({
 }: ConversationListControllerProps) => {
   const { isLoaded, isLoading, conversations } = useListConversations();
   const { db } = useDb();
-  useStartFeedbackConvo();
   useStreamAllMessages();
   const recipientInput = useXmtpStore((s) => s.recipientInput);
 
