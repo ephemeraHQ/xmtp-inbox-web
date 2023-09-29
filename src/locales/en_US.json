@@ -45,8 +45,7 @@
     "conversation_loading": "Loading messages...",
     "message_not_delivered": "Not delivered",
     "message_retry": "Retry",
-    "message_cancel": "Cancel",
-    "send_feedback": "Send feedback"
+    "message_cancel": "Cancel"
   },
   "attachments": {
     "unable_to_display": "Unable to display attachment",
