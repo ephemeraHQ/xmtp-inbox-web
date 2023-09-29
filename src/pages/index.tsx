@@ -15,7 +15,7 @@ const OnboardingPage = () => {
   const { openConnectModal } = useConnectModal();
   const { client, isLoading, status, setStatus, resolveCreate, resolveEnable } =
     useInitXmtpClient();
-  const { disconnect: disconnectWagmi, reset: resetWagmi } = useDisconnect();
+  const { reset: resetWagmi } = useDisconnect();
   const { disconnect: disconnectClient } = useClient();
 
   useEffect(() => {
