@@ -130,8 +130,6 @@ const fetchAddressName = async (address: ETHAddress) => {
     }
     return name;
   } catch (e) {
-    // eslint-disable-next-line no-console
-    console.log("Error fetching address name", e);
     return null;
   }
 };
