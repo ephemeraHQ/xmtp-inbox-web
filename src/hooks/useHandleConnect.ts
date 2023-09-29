@@ -2,7 +2,7 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { MockConnector } from "@wagmi/core/connectors/mock";
 import { useConnect } from "wagmi";
 import { isAppEnvDemo } from "../helpers";
-import walletClient from "../helpers/createWalletClient";
+import walletClient from "../helpers/createRandomWallet";
 
 const useHandleConnect = () => {
   const { openConnectModal } = useConnectModal();

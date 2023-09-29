@@ -33,8 +33,6 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [client]);
 
-  const { data: signer } = useWalletClient();
-
   const recipientAddress = useXmtpStore((s) => s.recipientAddress);
 
   const size = useWindowSize();
@@ -82,8 +80,14 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
       }
     };
     void checkSigners();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [disconnect, resetXmtpState, signer]);
+  }, [
+    disconnect,
+    resetXmtpState,
+    walletClient,
+    client?.address,
+    resetWagmi,
+    disconnectWagmi,
+  ]);
 
   if (!client) {
     return <div />;
