@@ -4,20 +4,15 @@ import { createRoot } from "react-dom/client";
 import "@rainbow-me/rainbowkit/styles.css";
 import {
   connectorsForWallets,
+  getDefaultWallets,
   RainbowKitProvider,
 } from "@rainbow-me/rainbowkit";
-import { configureChains, createClient, WagmiConfig } from "wagmi";
+import { configureChains, createConfig, WagmiConfig } from "wagmi";
+import { trustWallet } from "@rainbow-me/rainbowkit/wallets";
 import { publicProvider } from "wagmi/providers/public";
 import { attachmentContentTypeConfig, XMTPProvider } from "@xmtp/react-sdk";
 import { mainnet } from "wagmi/chains";
 import { infuraProvider } from "wagmi/providers/infura";
-import {
-  coinbaseWallet,
-  metaMaskWallet,
-  rainbowWallet,
-  trustWallet,
-  walletConnectWallet,
-} from "@rainbow-me/rainbowkit/wallets";
 import App from "./controllers/AppController";
 import { isAppEnvDemo } from "./helpers";
 import { mockConnector } from "./helpers/mockConnector";
@@ -26,7 +21,7 @@ const DB_VERSION = 1;
 
 const contentTypeConfigs = [attachmentContentTypeConfig];
 
-const { chains, provider, webSocketProvider } = configureChains(
+const { chains, publicClient, webSocketPublicClient } = configureChains(
   [mainnet],
   [
     infuraProvider({ apiKey: import.meta.env.VITE_INFURA_ID ?? "" }),
@@ -37,36 +32,36 @@ const { chains, provider, webSocketProvider } = configureChains(
 const projectId = import.meta.env.VITE_PROJECT_ID;
 const appName = "XMTP Inbox Web";
 
+const { wallets } = getDefaultWallets({
+  appName,
+  projectId,
+  chains,
+});
+
 const connectors = connectorsForWallets([
+  ...wallets,
   {
-    groupName: "Wallets",
-    wallets: [
-      // Alpha order
-      coinbaseWallet({ appName, chains }),
-      metaMaskWallet({ chains, projectId }),
-      rainbowWallet({ chains, projectId }),
-      trustWallet({ projectId, chains }),
-      walletConnectWallet({ chains, projectId }),
-    ],
+    groupName: "Other",
+    wallets: [trustWallet({ projectId, chains })],
   },
 ]);
 
-const wagmiDemoClient = createClient({
+const wagmiDemoConfig = createConfig({
   autoConnect: true,
   connectors: [mockConnector],
-  provider,
-  webSocketProvider,
+  publicClient,
+  webSocketPublicClient,
 });
 
-const wagmiClient = createClient({
+const wagmiConfig = createConfig({
   autoConnect: true,
   connectors,
-  provider,
-  webSocketProvider,
+  publicClient,
+  webSocketPublicClient,
 });
 
 createRoot(document.getElementById("root") as HTMLElement).render(
-  <WagmiConfig client={isAppEnvDemo() ? wagmiDemoClient : wagmiClient}>
+  <WagmiConfig config={isAppEnvDemo() ? wagmiDemoConfig : wagmiConfig}>
     <RainbowKitProvider chains={chains}>
       <StrictMode>
         <XMTPProvider

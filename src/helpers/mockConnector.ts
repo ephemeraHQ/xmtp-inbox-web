@@ -1,9 +1,9 @@
 import { MockConnector } from "@wagmi/core/connectors/mock";
-import { Wallet } from "ethers/lib";
-
-const createWallet = Wallet.createRandom();
+import walletClient from "./createRandomWallet";
 
 // mock connector for demos
 export const mockConnector = new MockConnector({
-  options: { signer: createWallet },
+  options: {
+    walletClient,
+  },
 });

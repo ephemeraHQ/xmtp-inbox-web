@@ -49,11 +49,11 @@ export const useAddressInput = () => {
           setRecipientName(name);
         }
         // no avatar
-        if (!recipientAvatar) {
+        if (!recipientAvatar && recipientName) {
           setRecipientState("loading");
           // check for avatar
           const avatar = await throttledFetchEnsAvatar({
-            address: recipientAddress,
+            name: recipientName,
           });
           setRecipientAvatar(avatar);
         }

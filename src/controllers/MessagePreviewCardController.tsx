@@ -2,7 +2,7 @@ import { useLastMessage, type CachedConversation } from "@xmtp/react-sdk";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { MessagePreviewCard } from "../component-library/components/MessagePreviewCard/MessagePreviewCard";
-import { XMTP_FEEDBACK_ADDRESS, shortAddress } from "../helpers";
+import { shortAddress } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
 import type { PeerIdentityMetadata } from "../helpers/conversation";
 import { getPeerAddressIdentity } from "../helpers/conversation";
@@ -58,15 +58,11 @@ export const MessagePreviewCardController = ({
 
   const conversationDomain = convo?.context?.conversationId.split("/")[0] ?? "";
 
-  let content = lastMessage?.content
+  const content = lastMessage?.content
     ? typeof lastMessage.content !== "string"
       ? t("messages.attachment") || "Attachment"
       : lastMessage?.content
     : undefined;
-
-  if (convo.peerAddress === XMTP_FEEDBACK_ADDRESS) {
-    content = t("messages.send_feedback") ?? "Send feedback";
-  }
 
   const conversationPeerIdentity = useMemo(
     () => convo.metadata?.peerIdentity as PeerIdentityMetadata,
@@ -89,7 +85,6 @@ export const MessagePreviewCardController = ({
       }}
       avatarUrl={conversationPeerIdentity?.avatar || ""}
       conversationDomain={shortAddress(conversationDomain)}
-      pinned={convo?.peerAddress === XMTP_FEEDBACK_ADDRESS}
       address={convo?.peerAddress}
     />
   );
