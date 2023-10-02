@@ -1,10 +1,6 @@
 import { fetchEnsAvatar, fetchEnsName, fetchEnsAddress } from "@wagmi/core";
 import { getAddress } from "viem";
-import {
-  ALLOWED_ENS_SUFFIXES,
-  ALLOWED_UNS_SUFFIXES,
-  API_FETCH_THROTTLE,
-} from "./constants";
+import { ALLOWED_UNS_SUFFIXES, API_FETCH_THROTTLE } from "./constants";
 import { memoizeThrottle } from "./functions";
 
 export type ETHAddress = `0x${string}`;
@@ -37,15 +33,13 @@ export const formatTime = (d: Date | undefined): string =>
 const getMinimumNameLength = (suffixes: string[]) =>
   suffixes.reduce((result, suffix) => Math.min(result, suffix.length), 0);
 
+// ENS names can use domains TLDs
 export const isEnsName = (value: string): boolean => {
   // value must have a minimum length and contain a dot
-  if (
-    value.length < getMinimumNameLength(ALLOWED_ENS_SUFFIXES) ||
-    !value.includes(".")
-  ) {
+  if (value.length < 3 || !value.includes(".")) {
     return false;
   }
-  return ALLOWED_ENS_SUFFIXES.some((suffix) => value.endsWith(suffix));
+  return true;
 };
 
 export const isUnsName = (value: string): boolean => {
