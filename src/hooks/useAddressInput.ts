@@ -84,22 +84,21 @@ export const useAddressInput = () => {
         // input is a valid ETH address
         if (isValidLongWalletAddress(recipientInput)) {
           setRecipientAddress(recipientInput);
-          // if input is an ens name
+          // if input is a uns name
+        } else if (isUnsName(recipientInput)) {
+          setRecipientState("loading");
+          // fetch uns address
+          const address = await throttledFetchUnsAddress(recipientInput);
+          if (address) {
+            setRecipientAddress(address);
+            setRecipientName(recipientInput);
+          }
         } else if (isEnsName(recipientInput)) {
           setRecipientState("loading");
           // fetch ens address
           const address = await throttledFetchEnsAddress({
             name: recipientInput,
           });
-          if (address) {
-            setRecipientAddress(address);
-            setRecipientName(recipientInput);
-          }
-          // if input is a uns name
-        } else if (isUnsName(recipientInput)) {
-          setRecipientState("loading");
-          // fetch uns address
-          const address = await throttledFetchUnsAddress(recipientInput);
           if (address) {
             setRecipientAddress(address);
             setRecipientName(recipientInput);

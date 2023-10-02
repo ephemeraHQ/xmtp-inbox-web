@@ -5,7 +5,7 @@ import { DateDivider } from "../component-library/components/DateDivider/DateDiv
 import { FullConversation } from "../component-library/components/FullConversation/FullConversation";
 import { FullMessageController } from "./FullMessageController";
 import { isMessageSupported } from "../helpers/isMessagerSupported";
-import { updatePeerAddressIdentity } from "../helpers/conversation";
+import { updateConversationIdentity } from "../helpers/conversation";
 
 type FullConversationControllerProps = {
   conversation: CachedConversation;
@@ -19,7 +19,7 @@ export const FullConversationController: React.FC<
   const { db } = useDb();
 
   useEffect(() => {
-    void updatePeerAddressIdentity(conversation, db);
+    void updateConversationIdentity(conversation, db);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [conversation.peerAddress]);
 

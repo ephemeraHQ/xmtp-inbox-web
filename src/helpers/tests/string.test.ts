@@ -23,12 +23,12 @@ describe("isEnsName", () => {
   it("should return true if name ends with .eth", () => {
     expect(isEnsName("test.eth")).toBe(true);
   });
-  it("should return false if name does not include eth", () => {
+  it("should return false if name does not include a period", () => {
     expect(isEnsName("01201209483434")).toBe(false);
   });
-  it("should return false if name includes but does not end with .eth", () => {
-    expect(isEnsName("test.noteth")).toBe(false);
-    expect(isEnsName("eth.test")).toBe(false);
+  it("should return false if name includes a period but is only 2 characters", () => {
+    expect(isEnsName("t.")).toBe(false);
+    expect(isEnsName(".x")).toBe(false);
   });
   it("should return false if invalid name", () => {
     expect(isEnsName("")).toBe(false);
@@ -36,27 +36,34 @@ describe("isEnsName", () => {
   it("should return true for cb.id names", () => {
     expect(isEnsName("test.cb.id")).toBe(true);
   });
+  it("should return true for any TLD", () => {
+    expect(isEnsName("test.chat")).toBe(true);
+    expect(isEnsName("test.org")).toBe(true);
+    expect(isEnsName("test.eth")).toBe(true);
+    expect(isEnsName("test.com")).toBe(true);
+    expect(isEnsName("test.net")).toBe(true);
+  });
+});
 
-  describe("shortAddress", () => {
-    it("should return properly formatted address with long addresses that start with 0x", () => {
-      const address = "0x3843594754958459849584232930739572065843";
-      expect(shortAddress(address)).toBe("0x3843...5843");
-    });
-    it("should not format long addresses that do not start with 0x", () => {
-      const address = "123843594754958459849584232930";
-      expect(shortAddress(address)).toBe(address);
-    });
-    it("should not format short addresses that start with 0x", () => {
-      const address = "0xabc";
-      expect(shortAddress(address)).toBe(address);
-    });
-    it("should not format short addresses that do not start with 0x", () => {
-      const address = "abc";
-      expect(shortAddress(address)).toBe(address);
-    });
-    it("should handle empty string inputs by returning an empty string", () => {
-      expect(shortAddress("")).toBe("");
-    });
+describe("shortAddress", () => {
+  it("should return properly formatted address with long addresses that start with 0x", () => {
+    const address = "0x3843594754958459849584232930739572065843";
+    expect(shortAddress(address)).toBe("0x3843...5843");
+  });
+  it("should not format long addresses that do not start with 0x", () => {
+    const address = "123843594754958459849584232930";
+    expect(shortAddress(address)).toBe(address);
+  });
+  it("should not format short addresses that start with 0x", () => {
+    const address = "0xabc";
+    expect(shortAddress(address)).toBe(address);
+  });
+  it("should not format short addresses that do not start with 0x", () => {
+    const address = "abc";
+    expect(shortAddress(address)).toBe(address);
+  });
+  it("should handle empty string inputs by returning an empty string", () => {
+    expect(shortAddress("")).toBe("");
   });
 });
 
