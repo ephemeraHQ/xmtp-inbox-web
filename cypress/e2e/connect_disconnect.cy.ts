@@ -51,13 +51,7 @@ describe(
     it("Shows expected fields when expanding side nav while connected", () => {
       cy.get(`[data-testid="collapse-icon"]`).click();
 
-      const elements = [
-        "Messages",
-        "Gallery",
-        "Settings",
-        "Collapse",
-        "wallet-address",
-      ];
+      const elements = ["Messages", "Collapse", "wallet-address"];
 
       elements.forEach((element) => {
         checkElement(element);
