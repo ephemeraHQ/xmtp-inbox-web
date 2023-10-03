@@ -42,10 +42,7 @@
   },
   "menu": {
     "collapse_header": "संक्षिप्त करें",
-    "gallery_header": "गैलरी",
-    "messages_header": "मेसेज",
-    "settings_header": "सेटिंग्स",
-    "coming_soon": "जल्द आ रहा है"
+    "messages_header": "मेसेज"
   },
   "status_messaging": {
     "error_1_header": "क्षमा करें, ऐप में त्रुटि आई",

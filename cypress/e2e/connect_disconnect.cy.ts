@@ -19,8 +19,6 @@ describe(
       const elements = [
         "avatar",
         "messages-icon",
-        "gallery-icon",
-        "settings-icon",
         "collapse-icon",
         "icon",
         "conversation-list-header",
