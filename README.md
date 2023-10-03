@@ -46,7 +46,7 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the app.
+Open [http://localhost:5173](http://localhost:5173) with your browser to see the app.
 
 ## Functionality
 
@@ -63,9 +63,9 @@ XMTP Labs hosts the following deployments of the XMTP Inbox chat app:
 
 ### Wallet connections
 
-The XMTP Inbox app uses [RainbowKit](https://www.rainbowkit.com/) to enable users to connect a Coinbase Wallet, MetaMask, Rainbow, or WalletConnect-compatible wallet app.
+The XMTP Inbox app uses [RainbowKit](https://www.rainbowkit.com/) to enable users to connect a Coinbase Wallet, MetaMask, Rainbow, Trust Wallet, or WalletConnect-compatible wallet app.
 
-This app also uses [wagmi](https://wagmi.sh/) to supply an [ethers Signer](https://docs.ethers.org/v5/api/signer/). The XMTP message API client needs this Signer to enable the user's blockchain account to sign messages that create and enable their XMTP identity. This XMTP identity is what enables a user to send and receive messages.
+This app also uses a [viem Account](https://viem.sh/docs/accounts/privateKey.html) interface to sign transactions and messages with a given private key. The XMTP message API client needs this Account to enable and sign messages that create and enable their XMTP identity. This XMTP identity is what enables a user to send and receive messages.
 
 Specifically, the user must provide two signatures using their connected blockchain account:
 
