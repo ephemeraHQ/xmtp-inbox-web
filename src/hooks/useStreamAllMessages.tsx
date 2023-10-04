@@ -17,7 +17,8 @@ const useStreamAllMessages = () => {
     async (message: DecodedMessage) => {
       if (
         latestMsgId.current !== message.id &&
-        Notification.permission === "granted" &&
+        "Notification" in window &&
+        window.Notification.permission === "granted" &&
         message.senderAddress !== walletAddress &&
         document.hidden
       ) {
@@ -30,7 +31,7 @@ const useStreamAllMessages = () => {
           const name = getCachedPeerAddressName(cachedConversation);
 
           // eslint-disable-next-line no-new
-          new Notification("XMTP", {
+          new window.Notification("XMTP", {
             body: `${
               name || shortAddress(message.senderAddress ?? "")
             }\n${truncate(message.content as string, 75)}`,

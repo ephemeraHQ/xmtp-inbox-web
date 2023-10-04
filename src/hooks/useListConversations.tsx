@@ -8,8 +8,11 @@ const useListConversations = () => {
   );
 
   useEffect(() => {
-    if (Notification.permission === "default") {
-      void Notification.requestPermission();
+    if (
+      "Notification" in window &&
+      window.Notification.permission === "default"
+    ) {
+      void window.Notification.requestPermission();
     }
   }, []);
 
