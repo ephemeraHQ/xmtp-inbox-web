@@ -17,7 +17,7 @@ import App from "./controllers/AppController";
 import { isAppEnvDemo } from "./helpers";
 import { mockConnector } from "./helpers/mockConnector";
 
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 
 const contentTypeConfigs = [attachmentContentTypeConfig];
 
