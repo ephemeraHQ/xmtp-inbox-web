@@ -1,10 +1,6 @@
-import { utils } from "ethers";
 import { fetchEnsAvatar, fetchEnsName, fetchEnsAddress } from "@wagmi/core";
-import {
-  ALLOWED_ENS_SUFFIXES,
-  ALLOWED_UNS_SUFFIXES,
-  API_FETCH_THROTTLE,
-} from "./constants";
+import { getAddress } from "viem";
+import { ALLOWED_UNS_SUFFIXES, API_FETCH_THROTTLE } from "./constants";
 import { memoizeThrottle } from "./functions";
 
 export type ETHAddress = `0x${string}`;
@@ -37,15 +33,13 @@ export const formatTime = (d: Date | undefined): string =>
 const getMinimumNameLength = (suffixes: string[]) =>
   suffixes.reduce((result, suffix) => Math.min(result, suffix.length), 0);
 
+// ENS names can use domains TLDs
 export const isEnsName = (value: string): boolean => {
   // value must have a minimum length and contain a dot
-  if (
-    value.length < getMinimumNameLength(ALLOWED_ENS_SUFFIXES) ||
-    !value.includes(".")
-  ) {
+  if (value.length < 3 || !value.includes(".")) {
     return false;
   }
-  return ALLOWED_ENS_SUFFIXES.some((suffix) => value.endsWith(suffix));
+  return true;
 };
 
 export const isUnsName = (value: string): boolean => {
@@ -91,7 +85,7 @@ export const throttledFetchEnsAvatar = memoizeThrottle(
   fetchEnsAvatar,
   API_FETCH_THROTTLE,
   undefined,
-  ({ address }) => address,
+  ({ name }) => name,
 );
 
 const fetchUnsName = async (address: ETHAddress) => {
@@ -168,7 +162,7 @@ const fetchUnsNames = async (addresses: ETHAddress[]) => {
       domainJson.forEach((domain) => {
         if (domain.meta?.owner && domain.meta?.domain) {
           // ensure address is a checksum address
-          result[utils.getAddress(domain.meta.owner)] = domain.meta.domain;
+          result[getAddress(domain.meta.owner)] = domain.meta.domain;
         }
       });
       return result;
@@ -206,7 +200,7 @@ const fetchUnsAddress = async (name: string) => {
         return null;
       return domainJson?.meta?.owner
         ? // ensure address is a checksum address
-          utils.getAddress(domainJson?.meta?.owner)
+          getAddress(domainJson?.meta?.owner)
         : null;
     } catch {
       return null;

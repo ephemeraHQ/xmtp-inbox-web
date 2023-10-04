@@ -6,7 +6,7 @@ import type { DecodedMessage } from "@xmtp/react-sdk";
 import { useCallback, useRef } from "react";
 import { useAccount } from "wagmi";
 import { shortAddress, truncate } from "../helpers";
-import type { PeerIdentityMetadata } from "../helpers/conversation";
+import { getCachedPeerAddressName } from "../helpers/conversation";
 
 const useStreamAllMessages = () => {
   const { address: walletAddress } = useAccount();
@@ -17,7 +17,8 @@ const useStreamAllMessages = () => {
     async (message: DecodedMessage) => {
       if (
         latestMsgId.current !== message.id &&
-        Notification.permission === "granted" &&
+        "Notification" in window &&
+        window.Notification.permission === "granted" &&
         message.senderAddress !== walletAddress &&
         document.hidden
       ) {
@@ -25,21 +26,17 @@ const useStreamAllMessages = () => {
         const cachedConversation = await getCachedByTopic(
           message.conversation.topic,
         );
-        let name: string | null = null;
-        if (cachedConversation) {
-          const metadata = cachedConversation.metadata
-            ?.peerIdentity as PeerIdentityMetadata;
-          if (metadata) {
-            name = metadata.name;
-          }
-        }
 
-        // eslint-disable-next-line no-new
-        new Notification("XMTP", {
-          body: `${
-            name || shortAddress(message.senderAddress ?? "")
-          }\n${truncate(message.content as string, 75)}`,
-        });
+        if (cachedConversation) {
+          const name = getCachedPeerAddressName(cachedConversation);
+
+          // eslint-disable-next-line no-new
+          new window.Notification("XMTP", {
+            body: `${
+              name || shortAddress(message.senderAddress ?? "")
+            }\n${truncate(message.content as string, 75)}`,
+          });
+        }
 
         latestMsgId.current = message.id;
       }

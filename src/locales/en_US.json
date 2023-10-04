@@ -45,8 +45,7 @@
     "conversation_loading": "Loading messages...",
     "message_not_delivered": "Not delivered",
     "message_retry": "Retry",
-    "message_cancel": "Cancel",
-    "send_feedback": "Send feedback"
+    "message_cancel": "Cancel"
   },
   "attachments": {
     "unable_to_display": "Unable to display attachment",
@@ -56,10 +55,7 @@
   },
   "menu": {
     "collapse_header": "Collapse",
-    "gallery_header": "Gallery",
-    "messages_header": "Messages",
-    "settings_header": "Settings",
-    "coming_soon": "Coming soon"
+    "messages_header": "Messages"
   },
   "status_messaging": {
     "error_1_header": "Sorry, the app encountered an error",

@@ -6,12 +6,7 @@ import {
   CheckCircleIcon,
   ChevronDoubleRightIcon,
 } from "@heroicons/react/solid";
-import {
-  ClipboardCopyIcon,
-  CogIcon,
-  SparklesIcon,
-  XIcon,
-} from "@heroicons/react/outline";
+import { ClipboardCopyIcon, XIcon } from "@heroicons/react/outline";
 import { useTranslation } from "react-i18next";
 import { QRCode } from "react-qrcode-logo";
 import type { ETHAddress } from "../../../helpers";
@@ -97,18 +92,6 @@ const SideNav = ({
       className={isOpen ? "mr-4" : ""}
       data-testid="messages-icon"
     />,
-    <SparklesIcon
-      key={t("menu.gallery_header")}
-      width={24}
-      className={isOpen ? "mr-4" : ""}
-      data-testid="gallery-icon"
-    />,
-    <CogIcon
-      key={t("menu.settings_header")}
-      width={24}
-      className={isOpen ? "mr-4" : ""}
-      data-testid="settings-icon"
-    />,
     <ChevronDoubleRightIcon
       key={t("menu.collapse_header")}
       width={24}
@@ -146,7 +129,7 @@ const SideNav = ({
           className={classNames(
             "flex justify-center items-center h-fit",
             currentIcon === icn.key ||
-              (!currentIcon && icons[3].key === icn.key)
+              (!currentIcon && icons[1].key === icn.key)
               ? "font-bold"
               : "",
           )}>
@@ -154,17 +137,6 @@ const SideNav = ({
           <span data-testid={icn.key}>{isOpen && icn.key}</span>
         </div>
       </button>
-      {(icn.key === t("menu.gallery_header") ||
-        icn.key === t("menu.settings_header")) && (
-        <div
-          role="tooltip"
-          className={classNames(
-            "group-hover:opacity-100 w-max transition-opacity bg-gray-800 p-2 text-sm text-gray-100 rounded-md absolute opacity-0 m-4 mx-auto z-20",
-            isOpen ? "left-32" : "left-10",
-          )}>
-          {t("menu.coming_soon")}
-        </div>
-      )}
     </div>
   ));
 

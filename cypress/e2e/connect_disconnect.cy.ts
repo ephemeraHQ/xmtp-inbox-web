@@ -1,4 +1,4 @@
-import { checkElement, startDemoEnv, TIMEOUT } from "../test_utils";
+import { checkElement, startDemoEnv } from "../test_utils";
 
 describe(
   "Connected Test Cases",
@@ -19,39 +19,39 @@ describe(
       const elements = [
         "avatar",
         "messages-icon",
-        "gallery-icon",
-        "settings-icon",
         "collapse-icon",
         "icon",
         "conversation-list-header",
-        "new-message-icon-cta",
-        "conversations-list-panel",
+        "empty-message-icon",
+        "empty-message-header",
+        "empty-message-subheader",
+        "empty-message-cta",
       ];
-
       elements.forEach((element) => {
         checkElement(element);
       });
     });
 
-    it("Shows feedback convo with a preview message", () => {
-      checkElement("conversations-list-panel");
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(500);
-      cy.get(`[data-testid=message-preview-text]`, { timeout: TIMEOUT })
-        .first()
-        .should("exist");
+    it("Shows expected right panel fields when logged in with a connected wallet and no existing messages", () => {
+      const elements = [
+        "learn-more-header",
+        "get-started-header",
+        "message-section-link",
+        "message-icon",
+        "community-section-link",
+        "community-icon",
+        "docs-section-link",
+        "docs-icon",
+      ];
+      elements.forEach((element) => {
+        checkElement(element);
+      });
     });
 
     it("Shows expected fields when expanding side nav while connected", () => {
       cy.get(`[data-testid="collapse-icon"]`).click();
 
-      const elements = [
-        "Messages",
-        "Gallery",
-        "Settings",
-        "Collapse",
-        "wallet-address",
-      ];
+      const elements = ["Messages", "Collapse", "wallet-address"];
 
       elements.forEach((element) => {
         checkElement(element);
@@ -61,11 +61,9 @@ describe(
       cy.get(`[data-testid="disconnect-wallet-cta"]`).click();
     });
 
-    it("Opens new message view when clicking on plus icon from left panel", () => {
+    it("Opens new message view when clicking the CTA from left panel", () => {
       // Need to break up the click chain for GitHub actions
-      cy.get(`[data-testid=new-message-icon-cta]`).click();
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(500);
+      cy.get(`[data-testid=empty-message-cta]`).click();
       checkElement("message-input");
     });
   },

@@ -1,7 +1,6 @@
 import {
   updateConversationMetadata,
   type CachedConversation,
-  getCachedConversationByTopic,
 } from "@xmtp/react-sdk";
 import type Dexie from "dexie";
 import type { ETHAddress } from "./string";
@@ -11,130 +10,150 @@ import {
   throttledFetchEnsName,
   throttledFetchAddressName,
 } from "./string";
-import { chunkArray, memoizeThrottle } from "./functions";
-import { API_FETCH_THROTTLE } from "./constants";
+import { chunkArray } from "./functions";
 
-export type PeerAddressIdentity = {
-  name: string | null;
-  avatar: string | null;
-};
-
-export type PeerIdentityMetadata = PeerAddressIdentity | undefined;
+export type PeerAddressAvatar = string | null;
+export type PeerAddressName = string | null;
 
 /**
- * Get the peer identity of a conversation
+ * Get the cached name of a conversation's peer address
  *
- * @param conversation The conversation to get the peer identity of
- * @returns The peer identity of the conversation
+ * @param conversation The conversation
+ * @returns The resolved name of the conversation's peer address
  */
-export const getPeerAddressIdentity = (conversation: CachedConversation) => {
-  const metadata = conversation.metadata?.peerIdentity as PeerIdentityMetadata;
-  return {
-    name: metadata?.name || null,
-    avatar: metadata?.avatar || null,
-  };
-};
+export const getCachedPeerAddressName = (conversation: CachedConversation) =>
+  conversation.metadata?.peerAddressName as PeerAddressName;
 
 /**
- * Get the peer identity of a conversation
+ * Fetch the resolved name of a conversation's peer address if it's not present
+ * in the cache
  *
- * @param conversation The conversation to get the peer identity of
- * @returns The peer identity of the conversation
+ * @param conversation The conversation
+ * @returns The resolved name of the conversation's peer address
  */
-export const fetchPeerAddressIdentity = async (
+export const fetchPeerAddressName = async (
   conversation: CachedConversation,
 ) => {
-  // first check if the peer identity is cached
-  let { name, avatar } = getPeerAddressIdentity(conversation);
+  // first check if the name is cached
+  let name = getCachedPeerAddressName(conversation);
   if (!name) {
-    name = await throttledFetchAddressName(
-      conversation.peerAddress as ETHAddress,
-    );
+    name =
+      (await throttledFetchAddressName(
+        conversation.peerAddress as ETHAddress,
+      )) ?? null;
   }
-  if (!avatar) {
-    avatar = await throttledFetchEnsAvatar({
-      address: conversation.peerAddress as ETHAddress,
-    });
-  }
-  return {
-    name,
-    avatar,
-  };
+  return name;
 };
 
 /**
- * Set the peer identity of a conversation
+ * Set the peer address name in a conversation
  *
- * @param name The resolved name of the peer address
- * @param avatar The resolved avatar of the peer address
- * @param conversation The conversation to update
+ * @param name The name for the peer address
+ * @param conversation The conversation
  * @param db DB instance
  */
-export const setPeerAddressIdentity = async (
-  name: string | null | undefined,
-  avatar: string | null | undefined,
+export const setPeerAddressName = async (
+  name: string | null,
   conversation: CachedConversation,
   db: Dexie,
 ) => {
-  // always use the most up-to-date conversation
-  const latestConversation = await getCachedConversationByTopic(
+  // store peer address name in conversation metadata
+  await updateConversationMetadata(
     conversation.walletAddress,
     conversation.topic,
+    "peerAddressName",
+    name,
     db,
   );
-  if (latestConversation) {
-    const identity = getPeerAddressIdentity(latestConversation);
-    // store peer address identity in conversation metadata
-    await updateConversationMetadata(
-      conversation.walletAddress,
-      conversation.topic,
-      "peerIdentity",
-      // undefined is a special value that means we don't want to update the
-      // value, but rather keep the existing value
-      {
-        name: name === undefined ? identity.name : name,
-        avatar: avatar === undefined ? identity.avatar : avatar,
-      },
-      db,
-    );
-  }
 };
 
 /**
- * Update the peer identity of a conversation
+ * Get the cached avatar of a conversation's peer address
  *
- * @param conversation The conversation to update
+ * @param conversation The conversation
+ * @returns The avatar of the conversation's peer address
+ */
+export const getCachedPeerAddressAvatar = (conversation: CachedConversation) =>
+  conversation.metadata?.peerAddressAvatar as PeerAddressAvatar;
+
+/**
+ * Fetch the avatar of a conversation's peer address if it's not present
+ * in the cache
+ *
+ * @param conversation The conversation
+ * @returns The avatar of the conversation's peer address
+ */
+export const fetchPeerAddressAvatar = async (
+  conversation: CachedConversation,
+) => {
+  // first check if the avatar is cached
+  let avatar = getCachedPeerAddressAvatar(conversation);
+  if (!avatar) {
+    // check for a cached name
+    const name = getCachedPeerAddressName(conversation);
+    if (name) {
+      avatar = (await throttledFetchEnsAvatar({ name })) ?? null;
+    }
+  }
+  return avatar;
+};
+
+/**
+ * Set the peer address name in a conversation
+ *
+ * @param avatar The avatar for the peer address
+ * @param conversation The conversation
  * @param db DB instance
  */
-export const updatePeerAddressIdentity = async (
+export const setPeerAddressAvatar = async (
+  avatar: string | null,
   conversation: CachedConversation,
   db: Dexie,
 ) => {
-  const { name, avatar } = await fetchPeerAddressIdentity(conversation);
-  if (name || avatar) {
-    await setPeerAddressIdentity(name, avatar, conversation, db);
-  }
-  return {
-    name,
+  // store peer address avatar in conversation metadata
+  await updateConversationMetadata(
+    conversation.walletAddress,
+    conversation.topic,
+    "peerAddressAvatar",
     avatar,
-  };
+    db,
+  );
+};
+
+/**
+ * Given a conversation, lookup and update the identity of the conversation
+ * peer address.
+ */
+export const updateConversationIdentity = async (
+  conversation: CachedConversation,
+  db: Dexie,
+) => {
+  const name = await fetchPeerAddressName(conversation);
+  if (name) {
+    await setPeerAddressName(name, conversation, db);
+
+    const avatar = await fetchPeerAddressAvatar(conversation);
+    if (avatar) {
+      await setPeerAddressAvatar(avatar, conversation, db);
+    }
+  }
 };
 
 /**
  * Given an array of conversations, lookup and update the identities of the
  * conversation peer addresses.
  */
-const updateConversationIdentities = async (
+export const updateConversationIdentities = async (
   conversations: CachedConversation[],
   db: Dexie,
 ) => {
   // key the conversations by peer address for easy lookup
   const conversationsWithoutNameMap = conversations.reduce(
     (result, conversation) => {
-      // check if conversation already has peer identity metadata
-      const identity = getPeerAddressIdentity(conversation);
-      // skip conversations with peer identity name
-      return identity.name
+      // check if conversation already has peer address name
+      const name = getCachedPeerAddressName(conversation);
+      // skip conversations with name
+      return name
         ? result
         : {
             ...result,
@@ -146,6 +165,7 @@ const updateConversationIdentities = async (
   const addressesWithoutNames = Object.keys(
     conversationsWithoutNameMap,
   ) as ETHAddress[];
+  const resolvedAddresses: { [address: string]: string } = {};
   // make sure we have addresses to lookup
   if (addressesWithoutNames.length > 0) {
     // first check for UNS names first since we can do a bulk lookup
@@ -154,7 +174,7 @@ const updateConversationIdentities = async (
       ([address, name]) => {
         const conversation = conversationsWithoutNameMap[address];
         if (conversation) {
-          void setPeerAddressIdentity(name, null, conversation, db);
+          void setPeerAddressName(name, conversation, db);
         }
       },
     );
@@ -175,38 +195,50 @@ const updateConversationIdentities = async (
       await Promise.all(
         chunk.map(async (address) => {
           const name = await throttledFetchEnsName({ address });
-          const conversation = conversationsWithoutNameMap[address];
-          if (conversation) {
-            await setPeerAddressIdentity(name, undefined, conversation, db);
+          if (name) {
+            resolvedAddresses[address] = name;
+            const conversation = conversationsWithoutNameMap[address];
+            if (conversation) {
+              await setPeerAddressName(name, conversation, db);
+            }
           }
         }),
       );
     }
   }
-  // key the conversations by peer address for easy lookup
+  // key the conversations by ENS name for easy lookup
   const conversationsWithoutAvatarMap = conversations.reduce(
     (result, conversation) => {
+      const name =
+        // check cache
+        getCachedPeerAddressName(conversation) ??
+        // check recently resolved ENS addresses
+        resolvedAddresses[conversation.peerAddress];
+      // make sure there's a valid ENS name first
+      if (!name) {
+        return result;
+      }
       // check if conversation already has peer identity metadata
-      const identity = getPeerAddressIdentity(conversation);
-      // skip conversations with peer identity name
-      return identity.avatar
+      const avatar = getCachedPeerAddressAvatar(conversation);
+      // skip conversations with avatar
+      return avatar
         ? result
         : {
             ...result,
-            [conversation.peerAddress]: conversation,
+            [name]: conversation,
           };
     },
-    {} as { [peerAddress: string]: CachedConversation },
+    {} as { [peerName: string]: CachedConversation },
   );
-  const addressesWithoutAvatars = Object.keys(
+  const namesWithoutAvatars = Object.keys(
     conversationsWithoutAvatarMap,
   ) as ETHAddress[];
   // make sure we have addresses to lookup
-  if (addressesWithoutAvatars.length > 0) {
+  if (namesWithoutAvatars.length > 0) {
     // since there's no bulk lookup for ENS avatars, we batch the lookups in
     // groups of 10
     // eslint-disable-next-line no-restricted-syntax
-    for (const chunk of chunkArray(addressesWithoutAvatars, 10)) {
+    for (const chunk of chunkArray(namesWithoutAvatars, 10)) {
       // this will yield to the event loop to prevent UI blocking
       // eslint-disable-next-line no-await-in-loop
       await new Promise((resolve) => {
@@ -214,23 +246,14 @@ const updateConversationIdentities = async (
       });
       // eslint-disable-next-line no-await-in-loop
       await Promise.all(
-        chunk.map(async (address) => {
-          let avatar: string | null = null;
-          avatar = await throttledFetchEnsAvatar({ address });
-          const conversation = conversationsWithoutAvatarMap[address];
+        chunk.map(async (name) => {
+          const avatar = await throttledFetchEnsAvatar({ name });
+          const conversation = conversationsWithoutAvatarMap[name];
           if (conversation) {
-            await setPeerAddressIdentity(undefined, avatar, conversation, db);
+            await setPeerAddressAvatar(avatar, conversation, db);
           }
         }),
       );
     }
   }
 };
-
-export const throttledUpdateConversationIdentities = memoizeThrottle(
-  updateConversationIdentities,
-  API_FETCH_THROTTLE,
-  undefined,
-  (conversations: CachedConversation[]) =>
-    conversations.map((c) => c.peerAddress).join(","),
-);

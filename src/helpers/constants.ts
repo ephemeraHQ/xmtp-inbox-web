@@ -34,7 +34,4 @@ export const ALLOWED_UNS_SUFFIXES = [
   ".binanceus",
 ];
 
-export const XMTP_FEEDBACK_ADDRESS =
-  "0x8bcF8AFF8Cb99335CD9f4d9866a40e05E23373ff";
-
 export const MAX_FILE_SIZE = 10 * 1024 * 1024;
