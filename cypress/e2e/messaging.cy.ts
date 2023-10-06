@@ -17,7 +17,7 @@ describe(
   () => {
     beforeEach(() => {
       startDemoEnv();
-      // In connected flow, conversaton list header should render before any tests run
+      // In connected flow, conversation list header should render before any tests run
       checkElement("conversation-list-header");
     });
     const testUserWithXmtpAccount =

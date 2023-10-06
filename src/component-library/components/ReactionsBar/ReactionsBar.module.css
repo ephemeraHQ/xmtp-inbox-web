@@ -1,0 +1,26 @@
+.wrapper {
+  padding: 0.25rem;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.option {
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  appearance: none;
+  border: 0;
+  padding: 0.25rem;
+}
+
+.option:hover {
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  background-color: #ddd;
+  cursor: pointer;
+}

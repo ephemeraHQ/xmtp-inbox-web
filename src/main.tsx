@@ -10,16 +10,24 @@ import {
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { trustWallet } from "@rainbow-me/rainbowkit/wallets";
 import { publicProvider } from "wagmi/providers/public";
-import { attachmentContentTypeConfig, XMTPProvider } from "@xmtp/react-sdk";
+import {
+  attachmentContentTypeConfig,
+  reactionContentTypeConfig,
+  XMTPProvider,
+} from "@xmtp/react-sdk";
 import { mainnet } from "wagmi/chains";
 import { infuraProvider } from "wagmi/providers/infura";
 import App from "./controllers/AppController";
 import { isAppEnvDemo } from "./helpers";
 import { mockConnector } from "./helpers/mockConnector";
 
-const DB_VERSION = 1;
+// Increment with any schema change; e.g. adding support for a new content type
+const DB_VERSION = 3;
 
-const contentTypeConfigs = [attachmentContentTypeConfig];
+const contentTypeConfigs = [
+  attachmentContentTypeConfig,
+  reactionContentTypeConfig,
+];
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [mainnet],

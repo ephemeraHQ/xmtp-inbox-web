@@ -1,10 +1,20 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import type { KeyboardEventHandler, PropsWithChildren } from "react";
 import { useTranslation } from "react-i18next";
-import { useResendMessage } from "@xmtp/react-sdk";
-import type { CachedMessageWithId } from "@xmtp/react-sdk";
+import {
+  useResendMessage,
+  useReactions,
+  useSendMessage,
+} from "@xmtp/react-sdk";
+import type {
+  CachedConversation,
+  CachedMessageWithId,
+  CachedReaction,
+} from "@xmtp/react-sdk";
+import { ContentTypeReaction } from "@xmtp/content-type-reaction";
 import { DateDivider } from "../DateDivider/DateDivider";
 import { classNames } from "../../../helpers";
+import { ReactionsBar } from "../ReactionsBar/ReactionsBar";
 
 interface MessageSender {
   displayAddress: string;
@@ -13,6 +23,10 @@ interface MessageSender {
 
 type FullMessageProps = PropsWithChildren & {
   message: CachedMessageWithId;
+  /**
+   * what conversation is the message part of?
+   */
+  conversation: CachedConversation;
   /**
    * who is the message from?
    */
@@ -36,12 +50,16 @@ const errorMessageBackgroundStyles =
 export const FullMessage = ({
   children,
   message,
+  conversation,
   from,
   datetime,
   showDateDivider = false,
 }: FullMessageProps) => {
   const { t } = useTranslation();
   const { resend, cancel } = useResendMessage();
+  const { sendMessage } = useSendMessage();
+  const [onHover, setOnHover] = useState(false);
+  const reactions = useReactions(message) || [];
 
   const handleResend = useCallback(() => {
     void resend(message);
@@ -79,6 +97,18 @@ export const FullMessage = ({
     return incomingMessageBackgroundStyles;
   }, [from.isSelf, message.hasLoadError]);
 
+  const deleteMessage = (reaction: CachedReaction) =>
+    sendMessage(
+      conversation,
+      {
+        content: reaction.content,
+        schema: "unicode",
+        reference: message.xmtpID,
+        action: "removed",
+      },
+      ContentTypeReaction,
+    );
+
   return (
     <div
       data-testid="message-tile-container"
@@ -96,15 +126,28 @@ export const FullMessage = ({
           "w-fit",
           from.isSelf ? "justify-end" : "justify-start",
         )}>
-        <div className="flex flex-col max-w-full">
-          <div
-            className={`whitespace-pre-wrap p-2 px-3 rounded-tl-xl rounded-tr-xl my-1 max-w-full break-words text-md pl-3 ${messageBackgroundStyles}`}>
-            {children}
+        <div className="flex flex-col max-w-full items-end">
+          <div className={`${onHover ? "visible" : "invisible"}`}>
+            <ReactionsBar
+              message={message}
+              conversation={conversation}
+              setOnHover={setOnHover}
+            />
           </div>
+          <button
+            type="button"
+            className={`whitespace-pre-wrap p-2 px-3 rounded-tl-xl rounded-tr-xl my-1 max-w-fit break-words text-md pl-3 ${messageBackgroundStyles}`}
+            onMouseOver={() => setOnHover(true)}
+            onFocus={() => setOnHover(true)}
+            onClick={() => setOnHover(!onHover)}>
+            {children}
+          </button>
           <div
-            className={`text-xs text-gray-500 w-full flex mb-4 ${
+            className={`text-xs text-gray-500 w-full flex ${
               from.isSelf ? "justify-end" : "justify-start"
-            }`}>
+            }`}
+            onMouseOut={() => setOnHover(false)}
+            onBlur={() => setOnHover(false)}>
             {message.hasSendError ? (
               <div className="text-red-600 flex align-center font-bold gap-1">
                 <div>{t("messages.message_not_delivered")}</div>
@@ -130,6 +173,19 @@ export const FullMessage = ({
             ) : (
               t("{{datetime, time}}", { datetime })
             )}
+          </div>
+          <div className="flex items-end" data-testid="reactions-container">
+            {reactions.map((reaction) => (
+              <button
+                type="button"
+                key={reaction.xmtpID}
+                className="ml-1 cursor-pointer"
+                onClick={() => {
+                  void deleteMessage(reaction);
+                }}>
+                {reaction.content}
+              </button>
+            ))}
           </div>
         </div>
       </div>

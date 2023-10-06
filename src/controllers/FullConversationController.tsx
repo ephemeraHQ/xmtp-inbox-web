@@ -51,13 +51,13 @@ export const FullConversationController: React.FC<
             {shouldDisplayDate && (
               <DateDivider date={renderedDatesRef.current.at(-1) as Date} />
             )}
-            <FullMessageController message={msg} />
+            <FullMessageController message={msg} conversation={conversation} />
           </div>
         );
         lastMessageDateRef.current = msg.sentAt;
         return messageDiv;
       }),
-    [messages],
+    [messages, conversation],
   );
 
   return (
