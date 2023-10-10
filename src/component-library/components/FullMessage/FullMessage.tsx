@@ -5,6 +5,7 @@ import {
   useResendMessage,
   useReactions,
   useSendMessage,
+  useClient,
 } from "@xmtp/react-sdk";
 import type {
   CachedConversation,
@@ -20,6 +21,8 @@ interface MessageSender {
   displayAddress: string;
   isSelf?: boolean;
 }
+
+const enterKey = "Enter";
 
 type FullMessageProps = PropsWithChildren & {
   message: CachedMessageWithId;
@@ -60,6 +63,7 @@ export const FullMessage = ({
   const { sendMessage } = useSendMessage();
   const [onHover, setOnHover] = useState(false);
   const reactions = useReactions(message) || [];
+  const { client } = useClient();
 
   const handleResend = useCallback(() => {
     void resend(message);
@@ -67,7 +71,7 @@ export const FullMessage = ({
 
   const handleResendKeyDown = useCallback<KeyboardEventHandler<HTMLDivElement>>(
     (e) => {
-      if (e.key === "Enter") {
+      if (e.key === enterKey) {
         void handleResend();
       }
     },
@@ -80,7 +84,7 @@ export const FullMessage = ({
 
   const handleCancelKeyDown = useCallback<KeyboardEventHandler<HTMLDivElement>>(
     (e) => {
-      if (e.key === "Enter") {
+      if (e.key === enterKey) {
         void handleCancel();
       }
     },
@@ -97,24 +101,31 @@ export const FullMessage = ({
     return incomingMessageBackgroundStyles;
   }, [from.isSelf, message.hasLoadError]);
 
-  const deleteMessage = (reaction: CachedReaction) =>
-    sendMessage(
-      conversation,
-      {
-        content: reaction.content,
-        schema: "unicode",
-        reference: message.xmtpID,
-        action: "removed",
-      },
-      ContentTypeReaction,
-    );
+  const deleteReaction = (reaction: CachedReaction) => {
+    if (reaction.senderAddress === client?.address) {
+      void sendMessage(
+        conversation,
+        {
+          content: reaction.content,
+          schema: "unicode",
+          reference: message.xmtpID,
+          action: "removed",
+        },
+        ContentTypeReaction,
+      );
+    }
+  };
+
+  const alignmentStyles = from.isSelf
+    ? "items-end justify-end"
+    : "items-start justify-start";
 
   return (
     <div
       data-testid="message-tile-container"
       className={classNames(
         "flex flex-col w-full px-4 md:px-8",
-        from.isSelf ? "items-end" : "items-start",
+        alignmentStyles,
       )}>
       <div
         className={classNames(
@@ -124,30 +135,39 @@ export const FullMessage = ({
           "max-w-[80%]",
           "md:max-w-[50%]",
           "w-fit",
-          from.isSelf ? "justify-end" : "justify-start",
-        )}>
-        <div className="flex flex-col max-w-full items-end">
-          <div className={`${onHover ? "visible" : "invisible"}`}>
+          alignmentStyles,
+        )}
+        onMouseOut={() => setOnHover(false)}
+        onBlur={() => setOnHover(false)}>
+        <div
+          className={classNames("flex flex-col max-w-full", alignmentStyles)}>
+          <div
+            className={classNames(onHover ? "opacity-1" : "opacity-0")}
+            onMouseOver={() => setOnHover(true)}
+            onFocus={() => setOnHover(true)}>
             <ReactionsBar
               message={message}
               conversation={conversation}
               setOnHover={setOnHover}
             />
           </div>
-          <button
-            type="button"
-            className={`whitespace-pre-wrap p-2 px-3 rounded-tl-xl rounded-tr-xl my-1 max-w-fit break-words text-md pl-3 ${messageBackgroundStyles}`}
-            onMouseOver={() => setOnHover(true)}
-            onFocus={() => setOnHover(true)}
-            onClick={() => setOnHover(!onHover)}>
-            {children}
-          </button>
           <div
-            className={`text-xs text-gray-500 w-full flex ${
-              from.isSelf ? "justify-end" : "justify-start"
-            }`}
-            onMouseOut={() => setOnHover(false)}
-            onBlur={() => setOnHover(false)}>
+            role="button"
+            tabIndex={0}
+            onKeyDown={() => setOnHover(true)}
+            className={classNames(
+              "whitespace-pre-wrap p-2 px-3 rounded-tl-xl rounded-tr-xl my-1 max-w-fit break-words text-md pl-3 mt-0",
+              messageBackgroundStyles,
+            )}
+            onMouseOver={() => setOnHover(true)}
+            onFocus={() => setOnHover(true)}>
+            {children}
+          </div>
+          <div
+            className={classNames(
+              "text-xs text-gray-500 w-full flex",
+              alignmentStyles,
+            )}>
             {message.hasSendError ? (
               <div className="text-red-600 flex align-center font-bold gap-1">
                 <div>{t("messages.message_not_delivered")}</div>
@@ -174,17 +194,30 @@ export const FullMessage = ({
               t("{{datetime, time}}", { datetime })
             )}
           </div>
-          <div className="flex items-end" data-testid="reactions-container">
+          <div
+            className={classNames("flex", alignmentStyles)}
+            data-testid="reactions-container">
             {reactions.map((reaction) => (
-              <button
-                type="button"
+              <div
+                role="button"
+                tabIndex={0}
                 key={reaction.xmtpID}
-                className="ml-1 cursor-pointer"
+                className={classNames(
+                  "ml-1 cursor-pointer rounded-full border px-1",
+                  reaction.senderAddress === client?.address
+                    ? "border-indigo-600"
+                    : "border-gray-200",
+                )}
+                onKeyDown={(e) => {
+                  if (e.key === enterKey) {
+                    void deleteReaction(reaction);
+                  }
+                }}
                 onClick={() => {
-                  void deleteMessage(reaction);
+                  void deleteReaction(reaction);
                 }}>
                 {reaction.content}
-              </button>
+              </div>
             ))}
           </div>
         </div>
