@@ -203,10 +203,10 @@ export const FullMessage = ({
                 tabIndex={0}
                 key={reaction.xmtpID}
                 className={classNames(
-                  "ml-1 cursor-pointer rounded-full border px-1",
+                  "ml-1 rounded-full border px-1",
                   reaction.senderAddress === client?.address
-                    ? "border-indigo-600"
-                    : "border-gray-200",
+                    ? "border-indigo-600 cursor-pointer"
+                    : "border-gray-200 cursor-auto",
                 )}
                 onKeyDown={(e) => {
                   if (e.key === enterKey) {
