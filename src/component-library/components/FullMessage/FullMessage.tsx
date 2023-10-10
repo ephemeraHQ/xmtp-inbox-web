@@ -195,7 +195,7 @@ export const FullMessage = ({
             )}
           </div>
           <div
-            className={classNames("flex", alignmentStyles)}
+            className={classNames("flex gap-x-1", alignmentStyles)}
             data-testid="reactions-container">
             {reactions.map((reaction) => (
               <div
@@ -203,10 +203,10 @@ export const FullMessage = ({
                 tabIndex={0}
                 key={reaction.xmtpID}
                 className={classNames(
-                  "ml-1 cursor-pointer rounded-full border px-1",
+                  " rounded-full border px-1 w-7 h-7 flex items-center justify-center",
                   reaction.senderAddress === client?.address
-                    ? "border-indigo-600"
-                    : "border-gray-200",
+                    ? "border-indigo-600 cursor-pointer"
+                    : "border-gray-200 cursor-auto",
                 )}
                 onKeyDown={(e) => {
                   if (e.key === enterKey) {
