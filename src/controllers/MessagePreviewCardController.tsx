@@ -2,6 +2,7 @@ import { useLastMessage, type CachedConversation } from "@xmtp/react-sdk";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { MessagePreviewCard } from "../component-library/components/MessagePreviewCard/MessagePreviewCard";
+import type { ETHAddress } from "../helpers";
 import { shortAddress } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
 import {
@@ -35,7 +36,7 @@ export const MessagePreviewCardController = ({
   const onConvoClick = useCallback(
     (conversation: CachedConversation) => {
       if (recipientAddress !== conversation.peerAddress) {
-        const peerAddress = conversation.peerAddress as `0x${string}`;
+        const peerAddress = conversation.peerAddress as ETHAddress;
         const avatar = getCachedPeerAddressAvatar(conversation);
         setRecipientAvatar(avatar);
         const name = getCachedPeerAddressName(conversation);
@@ -44,10 +45,13 @@ export const MessagePreviewCardController = ({
         setRecipientOnNetwork(true);
         setRecipientState("valid");
         setRecipientInput(peerAddress);
+      }
+      if (conversationTopic !== conversation.topic) {
         setConversationTopic(conversation.topic);
       }
     },
     [
+      conversationTopic,
       recipientAddress,
       setConversationTopic,
       setRecipientAddress,

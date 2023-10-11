@@ -157,10 +157,12 @@ export const updateConversationIdentities = async (
         ? result
         : {
             ...result,
-            [conversation.peerAddress]: conversation,
+            [conversation.peerAddress]: (
+              result[conversation.peerAddress] ?? []
+            ).concat(conversation),
           };
     },
-    {} as { [peerAddress: string]: CachedConversation },
+    {} as { [peerAddress: string]: CachedConversation[] },
   );
   const addressesWithoutNames = Object.keys(
     conversationsWithoutNameMap,
@@ -172,10 +174,10 @@ export const updateConversationIdentities = async (
     const unsNames = await throttledFetchUnsNames(addressesWithoutNames);
     (Object.entries(unsNames) as [ETHAddress, string][]).forEach(
       ([address, name]) => {
-        const conversation = conversationsWithoutNameMap[address];
-        if (conversation) {
-          void setPeerAddressName(name, conversation, db);
-        }
+        const addressConversations = conversationsWithoutNameMap[address];
+        addressConversations.forEach((convo) => {
+          void setPeerAddressName(name, convo, db);
+        });
       },
     );
     const unsAddresses = Object.keys(unsNames);
@@ -197,10 +199,12 @@ export const updateConversationIdentities = async (
           const name = await throttledFetchEnsName({ address });
           if (name) {
             resolvedAddresses[address] = name;
-            const conversation = conversationsWithoutNameMap[address];
-            if (conversation) {
-              await setPeerAddressName(name, conversation, db);
-            }
+            const addressConversations = conversationsWithoutNameMap[address];
+            await Promise.all(
+              addressConversations.map((convo) =>
+                setPeerAddressName(name, convo, db),
+              ),
+            );
           }
         }),
       );
@@ -225,10 +229,10 @@ export const updateConversationIdentities = async (
         ? result
         : {
             ...result,
-            [name]: conversation,
+            [name]: (result[name] ?? []).concat(conversation),
           };
     },
-    {} as { [peerName: string]: CachedConversation },
+    {} as { [peerName: string]: CachedConversation[] },
   );
   const namesWithoutAvatars = Object.keys(
     conversationsWithoutAvatarMap,
@@ -248,10 +252,12 @@ export const updateConversationIdentities = async (
       await Promise.all(
         chunk.map(async (name) => {
           const avatar = await throttledFetchEnsAvatar({ name });
-          const conversation = conversationsWithoutAvatarMap[name];
-          if (conversation) {
-            await setPeerAddressAvatar(avatar, conversation, db);
-          }
+          const addressConversations = conversationsWithoutAvatarMap[name];
+          await Promise.all(
+            addressConversations.map((convo) =>
+              setPeerAddressAvatar(avatar, convo, db),
+            ),
+          );
         }),
       );
     }
