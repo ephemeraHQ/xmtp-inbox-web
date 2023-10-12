@@ -41,9 +41,23 @@ const MessageContentController = ({
   // when message content is rendered, update the conversation's read receipt
   useEffect(() => {
     const readReceipt = getReadReceipt(conversation);
-    // if there's no read receipt for this conversation, or
+    console.log("isSelf", isSelf);
+    console.log("readReceipt", readReceipt);
+    console.log("message.sentAt", message.sentAt);
+    if (readReceipt) {
+      console.log(
+        "incoming message sent after read receipt",
+        isAfter(message.sentAt, readReceipt),
+      );
+    }
+
+    // if the message was sent by someone else, and
+    // there's no read receipt for this conversation, or
     // there's a read receipt and the message comes after it
-    if (!readReceipt || (readReceipt && isAfter(message.sentAt, readReceipt))) {
+    if (
+      !isSelf &&
+      (!readReceipt || (readReceipt && isAfter(message.sentAt, readReceipt)))
+    ) {
       // send a read receipt message
       void sendReadReceipt(conversation, sendMessage);
     }
