@@ -6,19 +6,22 @@ import MessageContentController from "./MessageContentController";
 import { useXmtpStore } from "../store/xmtp";
 
 interface FullMessageControllerProps {
-  message: CachedMessageWithId;
   conversation: CachedConversation;
+  isLastReadMessage?: boolean;
+  message: CachedMessageWithId;
 }
 
 export const FullMessageController = ({
-  message,
   conversation,
+  isLastReadMessage,
+  message,
 }: FullMessageControllerProps) => {
   const { client } = useClient();
   const recipientName = useXmtpStore((s) => s.recipientName);
 
   return (
     <FullMessage
+      isLastReadMessage={isLastReadMessage}
       message={message}
       conversation={conversation}
       key={message.xmtpID}
@@ -28,6 +31,7 @@ export const FullMessageController = ({
       }}
       datetime={message.sentAt}>
       <MessageContentController
+        conversation={conversation}
         message={message}
         isSelf={client?.address === message.senderAddress}
       />

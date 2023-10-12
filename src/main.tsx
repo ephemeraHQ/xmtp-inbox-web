@@ -13,6 +13,7 @@ import { publicProvider } from "wagmi/providers/public";
 import {
   attachmentContentTypeConfig,
   reactionContentTypeConfig,
+  readReceiptContentTypeConfig,
   XMTPProvider,
 } from "@xmtp/react-sdk";
 import { mainnet } from "wagmi/chains";
@@ -27,6 +28,7 @@ const DB_VERSION = 3;
 const contentTypeConfigs = [
   attachmentContentTypeConfig,
   reactionContentTypeConfig,
+  readReceiptContentTypeConfig,
 ];
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(

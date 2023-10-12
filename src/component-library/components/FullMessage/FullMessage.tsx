@@ -25,6 +25,10 @@ interface MessageSender {
 const enterKey = "Enter";
 
 type FullMessageProps = PropsWithChildren & {
+  /**
+   * Is this the last read message?
+   */
+  isLastReadMessage?: boolean;
   message: CachedMessageWithId;
   /**
    * what conversation is the message part of?
@@ -56,6 +60,7 @@ export const FullMessage = ({
   conversation,
   from,
   datetime,
+  isLastReadMessage = false,
   showDateDivider = false,
 }: FullMessageProps) => {
   const { t } = useTranslation();
@@ -165,7 +170,7 @@ export const FullMessage = ({
           </div>
           <div
             className={classNames(
-              "text-xs text-gray-500 w-full flex",
+              "text-xs text-gray-500 w-full flex gap-x-1",
               alignmentStyles,
             )}>
             {message.hasSendError ? (
@@ -191,7 +196,10 @@ export const FullMessage = ({
                 </div>
               </div>
             ) : (
-              t("{{datetime, time}}", { datetime })
+              <>
+                {isLastReadMessage ? <span>Read</span> : null}
+                <span>{t("{{datetime, time}}", { datetime })}</span>
+              </>
             )}
           </div>
           <div

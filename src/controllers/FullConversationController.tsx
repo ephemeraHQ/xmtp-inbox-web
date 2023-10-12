@@ -1,6 +1,9 @@
-import { useMessages, type CachedConversation, useDb } from "@xmtp/react-sdk";
+import { useMessages, useDb, getReadReceipt, useClient } from "@xmtp/react-sdk";
+import type { CachedMessage, CachedConversation } from "@xmtp/react-sdk";
 import { useEffect, useMemo, useRef } from "react";
-import { isSameDay } from "date-fns";
+import isSameDay from "date-fns/isSameDay";
+import isBefore from "date-fns/isBefore";
+import isEqual from "date-fns/isEqual";
 import { DateDivider } from "../component-library/components/DateDivider/DateDivider";
 import { FullConversation } from "../component-library/components/FullConversation/FullConversation";
 import { FullMessageController } from "./FullMessageController";
@@ -17,6 +20,7 @@ export const FullConversationController: React.FC<
   const lastMessageDateRef = useRef<Date>();
   const renderedDatesRef = useRef<Date[]>([]);
   const { db } = useDb();
+  const { client } = useClient();
 
   useEffect(() => {
     void updateConversationIdentity(conversation, db);
@@ -25,6 +29,31 @@ export const FullConversationController: React.FC<
 
   // XMTP Hooks
   const { messages, isLoading } = useMessages(conversation);
+
+  // get the last read message of a client's outgoing messages
+  const lastReadMessage = useMemo(() => {
+    const readReceipt = getReadReceipt(conversation);
+    const outgoingMessages = messages.filter(
+      (message) => message.senderAddress === client?.address,
+    );
+    let lastRead: CachedMessage | undefined;
+    // there's no read messages without a read receipt
+    if (readReceipt) {
+      outgoingMessages.some((message) => {
+        // outgoing message is before or equal to the read receipt date
+        if (
+          isBefore(message.sentAt, readReceipt) ||
+          isEqual(message.sentAt, readReceipt)
+        ) {
+          lastRead = message;
+          return true;
+        }
+        // outgoing message comes after read receipt, stop checking
+        return false;
+      });
+    }
+    return lastRead;
+  }, [client?.address, conversation, messages]);
 
   const messagesWithDates = useMemo(
     () =>
@@ -51,13 +80,17 @@ export const FullConversationController: React.FC<
             {shouldDisplayDate && (
               <DateDivider date={renderedDatesRef.current.at(-1) as Date} />
             )}
-            <FullMessageController message={msg} conversation={conversation} />
+            <FullMessageController
+              message={msg}
+              conversation={conversation}
+              isLastReadMessage={lastReadMessage?.xmtpID === msg.xmtpID}
+            />
           </div>
         );
         lastMessageDateRef.current = msg.sentAt;
         return messageDiv;
       }),
-    [messages, conversation],
+    [conversation, lastReadMessage?.xmtpID, messages],
   );
 
   return (
