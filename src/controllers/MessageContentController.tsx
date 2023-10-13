@@ -58,6 +58,7 @@ const MessageContentController = ({
       !isSelf &&
       (!readReceipt || (readReceipt && isAfter(message.sentAt, readReceipt)))
     ) {
+      console.log("sending read receipt...");
       // send a read receipt message
       void sendReadReceipt(conversation, sendMessage);
     }
