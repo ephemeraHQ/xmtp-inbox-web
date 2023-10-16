@@ -5,7 +5,9 @@ import {
   ContentTypeReaction,
   type Reaction,
 } from "@xmtp/content-type-reaction";
+import { ChatIcon } from "@heroicons/react/outline";
 import styles from "./ReactionsBar.module.css";
+import { useXmtpStore } from "../../../store/xmtp";
 
 export type ReactionsBarProps = {
   conversation: CachedConversation;
@@ -21,6 +23,10 @@ export const ReactionsBar: React.FC<ReactionsBarProps> = ({
   setOnHover,
 }) => {
   const { sendMessage } = useSendMessage();
+
+  // For replies
+  const setActiveMessage = useXmtpStore((state) => state.setActiveMessage);
+
   const handleClick = useCallback(
     (emoji: string) => {
       void sendMessage<Reaction>(
@@ -50,6 +56,14 @@ export const ReactionsBar: React.FC<ReactionsBarProps> = ({
           <span className={styles.emoji}>{emoji}</span>
         </button>
       ))}
+      {/* // Reply icon */}
+      <ChatIcon
+        width={20}
+        color="black"
+        onClick={() => {
+          setActiveMessage(message);
+        }}
+      />
     </div>
   );
 };

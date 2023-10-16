@@ -19,13 +19,17 @@ export const MessageInputController = ({
   attachmentPreview,
   setAttachmentPreview,
   setIsDragActive,
+  activeMessage,
 }: MessageInputControllerProps) => {
   // XMTP Hooks
   const conversation = useSelectedConversation();
   const recipientOnNetwork = useXmtpStore((s) => s.recipientOnNetwork);
   const recipientAddress = useXmtpStore((s) => s.recipientAddress);
   const { startConversation } = useStartConversation();
-  const { sendMessage } = useSendMessage(attachment || undefined);
+  const { sendMessage } = useSendMessage(
+    attachment || undefined,
+    activeMessage,
+  );
 
   return (
     <MessageInput

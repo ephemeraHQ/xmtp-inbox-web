@@ -1,6 +1,9 @@
 import { useCallback } from "react";
 import type { CachedConversation } from "@xmtp/react-sdk";
-import { useSendMessage as _useSendMessage } from "@xmtp/react-sdk";
+import {
+  ContentTypeText,
+  useSendMessage as _useSendMessage,
+} from "@xmtp/react-sdk";
 import type {
   Attachment,
   RemoteAttachment,
@@ -11,10 +14,13 @@ import {
   AttachmentCodec,
 } from "@xmtp/content-type-remote-attachment";
 import { Web3Storage } from "web3.storage";
+import { ContentTypeReply } from "@xmtp/content-type-reply";
+import type { Reply } from "@xmtp/content-type-reply";
 import Upload from "../helpers/classes/Upload";
 import { useXmtpStore } from "../store/xmtp";
 
-const useSendMessage = (attachment?: Attachment) => {
+const useSendMessage = (attachment?: Attachment, activeMessage = null) => {
+  console.log("ACTIVE MESSAGE", activeMessage);
   const { sendMessage: _sendMessage, isLoading, error } = _useSendMessage();
   const recipientOnNetwork = useXmtpStore((s) => s.recipientOnNetwork);
 
@@ -27,6 +33,7 @@ const useSendMessage = (attachment?: Attachment) => {
       if (!recipientOnNetwork) {
         return;
       }
+      console.log("TYPE!!!", type);
       if (attachment && type === "attachment") {
         const web3Storage = new Web3Storage({
           token: import.meta.env.VITE_WEB3_STORAGE_TOKEN,
@@ -61,10 +68,24 @@ const useSendMessage = (attachment?: Attachment) => {
           ContentTypeRemoteAttachment,
         );
       } else if (type === "text") {
-        void _sendMessage(conversation, message);
+        console.log("DOES GET IN HERE", activeMessage);
+        if (activeMessage) {
+          console.log("should send reply");
+          void _sendMessage(
+            conversation,
+            {
+              reference: activeMessage?.xmtpID,
+              content: message,
+              contentType: ContentTypeText.toString(),
+            } satisfies Reply,
+            ContentTypeReply,
+          );
+        } else {
+          void _sendMessage(conversation, message);
+        }
       }
     },
-    [recipientOnNetwork, attachment, _sendMessage],
+    [recipientOnNetwork, attachment, _sendMessage, activeMessage],
   );
 
   return {

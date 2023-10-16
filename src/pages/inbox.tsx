@@ -16,15 +16,44 @@ import useWindowSize from "../hooks/useWindowSize";
 import { ConversationListController } from "../controllers/ConversationListController";
 import { useAttachmentChange } from "../hooks/useAttachmentChange";
 import useSelectedConversation from "../hooks/useSelectedConversation";
+import { ReplyThread } from "../component-library/components/ReplyThread/ReplyThread";
 
 const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   const navigate = useNavigate();
   const resetXmtpState = useXmtpStore((state) => state.resetXmtpState);
+  const activeMessage = useXmtpStore((state) => state.activeMessage);
+
   const { client, disconnect } = useClient();
   const [isDragActive, setIsDragActive] = useState(false);
   const { conversations } = useConversations();
   const selectedConversation = useSelectedConversation();
   const { data: walletClient } = useWalletClient();
+
+  console.log("conversations", conversations);
+
+  // const getFraud = async () => {
+  //   try {
+  //     const res = await fetch(
+  //       `https://2krrxo6ed2.execute-api.us-east-1.amazonaws.com/ext/addresses/0xdb1a0153fEa52Ace553486667C3838112082c792`,
+  //       {
+  //         method: "GET",
+
+  //         headers: {
+  //           accept: "application/json",
+  //           "x-api-key": "RhN3rxSR5x7RY3lk3WFtv2GJiKs88XmR6j9JtpsO",
+  //           "Access-Control-Allow-Origin": "*",
+  //         },
+  //       },
+  //     );
+  //     console.log("RES!", res);
+  //   } catch (e) {
+  //     console.log("error", e);
+  //   }
+  // };
+
+  useEffect(() => {
+    // getFraud();
+  }, []);
 
   useEffect(() => {
     if (!client) {
@@ -137,26 +166,32 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
                 setStartedFirstMessage={() => setStartedFirstMessage(true)}
               />
             ) : (
-              <>
-                <div className="flex">
-                  <AddressInputController />
+              // Full container including replies
+              <div className="flex h-screen">
+                {/* // This whole thing is usual flow */}
+                <div className="h-full w-full flex flex-col justify-between">
+                  <div className="flex">
+                    <AddressInputController />
+                  </div>
+                  <div className="h-full overflow-auto flex flex-col">
+                    {selectedConversation && (
+                      <FullConversationController
+                        conversation={selectedConversation}
+                      />
+                    )}
+                  </div>
+                  {/* Drag event handling needing for content attachments */}
+                  <MessageInputController
+                    attachment={attachment}
+                    setAttachment={setAttachment}
+                    attachmentPreview={attachmentPreview}
+                    setAttachmentPreview={setAttachmentPreview}
+                    setIsDragActive={setIsDragActive}
+                  />
                 </div>
-                <div className="h-full overflow-auto flex flex-col">
-                  {selectedConversation && (
-                    <FullConversationController
-                      conversation={selectedConversation}
-                    />
-                  )}
-                </div>
-                {/* Drag event handling needing for content attachments */}
-                <MessageInputController
-                  attachment={attachment}
-                  setAttachment={setAttachment}
-                  attachmentPreview={attachmentPreview}
-                  setAttachmentPreview={setAttachmentPreview}
-                  setIsDragActive={setIsDragActive}
-                />
-              </>
+                {/* // Replies flow */}
+                <ReplyThread />
+              </div>
             )}
           </div>
         ) : null}
