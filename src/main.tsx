@@ -13,6 +13,7 @@ import { publicProvider } from "wagmi/providers/public";
 import {
   attachmentContentTypeConfig,
   reactionContentTypeConfig,
+  replyContentTypeConfig,
   XMTPProvider,
 } from "@xmtp/react-sdk";
 import { mainnet } from "wagmi/chains";
@@ -22,11 +23,12 @@ import { isAppEnvDemo } from "./helpers";
 import { mockConnector } from "./helpers/mockConnector";
 
 // Increment with any schema change; e.g. adding support for a new content type
-const DB_VERSION = 3;
+const DB_VERSION = 4;
 
 const contentTypeConfigs = [
   attachmentContentTypeConfig,
   reactionContentTypeConfig,
+  replyContentTypeConfig,
 ];
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(

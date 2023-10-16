@@ -20,7 +20,6 @@ import Upload from "../helpers/classes/Upload";
 import { useXmtpStore } from "../store/xmtp";
 
 const useSendMessage = (attachment?: Attachment, activeMessage = null) => {
-  console.log("ACTIVE MESSAGE", activeMessage);
   const { sendMessage: _sendMessage, isLoading, error } = _useSendMessage();
   const recipientOnNetwork = useXmtpStore((s) => s.recipientOnNetwork);
 
@@ -33,7 +32,6 @@ const useSendMessage = (attachment?: Attachment, activeMessage = null) => {
       if (!recipientOnNetwork) {
         return;
       }
-      console.log("TYPE!!!", type);
       if (attachment && type === "attachment") {
         const web3Storage = new Web3Storage({
           token: import.meta.env.VITE_WEB3_STORAGE_TOKEN,
@@ -68,15 +66,13 @@ const useSendMessage = (attachment?: Attachment, activeMessage = null) => {
           ContentTypeRemoteAttachment,
         );
       } else if (type === "text") {
-        console.log("DOES GET IN HERE", activeMessage);
-        if (activeMessage) {
-          console.log("should send reply");
+        if (activeMessage.xmtpID) {
           void _sendMessage(
             conversation,
             {
               reference: activeMessage?.xmtpID,
               content: message,
-              contentType: ContentTypeText.toString(),
+              contentType: ContentTypeText,
             } satisfies Reply,
             ContentTypeReply,
           );
