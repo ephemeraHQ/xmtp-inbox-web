@@ -32,7 +32,7 @@ export const FullConversationController: React.FC<
 
   // get the last read message of a client's outgoing messages
   const lastReadMessage = useMemo(() => {
-    const readReceipt = getReadReceipt(conversation);
+    const readReceipt = getReadReceipt(conversation, "incoming");
     const outgoingMessages = messages.filter(
       (message) => message.senderAddress === client?.address,
     );

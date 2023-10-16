@@ -26,10 +26,9 @@ const sendReadReceipt = debounce(
     conversation: CachedConversation,
     sendMessage: ReturnType<typeof useSendMessage>["sendMessage"],
   ) => {
-    console.log("actually sending read receipt...");
     await sendMessage(conversation, {}, ContentTypeReadReceipt);
   },
-  1000,
+  5000,
 );
 
 const MessageContentController = ({
@@ -47,26 +46,17 @@ const MessageContentController = ({
       // ensure latest conversation metadata
       const updatedConversation = await getCachedByTopic(conversation.topic);
       if (updatedConversation) {
-        const readReceipt = getReadReceipt(updatedConversation);
-        console.log("isSelf", isSelf);
-        console.log("readReceipt", readReceipt);
-        console.log("message.sentAt", message.sentAt);
-        if (readReceipt) {
-          console.log(
-            "incoming message sent after read receipt",
-            isAfter(message.sentAt, readReceipt),
-          );
-        }
-
+        const readReceipt = getReadReceipt(updatedConversation, "outgoing");
         // if the message was sent by someone else, and
+        // it's not a read receipt message, and
         // there's no read receipt for this conversation, or
         // there's a read receipt and the message comes after it
         if (
           !isSelf &&
+          !contentType.sameAs(ContentTypeReadReceipt) &&
           (!readReceipt ||
             (readReceipt && isAfter(message.sentAt, readReceipt)))
         ) {
-          console.log("attempting to send read receipt...");
           // send a read receipt message
           void sendReadReceipt(conversation, sendMessage);
         }
