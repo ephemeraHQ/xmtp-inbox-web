@@ -1,4 +1,8 @@
-import type { CachedConversation, CachedMessageWithId } from "@xmtp/react-sdk";
+import {
+  getReplies,
+  type CachedConversation,
+  type CachedMessageWithId,
+} from "@xmtp/react-sdk";
 import { MessageInputController } from "../../../controllers/MessageInputController";
 import { FullMessageController } from "../../../controllers/FullMessageController";
 import { useXmtpStore } from "../../../store/xmtp";
@@ -13,8 +17,9 @@ export const ReplyThread: React.FC<ReplyThreadProps> = ({
   conversation,
 }) => {
   const activeMessage = useXmtpStore((state) => state.activeMessage);
-  console.log("ACTIVE MESSAGE", activeMessage);
-  console.log("MESSAGES!", messages);
+  // const replies = getReplies(activeMessage);
+
+  // console.log("REPLIES", replies);
 
   return (
     <div className="flex flex-col">
@@ -33,14 +38,13 @@ export const ReplyThread: React.FC<ReplyThreadProps> = ({
           conversation={conversation}
         />
       ) : null}
-      {/* {messages.map((msg) => (
-      <FullMessageController
-        key={msg.xmtpID}
-        message={msg}
-        conversation={conversation}
-      />
-    ))}
- */}
+      {/* {replies.map((msg) => (
+        <FullMessageController
+          key={msg.xmtpID}
+          message={msg}
+          conversation={conversation}
+        />
+      ))} */}
     </div>
   );
 };
