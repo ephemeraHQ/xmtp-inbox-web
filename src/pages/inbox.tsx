@@ -134,12 +134,14 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
             </>
           ) : null}
         </div>
+
         {size[0] > TAILWIND_MD_BREAKPOINT ||
         recipientAddress ||
         startedFirstMessage ? (
           <div className="flex w-full flex-col h-screen overflow-hidden">
             {!conversations.length &&
             !loadingConversations &&
+            !recipientAddress &&
             !startedFirstMessage ? (
               <LearnMore
                 version="replace"
