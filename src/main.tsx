@@ -23,7 +23,7 @@ import { isAppEnvDemo } from "./helpers";
 import { mockConnector } from "./helpers/mockConnector";
 
 // Increment with any schema change; e.g. adding support for a new content type
-const DB_VERSION = 4;
+const DB_VERSION = 5;
 
 const contentTypeConfigs = [
   attachmentContentTypeConfig,

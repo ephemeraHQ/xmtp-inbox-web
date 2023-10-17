@@ -6,6 +6,7 @@ import {
 import { MessageInputController } from "../../../controllers/MessageInputController";
 import { FullMessageController } from "../../../controllers/FullMessageController";
 import { useXmtpStore } from "../../../store/xmtp";
+import { useReplies } from "@xmtp/react-sdk";
 
 export type ReplyThreadProps = {
   messages: CachedMessageWithId[];
@@ -17,9 +18,7 @@ export const ReplyThread: React.FC<ReplyThreadProps> = ({
   conversation,
 }) => {
   const activeMessage = useXmtpStore((state) => state.activeMessage);
-  // const replies = getReplies(activeMessage);
-
-  // console.log("REPLIES", replies);
+  const replies = useReplies(activeMessage);
 
   return (
     <div className="flex flex-col">

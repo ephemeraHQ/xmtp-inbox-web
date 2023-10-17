@@ -29,32 +29,6 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   const selectedConversation = useSelectedConversation();
   const { data: walletClient } = useWalletClient();
 
-  console.log("conversations", conversations);
-
-  // const getFraud = async () => {
-  //   try {
-  //     const res = await fetch(
-  //       `https://2krrxo6ed2.execute-api.us-east-1.amazonaws.com/ext/addresses/0xdb1a0153fEa52Ace553486667C3838112082c792`,
-  //       {
-  //         method: "GET",
-
-  //         headers: {
-  //           accept: "application/json",
-  //           "x-api-key": "RhN3rxSR5x7RY3lk3WFtv2GJiKs88XmR6j9JtpsO",
-  //           "Access-Control-Allow-Origin": "*",
-  //         },
-  //       },
-  //     );
-  //     console.log("RES!", res);
-  //   } catch (e) {
-  //     console.log("error", e);
-  //   }
-  // };
-
-  useEffect(() => {
-    // getFraud();
-  }, []);
-
   useEffect(() => {
     if (!client) {
       navigate("/");

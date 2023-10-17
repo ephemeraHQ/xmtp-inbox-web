@@ -66,7 +66,7 @@ const useSendMessage = (attachment?: Attachment, activeMessage = null) => {
           ContentTypeRemoteAttachment,
         );
       } else if (type === "text") {
-        if (activeMessage.xmtpID) {
+        if (activeMessage?.xmtpID) {
           void _sendMessage(
             conversation,
             {
