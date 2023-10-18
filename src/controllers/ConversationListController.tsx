@@ -91,10 +91,11 @@ export const ConversationListController = ({
     nonSpamConvos: { props: { spamScore: number } }[];
   }>(
     (acc, item) => {
-      // 10 is an arbitrary choice for now
-      if (item.props.spamScore > 10) {
+      // UPDATE THRESHOLD HERE
+      const threshold = 10;
+      if (item.props.spamScore > threshold) {
         acc.spamConvos.push(item);
-      } else if (item.props.spamScore <= 10) {
+      } else if (item.props.spamScore <= threshold) {
         acc.nonSpamConvos.push(item);
       }
       return acc;
