@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { StarIcon } from "@heroicons/react/solid";
+import { FlagIcon } from "@heroicons/react/solid";
 import { IconSkeletonLoader } from "../Loaders/SkeletonLoaders/IconSkeletonLoader";
 import { ShortCopySkeletonLoader } from "../Loaders/SkeletonLoaders/ShortCopySkeletonLoader";
 import { classNames } from "../../../helpers";
@@ -124,7 +124,7 @@ export const MessagePreviewCard = ({
           {datetime && t("{{datetime, ago}}", { datetime })}
           {pinned && (
             <div>
-              <StarIcon className="text-indigo-600 mt-2" width={16} />
+              <FlagIcon className="text-indigo-600 mt-2" width={16} />
             </div>
           )}
         </div>

@@ -32,6 +32,8 @@ interface XmtpState {
   setStartedFirstMessage: (startedFirstMessage: boolean) => void;
   attachmentError: string;
   setAttachmentError: (attachmentError: string) => void;
+  activeTab: string;
+  setActiveTab: (activeTab: string) => void;
 }
 
 export const useXmtpStore = create<XmtpState>((set) => ({
@@ -82,4 +84,6 @@ export const useXmtpStore = create<XmtpState>((set) => ({
     set(() => ({ startedFirstMessage })),
   attachmentError: "",
   setAttachmentError: (attachmentError) => set(() => ({ attachmentError })),
+  activeTab: "Messages",
+  setActiveTab: (activeTab) => set(() => ({ activeTab })),
 }));
