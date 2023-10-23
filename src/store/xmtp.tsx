@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { CachedMessage } from "@xmtp/react-sdk";
+import type { CachedMessageWithId } from "@xmtp/react-sdk";
 import type { ETHAddress } from "../helpers";
 
 export type RecipientState = "invalid" | "loading" | "error" | "valid";
@@ -33,8 +33,8 @@ interface XmtpState {
   setStartedFirstMessage: (startedFirstMessage: boolean) => void;
   attachmentError: string;
   setAttachmentError: (attachmentError: string) => void;
-  activeMessage: CachedMessage | null;
-  setActiveMessage: (message: CachedMessage) => void;
+  activeMessage?: CachedMessageWithId;
+  setActiveMessage: (message?: CachedMessageWithId) => void;
 }
 
 export const useXmtpStore = create<XmtpState>((set) => ({
@@ -85,6 +85,6 @@ export const useXmtpStore = create<XmtpState>((set) => ({
     set(() => ({ startedFirstMessage })),
   attachmentError: "",
   setAttachmentError: (attachmentError) => set(() => ({ attachmentError })),
-  activeMessage: null,
+  activeMessage: undefined,
   setActiveMessage: (activeMessage) => set(() => ({ activeMessage })),
 }));

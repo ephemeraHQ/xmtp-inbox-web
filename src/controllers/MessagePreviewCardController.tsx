@@ -1,3 +1,6 @@
+// @RY: See if you have a better way to check for reply preview view here
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useLastMessage, type CachedConversation } from "@xmtp/react-sdk";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
@@ -27,6 +30,8 @@ export const MessagePreviewCardController = ({
   const setRecipientState = useXmtpStore((s) => s.setRecipientState);
   const setRecipientOnNetwork = useXmtpStore((s) => s.setRecipientOnNetwork);
   const setConversationTopic = useXmtpStore((s) => s.setConversationTopic);
+  const setActiveMessage = useXmtpStore((s) => s.setActiveMessage);
+
   const conversationTopic = useXmtpStore((state) => state.conversationTopic);
 
   // Helpers
@@ -45,6 +50,7 @@ export const MessagePreviewCardController = ({
         setRecipientState("valid");
         setRecipientInput(peerAddress);
         setConversationTopic(conversation.topic);
+        setActiveMessage();
       }
     },
     [
@@ -56,12 +62,21 @@ export const MessagePreviewCardController = ({
       setRecipientName,
       setRecipientOnNetwork,
       setRecipientState,
+      setActiveMessage,
     ],
   );
 
   const conversationDomain = convo?.context?.conversationId.split("/")[0] ?? "";
 
-  const content = lastMessage?.content
+  const reply = lastMessage?.contentType.includes("reply");
+
+  const replyContent = lastMessage?.content?.content?.filename
+    ? "Attachment"
+    : lastMessage?.content?.content;
+
+  const content = reply
+    ? replyContent
+    : lastMessage?.content
     ? typeof lastMessage.content !== "string"
       ? t("messages.attachment") || "Attachment"
       : lastMessage?.content

@@ -1,5 +1,5 @@
 import { useSendMessage } from "@xmtp/react-sdk";
-import type { CachedMessage, CachedConversation } from "@xmtp/react-sdk";
+import type { CachedMessageWithId, CachedConversation } from "@xmtp/react-sdk";
 import { useCallback } from "react";
 import {
   ContentTypeReaction,
@@ -11,7 +11,7 @@ import { useXmtpStore } from "../../../store/xmtp";
 
 export type ReactionsBarProps = {
   conversation: CachedConversation;
-  message: CachedMessage;
+  message: CachedMessageWithId;
   setOnHover: (hover: boolean) => void;
 };
 
@@ -25,6 +25,7 @@ export const ReactionsBar: React.FC<ReactionsBarProps> = ({
   const { sendMessage } = useSendMessage();
 
   // For replies
+  const activeMessage = useXmtpStore((state) => state.activeMessage);
   const setActiveMessage = useXmtpStore((state) => state.setActiveMessage);
 
   const handleClick = useCallback(
@@ -41,7 +42,7 @@ export const ReactionsBar: React.FC<ReactionsBarProps> = ({
       );
       setOnHover(false);
     },
-    [conversation, message.xmtpID, sendMessage, setOnHover],
+    [conversation, sendMessage, setOnHover, message],
   );
 
   return (
@@ -57,13 +58,16 @@ export const ReactionsBar: React.FC<ReactionsBarProps> = ({
         </button>
       ))}
       {/* // Reply icon */}
-      <ChatIcon
-        width={20}
-        color="black"
-        onClick={() => {
-          setActiveMessage(message);
-        }}
-      />
+      {!activeMessage ? (
+        <ChatIcon
+          data-testid="reply-icon"
+          width={20}
+          color="black"
+          onClick={() => {
+            setActiveMessage(message);
+          }}
+        />
+      ) : null}
     </div>
   );
 };

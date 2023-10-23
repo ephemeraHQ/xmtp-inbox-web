@@ -31,7 +31,11 @@ export const FullConversationController: React.FC<
       messages?.map((msg, index) => {
         // if the message content type is not support and has no fallback,
         // disregard it
-        if (!isMessageSupported(msg) && !msg.contentFallback) {
+
+        if (
+          !isMessageSupported(msg) &&
+          (!msg.contentFallback || msg.contentType.includes("reply"))
+        ) {
           return null;
         }
         if (renderedDatesRef.current.length === 0) {

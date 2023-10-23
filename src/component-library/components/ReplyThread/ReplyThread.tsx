@@ -1,49 +1,36 @@
-import {
-  getReplies,
-  type CachedConversation,
-  type CachedMessageWithId,
-} from "@xmtp/react-sdk";
-import { MessageInputController } from "../../../controllers/MessageInputController";
+import { type CachedConversation, useReplies } from "@xmtp/react-sdk";
 import { FullMessageController } from "../../../controllers/FullMessageController";
 import { useXmtpStore } from "../../../store/xmtp";
-import { useReplies } from "@xmtp/react-sdk";
 
 export type ReplyThreadProps = {
-  messages: CachedMessageWithId[];
   conversation: CachedConversation;
 };
 
-export const ReplyThread: React.FC<ReplyThreadProps> = ({
-  messages,
-  conversation,
-}) => {
+export const ReplyThread: React.FC<ReplyThreadProps> = ({ conversation }) => {
   const activeMessage = useXmtpStore((state) => state.activeMessage);
   const replies = useReplies(activeMessage);
 
   return (
-    <div className="flex flex-col">
-      <h1>Reply section</h1>
-
-      <MessageInputController
-        setAttachment={() => {}}
-        setAttachmentPreview={() => {}}
-        setIsDragActive={() => {}}
-        activeMessage={activeMessage}
-      />
+    <div data-testid="replies-container" className="flex flex-col h-full">
       {activeMessage ? (
         <FullMessageController
           key={activeMessage?.xmtpID}
           message={activeMessage}
           conversation={conversation}
+          isReply
         />
       ) : null}
-      {/* {replies.map((msg) => (
+      {replies.map((msg) => (
         <FullMessageController
           key={msg.xmtpID}
+          // @Ry: Can we get the replies array to return the XMTP ID?
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           message={msg}
           conversation={conversation}
+          isReply
         />
-      ))} */}
+      ))}
     </div>
   );
 };

@@ -4,6 +4,7 @@ import { useClient, useConversations } from "@xmtp/react-sdk";
 import { useDisconnect, useWalletClient } from "wagmi";
 import type { Attachment } from "@xmtp/content-type-remote-attachment";
 import { useNavigate } from "react-router-dom";
+import { XIcon } from "@heroicons/react/outline";
 import { useXmtpStore } from "../store/xmtp";
 import { TAILWIND_MD_BREAKPOINT, wipeKeys } from "../helpers";
 import { FullConversationController } from "../controllers/FullConversationController";
@@ -37,6 +38,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   }, [client]);
 
   const recipientAddress = useXmtpStore((s) => s.recipientAddress);
+  const setActiveMessage = useXmtpStore((s) => s.setActiveMessage);
 
   const size = useWindowSize();
 
@@ -144,16 +146,35 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
               <div className="flex h-screen">
                 {/* // This whole thing is usual flow */}
                 <div className="h-full w-full flex flex-col justify-between">
-                  <div className="flex">
-                    <AddressInputController />
-                  </div>
-                  <div className="h-full overflow-auto flex flex-col">
-                    {selectedConversation && (
-                      <FullConversationController
-                        conversation={selectedConversation}
+                  {activeMessage && selectedConversation ? (
+                    <div className="h-full">
+                      <XIcon
+                        data-testid="replies-close-icon"
+                        width={24}
+                        onClick={() => setActiveMessage()}
+                        className="absolute top-2 right-2 cursor-pointer"
                       />
-                    )}
-                  </div>
+                      <ReplyThread conversation={selectedConversation} />
+                    </div>
+                  ) : (
+                    <>
+                      <div className="flex" data-testid="address-container">
+                        <AddressInputController />
+                      </div>
+                      <div
+                        className="h-full overflow-auto flex flex-col"
+                        onFocus={() => {
+                          setActiveMessage();
+                        }}>
+                        {selectedConversation && (
+                          <FullConversationController
+                            conversation={selectedConversation}
+                          />
+                        )}
+                      </div>
+                    </>
+                  )}
+
                   {/* Drag event handling needing for content attachments */}
                   <MessageInputController
                     attachment={attachment}
@@ -163,8 +184,6 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
                     setIsDragActive={setIsDragActive}
                   />
                 </div>
-                {/* // Replies flow */}
-                <ReplyThread />
               </div>
             )}
           </div>

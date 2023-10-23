@@ -3,6 +3,7 @@ import { UrlMatcher } from "interweave-autolink";
 import { EmojiMatcher, useEmojiData } from "interweave-emoji";
 import type { MouseEvent } from "react";
 import { ContentTypeRemoteAttachment } from "@xmtp/content-type-remote-attachment";
+import { ContentTypeReply } from "@xmtp/content-type-reply";
 import {
   ContentTypeId,
   type CachedMessage,
@@ -56,6 +57,18 @@ const MessageContentController = ({
 
   if (contentType.sameAs(ContentTypeRemoteAttachment)) {
     return <RemoteAttachmentMessageTile message={message} isSelf={isSelf} />;
+  }
+
+  if (contentType.sameAs(ContentTypeReply)) {
+    const newMessage = {
+      ...message,
+      content: message.content.content,
+      contentType: message.content.contentType?.typeId
+        ? `${message.content.contentType.typeId}:1.0`
+        : "",
+    };
+
+    return <MessageContentController message={newMessage} isSelf={isSelf} />;
   }
 
   // message content type not supported, display fallback

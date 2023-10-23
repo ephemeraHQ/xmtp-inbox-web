@@ -6,6 +6,7 @@ import {
   useReactions,
   useSendMessage,
   useClient,
+  useReplies,
 } from "@xmtp/react-sdk";
 import type {
   CachedConversation,
@@ -16,6 +17,7 @@ import { ContentTypeReaction } from "@xmtp/content-type-reaction";
 import { DateDivider } from "../DateDivider/DateDivider";
 import { classNames } from "../../../helpers";
 import { ReactionsBar } from "../ReactionsBar/ReactionsBar";
+import { useXmtpStore } from "../../../store/xmtp";
 
 interface MessageSender {
   displayAddress: string;
@@ -42,6 +44,10 @@ type FullMessageProps = PropsWithChildren & {
    * Should we show the date divider?
    */
   showDateDivider?: boolean;
+  /**
+   * Is this message a reply?
+   */
+  isReply?: boolean;
 };
 
 const incomingMessageBackgroundStyles = "bg-gray-200 rounded-br-lg pl-2";
@@ -57,11 +63,16 @@ export const FullMessage = ({
   from,
   datetime,
   showDateDivider = false,
+  isReply,
 }: FullMessageProps) => {
   const { t } = useTranslation();
   const { resend, cancel } = useResendMessage();
   const { sendMessage } = useSendMessage();
   const [onHover, setOnHover] = useState(false);
+
+  const setActiveMessage = useXmtpStore((s) => s.setActiveMessage);
+  const replies = useReplies(message);
+
   const reactions = useReactions(message) || [];
   const { client } = useClient();
 
@@ -194,6 +205,14 @@ export const FullMessage = ({
               t("{{datetime, time}}", { datetime })
             )}
           </div>
+          {replies.length && !isReply ? (
+            <button
+              type="button"
+              onClick={() => setActiveMessage(message)}
+              data-testid="view-replies-cta">
+              View replies
+            </button>
+          ) : null}
           <div
             className={classNames("flex gap-x-1", alignmentStyles)}
             data-testid="reactions-container">

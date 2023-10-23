@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import type { CachedConversation } from "@xmtp/react-sdk";
+import type { CachedConversation, CachedMessageWithId } from "@xmtp/react-sdk";
 import {
   ContentTypeText,
   useSendMessage as _useSendMessage,
@@ -19,7 +19,10 @@ import type { Reply } from "@xmtp/content-type-reply";
 import Upload from "../helpers/classes/Upload";
 import { useXmtpStore } from "../store/xmtp";
 
-const useSendMessage = (attachment?: Attachment, activeMessage = null) => {
+const useSendMessage = (
+  attachment?: Attachment,
+  activeMessage?: CachedMessageWithId | undefined,
+) => {
   const { sendMessage: _sendMessage, isLoading, error } = _useSendMessage();
   const recipientOnNetwork = useXmtpStore((s) => s.recipientOnNetwork);
 
@@ -60,11 +63,23 @@ const useSendMessage = (attachment?: Attachment, activeMessage = null) => {
           contentLength: attachment.data.byteLength,
         };
 
-        void _sendMessage(
-          conversation,
-          remoteAttachment,
-          ContentTypeRemoteAttachment,
-        );
+        if (activeMessage?.xmtpID) {
+          void _sendMessage(
+            conversation,
+            {
+              reference: activeMessage.xmtpID,
+              content: remoteAttachment,
+              contentType: ContentTypeRemoteAttachment,
+            } satisfies Reply,
+            ContentTypeReply,
+          );
+        } else {
+          void _sendMessage(
+            conversation,
+            remoteAttachment,
+            ContentTypeRemoteAttachment,
+          );
+        }
       } else if (type === "text") {
         if (activeMessage?.xmtpID) {
           void _sendMessage(
