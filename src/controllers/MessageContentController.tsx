@@ -29,8 +29,6 @@ const MessageContentController = ({
     shortcodes: ["emojibase"],
   });
 
-  console.log("MESSAGE!!!", message);
-
   const contentType = ContentTypeId.fromString(message.contentType);
 
   if (contentType.sameAs(ContentTypeText)) {
@@ -69,7 +67,7 @@ const MessageContentController = ({
     const newMessage = {
       ...message,
       // @RY: how can I get something back that's not in the shape to need to override this?
-      // To-do: remove file-based ts ignores once fixed
+      // To-do: remove file-based ts rule disabling once fixed
       content: message.content.content,
       contentType: message.content.contentType?.typeId
         ? `xmtp.org/${message.content.contentType.typeId}:1.0`
