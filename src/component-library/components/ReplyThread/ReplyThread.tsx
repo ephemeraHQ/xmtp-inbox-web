@@ -23,9 +23,6 @@ export const ReplyThread: React.FC<ReplyThreadProps> = ({ conversation }) => {
       {replies.map((msg) => (
         <FullMessageController
           key={msg.xmtpID}
-          // @Ry: Can we get the replies array to return the XMTP ID?
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
           message={msg}
           conversation={conversation}
           isReply

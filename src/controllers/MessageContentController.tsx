@@ -1,12 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Interweave } from "interweave";
 import { UrlMatcher } from "interweave-autolink";
 import { EmojiMatcher, useEmojiData } from "interweave-emoji";
 import type { MouseEvent } from "react";
 import { ContentTypeRemoteAttachment } from "@xmtp/content-type-remote-attachment";
+import type { Reply } from "@xmtp/content-type-reply";
 import { ContentTypeReply } from "@xmtp/content-type-reply";
 import {
   ContentTypeId,
@@ -64,14 +61,12 @@ const MessageContentController = ({
   }
 
   if (contentType.sameAs(ContentTypeReply)) {
+    const reply = message.content as Reply;
     const newMessage = {
       ...message,
-      // @RY: how can I get something back that's not in the shape to need to override this?
-      // To-do: remove file-based ts rule disabling once fixed
-      content: message.content.content,
-      contentType: message.content.contentType?.typeId
-        ? `xmtp.org/${message.content.contentType.typeId}:1.0`
-        : "",
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      content: reply.content,
+      contentType: reply.contentType.toString(),
     };
 
     return <MessageContentController message={newMessage} isSelf={isSelf} />;
