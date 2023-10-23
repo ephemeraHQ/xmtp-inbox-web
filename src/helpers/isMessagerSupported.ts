@@ -2,7 +2,6 @@ import { ContentTypeRemoteAttachment } from "@xmtp/content-type-remote-attachmen
 import type { CachedMessageWithId } from "@xmtp/react-sdk";
 import { ContentTypeId, ContentTypeText } from "@xmtp/react-sdk";
 import { ContentTypeReaction } from "@xmtp/content-type-reaction";
-import { ContentTypeReply } from "@xmtp/content-type-reply";
 
 /**
  * Determines if a message is supported by the app
@@ -12,7 +11,6 @@ export const isMessageSupported = (message: CachedMessageWithId) => {
   return (
     contentType.sameAs(ContentTypeText) ||
     contentType.sameAs(ContentTypeRemoteAttachment) ||
-    contentType.sameAs(ContentTypeReaction) ||
-    contentType.sameAs(ContentTypeReply)
+    contentType.sameAs(ContentTypeReaction)
   );
 };

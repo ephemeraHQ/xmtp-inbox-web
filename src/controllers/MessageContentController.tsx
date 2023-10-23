@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Interweave } from "interweave";
 import { UrlMatcher } from "interweave-autolink";
 import { EmojiMatcher, useEmojiData } from "interweave-emoji";
@@ -24,6 +28,8 @@ const MessageContentController = ({
     compact: false,
     shortcodes: ["emojibase"],
   });
+
+  console.log("MESSAGE!!!", message);
 
   const contentType = ContentTypeId.fromString(message.contentType);
 
@@ -62,9 +68,11 @@ const MessageContentController = ({
   if (contentType.sameAs(ContentTypeReply)) {
     const newMessage = {
       ...message,
+      // @RY: how can I get something back that's not in the shape to need to override this?
+      // To-do: remove file-based ts ignores once fixed
       content: message.content.content,
       contentType: message.content.contentType?.typeId
-        ? `${message.content.contentType.typeId}:1.0`
+        ? `xmtp.org/${message.content.contentType.typeId}:1.0`
         : "",
     };
 
