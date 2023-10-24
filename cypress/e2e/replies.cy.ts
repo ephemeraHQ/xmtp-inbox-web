@@ -55,6 +55,24 @@ describe(
       checkElement("message-tile-text").children().first();
       checkMissingElement("reply-icon");
     });
+    it("can react to a reply", () => {
+      sendMessages(1, replyMessage, testUserWithXmtpAccount, false);
+      checkElement("reactions-container").children().should("have.length", 0);
+
+      // When clicking on the message (or hovering), the bar should appear
+      checkElement("message-tile-text").children().last().click();
+      checkElement("reactions-bar");
+
+      // Click on first emoji
+      checkElement("reaction").children().first().click();
+
+      // Reactions should show now
+      checkElement("reactions-container").children().should("have.length", 1);
+      checkElement("reactions-container")
+        .children()
+        .first()
+        .should("have.text", "👍");
+    });
     it("cannot toggle replies view when there are no replies", () => {
       checkElement("replies-close-icon").click();
 

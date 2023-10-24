@@ -61,8 +61,9 @@ export const ReactionsBar: React.FC<ReactionsBarProps> = ({
       {!activeMessage ? (
         <ChatIcon
           data-testid="reply-icon"
+          className="mr-1"
           width={20}
-          color="black"
+          color="gray"
           onClick={() => {
             setActiveMessage(message);
           }}

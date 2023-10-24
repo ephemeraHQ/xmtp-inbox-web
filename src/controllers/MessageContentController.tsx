@@ -66,7 +66,7 @@ const MessageContentController = ({
       ...message,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       content: reply.content,
-      contentType: reply.contentType.toString(),
+      contentType: new ContentTypeId(reply.contentType).toString(),
     };
 
     return <MessageContentController message={newMessage} isSelf={isSelf} />;

@@ -209,8 +209,9 @@ export const FullMessage = ({
             <button
               type="button"
               onClick={() => setActiveMessage(message)}
+              className="text-gray-500"
               data-testid="view-replies-cta">
-              View replies
+              {t("messages.view_replies")}
             </button>
           ) : null}
           <div

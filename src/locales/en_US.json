@@ -46,7 +46,8 @@
     "message_not_delivered": "Not delivered",
     "message_retry": "Retry",
     "message_cancel": "Cancel",
-    "no_preview": "No preview available"
+    "no_preview": "No preview available",
+    "view_replies": "View replies"
   },
   "attachments": {
     "unable_to_display": "Unable to display attachment",
