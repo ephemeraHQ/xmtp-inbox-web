@@ -23,11 +23,8 @@ describe(
     const replyMessage = "this is a reply";
     beforeEach(() => {
       startDemoEnv();
-      // In connected flow, conversation list header should render before any tests run
       checkElement("conversation-list-header");
-      // Message should be sent as well before testing replies
       sendAndEnterMessage(testUserWithXmtpAccount, shortMessage);
-      // When clicking on the message (or hovering), the bar should appear
       checkElement("message-tile-text").children().first().click();
       checkElement("reactions-bar");
       checkElement("reply-icon").click();

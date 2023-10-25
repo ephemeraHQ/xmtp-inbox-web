@@ -144,7 +144,6 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
             ) : (
               // Full container including replies
               <div className="flex h-screen">
-                {/* // This whole thing is usual flow */}
                 <div className="h-full w-full flex flex-col justify-between">
                   {activeMessage && selectedConversation ? (
                     <div className="h-full overflow-auto">

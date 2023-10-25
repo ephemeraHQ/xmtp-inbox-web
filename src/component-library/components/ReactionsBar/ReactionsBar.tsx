@@ -57,7 +57,6 @@ export const ReactionsBar: React.FC<ReactionsBarProps> = ({
           <span className={styles.emoji}>{emoji}</span>
         </button>
       ))}
-      {/* // Reply icon */}
       {!activeMessage ? (
         <ChatIcon
           data-testid="reply-icon"

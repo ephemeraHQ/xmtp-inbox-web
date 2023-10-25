@@ -1,6 +1,12 @@
-import { useMessages, type CachedConversation, useDb } from "@xmtp/react-sdk";
+import {
+  useMessages,
+  type CachedConversation,
+  useDb,
+  ContentTypeId,
+} from "@xmtp/react-sdk";
 import { useEffect, useMemo, useRef } from "react";
 import { isSameDay } from "date-fns";
+import { ContentTypeReply } from "@xmtp/content-type-reply";
 import { DateDivider } from "../component-library/components/DateDivider/DateDivider";
 import { FullConversation } from "../component-library/components/FullConversation/FullConversation";
 import { FullMessageController } from "./FullMessageController";
@@ -29,12 +35,13 @@ export const FullConversationController: React.FC<
   const messagesWithDates = useMemo(
     () =>
       messages?.map((msg, index) => {
+        const contentType = ContentTypeId.fromString(msg.contentType);
         // if the message content type is not support and has no fallback,
         // disregard it
 
         if (
           !isMessageSupported(msg) &&
-          (!msg.contentFallback || msg.contentType.includes("reply"))
+          (!msg.contentFallback || contentType.sameAs(ContentTypeReply))
         ) {
           return null;
         }
