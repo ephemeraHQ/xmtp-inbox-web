@@ -8,17 +8,20 @@ import { useXmtpStore } from "../store/xmtp";
 interface FullMessageControllerProps {
   message: CachedMessageWithId;
   conversation: CachedConversation;
+  isReply?: boolean;
 }
 
 export const FullMessageController = ({
   message,
   conversation,
+  isReply,
 }: FullMessageControllerProps) => {
   const { client } = useClient();
   const recipientName = useXmtpStore((s) => s.recipientName);
 
   return (
     <FullMessage
+      isReply={isReply}
       message={message}
       conversation={conversation}
       key={message.xmtpID}

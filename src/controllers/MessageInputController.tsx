@@ -24,8 +24,13 @@ export const MessageInputController = ({
   const conversation = useSelectedConversation();
   const recipientOnNetwork = useXmtpStore((s) => s.recipientOnNetwork);
   const recipientAddress = useXmtpStore((s) => s.recipientAddress);
+  const activeMessage = useXmtpStore((s) => s.activeMessage);
+
   const { startConversation } = useStartConversation();
-  const { sendMessage } = useSendMessage(attachment || undefined);
+  const { sendMessage } = useSendMessage(
+    attachment || undefined,
+    activeMessage,
+  );
 
   return (
     <MessageInput
