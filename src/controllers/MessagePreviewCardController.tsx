@@ -13,6 +13,7 @@ import {
   ContentTypeRemoteAttachment,
 } from "@xmtp/content-type-remote-attachment";
 import { MessagePreviewCard } from "../component-library/components/MessagePreviewCard/MessagePreviewCard";
+import type { ETHAddress } from "../helpers";
 import { shortAddress } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
 import {
@@ -48,7 +49,7 @@ export const MessagePreviewCardController = ({
   const onConvoClick = useCallback(
     (conversation: CachedConversation) => {
       if (recipientAddress !== conversation.peerAddress) {
-        const peerAddress = conversation.peerAddress as `0x${string}`;
+        const peerAddress = conversation.peerAddress as ETHAddress;
         const avatar = getCachedPeerAddressAvatar(conversation);
         setRecipientAvatar(avatar);
         const name = getCachedPeerAddressName(conversation);
@@ -57,11 +58,14 @@ export const MessagePreviewCardController = ({
         setRecipientOnNetwork(true);
         setRecipientState("valid");
         setRecipientInput(peerAddress);
+      }
+      if (conversationTopic !== conversation.topic) {
         setConversationTopic(conversation.topic);
         setActiveMessage();
       }
     },
     [
+      conversationTopic,
       recipientAddress,
       setConversationTopic,
       setRecipientAddress,

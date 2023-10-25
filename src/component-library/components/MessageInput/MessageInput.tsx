@@ -204,7 +204,7 @@ export const MessageInput = ({
           convo = cachedConversation;
         }
         // select existing or new conversation
-        if (convo) {
+        if (convo && conversationTopic !== convo.topic) {
           setConversationTopic(convo.topic);
         }
       }
@@ -220,6 +220,7 @@ export const MessageInput = ({
   }, [
     attachment,
     conversation,
+    conversationTopic,
     getCachedByPeerAddress,
     peerAddress,
     sendMessage,
