@@ -5,7 +5,6 @@ import {
   ContentTypeReaction,
   type Reaction,
 } from "@xmtp/content-type-reaction";
-import { ChatIcon } from "@heroicons/react/outline";
 import styles from "./ReactionsBar.module.css";
 import { useXmtpStore } from "../../../store/xmtp";
 
@@ -46,27 +45,29 @@ export const ReactionsBar: React.FC<ReactionsBarProps> = ({
   );
 
   return (
-    <div className={styles.wrapper} data-testid="reactions-bar">
-      {availableReactionEmojis.map((emoji) => (
-        <button
-          type="button"
-          data-testid="reaction"
-          key={emoji}
-          className={styles.option}
-          onClick={() => handleClick(emoji)}>
-          <span className={styles.emoji}>{emoji}</span>
-        </button>
-      ))}
+    <div className="flex items-center gap-1">
+      <div className={styles.wrapper} data-testid="reactions-bar">
+        {availableReactionEmojis.map((emoji) => (
+          <button
+            type="button"
+            data-testid="reaction"
+            key={emoji}
+            className={styles.option}
+            onClick={() => handleClick(emoji)}>
+            <span className={styles.emoji}>{emoji}</span>
+          </button>
+        ))}
+      </div>
       {!activeMessage ? (
-        <ChatIcon
+        <button
+          className="bg-gray-100 p-1 px-2 rounded-lg"
           data-testid="reply-icon"
-          className="mr-1"
-          width={20}
-          color="gray"
           onClick={() => {
             setActiveMessage(message);
           }}
-        />
+          type="button">
+          Reply
+        </button>
       ) : null}
     </div>
   );
