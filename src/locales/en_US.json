@@ -47,6 +47,7 @@
     "message_retry": "Retry",
     "message_cancel": "Cancel",
     "no_preview": "No preview available",
+    "reply": "Reply",
     "view_replies": "View replies"
   },
   "attachments": {

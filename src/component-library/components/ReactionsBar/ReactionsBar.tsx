@@ -5,6 +5,7 @@ import {
   ContentTypeReaction,
   type Reaction,
 } from "@xmtp/content-type-reaction";
+import { useTranslation } from "react-i18next";
 import styles from "./ReactionsBar.module.css";
 import { useXmtpStore } from "../../../store/xmtp";
 
@@ -26,6 +27,7 @@ export const ReactionsBar: React.FC<ReactionsBarProps> = ({
   // For replies
   const activeMessage = useXmtpStore((state) => state.activeMessage);
   const setActiveMessage = useXmtpStore((state) => state.setActiveMessage);
+  const { t } = useTranslation();
 
   const handleClick = useCallback(
     (emoji: string) => {
@@ -66,7 +68,7 @@ export const ReactionsBar: React.FC<ReactionsBarProps> = ({
             setActiveMessage(message);
           }}
           type="button">
-          Reply
+          {t("messages.reply")}
         </button>
       ) : null}
     </div>
