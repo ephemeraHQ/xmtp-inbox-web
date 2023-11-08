@@ -78,11 +78,10 @@ export const ConversationListController = ({
   }, [conversations]);
 
   const { spamConvos, nonSpamConvos } = filteredConversations.reduce<{
-    spamConvos: { props: { spamScore: number } }[];
-    nonSpamConvos: { props: { spamScore: number } }[];
+    spamConvos: { props: { hasPassedCaptcha: boolean } }[];
+    nonSpamConvos: { props: { hasPassedCaptcha: boolean } }[];
   }>(
     (acc, item) => {
-      // UPDATE THRESHOLD HERE
       if (item.props.hasPassedCaptcha) {
         acc.nonSpamConvos.push(item);
       } else {
