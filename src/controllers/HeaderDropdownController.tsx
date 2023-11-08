@@ -12,13 +12,14 @@ export const HeaderDropdownController = () => {
 
   return (
     <HeaderDropdown
+      dropdownOptions={["Messages", "Flagged for Spam"]}
       recipientInput={recipientInput}
       onClick={() => {
         resetRecipient();
         setConversationTopic();
         setStartedFirstMessage(true);
       }}
-      disabled
+      // disabled
       isMobileView={width <= TAILWIND_MD_BREAKPOINT}
     />
   );

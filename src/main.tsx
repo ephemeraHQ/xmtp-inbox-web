@@ -16,7 +16,7 @@ import {
   replyContentTypeConfig,
   XMTPProvider,
 } from "@xmtp/react-sdk";
-import { mainnet } from "wagmi/chains";
+import { goerli } from "wagmi/chains";
 import { infuraProvider } from "wagmi/providers/infura";
 import App from "./controllers/AppController";
 import { isAppEnvDemo } from "./helpers";
@@ -32,7 +32,7 @@ const contentTypeConfigs = [
 ];
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [mainnet],
+  [goerli],
   [
     infuraProvider({ apiKey: import.meta.env.VITE_INFURA_ID ?? "" }),
     publicProvider(),
