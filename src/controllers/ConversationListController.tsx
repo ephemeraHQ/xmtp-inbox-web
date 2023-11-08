@@ -83,11 +83,10 @@ export const ConversationListController = ({
   }>(
     (acc, item) => {
       // UPDATE THRESHOLD HERE
-      const threshold = 10;
-      if (item.props.spamScore > threshold) {
-        acc.spamConvos.push(item);
-      } else if (item.props.spamScore <= threshold) {
+      if (item.props.hasPassedCaptcha) {
         acc.nonSpamConvos.push(item);
+      } else {
+        acc.spamConvos.push(item);
       }
       return acc;
     },
