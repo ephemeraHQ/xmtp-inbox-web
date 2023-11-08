@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import type { Attachment } from "@xmtp/content-type-remote-attachment";
-import Zeekaptcha, { getEvents } from "zeekaptcha";
+import { getEvents } from "zeekaptcha";
 import {
   ArrowUpIcon,
   DocumentIcon,
@@ -263,8 +263,6 @@ export const MessageInput = ({
           <p className="text-red-600 w-full m-1 ml-4">{attachmentError}</p>
         ) : (
           <div className="flex flex-row justify-between items-center">
-            {/* Currently always show captcha, just to get this working at all */}
-            <Zeekaptcha />
             <textarea
               id="chat"
               data-testid="message-input"
