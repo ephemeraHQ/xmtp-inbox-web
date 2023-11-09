@@ -7,7 +7,6 @@ import {
   useState,
 } from "react";
 import type { Attachment } from "@xmtp/content-type-remote-attachment";
-import { getEvents } from "zeekaptcha";
 import {
   ArrowUpIcon,
   DocumentIcon,
@@ -75,6 +74,9 @@ type InputProps = {
    * Function to set whether content is being dragged over the draggable area, including the message input
    */
   setIsDragActive: (status: boolean) => void;
+  // Just for test branch
+  handleOpenModal: () => void;
+  shouldModalOpen: boolean;
 };
 
 export const MessageInput = ({
@@ -88,6 +90,8 @@ export const MessageInput = ({
   attachmentPreview,
   setAttachmentPreview,
   setIsDragActive,
+  handleOpenModal,
+  shouldModalOpen,
 }: InputProps) => {
   // TO-DO: Add check for if no captcha events for this address, then show captcha
   // const captchaEvents = await getEvents(peerAddress as string);
@@ -270,7 +274,11 @@ export const MessageInput = ({
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault();
-                  void send();
+                  if (shouldModalOpen) {
+                    handleOpenModal();
+                  } else {
+                    void send();
+                  }
                 }
               }}
               ref={textAreaRef}
@@ -406,7 +414,11 @@ export const MessageInput = ({
             label={<ArrowUpIcon color="white" width="20" />}
             srText={t("aria_labels.submit_message") || ""}
             onClick={() => {
-              void send();
+              if (shouldModalOpen) {
+                handleOpenModal();
+              } else {
+                void send();
+              }
             }}
             isDisabled={
               !(value || attachmentPreview) || isDisabled || !!attachmentError

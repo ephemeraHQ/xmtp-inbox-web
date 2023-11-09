@@ -12,7 +12,6 @@ import { FullConversation } from "../component-library/components/FullConversati
 import { FullMessageController } from "./FullMessageController";
 import { isMessageSupported } from "../helpers/isMessagerSupported";
 import { updateConversationIdentity } from "../helpers/conversation";
-import Zeekaptcha from "zeekaptcha";
 
 type FullConversationControllerProps = {
   conversation: CachedConversation;
@@ -78,8 +77,6 @@ export const FullConversationController: React.FC<
       // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
       tabIndex={0}
       className="w-full h-full flex flex-col overflow-auto">
-      {/* Currently always show captcha, just to get this working at all */}
-      <Zeekaptcha />
       <FullConversation isLoading={isLoading} messages={messagesWithDates} />
     </div>
   );

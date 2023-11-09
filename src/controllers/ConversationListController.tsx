@@ -36,8 +36,8 @@ export const ConversationListController = ({
     try {
       const response = await getEvents(address);
 
-      // This is just a dummy field -- not sure what the actual shape of the above response is since I only get back undefined
-      const hasPassedCaptcha = response.passedCaptcha;
+      // Right now, if any captchas pass, we consider the account safe
+      const hasPassedCaptcha = !!response.length;
 
       const addressesCheckedForCaptcha = JSON.parse(
         window.localStorage.getItem("addressesCheckedForCaptcha") || "{}",
@@ -46,7 +46,7 @@ export const ConversationListController = ({
       addressesCheckedForCaptcha[address] = hasPassedCaptcha;
 
       window.localStorage.setItem(
-        "addressesCheckedForFraud",
+        "addressesCheckedForCaptcha",
         JSON.stringify(addressesCheckedForCaptcha),
       );
     } catch (e) {
@@ -82,6 +82,7 @@ export const ConversationListController = ({
     nonSpamConvos: { props: { hasPassedCaptcha: boolean } }[];
   }>(
     (acc, item) => {
+      console.log("HAS PASSED CAPTCHA", item.props.hasPassedCaptcha);
       if (item.props.hasPassedCaptcha) {
         acc.nonSpamConvos.push(item);
       } else {
