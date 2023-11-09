@@ -85,8 +85,9 @@ export const MessageInputController = ({
             onClick={handleCloseModal}
           />
           <p className="py-2">
-            Please verify you are a real person in order to send this message.
-            Thank you for keeping our network free of spam!
+            Your account has limited on-chain history and it's likely your
+            message will be flagged. Please verify you are a real person to send
+            this message. Thanks for keeping our network free of spam!
           </p>
           <Zeekaptcha />
         </ReactModal>
