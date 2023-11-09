@@ -82,7 +82,6 @@ export const ConversationListController = ({
     nonSpamConvos: { props: { hasPassedCaptcha: boolean } }[];
   }>(
     (acc, item) => {
-      console.log("HAS PASSED CAPTCHA", item.props.hasPassedCaptcha);
       if (item.props.hasPassedCaptcha) {
         acc.nonSpamConvos.push(item);
       } else {

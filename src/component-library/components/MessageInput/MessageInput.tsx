@@ -93,9 +93,6 @@ export const MessageInput = ({
   handleOpenModal,
   shouldModalOpen,
 }: InputProps) => {
-  // TO-DO: Add check for if no captcha events for this address, then show captcha
-  // const captchaEvents = await getEvents(peerAddress as string);
-  // console.log("CAPTCHA EVENTS", captchaEvents);
   const { getCachedByPeerAddress } = useConversation();
   const { t } = useTranslation();
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
