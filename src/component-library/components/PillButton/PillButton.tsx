@@ -87,6 +87,8 @@ export const PillButton = ({
 
   return (
     <button
+      // Somehow the button background is getting overridden, this is just a force for this branch
+      style={{ backgroundColor: "rgb(79 70 229)" }}
       data-testid={testId}
       type="button"
       onClick={onClick}
