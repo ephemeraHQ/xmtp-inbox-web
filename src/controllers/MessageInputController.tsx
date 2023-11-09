@@ -84,11 +84,14 @@ export const MessageInputController = ({
             style={{ alignSelf: "flex-end", cursor: "pointer" }}
             onClick={handleCloseModal}
           />
-          <p className="py-2">
-            Your account has limited on-chain history and it's likely your
-            message will be flagged. Please verify you are a real person to send
-            this message. Thanks for keeping our network free of spam!
-          </p>
+          <div className="flex flex-col py-2">
+            <p>
+              Your account has limited on-chain history and it's likely your
+              message will be flagged.
+            </p>
+            <p>Please verify you are a real person to send this message.</p>
+            <p>Thanks for keeping our network free of spam!</p>
+          </div>
           <Zeekaptcha />
         </ReactModal>
       </div>
