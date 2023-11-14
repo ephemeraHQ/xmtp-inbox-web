@@ -4,6 +4,7 @@ import { useClient, useConversations } from "@xmtp/react-sdk";
 import { useDisconnect, useWalletClient } from "wagmi";
 import type { Attachment } from "@xmtp/content-type-remote-attachment";
 import { useNavigate } from "react-router-dom";
+import { XIcon } from "@heroicons/react/outline";
 import { useXmtpStore } from "../store/xmtp";
 import { TAILWIND_MD_BREAKPOINT, wipeKeys } from "../helpers";
 import { FullConversationController } from "../controllers/FullConversationController";
@@ -16,10 +17,13 @@ import useWindowSize from "../hooks/useWindowSize";
 import { ConversationListController } from "../controllers/ConversationListController";
 import { useAttachmentChange } from "../hooks/useAttachmentChange";
 import useSelectedConversation from "../hooks/useSelectedConversation";
+import { ReplyThread } from "../component-library/components/ReplyThread/ReplyThread";
 
 const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   const navigate = useNavigate();
   const resetXmtpState = useXmtpStore((state) => state.resetXmtpState);
+  const activeMessage = useXmtpStore((state) => state.activeMessage);
+
   const { client, disconnect } = useClient();
   const [isDragActive, setIsDragActive] = useState(false);
   const { conversations } = useConversations();
@@ -34,6 +38,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   }, [client]);
 
   const recipientAddress = useXmtpStore((s) => s.recipientAddress);
+  const setActiveMessage = useXmtpStore((s) => s.setActiveMessage);
 
   const size = useWindowSize();
 
@@ -137,26 +142,48 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
                 setStartedFirstMessage={() => setStartedFirstMessage(true)}
               />
             ) : (
-              <>
-                <div className="flex">
-                  <AddressInputController />
-                </div>
-                <div className="h-full overflow-auto flex flex-col">
-                  {selectedConversation && (
-                    <FullConversationController
-                      conversation={selectedConversation}
-                    />
+              // Full container including replies
+              <div className="flex h-screen">
+                <div className="h-full w-full flex flex-col justify-between">
+                  {activeMessage && selectedConversation ? (
+                    <div className="h-full overflow-auto">
+                      <XIcon
+                        data-testid="replies-close-icon"
+                        width={24}
+                        onClick={() => setActiveMessage()}
+                        className="absolute top-2 right-2 cursor-pointer"
+                      />
+                      <ReplyThread conversation={selectedConversation} />
+                    </div>
+                  ) : (
+                    <>
+                      <div className="flex" data-testid="address-container">
+                        <AddressInputController />
+                      </div>
+                      <div
+                        className="h-full overflow-auto flex flex-col"
+                        onFocus={() => {
+                          setActiveMessage();
+                        }}>
+                        {selectedConversation && (
+                          <FullConversationController
+                            conversation={selectedConversation}
+                          />
+                        )}
+                      </div>
+                    </>
                   )}
+
+                  {/* Drag event handling needing for content attachments */}
+                  <MessageInputController
+                    attachment={attachment}
+                    setAttachment={setAttachment}
+                    attachmentPreview={attachmentPreview}
+                    setAttachmentPreview={setAttachmentPreview}
+                    setIsDragActive={setIsDragActive}
+                  />
                 </div>
-                {/* Drag event handling needing for content attachments */}
-                <MessageInputController
-                  attachment={attachment}
-                  setAttachment={setAttachment}
-                  attachmentPreview={attachmentPreview}
-                  setAttachmentPreview={setAttachmentPreview}
-                  setIsDragActive={setIsDragActive}
-                />
-              </>
+              </div>
             )}
           </div>
         ) : null}

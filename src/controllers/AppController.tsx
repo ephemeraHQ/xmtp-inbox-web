@@ -1,9 +1,14 @@
-import "../../.storybook/styles/globals.css";
+import "../globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
 import type React from "react";
 import { useEffect, useState } from "react";
 import { datadogRum } from "@datadog/browser-rum";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { initialize } from "../helpers/i18n";
 import { ENVIRONMENT } from "../helpers";
 import Inbox from "../pages/inbox";
@@ -53,6 +58,7 @@ const AppController: React.FC = () => {
         <Route path="/" element={<Index />} />
         <Route path="/inbox" element={<Inbox />} />
         <Route path="/dm/:address" element={<Dm />} />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
   ) : null;

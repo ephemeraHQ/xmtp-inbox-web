@@ -1,6 +1,9 @@
 import { useCallback } from "react";
-import type { CachedConversation } from "@xmtp/react-sdk";
-import { useSendMessage as _useSendMessage } from "@xmtp/react-sdk";
+import type { CachedConversation, CachedMessageWithId } from "@xmtp/react-sdk";
+import {
+  ContentTypeText,
+  useSendMessage as _useSendMessage,
+} from "@xmtp/react-sdk";
 import type {
   Attachment,
   RemoteAttachment,
@@ -11,10 +14,15 @@ import {
   AttachmentCodec,
 } from "@xmtp/content-type-remote-attachment";
 import { Web3Storage } from "web3.storage";
+import { ContentTypeReply } from "@xmtp/content-type-reply";
+import type { Reply } from "@xmtp/content-type-reply";
 import Upload from "../helpers/classes/Upload";
 import { useXmtpStore } from "../store/xmtp";
 
-const useSendMessage = (attachment?: Attachment) => {
+const useSendMessage = (
+  attachment?: Attachment,
+  activeMessage?: CachedMessageWithId | undefined,
+) => {
   const { sendMessage: _sendMessage, isLoading, error } = _useSendMessage();
   const recipientOnNetwork = useXmtpStore((s) => s.recipientOnNetwork);
 
@@ -55,16 +63,40 @@ const useSendMessage = (attachment?: Attachment) => {
           contentLength: attachment.data.byteLength,
         };
 
-        void _sendMessage(
-          conversation,
-          remoteAttachment,
-          ContentTypeRemoteAttachment,
-        );
+        if (activeMessage?.xmtpID) {
+          void _sendMessage(
+            conversation,
+            {
+              reference: activeMessage.xmtpID,
+              content: remoteAttachment,
+              contentType: ContentTypeRemoteAttachment,
+            } satisfies Reply,
+            ContentTypeReply,
+          );
+        } else {
+          void _sendMessage(
+            conversation,
+            remoteAttachment,
+            ContentTypeRemoteAttachment,
+          );
+        }
       } else if (type === "text") {
-        void _sendMessage(conversation, message);
+        if (activeMessage?.xmtpID) {
+          void _sendMessage(
+            conversation,
+            {
+              reference: activeMessage?.xmtpID,
+              content: message,
+              contentType: ContentTypeText,
+            } satisfies Reply,
+            ContentTypeReply,
+          );
+        } else {
+          void _sendMessage(conversation, message);
+        }
       }
     },
-    [recipientOnNetwork, attachment, _sendMessage],
+    [recipientOnNetwork, attachment, _sendMessage, activeMessage],
   );
 
   return {

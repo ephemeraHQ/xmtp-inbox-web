@@ -20,7 +20,7 @@ export const AddressInputController = () => {
   const setRecipientInput = useXmtpStore((s) => s.setRecipientInput);
   const setStartedFirstMessage = useXmtpStore((s) => s.setStartedFirstMessage);
   const setConversationTopic = useXmtpStore((s) => s.setConversationTopic);
-  const { getCachedByPeerAddress } = useConversation();
+  const { getCachedByPeerAddress, getCachedByTopic } = useConversation();
 
   // manage address input state
   useAddressInput();
@@ -31,10 +31,24 @@ export const AddressInputController = () => {
     const selectConversation = async () => {
       // if there's a valid network address, look for an existing conversation
       if (recipientAddress && recipientOnNetwork) {
-        const existing = await getCachedByPeerAddress(recipientAddress);
-        // only set the conversation topic if it's different from the existing one
-        if (existing && conversationTopic !== existing.topic) {
-          setConversationTopic(existing.topic);
+        let updateSelectedConversation = true;
+        // if there's an existing conversation topic, check if it has the same
+        // peer address as the recipient
+        if (conversationTopic) {
+          const convo = await getCachedByTopic(conversationTopic);
+          // if the peer address is the same, do not attempt to update the
+          // select conversation
+          if (convo?.peerAddress === recipientAddress) {
+            updateSelectedConversation = false;
+          }
+        }
+        // if we're updated the selected conversation, look for a conversation
+        // with the recipient's address. if present, select that conversation.
+        if (updateSelectedConversation) {
+          const existing = await getCachedByPeerAddress(recipientAddress);
+          if (existing && conversationTopic !== existing.topic) {
+            setConversationTopic(existing.topic);
+          }
         }
       }
     };
@@ -42,6 +56,7 @@ export const AddressInputController = () => {
   }, [
     conversationTopic,
     getCachedByPeerAddress,
+    getCachedByTopic,
     recipientAddress,
     recipientOnNetwork,
     setConversationTopic,

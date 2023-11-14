@@ -45,7 +45,12 @@
     "conversation_loading": "Loading messages...",
     "message_not_delivered": "Not delivered",
     "message_retry": "Retry",
-    "message_cancel": "Cancel"
+    "message_cancel": "Cancel",
+    "no_preview": "No preview available",
+    "reaction_preview": "Reacted with {{REACTION}} to earlier message",
+    "unreaction_preview": "Unreacted with {{REACTION}} to earlier message",
+    "reply": "Reply",
+    "view_replies": "View replies"
   },
   "attachments": {
     "unable_to_display": "Unable to display attachment",

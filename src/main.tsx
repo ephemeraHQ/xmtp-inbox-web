@@ -10,16 +10,26 @@ import {
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { trustWallet } from "@rainbow-me/rainbowkit/wallets";
 import { publicProvider } from "wagmi/providers/public";
-import { attachmentContentTypeConfig, XMTPProvider } from "@xmtp/react-sdk";
+import {
+  attachmentContentTypeConfig,
+  reactionContentTypeConfig,
+  replyContentTypeConfig,
+  XMTPProvider,
+} from "@xmtp/react-sdk";
 import { mainnet } from "wagmi/chains";
 import { infuraProvider } from "wagmi/providers/infura";
 import App from "./controllers/AppController";
 import { isAppEnvDemo } from "./helpers";
 import { mockConnector } from "./helpers/mockConnector";
 
-const DB_VERSION = 2;
+// Increment with any schema change; e.g. adding support for a new content type
+const DB_VERSION = 5;
 
-const contentTypeConfigs = [attachmentContentTypeConfig];
+const contentTypeConfigs = [
+  attachmentContentTypeConfig,
+  reactionContentTypeConfig,
+  replyContentTypeConfig,
+];
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [mainnet],
@@ -29,7 +39,9 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
   ],
 );
 
-const projectId = import.meta.env.VITE_PROJECT_ID;
+// Required field as of WalletConnect v2.
+// Replace with your project id: https://www.rainbowkit.com/docs/migration-guide#2-supply-a-walletconnect-cloud-projectid
+const projectId = import.meta.env.VITE_PROJECT_ID || "ADD_PROJECT_ID_HERE";
 const appName = "XMTP Inbox Web";
 
 const { wallets } = getDefaultWallets({

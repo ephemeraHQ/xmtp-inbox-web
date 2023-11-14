@@ -2,7 +2,7 @@ import type { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { FullConversation } from "./FullConversation";
 import { FullMessage } from "../FullMessage/FullMessage";
-import { getMockMessage } from "../../../helpers/mocks";
+import { getMockMessage, getMockConversation } from "../../../helpers/mocks";
 
 export default {
   title: "FullConversation",
@@ -17,6 +17,8 @@ const Template: ComponentStory<typeof FullConversation> = (args) => (
     <FullConversation {...args} />
   </div>
 );
+
+const mockConversation = getMockConversation();
 
 const mockMessageFrom = getMockMessage(1, {
   content:
@@ -42,11 +44,13 @@ FullConversationWithMessages.args = {
   messages: Array(20).fill(
     <div>
       <FullMessage
+        conversation={mockConversation}
         message={mockMessageFrom}
         datetime={mockMessageFrom.sentAt}
         from={{ isSelf: false, displayAddress: "receiver" }}
       />
       <FullMessage
+        conversation={mockConversation}
         message={mockMessageTo}
         datetime={mockMessageTo.sentAt}
         from={{ isSelf: true, displayAddress: "sender" }}

@@ -23,7 +23,11 @@ export const supportedLocales = ["en-US", "hi-IN"];
 
 export const initialize = async () => {
   // Get translated JSON files from locales folder so we don't need to import here individually
-  const localeFiles = import.meta.glob("../../src/locales/*.json");
+  // const localeFiles = import.meta.glob("../locales/*.json");
+  const localeFiles = {
+    "../locales/en_US.json": () => import("../locales/en_US.json"),
+    "../locales/hi_IN.json": () => import("../locales/hi_IN.json"),
+  };
   const filenames = Object.keys(localeFiles).map(
     (item) => item.split("locales/")[1],
   ); // => ['./de_DE.json, './en_US.json']
@@ -31,7 +35,9 @@ export const initialize = async () => {
   const keyValuePairs = await Promise.all(
     filenames.map(async (name) => {
       const locale = name.match(/(\w+)\.json$/)?.[0] || "en_US.json";
-      const file = await localeFiles[`../locales/${locale}`]();
+      const file = (
+        await localeFiles[`../locales/${locale}` as keyof typeof localeFiles]()
+      ).default as TranslationObject;
       return [locale.split(".json")[0], file] as [string, TranslationObject];
     }),
   );

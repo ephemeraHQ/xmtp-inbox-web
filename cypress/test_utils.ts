@@ -32,7 +32,7 @@ const checkExpectedPreMessageFields = () => {
   checkElement("message-input-submit");
 };
 
-const sendMessages = (
+export const sendMessages = (
   numberOfTimes: number,
   message: string,
   testUser: string,
@@ -58,15 +58,9 @@ const sendMessages = (
     checkElement("message-input-submit");
     cy.get(`[data-testid=message-input-submit]`).click();
   }
-
-  // A way around to solve the message streaming issue
-  cy.wait(2000);
-  checkElement("new-message-icon-cta");
-  cy.get(`[data-testid=new-message-icon-cta]`).click({ timeout: TIMEOUT });
-  checkElement("message-to-input").type(testUser, { delay: 1 });
 };
 
-const checkMessageOutput = (numberOfTimes: number, message: string) => {
+export const checkMessageOutput = (numberOfTimes: number, message: string) => {
   cy.get(`[data-testid=message-tile-container]`, { timeout: TIMEOUT })
     .children()
     .should("have.length", numberOfTimes || 1);
