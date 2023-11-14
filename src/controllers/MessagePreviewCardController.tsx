@@ -12,6 +12,8 @@ import {
   ContentTypeAttachment,
   ContentTypeRemoteAttachment,
 } from "@xmtp/content-type-remote-attachment";
+import type { Reaction } from "@xmtp/content-type-reaction";
+import { ContentTypeReaction } from "@xmtp/content-type-reaction";
 import { MessagePreviewCard } from "../component-library/components/MessagePreviewCard/MessagePreviewCard";
 import type { ETHAddress } from "../helpers";
 import { shortAddress } from "../helpers";
@@ -93,6 +95,16 @@ export const MessagePreviewCardController = ({
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         previewContent = reply.content;
         previewContentType = reply.contentType;
+      }
+
+      if (ContentTypeReaction.sameAs(previewContentType)) {
+        return (previewContent as Reaction).action === "removed"
+          ? t("messages.unreaction_preview", {
+              REACTION: (previewContent as Reaction).content,
+            })
+          : t("messages.reaction_preview", {
+              REACTION: (previewContent as Reaction).content,
+            });
       }
 
       if (ContentTypeText.sameAs(previewContentType)) {
