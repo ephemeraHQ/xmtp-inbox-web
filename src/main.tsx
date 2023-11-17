@@ -21,14 +21,22 @@ import { infuraProvider } from "wagmi/providers/infura";
 import App from "./controllers/AppController";
 import { isAppEnvDemo } from "./helpers";
 import { mockConnector } from "./helpers/mockConnector";
+import { CustomCodec } from "../customContent";
 
 // Increment with any schema change; e.g. adding support for a new content type
 const DB_VERSION = 5;
+
+const customConfig = {
+  codecs: [new CustomCodec()],
+  contentTypes: ["NaomiAndDaria/custom"],
+  namespace: "custom",
+};
 
 const contentTypeConfigs = [
   attachmentContentTypeConfig,
   reactionContentTypeConfig,
   replyContentTypeConfig,
+  customConfig,
 ];
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
