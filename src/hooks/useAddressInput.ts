@@ -39,33 +39,45 @@ export const useAddressInput = () => {
     const fetchAddressIdentity = async () => {
       // must have a valid recipient address
       if (recipientAddress) {
-        // no name
-        if (!recipientName) {
-          setRecipientState("loading");
-          // check for name
-          const name = await throttledFetchEnsName({
-            address: recipientAddress,
-          });
-          setRecipientName(name);
-        }
-        // no avatar
-        if (!recipientAvatar && recipientName) {
-          setRecipientState("loading");
-          // check for avatar
-          const avatar = await throttledFetchEnsAvatar({
-            name: recipientName,
-          });
-          setRecipientAvatar(avatar);
-        }
-        // make sure we can message the recipient
-        if (!recipientOnNetwork) {
-          setRecipientState("loading");
-          const validRecipient = await canMessage(recipientAddress);
-          if (validRecipient) {
-            setRecipientOnNetwork(true);
-          } else {
-            setRecipientOnNetwork(false);
+        try {
+          // no name
+          if (!recipientName) {
+            setRecipientState("loading");
+            // check for name
+            const name = await throttledFetchEnsName({
+              address: recipientAddress,
+            });
+            setRecipientName(name);
           }
+        } catch (e) {
+          console.error(e);
+        }
+        try {
+          // no avatar
+          if (!recipientAvatar && recipientName) {
+            setRecipientState("loading");
+            // check for avatar
+            const avatar = await throttledFetchEnsAvatar({
+              name: recipientName,
+            });
+            setRecipientAvatar(avatar);
+          }
+        } catch (e) {
+          console.error(e);
+        }
+        try {
+          // make sure we can message the recipient
+          if (!recipientOnNetwork) {
+            setRecipientState("loading");
+            const validRecipient = await canMessage(recipientAddress);
+            if (validRecipient) {
+              setRecipientOnNetwork(true);
+            } else {
+              setRecipientOnNetwork(false);
+            }
+          }
+        } catch (e) {
+          console.error(e);
         }
         setRecipientState("valid");
       }
