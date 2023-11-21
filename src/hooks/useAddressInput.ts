@@ -92,6 +92,8 @@ export const useAddressInput = () => {
           if (address) {
             setRecipientAddress(address);
             setRecipientName(recipientInput);
+          } else {
+            setRecipientState("invalid");
           }
         } else if (isEnsName(recipientInput)) {
           setRecipientState("loading");
@@ -102,6 +104,8 @@ export const useAddressInput = () => {
           if (address) {
             setRecipientAddress(address);
             setRecipientName(recipientInput);
+          } else {
+            setRecipientState("invalid");
           }
         }
       } catch {
