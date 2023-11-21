@@ -9,6 +9,7 @@ import {
   throttledFetchEnsAvatar,
   throttledFetchEnsName,
   throttledFetchUnsAddress,
+  throttledFetchUnsName,
 } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
 
@@ -43,11 +44,17 @@ export const useAddressInput = () => {
           // no name
           if (!recipientName) {
             setRecipientState("loading");
-            // check for name
-            const name = await throttledFetchEnsName({
-              address: recipientAddress,
-            });
-            setRecipientName(name);
+            // check for UNS name
+            const unsName = await throttledFetchUnsName(recipientAddress);
+            if (unsName) {
+              setRecipientName(unsName);
+            } else {
+              // check for ENS name
+              const ensName = await throttledFetchEnsName({
+                address: recipientAddress,
+              });
+              setRecipientName(ensName);
+            }
           }
         } catch (e) {
           console.error(e);
