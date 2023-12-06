@@ -18,10 +18,14 @@ import {
 } from "@heroicons/react/outline";
 import { useTranslation } from "react-i18next";
 import { Tooltip } from "react-tooltip";
+import type {
+  CachedConversationWithId,
+  CachedConversation,
+  useStartConversation,
+} from "@xmtp/react-sdk";
 import {
+  useSendMessage as _useSendMessage,
   useConversation,
-  type CachedConversation,
-  type useStartConversation,
 } from "@xmtp/react-sdk";
 import { IconButton } from "../IconButton/IconButton";
 import { useAttachmentChange } from "../../../hooks/useAttachmentChange";
@@ -32,6 +36,8 @@ import { useXmtpStore } from "../../../store/xmtp";
 import { useVoiceRecording } from "../../../hooks/useVoiceRecording";
 import { useRecordingTimer } from "../../../hooks/useRecordingTimer";
 import "react-tooltip/dist/react-tooltip.css";
+import { ContentTypeSnowEffect } from "../../../../snowEffect";
+import { useLongPress } from "../../../hooks/useLongPress";
 
 type InputProps = {
   /**
@@ -74,6 +80,10 @@ type InputProps = {
    * Function to set whether content is being dragged over the draggable area, including the message input
    */
   setIsDragActive: (status: boolean) => void;
+  /**
+   * Message identifier for a message a new message is attached to (e.g. a message sent with effect)
+   */
+  associatedMessageId?: string;
 };
 
 export const MessageInput = ({
@@ -87,8 +97,12 @@ export const MessageInput = ({
   attachmentPreview,
   setAttachmentPreview,
   setIsDragActive,
+  associatedMessageId,
 }: InputProps) => {
   const { getCachedByPeerAddress } = useConversation();
+  // For effects
+  const { sendMessage: _sendMessage } = _useSendMessage();
+
   const { t } = useTranslation();
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const [value, setValue] = useState("");
@@ -230,6 +244,16 @@ export const MessageInput = ({
     startConversation,
     value,
   ]);
+
+  const handleLongPress = () => {
+    void _sendMessage(
+      conversation as CachedConversationWithId,
+      { messageId: associatedMessageId, topic: conversationTopic },
+      ContentTypeSnowEffect,
+    );
+  };
+
+  const longPressEvents = useLongPress(handleLongPress, send);
 
   const extension = attachment?.mimeType.split("/")?.[1] || "";
 
@@ -393,15 +417,12 @@ export const MessageInput = ({
             />
           )}
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center" {...longPressEvents}>
           <IconButton
             testId="message-input-submit"
             variant="secondary"
             label={<ArrowUpIcon color="white" width="20" />}
             srText={t("aria_labels.submit_message") || ""}
-            onClick={() => {
-              void send();
-            }}
             isDisabled={
               !(value || attachmentPreview) || isDisabled || !!attachmentError
             }

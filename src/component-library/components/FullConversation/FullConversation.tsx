@@ -1,11 +1,7 @@
 import { useTranslation } from "react-i18next";
 import type { VirtuosoHandle } from "react-virtuoso";
 import { Virtuoso } from "react-virtuoso";
-import { useMemo, useRef, useState } from "react";
-import type { CachedConversationWithId } from "@xmtp/react-sdk";
-import { useSendMessage as _useSendMessage } from "@xmtp/react-sdk";
-import { ContentTypeCustom } from "../../../../customContent";
-import useSelectedConversation from "../../../hooks/useSelectedConversation";
+import { useMemo, useRef } from "react";
 
 interface FullConversationProps {
   messages?: Array<JSX.Element | null>;
@@ -36,10 +32,6 @@ export const FullConversation = ({
   messages = [],
   isLoading = false,
 }: FullConversationProps) => {
-  const { sendMessage: _sendMessage } = _useSendMessage();
-  const conversation = useSelectedConversation();
-  const [replacementMessage, setReplacementMessage] = useState("");
-
   const virtuosoRef = useRef<VirtuosoHandle>(null);
   const filteredMessages = useMemo(() => {
     const filtered = messages.filter((msg) => msg !== null);
@@ -50,28 +42,11 @@ export const FullConversation = ({
         <BeginningMessage key="beginning" />
       ),
       ...filtered,
-      replacementMessage && (
-        <div
-          className="bg-yellow-300 text-2xl font-bold text-center"
-          key="replacement">
-          {replacementMessage}
-        </div>
-      ),
     ];
-  }, [isLoading, messages, replacementMessage]);
+  }, [isLoading, messages]);
 
   return (
     <Virtuoso
-      onClick={() => {
-        void _sendMessage(
-          conversation as CachedConversationWithId,
-          { name: "Naomi & Daria's Fun Custom Content Type Goes Here" },
-          ContentTypeCustom,
-        ).then((res) => {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
-          void setReplacementMessage(res?.content.name);
-        });
-      }}
       alignToBottom
       data={filteredMessages}
       totalCount={filteredMessages.length}

@@ -37,6 +37,10 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [client]);
 
+  useEffect(() => {
+    localStorage.setItem("topic", selectedConversation?.topic ?? "");
+  }, [selectedConversation]);
+
   const recipientAddress = useXmtpStore((s) => s.recipientAddress);
   const setActiveMessage = useXmtpStore((s) => s.setActiveMessage);
 
@@ -110,7 +114,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   return (
     // Controller for drag-and-drop area
     <div
-      className={isDragActive ? "bg-slate-100" : "bg-white"}
+      className={isDragActive ? "bg-slate-100" : ""}
       onDragOver={handleDrag}
       onDragEnter={handleDrag}
       onDragLeave={handleDrag}

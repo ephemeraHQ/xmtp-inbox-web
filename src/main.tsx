@@ -21,13 +21,15 @@ import { infuraProvider } from "wagmi/providers/infura";
 import App from "./controllers/AppController";
 import { isAppEnvDemo } from "./helpers";
 import { mockConnector } from "./helpers/mockConnector";
-import { CustomCodec } from "../customContent";
+import { SnowEffectCodec } from "../snowEffect";
 
 // Increment with any schema change; e.g. adding support for a new content type
 const DB_VERSION = 5;
 
+export const SnowEffectCodecInstance = new SnowEffectCodec();
+
 const customConfig = {
-  codecs: [new CustomCodec()],
+  codecs: [SnowEffectCodecInstance],
   contentTypes: ["NaomiAndDaria/custom"],
   namespace: "custom",
 };
