@@ -55,13 +55,9 @@ export class SnowEffectCodec implements ContentCodec<SnowEffect | undefined> {
 
     // // This block is just a hack until we can filter out certain cached messages from the SDK.
     // // Right now there isn't the option, so they return on a refresh from the cache.
-    // if (localStorage.getItem(messageId)) {
-    //   return;
-    // }
-
-    // Use MessageContentController instead to determine whether to run/not run a specific message
-    // Throw the visuals into a separate component
-    // If its not in local storage, run that effect and do the visual treatment
+    if (localStorage.getItem(messageId)) {
+      return;
+    }
 
     this.hasRun[messageId] = true;
     // Remove after this just gets removed from the cache from the SDK via options (e.g. remove content types of XYZ)
