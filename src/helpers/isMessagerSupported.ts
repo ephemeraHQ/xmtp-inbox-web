@@ -9,6 +9,7 @@ export const isMessageSupported = (message: CachedMessageWithId) => {
   const contentType = ContentTypeId.fromString(message.contentType);
   return (
     contentType.sameAs(ContentTypeText) ||
-    contentType.sameAs(ContentTypeRemoteAttachment)
+    contentType.sameAs(ContentTypeRemoteAttachment) ||
+    message.contentType === "xmtp.chat/textEffect:1.0"
   );
 };

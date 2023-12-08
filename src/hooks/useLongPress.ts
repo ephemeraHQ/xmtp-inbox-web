@@ -21,7 +21,7 @@ export const useLongPress = (
     // // If the timer didn't exceed the ms, it's a click
     if (!isLongPress) onClick();
     if (isLongPress) {
-      onClick();
+      // onClick();
       onLongPress();
       setLongPress(false);
     }

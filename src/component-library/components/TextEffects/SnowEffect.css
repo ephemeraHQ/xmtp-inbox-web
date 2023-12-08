@@ -1,0 +1,26 @@
+.snowContainer {
+  filter: drop-shadow(0 0 10px white);
+  pointer-events: none;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  position: absolute;
+  background: radial-gradient(ellipse at bottom, #dee1e3 0%, #090a0f 100%);
+}
+
+.snow {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: white;
+  border-radius: 50%;
+  bottom: 100%;
+  animation: fall linear infinite;
+}
+
+/* Keyframes for the falling animation */
+@keyframes fall {
+  to {
+    transform: translateY(100vh);
+  }
+}
