@@ -4,7 +4,7 @@ import {
   useDb,
   ContentTypeId,
 } from "@xmtp/react-sdk";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { isSameDay } from "date-fns";
 import { ContentTypeReply } from "@xmtp/content-type-reply";
 import { DateDivider } from "../component-library/components/DateDivider/DateDivider";
@@ -12,6 +12,8 @@ import { FullConversation } from "../component-library/components/FullConversati
 import { FullMessageController } from "./FullMessageController";
 import { isMessageSupported } from "../helpers/isMessagerSupported";
 import { updateConversationIdentity } from "../helpers/conversation";
+import SnowEffect from "../component-library/components/TextEffects/SnowEffect";
+import EchoEffect from "../component-library/components/TextEffects/EchoEffect";
 
 type FullConversationControllerProps = {
   conversation: CachedConversation;
@@ -22,7 +24,9 @@ export const FullConversationController: React.FC<
 > = ({ conversation }) => {
   const lastMessageDateRef = useRef<Date>();
   const renderedDatesRef = useRef<Date[]>([]);
+  const [effect, setEffect] = useState<"snow" | "echo" | undefined>(undefined);
   const { db } = useDb();
+  const [attachedMessageId, setAttachedMessageId] = useState("");
 
   useEffect(() => {
     void updateConversationIdentity(conversation, db);
@@ -38,6 +42,20 @@ export const FullConversationController: React.FC<
         const contentType = ContentTypeId.fromString(msg.contentType);
         // if the message content type is not support and has no fallback,
         // disregard it
+
+        const attachedMessageId = msg.content?.messageId;
+        if (msg.content?.effectType === "SNOW") {
+          if (!localStorage.getItem(attachedMessageId)) {
+            setEffect("snow");
+            setAttachedMessageId(msg.content.messageId);
+          }
+        }
+        // if (msg.content?.effectType === "RAIN") {
+        //   if (!localStorage.getItem(attachedMessageId)) {
+        //     setEffect("echo");
+        //     setAttachedMessageId(msg.content.messageId);
+        //   }
+        // }
 
         if (
           !isMessageSupported(msg) &&
@@ -66,7 +84,7 @@ export const FullConversationController: React.FC<
           </div>
         );
         lastMessageDateRef.current = msg.sentAt;
-        return messageDiv;
+        return msg?.content?.effectType ? null : messageDiv;
       }),
     [messages, conversation],
   );
@@ -76,7 +94,12 @@ export const FullConversationController: React.FC<
       id="scrollableDiv"
       // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
       tabIndex={0}
-      className="w-full h-full flex flex-col overflow-auto">
+      className="w-full h-full flex flex-col overflow-auto relative">
+      {effect === "snow" ? (
+        <SnowEffect attachedMessageId={attachedMessageId} />
+      ) : effect === "echo" ? (
+        <EchoEffect attachedMessageId={attachedMessageId} />
+      ) : null}
       <FullConversation isLoading={isLoading} messages={messagesWithDates} />
     </div>
   );
