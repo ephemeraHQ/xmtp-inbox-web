@@ -13,7 +13,7 @@ const SnowEffect = ({ attachedMessageId }: { attachedMessageId: string }) => {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    // Create 150 snowflake objects with randomized styles
+    // Snowflake objects
     const newSnowflakes: Array<snowflakeStyles> = [];
     for (let i = 0; i < 150; i++) {
       newSnowflakes.push({
@@ -26,11 +26,10 @@ const SnowEffect = ({ attachedMessageId }: { attachedMessageId: string }) => {
     }
     setSnowflakes(newSnowflakes);
 
-    // Set a timeout to hide the container
     const timeout = setTimeout(() => {
       setIsVisible(false);
       document.body.style.pointerEvents = "auto";
-      // localStorage.setItem(attachedMessageId, "SNOW");
+      localStorage.setItem(attachedMessageId, "SNOW");
     }, 3000);
 
     // // Clear the timeout if the component unmounts

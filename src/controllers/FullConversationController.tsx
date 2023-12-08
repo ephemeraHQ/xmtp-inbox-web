@@ -43,19 +43,18 @@ export const FullConversationController: React.FC<
         // if the message content type is not support and has no fallback,
         // disregard it
 
-        const attachedMessageId = msg.content?.messageId;
         if (msg.content?.effectType === "SNOW") {
-          if (!localStorage.getItem(attachedMessageId)) {
+          if (!localStorage.getItem(msg.content?.messageId)) {
             setEffect("snow");
             setAttachedMessageId(msg.content.messageId);
           }
         }
-        // if (msg.content?.effectType === "RAIN") {
-        //   if (!localStorage.getItem(attachedMessageId)) {
-        //     setEffect("echo");
-        //     setAttachedMessageId(msg.content.messageId);
-        //   }
-        // }
+        if (msg.content?.effectType === "RAIN") {
+          if (!localStorage.getItem(msg.content?.messageId)) {
+            setEffect("echo");
+            setAttachedMessageId(msg.content.messageId);
+          }
+        }
 
         if (
           !isMessageSupported(msg) &&
@@ -96,9 +95,15 @@ export const FullConversationController: React.FC<
       tabIndex={0}
       className="w-full h-full flex flex-col overflow-auto relative">
       {effect === "snow" ? (
-        <SnowEffect attachedMessageId={attachedMessageId} />
+        <SnowEffect
+          attachedMessageId={attachedMessageId}
+          key={attachedMessageId}
+        />
       ) : effect === "echo" ? (
-        <EchoEffect attachedMessageId={attachedMessageId} />
+        <EchoEffect
+          attachedMessageId={attachedMessageId}
+          key={attachedMessageId}
+        />
       ) : null}
       <FullConversation isLoading={isLoading} messages={messagesWithDates} />
     </div>

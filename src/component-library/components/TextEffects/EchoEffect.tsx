@@ -30,7 +30,7 @@ const EchoEffect = ({ attachedMessageId }: { attachedMessageId: string }) => {
     const timeout = setTimeout(() => {
       setIsVisible(false);
       document.body.style.pointerEvents = "auto";
-      localStorage.setItem(attachedMessageId, "RAIN");
+      localStorage.setItem(attachedMessageId, "ECHO");
     }, 3000);
 
     // Clear the timeout if the component unmounts
