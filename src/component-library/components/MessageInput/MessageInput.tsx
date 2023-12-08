@@ -439,7 +439,10 @@ export const MessageInput = ({
               label={<ArrowUpIcon color="white" width="20" />}
               srText={t("aria_labels.submit_message") || ""}
               isDisabled={
-                !(value || attachmentPreview) || isDisabled || !!attachmentError
+                !(value || attachmentPreview) ||
+                isDisabled ||
+                !!attachmentError ||
+                openEffectDialog
               }
             />
           </div>

@@ -86,7 +86,7 @@ export const FullConversationController: React.FC<
           </div>
         );
         lastMessageDateRef.current = msg.sentAt;
-        return msg?.content?.effectType ? null : messageDiv;
+        return msg?.content?.effectType || !msg.content ? null : messageDiv;
       }),
     [messages, conversation],
   );
