@@ -36,7 +36,7 @@ import { useXmtpStore } from "../../../store/xmtp";
 import { useVoiceRecording } from "../../../hooks/useVoiceRecording";
 import { useRecordingTimer } from "../../../hooks/useRecordingTimer";
 import "react-tooltip/dist/react-tooltip.css";
-import { ContentTypeScreenEffect, EffectType } from "../../../../screenEffect";
+import { ContentTypeScreenEffect } from "../../../../screenEffect";
 import { useLongPress } from "../../../hooks/useLongPress";
 import { EffectDialog } from "../EffectDialog/EffectDialog";
 
@@ -251,16 +251,17 @@ export const MessageInput = ({
     setOpenEffectDialog(true);
   };
 
-  const handleSendEffect = async (effectType: string) => {
-    await _sendMessage(
+  const handleSendEffect = (effectType: string) => {
+    void _sendMessage(
       conversation as CachedConversationWithId,
       { messageId: associatedMessageId, effectType },
       ContentTypeScreenEffect,
     );
-    await send();
+    void send();
     setOpenEffectDialog(false);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   const longPressEvents = useLongPress(handleLongPress, send);
 
   const extension = attachment?.mimeType.split("/")?.[1] || "";

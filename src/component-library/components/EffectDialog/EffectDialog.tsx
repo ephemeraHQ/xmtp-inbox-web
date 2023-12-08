@@ -1,6 +1,10 @@
 import { EffectType } from "../../../../screenEffect";
 
-export const EffectDialog = ({ handleSendEffect }) => (
+export const EffectDialog = ({
+  handleSendEffect,
+}: {
+  handleSendEffect: (effect: string) => void;
+}) => (
   <dialog
     open
     style={{
@@ -16,14 +20,10 @@ export const EffectDialog = ({ handleSendEffect }) => (
     }}>
     <div className="w-full flex flex-col justify-around items-center text-md">
       <b>Send with effect:</b>
-      <button
-        type="button"
-        onClick={() => void handleSendEffect(EffectType.SNOW)}>
+      <button type="button" onClick={() => handleSendEffect(EffectType.SNOW)}>
         **Let it Snow**
       </button>
-      <button
-        type="button"
-        onClick={() => void handleSendEffect(EffectType.RAIN)}>
+      <button type="button" onClick={() => handleSendEffect(EffectType.RAIN)}>
         Make it Rain XMTP!
       </button>
     </div>
