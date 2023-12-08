@@ -121,11 +121,6 @@ export const MessagePreviewCardController = ({
         );
       }
 
-      // Temporarily adding this for snow effect
-      if (previewContentType.typeId === "snowEffect") {
-        return "Message sent with snow effect";
-      }
-
       return lastMessage.contentFallback ?? t("messages.no_preview");
     }
     return t("messages.no_preview");

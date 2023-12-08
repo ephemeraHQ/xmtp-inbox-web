@@ -36,7 +36,7 @@ import { useXmtpStore } from "../../../store/xmtp";
 import { useVoiceRecording } from "../../../hooks/useVoiceRecording";
 import { useRecordingTimer } from "../../../hooks/useRecordingTimer";
 import "react-tooltip/dist/react-tooltip.css";
-import { ContentTypeTextEffect } from "../../../../snowEffect";
+import { ContentTypeScreenEffect } from "../../../../screenEffect";
 import { useLongPress } from "../../../hooks/useLongPress";
 
 type InputProps = {
@@ -253,8 +253,8 @@ export const MessageInput = ({
   const handleSendEffect = async (effectType: string) => {
     await _sendMessage(
       conversation as CachedConversationWithId,
-      { messageId: associatedMessageId, topic: conversationTopic, effectType },
-      ContentTypeTextEffect,
+      { messageId: associatedMessageId, effectType },
+      ContentTypeScreenEffect,
     );
     await send();
     setOpenEffectDialog(false);

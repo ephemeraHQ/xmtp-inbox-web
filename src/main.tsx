@@ -21,17 +21,17 @@ import { infuraProvider } from "wagmi/providers/infura";
 import App from "./controllers/AppController";
 import { isAppEnvDemo } from "./helpers";
 import { mockConnector } from "./helpers/mockConnector";
-import { TextEffectCodec } from "../snowEffect";
+import { ScreenEffectCodec } from "../screenEffect";
 
 // Increment with any schema change; e.g. adding support for a new content type
 const DB_VERSION = 5;
 
-export const TextEffectCodecInstance = new TextEffectCodec();
+export const ScreenEffectCodecInstance = new ScreenEffectCodec();
 
 const customConfig = {
-  codecs: [TextEffectCodecInstance],
-  contentTypes: ["textEffects"],
-  namespace: "textEffects",
+  codecs: [ScreenEffectCodecInstance],
+  contentTypes: ["screenEffects"],
+  namespace: "screenEffects",
 };
 
 const contentTypeConfigs = [

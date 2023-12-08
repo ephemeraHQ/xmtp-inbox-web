@@ -12,8 +12,8 @@ import { FullConversation } from "../component-library/components/FullConversati
 import { FullMessageController } from "./FullMessageController";
 import { isMessageSupported } from "../helpers/isMessagerSupported";
 import { updateConversationIdentity } from "../helpers/conversation";
-import SnowEffect from "../component-library/components/TextEffects/SnowEffect";
-import EchoEffect from "../component-library/components/TextEffects/EchoEffect";
+import SnowEffect from "../component-library/components/ScreenEffects/SnowEffect";
+import EchoEffect from "../component-library/components/ScreenEffects/EchoEffect";
 
 type FullConversationControllerProps = {
   conversation: CachedConversation;
