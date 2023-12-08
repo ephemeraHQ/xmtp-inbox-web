@@ -36,7 +36,7 @@ import { useXmtpStore } from "../../../store/xmtp";
 import { useVoiceRecording } from "../../../hooks/useVoiceRecording";
 import { useRecordingTimer } from "../../../hooks/useRecordingTimer";
 import "react-tooltip/dist/react-tooltip.css";
-import { ContentTypeScreenEffect } from "../../../../screenEffect";
+import { ContentTypeScreenEffect, EffectType } from "../../../../screenEffect";
 import { useLongPress } from "../../../hooks/useLongPress";
 
 type InputProps = {
@@ -280,10 +280,14 @@ export const MessageInput = ({
       }}>
       <div className="w-full flex flex-col justify-around items-center text-md">
         <b>Send with effect:</b>
-        <button type="button" onClick={() => void handleSendEffect("SNOW")}>
+        <button
+          type="button"
+          onClick={() => void handleSendEffect(EffectType.SNOW)}>
           **Let it Snow**
         </button>
-        <button type="button" onClick={() => void handleSendEffect("RAIN")}>
+        <button
+          type="button"
+          onClick={() => void handleSendEffect(EffectType.RAIN)}>
           Make it Rain XMTP!
         </button>
       </div>

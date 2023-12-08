@@ -17,11 +17,9 @@ export const useLongPress = (
   const clear = () => {
     // Clear timeout if the user releases before the time limit
     clearTimeout(timerId);
-    // dont think i need this since it just falls into regular on click
     // // If the timer didn't exceed the ms, it's a click
     if (!isLongPress) onClick();
     if (isLongPress) {
-      // onClick();
       onLongPress();
       setLongPress(false);
     }

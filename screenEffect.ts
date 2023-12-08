@@ -2,7 +2,7 @@
 import { ContentTypeId } from "@xmtp/xmtp-js";
 import type { ContentCodec, EncodedContent } from "@xmtp/xmtp-js";
 
-enum EffectType {
+export enum EffectType {
   SNOW = "SNOW",
   RAIN = "RAIN",
 }

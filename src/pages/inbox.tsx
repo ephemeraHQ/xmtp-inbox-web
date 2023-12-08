@@ -37,10 +37,6 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [client]);
 
-  useEffect(() => {
-    localStorage.setItem("topic", selectedConversation?.topic ?? "");
-  }, [selectedConversation]);
-
   const recipientAddress = useXmtpStore((s) => s.recipientAddress);
   const setActiveMessage = useXmtpStore((s) => s.setActiveMessage);
 

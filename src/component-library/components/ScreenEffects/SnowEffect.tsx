@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "./SnowEffect.css";
+import { EffectType } from "../../../../screenEffect";
 
 interface snowflakeStyles {
   left: string;
@@ -29,7 +30,7 @@ const SnowEffect = ({ attachedMessageId }: { attachedMessageId: string }) => {
     const timeout = setTimeout(() => {
       setIsVisible(false);
       document.body.style.pointerEvents = "auto";
-      localStorage.setItem(attachedMessageId, "SNOW");
+      localStorage.setItem(attachedMessageId, EffectType.SNOW);
     }, 3000);
 
     // // Clear the timeout if the component unmounts

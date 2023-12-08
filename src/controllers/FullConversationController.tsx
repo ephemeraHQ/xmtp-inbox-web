@@ -13,7 +13,8 @@ import { FullMessageController } from "./FullMessageController";
 import { isMessageSupported } from "../helpers/isMessagerSupported";
 import { updateConversationIdentity } from "../helpers/conversation";
 import SnowEffect from "../component-library/components/ScreenEffects/SnowEffect";
-import EchoEffect from "../component-library/components/ScreenEffects/EchoEffect";
+import RainEffect from "../component-library/components/ScreenEffects/RainEffect";
+import { EffectType } from "../../screenEffect";
 
 type FullConversationControllerProps = {
   conversation: CachedConversation;
@@ -24,7 +25,7 @@ export const FullConversationController: React.FC<
 > = ({ conversation }) => {
   const lastMessageDateRef = useRef<Date>();
   const renderedDatesRef = useRef<Date[]>([]);
-  const [effect, setEffect] = useState<"snow" | "echo" | undefined>(undefined);
+  const [effect, setEffect] = useState<"snow" | "rain" | undefined>(undefined);
   const { db } = useDb();
   const [attachedMessageId, setAttachedMessageId] = useState("");
 
@@ -43,15 +44,15 @@ export const FullConversationController: React.FC<
         // if the message content type is not support and has no fallback,
         // disregard it
 
-        if (msg.content?.effectType === "SNOW") {
+        if (msg.content?.effectType === EffectType.SNOW) {
           if (!localStorage.getItem(msg.content?.messageId)) {
             setEffect("snow");
             setAttachedMessageId(msg.content.messageId);
           }
         }
-        if (msg.content?.effectType === "RAIN") {
+        if (msg.content?.effectType === EffectType.RAIN) {
           if (!localStorage.getItem(msg.content?.messageId)) {
-            setEffect("echo");
+            setEffect("rain");
             setAttachedMessageId(msg.content.messageId);
           }
         }
@@ -99,8 +100,8 @@ export const FullConversationController: React.FC<
           attachedMessageId={attachedMessageId}
           key={attachedMessageId}
         />
-      ) : effect === "echo" ? (
-        <EchoEffect
+      ) : effect === "rain" ? (
+        <RainEffect
           attachedMessageId={attachedMessageId}
           key={attachedMessageId}
         />

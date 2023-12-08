@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import "./EchoEffect.css";
+import "./RainEffect.css";
+import { EffectType } from "../../../../screenEffect";
 
 interface logoStyles {
   left: string;
@@ -8,7 +9,7 @@ interface logoStyles {
   animationDelay: string;
 }
 
-const EchoEffect = ({ attachedMessageId }: { attachedMessageId: string }) => {
+const RainEffect = ({ attachedMessageId }: { attachedMessageId: string }) => {
   const [logos, setLogos] = useState<logoStyles[]>([]);
   const [isVisible, setIsVisible] = useState(true);
 
@@ -30,7 +31,7 @@ const EchoEffect = ({ attachedMessageId }: { attachedMessageId: string }) => {
     const timeout = setTimeout(() => {
       setIsVisible(false);
       document.body.style.pointerEvents = "auto";
-      localStorage.setItem(attachedMessageId, "ECHO");
+      localStorage.setItem(attachedMessageId, EffectType.RAIN);
     }, 3000);
 
     // Clear the timeout if the component unmounts
@@ -38,7 +39,7 @@ const EchoEffect = ({ attachedMessageId }: { attachedMessageId: string }) => {
   }, [attachedMessageId]);
 
   return isVisible ? (
-    <div className="echoContainer">
+    <div className="rainContainer">
       {logos.map((logo, index) => (
         <div
           key={index}
@@ -55,4 +56,4 @@ const EchoEffect = ({ attachedMessageId }: { attachedMessageId: string }) => {
   ) : null;
 };
 
-export default EchoEffect;
+export default RainEffect;

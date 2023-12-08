@@ -32,6 +32,7 @@ export const FullConversation = ({
   messages = [],
   isLoading = false,
 }: FullConversationProps) => {
+  console.log("MESSAGES", messages);
   const virtuosoRef = useRef<VirtuosoHandle>(null);
   const filteredMessages = useMemo(() => {
     const filtered = messages.filter((msg) => msg !== null);
