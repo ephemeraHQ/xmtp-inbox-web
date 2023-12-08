@@ -1,6 +1,7 @@
 import { ContentTypeRemoteAttachment } from "@xmtp/content-type-remote-attachment";
 import type { CachedMessageWithId } from "@xmtp/react-sdk";
 import { ContentTypeId, ContentTypeText } from "@xmtp/react-sdk";
+import { ContentTypeScreenEffect } from "../../screenEffect";
 
 /**
  * Determines if a message is supported by the app
@@ -10,6 +11,6 @@ export const isMessageSupported = (message: CachedMessageWithId) => {
   return (
     contentType.sameAs(ContentTypeText) ||
     contentType.sameAs(ContentTypeRemoteAttachment) ||
-    message.contentType === "xmtp.chat/screenEffect:1.0"
+    contentType.sameAs(ContentTypeScreenEffect)
   );
 };
