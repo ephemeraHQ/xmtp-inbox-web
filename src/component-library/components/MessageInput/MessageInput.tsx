@@ -38,6 +38,7 @@ import { useRecordingTimer } from "../../../hooks/useRecordingTimer";
 import "react-tooltip/dist/react-tooltip.css";
 import { ContentTypeScreenEffect, EffectType } from "../../../../screenEffect";
 import { useLongPress } from "../../../hooks/useLongPress";
+import { EffectDialog } from "../EffectDialog/EffectDialog";
 
 type InputProps = {
   /**
@@ -264,39 +265,11 @@ export const MessageInput = ({
 
   const extension = attachment?.mimeType.split("/")?.[1] || "";
 
-  const dialog = (
-    <dialog
-      open
-      style={{
-        width: 200,
-        height: 150,
-        border: "1px dotted indigo",
-        borderRadius: "16px",
-        position: "absolute",
-        bottom: "200px",
-        marginLeft: "80%",
-        display: "flex",
-        alignSelf: "flex-end",
-      }}>
-      <div className="w-full flex flex-col justify-around items-center text-md">
-        <b>Send with effect:</b>
-        <button
-          type="button"
-          onClick={() => void handleSendEffect(EffectType.SNOW)}>
-          **Let it Snow**
-        </button>
-        <button
-          type="button"
-          onClick={() => void handleSendEffect(EffectType.RAIN)}>
-          Make it Rain XMTP!
-        </button>
-      </div>
-    </dialog>
-  );
-
   return (
     <>
-      {openEffectDialog && dialog}
+      {openEffectDialog ? (
+        <EffectDialog handleSendEffect={handleSendEffect} />
+      ) : null}
       <form className="flex flex-col border border-gray-300 rounded-2xl m-4">
         <label htmlFor="chat" className="sr-only">
           {t("messages.message_field_prompt")}
