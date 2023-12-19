@@ -1,13 +1,9 @@
-// To-do: pull from package once exported
-enum EffectType {
-  SNOW = "SNOW",
-  RAIN = "RAIN",
-}
+import type { EffectType } from "@xmtp/experimental-content-type-screen-effect";
 
 export const EffectDialog = ({
   handleSendEffect,
 }: {
-  handleSendEffect: (effect: string) => void;
+  handleSendEffect: (effect: EffectType) => void;
 }) => (
   <dialog
     open
@@ -24,10 +20,10 @@ export const EffectDialog = ({
     }}>
     <div className="w-full flex flex-col justify-around items-center text-md">
       <b>Send with effect:</b>
-      <button type="button" onClick={() => handleSendEffect(EffectType.SNOW)}>
+      <button type="button" onClick={() => handleSendEffect("SNOW")}>
         **Let it Snow**
       </button>
-      <button type="button" onClick={() => handleSendEffect(EffectType.RAIN)}>
+      <button type="button" onClick={() => handleSendEffect("RAIN")}>
         Make it Rain XMTP!
       </button>
     </div>

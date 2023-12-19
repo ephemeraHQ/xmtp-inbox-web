@@ -17,12 +17,6 @@ import { updateConversationIdentity } from "../helpers/conversation";
 import SnowEffect from "../component-library/components/ScreenEffects/SnowEffect";
 import RainEffect from "../component-library/components/ScreenEffects/RainEffect";
 
-// To-do: pull from package once exported
-enum EffectType {
-  SNOW = "SNOW",
-  RAIN = "RAIN",
-}
-
 type FullConversationControllerProps = {
   conversation: CachedConversation;
 };
@@ -51,13 +45,13 @@ export const FullConversationController: React.FC<
         // if the message content type is not support and has no fallback,
         // disregard it
 
-        if (msg.content?.effectType === EffectType.SNOW) {
+        if (msg.content?.effectType === "SNOW") {
           if (!localStorage.getItem(msg.content?.messageId)) {
             setEffect("snow");
             setAttachedMessageId(msg.content.messageId);
           }
         }
-        if (msg.content?.effectType === EffectType.RAIN) {
+        if (msg.content?.effectType === "RAIN") {
           if (!localStorage.getItem(msg.content?.messageId)) {
             setEffect("rain");
             setAttachedMessageId(msg.content.messageId);
