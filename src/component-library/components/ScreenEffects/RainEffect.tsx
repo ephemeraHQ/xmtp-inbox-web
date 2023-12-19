@@ -1,12 +1,6 @@
 import { useEffect, useState } from "react";
 import "./RainEffect.css";
 
-// To-do: pull from package once exported
-enum EffectType {
-  SNOW = "SNOW",
-  RAIN = "RAIN",
-}
-
 interface logoStyles {
   left: string;
   opacity: number;
@@ -36,7 +30,7 @@ const RainEffect = ({ attachedMessageId }: { attachedMessageId: string }) => {
     const timeout = setTimeout(() => {
       setIsVisible(false);
       document.body.style.pointerEvents = "auto";
-      localStorage.setItem(attachedMessageId, EffectType.RAIN);
+      localStorage.setItem(attachedMessageId, "RAIN");
     }, 3000);
 
     // Clear the timeout if the component unmounts

@@ -1,12 +1,6 @@
 import { useState, useEffect } from "react";
 import "./SnowEffect.css";
 
-// To-do: pull from package once exported
-enum EffectType {
-  SNOW = "SNOW",
-  RAIN = "RAIN",
-}
-
 interface snowflakeStyles {
   left: string;
   opacity: number;
@@ -35,7 +29,7 @@ const SnowEffect = ({ attachedMessageId }: { attachedMessageId: string }) => {
     const timeout = setTimeout(() => {
       setIsVisible(false);
       document.body.style.pointerEvents = "auto";
-      localStorage.setItem(attachedMessageId, EffectType.SNOW);
+      localStorage.setItem(attachedMessageId, "SNOW");
     }, 3000);
 
     // // Clear the timeout if the component unmounts

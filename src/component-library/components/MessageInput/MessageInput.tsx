@@ -27,7 +27,10 @@ import {
   useSendMessage as _useSendMessage,
   useConversation,
 } from "@xmtp/react-sdk";
-import { ContentTypeScreenEffect } from "@xmtp/experimental-content-type-screen-effect";
+import {
+  ContentTypeScreenEffect,
+  EffectType,
+} from "@xmtp/experimental-content-type-screen-effect";
 import { IconButton } from "../IconButton/IconButton";
 import { useAttachmentChange } from "../../../hooks/useAttachmentChange";
 import { typeLookup, type contentTypes } from "../../../helpers/attachments";
