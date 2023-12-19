@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import "./SnowEffect.css";
-import { EffectType } from "../../../../screenEffect";
+
+// To-do: pull from package once exported
+enum EffectType {
+  SNOW = "SNOW",
+  RAIN = "RAIN",
+}
 
 interface snowflakeStyles {
   left: string;

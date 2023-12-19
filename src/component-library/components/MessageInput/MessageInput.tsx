@@ -27,6 +27,7 @@ import {
   useSendMessage as _useSendMessage,
   useConversation,
 } from "@xmtp/react-sdk";
+import { ContentTypeScreenEffect } from "@xmtp/experimental-content-type-screen-effect";
 import { IconButton } from "../IconButton/IconButton";
 import { useAttachmentChange } from "../../../hooks/useAttachmentChange";
 import { typeLookup, type contentTypes } from "../../../helpers/attachments";
@@ -36,7 +37,6 @@ import { useXmtpStore } from "../../../store/xmtp";
 import { useVoiceRecording } from "../../../hooks/useVoiceRecording";
 import { useRecordingTimer } from "../../../hooks/useRecordingTimer";
 import "react-tooltip/dist/react-tooltip.css";
-import { ContentTypeScreenEffect } from "../../../../screenEffect";
 import { useLongPress } from "../../../hooks/useLongPress";
 import { EffectDialog } from "../EffectDialog/EffectDialog";
 

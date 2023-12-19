@@ -21,7 +21,10 @@ import { infuraProvider } from "wagmi/providers/infura";
 import App from "./controllers/AppController";
 import { isAppEnvDemo } from "./helpers";
 import { mockConnector } from "./helpers/mockConnector";
-import { ContentTypeScreenEffect, ScreenEffectCodec } from "../screenEffect";
+import {
+  ContentTypeScreenEffect,
+  ScreenEffectCodec,
+} from "@xmtp/experimental-content-type-screen-effect";
 
 // Increment with any schema change; e.g. adding support for a new content type
 const DB_VERSION = 5;

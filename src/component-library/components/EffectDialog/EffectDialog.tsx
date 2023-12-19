@@ -1,4 +1,8 @@
-import { EffectType } from "../../../../screenEffect";
+// To-do: pull from package once exported
+enum EffectType {
+  SNOW = "SNOW",
+  RAIN = "RAIN",
+}
 
 export const EffectDialog = ({
   handleSendEffect,
