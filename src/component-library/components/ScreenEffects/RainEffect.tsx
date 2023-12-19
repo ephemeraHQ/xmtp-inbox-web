@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import "./RainEffect.css";
-import { EffectType } from "../../../../screenEffect";
+
+// To-do: pull from package once exported
+enum EffectType {
+  SNOW = "SNOW",
+  RAIN = "RAIN",
+}
 
 interface logoStyles {
   left: string;

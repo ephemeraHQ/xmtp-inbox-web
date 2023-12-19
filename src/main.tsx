@@ -18,10 +18,13 @@ import {
 } from "@xmtp/react-sdk";
 import { mainnet } from "wagmi/chains";
 import { infuraProvider } from "wagmi/providers/infura";
+import {
+  ContentTypeScreenEffect,
+  ScreenEffectCodec,
+} from "@xmtp/experimental-content-type-screen-effect";
 import App from "./controllers/AppController";
 import { isAppEnvDemo } from "./helpers";
 import { mockConnector } from "./helpers/mockConnector";
-import { ContentTypeScreenEffect, ScreenEffectCodec } from "../screenEffect";
 
 // Increment with any schema change; e.g. adding support for a new content type
 const DB_VERSION = 5;

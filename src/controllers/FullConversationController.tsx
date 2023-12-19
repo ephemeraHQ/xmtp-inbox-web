@@ -16,7 +16,12 @@ import { isMessageSupported } from "../helpers/isMessagerSupported";
 import { updateConversationIdentity } from "../helpers/conversation";
 import SnowEffect from "../component-library/components/ScreenEffects/SnowEffect";
 import RainEffect from "../component-library/components/ScreenEffects/RainEffect";
-import { EffectType } from "../../screenEffect";
+
+// To-do: pull from package once exported
+enum EffectType {
+  SNOW = "SNOW",
+  RAIN = "RAIN",
+}
 
 type FullConversationControllerProps = {
   conversation: CachedConversation;
