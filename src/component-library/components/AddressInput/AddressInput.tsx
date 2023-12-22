@@ -119,10 +119,10 @@ export const AddressInput = ({
               subtextColor,
             )}
             data-testid="message-to-subtext">
-            {resolvedAddress?.walletAddress
-              ? resolvedAddress?.walletAddress
-              : subtext
+            {subtext
               ? t(subtext)
+              : resolvedAddress?.walletAddress
+              ? resolvedAddress?.walletAddress
               : ""}
           </div>
         </div>
