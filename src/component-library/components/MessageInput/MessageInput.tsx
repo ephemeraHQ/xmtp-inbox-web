@@ -255,7 +255,7 @@ export const MessageInput = ({
   const handleSendEffect = (effectType: string) => {
     void _sendMessage(
       conversation as CachedConversationWithId,
-      // To-do: remove this when codec is updated
+      // We don't need to do anything with the associated message for this effect
       { messageId: "", effectType },
       ContentTypeScreenEffect,
     );

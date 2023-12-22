@@ -92,7 +92,7 @@ const useSendMessage = (
             ContentTypeReply,
           );
         } else {
-          await _sendMessage(conversation, message);
+          void _sendMessage(conversation, message);
         }
       }
     },

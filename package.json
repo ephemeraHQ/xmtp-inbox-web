@@ -41,7 +41,6 @@
     "@xmtp/content-type-reply": "^1.1.5",
     "@xmtp/experimental-content-type-screen-effect": "^1.0.2",
     "@xmtp/react-sdk": "^3.0.0",
-    "@xmtp/xmtp-js": "^11.2.1",
     "buffer": "^6.0.3",
     "date-fns": "^2.29.3",
     "dexie": "^3.2.4",
