@@ -28,7 +28,6 @@ export const FullConversationController: React.FC<
 > = ({ conversation }) => {
   const lastMessageDateRef = useRef<Date>();
   const renderedDatesRef = useRef<Date[]>([]);
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const [effect, setEffect] = useState<EffectType | undefined>(undefined);
 
   const { db } = useDb();
