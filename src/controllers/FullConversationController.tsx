@@ -6,7 +6,6 @@ import {
   useDb,
   ContentTypeId,
 } from "@xmtp/react-sdk";
-import type { Dispatch, SetStateAction } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { isSameDay } from "date-fns";
 import { ContentTypeReply } from "@xmtp/content-type-reply";
@@ -29,10 +28,8 @@ export const FullConversationController: React.FC<
 > = ({ conversation }) => {
   const lastMessageDateRef = useRef<Date>();
   const renderedDatesRef = useRef<Date[]>([]);
-  const [effect, setEffect]: [
-    EffectType | undefined,
-    Dispatch<SetStateAction<any>>,
-  ] = useState(undefined);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const [effect, setEffect] = useState<EffectType | undefined>(undefined);
 
   const { db } = useDb();
   const [messageId, setMessageId] = useState<string>("");
