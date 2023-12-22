@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import type { CachedConversation, CachedMessageWithId } from "@xmtp/react-sdk";
 import {
   ContentTypeText,
@@ -25,7 +25,6 @@ const useSendMessage = (
 ) => {
   const { sendMessage: _sendMessage, isLoading, error } = _useSendMessage();
   const recipientOnNetwork = useXmtpStore((s) => s.recipientOnNetwork);
-  const [messageId, setMessageId] = useState("");
 
   const sendMessage = useCallback(
     async (
@@ -93,8 +92,7 @@ const useSendMessage = (
             ContentTypeReply,
           );
         } else {
-          const messageResponse = await _sendMessage(conversation, message);
-          setMessageId(messageResponse?.id ?? "");
+          await _sendMessage(conversation, message);
         }
       }
     },
@@ -103,7 +101,6 @@ const useSendMessage = (
 
   return {
     sendMessage,
-    messageId,
     loading: isLoading,
     error,
   };

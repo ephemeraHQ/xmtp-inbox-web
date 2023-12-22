@@ -14,6 +14,7 @@ import {
 } from "@xmtp/content-type-remote-attachment";
 import type { Reaction } from "@xmtp/content-type-reaction";
 import { ContentTypeReaction } from "@xmtp/content-type-reaction";
+import { ContentTypeScreenEffect } from "@xmtp/experimental-content-type-screen-effect";
 import { MessagePreviewCard } from "../component-library/components/MessagePreviewCard/MessagePreviewCard";
 import type { ETHAddress } from "../helpers";
 import { shortAddress } from "../helpers";
@@ -89,6 +90,10 @@ export const MessagePreviewCardController = ({
       let previewContentType = ContentTypeId.fromString(
         lastMessage.contentType,
       );
+
+      if (ContentTypeScreenEffect.sameAs(previewContentType)) {
+        return undefined;
+      }
 
       if (ContentTypeReply.sameAs(previewContentType)) {
         const reply = lastMessage.content as Reply;

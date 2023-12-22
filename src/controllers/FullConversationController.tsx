@@ -16,6 +16,7 @@ import { isMessageSupported } from "../helpers/isMessagerSupported";
 import { updateConversationIdentity } from "../helpers/conversation";
 import SnowEffect from "../component-library/components/ScreenEffects/SnowEffect";
 import RainEffect from "../component-library/components/ScreenEffects/RainEffect";
+import { useXmtpStore } from "../store/xmtp";
 
 type FullConversationControllerProps = {
   conversation: CachedConversation;
@@ -26,9 +27,10 @@ export const FullConversationController: React.FC<
 > = ({ conversation }) => {
   const lastMessageDateRef = useRef<Date>();
   const renderedDatesRef = useRef<Date[]>([]);
-  const [effect, setEffect] = useState<"snow" | "rain" | undefined>(undefined);
+  const [effect, setEffect] = useState<"SNOW" | "RAIN" | undefined>(undefined);
   const { db } = useDb();
-  const [attachedMessageId, setAttachedMessageId] = useState("");
+  const [messageId, setMessageId] = useState<string>("");
+  const conversationTopic = useXmtpStore((s) => s.conversationTopic);
 
   useEffect(() => {
     void updateConversationIdentity(conversation, db);
@@ -45,16 +47,23 @@ export const FullConversationController: React.FC<
         // if the message content type is not support and has no fallback,
         // disregard it
 
-        if (msg.content?.effectType === "SNOW") {
-          if (!localStorage.getItem(msg.content?.messageId)) {
-            setEffect("snow");
-            setAttachedMessageId(msg.content.messageId);
+        // In this component so it takes up the entirety of the conversation view
+        if (
+          msg.content?.effectType === "SNOW" &&
+          msg.conversationTopic === conversationTopic
+        ) {
+          if (!localStorage.getItem(String(msg.id))) {
+            setEffect("SNOW");
+            setMessageId(String(msg.id));
           }
         }
-        if (msg.content?.effectType === "RAIN") {
-          if (!localStorage.getItem(msg.content?.messageId)) {
-            setEffect("rain");
-            setAttachedMessageId(msg.content.messageId);
+        if (
+          msg.content?.effectType === "RAIN" &&
+          msg.conversationTopic === conversationTopic
+        ) {
+          if (!localStorage.getItem(String(msg.id))) {
+            setEffect("RAIN");
+            setMessageId(String(msg.id));
           }
         }
 
@@ -87,7 +96,7 @@ export const FullConversationController: React.FC<
         lastMessageDateRef.current = msg.sentAt;
         return msg?.content?.effectType || !msg.content ? null : messageDiv;
       }),
-    [messages, conversation],
+    [messages, conversation, conversationTopic],
   );
 
   return (
@@ -96,16 +105,10 @@ export const FullConversationController: React.FC<
       // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
       tabIndex={0}
       className="w-full h-full flex flex-col overflow-auto relative">
-      {effect === "snow" ? (
-        <SnowEffect
-          attachedMessageId={attachedMessageId}
-          key={attachedMessageId}
-        />
-      ) : effect === "rain" ? (
-        <RainEffect
-          attachedMessageId={attachedMessageId}
-          key={attachedMessageId}
-        />
+      {effect === "SNOW" ? (
+        <SnowEffect messageId={messageId} key={messageId} />
+      ) : effect === "RAIN" ? (
+        <RainEffect messageId={messageId} key={messageId} />
       ) : null}
       <FullConversation isLoading={isLoading} messages={messagesWithDates} />
     </div>
