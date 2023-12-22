@@ -6,9 +6,11 @@ import {
   useDb,
   ContentTypeId,
 } from "@xmtp/react-sdk";
+import type { Dispatch, SetStateAction } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { isSameDay } from "date-fns";
 import { ContentTypeReply } from "@xmtp/content-type-reply";
+import type { EffectType } from "@xmtp/experimental-content-type-screen-effect";
 import { DateDivider } from "../component-library/components/DateDivider/DateDivider";
 import { FullConversation } from "../component-library/components/FullConversation/FullConversation";
 import { FullMessageController } from "./FullMessageController";
@@ -27,7 +29,11 @@ export const FullConversationController: React.FC<
 > = ({ conversation }) => {
   const lastMessageDateRef = useRef<Date>();
   const renderedDatesRef = useRef<Date[]>([]);
-  const [effect, setEffect] = useState<"SNOW" | "RAIN" | undefined>(undefined);
+  const [effect, setEffect]: [
+    EffectType | undefined,
+    Dispatch<SetStateAction<any>>,
+  ] = useState(undefined);
+
   const { db } = useDb();
   const [messageId, setMessageId] = useState<string>("");
   const conversationTopic = useXmtpStore((s) => s.conversationTopic);
