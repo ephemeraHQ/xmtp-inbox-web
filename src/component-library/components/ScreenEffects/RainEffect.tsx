@@ -8,7 +8,7 @@ interface logoStyles {
   animationDelay: string;
 }
 
-const RainEffect = ({ attachedMessageId }: { attachedMessageId: string }) => {
+const RainEffect = ({ messageId }: { messageId: string }) => {
   const [logos, setLogos] = useState<logoStyles[]>([]);
   const [isVisible, setIsVisible] = useState(true);
 
@@ -30,12 +30,12 @@ const RainEffect = ({ attachedMessageId }: { attachedMessageId: string }) => {
     const timeout = setTimeout(() => {
       setIsVisible(false);
       document.body.style.pointerEvents = "auto";
-      localStorage.setItem(attachedMessageId, "RAIN");
+      localStorage.setItem(messageId, "RAIN");
     }, 3000);
 
     // Clear the timeout if the component unmounts
     return () => clearTimeout(timeout);
-  }, [attachedMessageId]);
+  }, [messageId]);
 
   return isVisible ? (
     <div className="rainContainer">

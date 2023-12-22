@@ -31,7 +31,7 @@ import { ContentTypeScreenEffect } from "@xmtp/experimental-content-type-screen-
 import { IconButton } from "../IconButton/IconButton";
 import { useAttachmentChange } from "../../../hooks/useAttachmentChange";
 import { typeLookup, type contentTypes } from "../../../helpers/attachments";
-import { classNames } from "../../../helpers";
+import { TAILWIND_MD_BREAKPOINT, classNames } from "../../../helpers";
 import type { RecipientAddress } from "../../../store/xmtp";
 import { useXmtpStore } from "../../../store/xmtp";
 import { useVoiceRecording } from "../../../hooks/useVoiceRecording";
@@ -39,6 +39,7 @@ import { useRecordingTimer } from "../../../hooks/useRecordingTimer";
 import "react-tooltip/dist/react-tooltip.css";
 import { useLongPress } from "../../../hooks/useLongPress";
 import { EffectDialog } from "../EffectDialog/EffectDialog";
+import useWindowSize from "../../../hooks/useWindowSize";
 
 type InputProps = {
   /**
@@ -81,10 +82,6 @@ type InputProps = {
    * Function to set whether content is being dragged over the draggable area, including the message input
    */
   setIsDragActive: (status: boolean) => void;
-  /**
-   * Message identifier for a message a new message is attached to (e.g. a message sent with effect)
-   */
-  associatedMessageId?: string;
 };
 
 export const MessageInput = ({
@@ -98,8 +95,9 @@ export const MessageInput = ({
   attachmentPreview,
   setAttachmentPreview,
   setIsDragActive,
-  associatedMessageId,
 }: InputProps) => {
+  const [width] = useWindowSize();
+
   const { getCachedByPeerAddress } = useConversation();
   // For effects
   const { sendMessage: _sendMessage } = _useSendMessage();
@@ -248,16 +246,21 @@ export const MessageInput = ({
   ]);
 
   const handleLongPress = () => {
-    setOpenEffectDialog(true);
+    // Don't run effect on mobile
+    if (width > TAILWIND_MD_BREAKPOINT) {
+      setOpenEffectDialog(true);
+    }
   };
 
   const handleSendEffect = (effectType: string) => {
     void _sendMessage(
       conversation as CachedConversationWithId,
-      { messageId: associatedMessageId, effectType },
+      // To-do: remove this when codec is updated
+      { messageId: "", effectType },
       ContentTypeScreenEffect,
     );
     void send();
+
     setOpenEffectDialog(false);
   };
 

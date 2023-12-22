@@ -8,7 +8,7 @@ interface snowflakeStyles {
   animationDelay: string;
 }
 
-const SnowEffect = ({ attachedMessageId }: { attachedMessageId: string }) => {
+const SnowEffect = ({ messageId }: { messageId: string }) => {
   const [snowflakes, setSnowflakes] = useState<snowflakeStyles[]>([]);
   const [isVisible, setIsVisible] = useState(true);
 
@@ -29,12 +29,12 @@ const SnowEffect = ({ attachedMessageId }: { attachedMessageId: string }) => {
     const timeout = setTimeout(() => {
       setIsVisible(false);
       document.body.style.pointerEvents = "auto";
-      localStorage.setItem(attachedMessageId, "SNOW");
+      localStorage.setItem(messageId, "SNOW");
     }, 3000);
 
     // // Clear the timeout if the component unmounts
     return () => clearTimeout(timeout);
-  }, [attachedMessageId]);
+  }, [messageId]);
 
   return isVisible ? (
     <div className="snowContainer">

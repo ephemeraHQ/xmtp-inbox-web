@@ -27,7 +27,7 @@ export const MessageInputController = ({
   const activeMessage = useXmtpStore((s) => s.activeMessage);
 
   const { startConversation } = useStartConversation();
-  const { sendMessage, messageId } = useSendMessage(
+  const { sendMessage } = useSendMessage(
     attachment || undefined,
     activeMessage,
   );
@@ -38,7 +38,6 @@ export const MessageInputController = ({
       isDisabled={!recipientOnNetwork}
       startConversation={startConversation}
       sendMessage={sendMessage}
-      associatedMessageId={messageId}
       conversation={conversation}
       attachment={attachment}
       setAttachment={setAttachment}
