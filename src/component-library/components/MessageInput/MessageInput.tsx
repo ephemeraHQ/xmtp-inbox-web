@@ -252,14 +252,14 @@ export const MessageInput = ({
     }
   };
 
-  const handleSendEffect = async (effectType: string) => {
-    await _sendMessage(
+  const handleSendEffect = (effectType: string) => {
+    void _sendMessage(
       conversation as CachedConversationWithId,
       // To-do: remove this when codec is updated
       { messageId: "", effectType },
       ContentTypeScreenEffect,
     );
-    await send();
+    void send();
 
     setOpenEffectDialog(false);
   };
@@ -272,7 +272,6 @@ export const MessageInput = ({
   return (
     <>
       {openEffectDialog ? (
-        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         <EffectDialog handleSendEffect={handleSendEffect} />
       ) : null}
       <form className="flex flex-col border border-gray-300 rounded-2xl m-4">
