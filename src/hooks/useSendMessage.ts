@@ -13,11 +13,13 @@ import {
   RemoteAttachmentCodec,
   AttachmentCodec,
 } from "@xmtp/content-type-remote-attachment";
-import { Web3Storage } from "web3.storage";
 import { ContentTypeReply } from "@xmtp/content-type-reply";
 import type { Reply } from "@xmtp/content-type-reply";
+import * as Client from "@web3-storage/w3up-client";
+import * as Signer from "@ucanto/principal/ed25519";
 import Upload from "../helpers/classes/Upload";
 import { useXmtpStore } from "../store/xmtp";
+import { parseProof } from "../helpers/attachments";
 
 const useSendMessage = (
   attachment?: Attachment,
@@ -36,9 +38,13 @@ const useSendMessage = (
         return;
       }
       if (attachment && type === "attachment") {
-        const web3Storage = new Web3Storage({
-          token: import.meta.env.VITE_WEB3_STORAGE_TOKEN,
-        });
+        const principal = Signer.parse(import.meta.env.VITE_KEY);
+        const client = await Client.create({ principal });
+
+        const proof = await parseProof(import.meta.env.VITE_PROOF);
+        const space = await client.addSpace(proof);
+
+        await client.setCurrentSpace(space.did());
 
         const encryptedEncoded = await RemoteAttachmentCodec.encodeEncrypted(
           attachment,
@@ -50,8 +56,10 @@ const useSendMessage = (
           encryptedEncoded.payload,
         );
 
-        const cid = await web3Storage.put([upload]);
-        const url = `https://${cid}.ipfs.w3s.link/XMTPEncryptedContent`;
+        const cid = await client.uploadFile(upload);
+        const cidToString = cid.toString();
+
+        const url = `https://w3s.link/ipfs/${cidToString}`;
         const remoteAttachment: RemoteAttachment = {
           url,
           contentDigest: encryptedEncoded.digest,
