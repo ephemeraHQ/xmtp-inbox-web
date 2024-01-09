@@ -1,3 +1,6 @@
+import * as Delegation from "@ucanto/core/delegation";
+import { CarReader } from "@ipld/car";
+
 export const typeLookup: Record<string, contentTypes> = {
   jpg: "image",
   jpeg: "image",
@@ -60,3 +63,16 @@ export const getContentTypeFromFileName = (filename: string): contentTypes => {
   const suffix = filename.split?.(".")?.pop()?.toLowerCase();
   return suffix ? typeLookup[suffix] : undefined;
 };
+
+/** @param {string} data Base64 encoded CAR file */
+
+export async function parseProof(data: string) {
+  const blocks = [];
+  const reader = await CarReader.fromBytes(Buffer.from(data, "base64"));
+  for await (const block of reader.blocks()) {
+    blocks.push(block);
+  }
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  return Delegation.importDAG(blocks);
+}
