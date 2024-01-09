@@ -46,11 +46,12 @@ interface ImportMeta {
     VITE_INFURA_ID: string;
     VITE_DATA_DOG_ID: string;
     VITE_DATA_DOG_TOKEN: string;
-    VITE_WEB3_STORAGE_TOKEN: string;
     VITE_XMTP_API_URL: string;
     VITE_XMTP_ENVIRONMENT: string;
     VITE_GOOGLE_TAG_ID: string | undefined;
     VITE_UNS_TOKEN: string;
     VITE_PROJECT_ID: string;
+    VITE_KEY: string;
+    VITE_PROOF: string;
   };
 }
