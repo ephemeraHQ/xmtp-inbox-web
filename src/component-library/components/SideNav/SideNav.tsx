@@ -5,13 +5,13 @@ import {
   ChatAlt2Icon,
   CheckCircleIcon,
   ChevronDoubleRightIcon,
+  CogIcon,
 } from "@heroicons/react/solid";
 import { ClipboardCopyIcon, XIcon } from "@heroicons/react/outline";
 import { useTranslation } from "react-i18next";
 import { QRCode } from "react-qrcode-logo";
 import type { ETHAddress } from "../../../helpers";
 import { classNames, isAppEnvDemo, shortAddress } from "../../../helpers";
-import { XmtpIcon } from "../Icons/XmtpIcon";
 import { Avatar } from "../Avatar/Avatar";
 import { GhostButton } from "../GhostButton/GhostButton";
 import { DisconnectIcon } from "../Icons/DisconnectIcon";
@@ -47,7 +47,7 @@ type Lang = {
 };
 
 const SideNav = ({
-  icon = <XmtpIcon />,
+  icon = <CogIcon width={'32'}/>,
   displayAddress,
   walletAddress,
   avatarUrl,
@@ -186,7 +186,20 @@ const SideNav = ({
           </div>
         </div>
       </div>
-      <div className="flex justify-start items-center font-bold w-full pb-8">
+      <div className={
+        classNames(
+          "flex", 
+          "justify-start",
+          "items-start",
+          "font-bold", 
+          "mb-8", 
+          "hover:bg-gray-200",
+          "rounded-lg", 
+          "p-2", 
+          "h-fit", 
+          "text-gray-500",
+          "w-12"
+          )}>
         <div
           role="button"
           onClick={onXmtpIconClick}
@@ -218,20 +231,13 @@ const SideNav = ({
                 className="w-[100%] flex justify-end cursor-pointer mb-20">
                 <XIcon width={24} />
               </div>
-              <div className="h-8">
-                <img
-                  className="h-[100%]"
-                  alt="xmtp-logo"
-                  src="/xmtp-logo.png"
-                />
-              </div>
               <div className="text-center p-4 pb-6">
                 {t("common.share_code")}
               </div>
               <div className="p-4 flex items-center justify-center rounded-3xl bg-white">
                 <QRCode
                   size={200}
-                  logoImage="/xmtp-icon.png"
+                  logoImage="/walletdm-icon.png"
                   removeQrCodeBehindLogo
                   logoPadding={10}
                   value={`${window.location.origin}/dm/${walletAddress ?? ""}`}

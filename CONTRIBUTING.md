@@ -8,11 +8,11 @@ Have a question about how to build with XMTP? Ask your question and learn with t
 
 ## 🐞 Bugs
 
-Report a bug using [GitHub Issues](https://github.com/xmtp-labs/xmtp-inbox-web/issues).
+Report a bug using [GitHub Issues](https://github.com/wallet-dm/xmtp-dapp/issues).
 
 ## ✨ Feature requests
 
-Request a feature using [GitHub Issues](https://github.com/xmtp-labs/xmtp-inbox-web/issues).
+Request a feature using [GitHub Issues](https://github.com/wallet-dm/xmtp-dapp/issues).
 
 ## 🔀 Pull requests
 
