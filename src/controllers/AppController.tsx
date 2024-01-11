@@ -1,5 +1,4 @@
 import "../globals.css";
-import "@rainbow-me/rainbowkit/styles.css";
 import type React from "react";
 import { useEffect, useState } from "react";
 import { datadogRum } from "@datadog/browser-rum";

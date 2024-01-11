@@ -1,30 +1,20 @@
-import "./polyfills";
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import "@rainbow-me/rainbowkit/styles.css";
-import {
-  connectorsForWallets,
-  getDefaultWallets,
-  RainbowKitProvider,
-} from "@rainbow-me/rainbowkit";
-import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import { trustWallet } from "@rainbow-me/rainbowkit/wallets";
-import { publicProvider } from "wagmi/providers/public";
-import {
-  attachmentContentTypeConfig,
-  reactionContentTypeConfig,
-  replyContentTypeConfig,
-  XMTPProvider,
-} from "@xmtp/react-sdk";
-import { mainnet } from "wagmi/chains";
-import { infuraProvider } from "wagmi/providers/infura";
+import { createWeb3Modal, defaultWagmiConfig } from "@web3modal/wagmi/react";
 import {
   ContentTypeScreenEffect,
   ScreenEffectCodec,
 } from "@xmtp/experimental-content-type-screen-effect";
+import {
+  XMTPProvider,
+  attachmentContentTypeConfig,
+  reactionContentTypeConfig,
+  replyContentTypeConfig,
+} from "@xmtp/react-sdk";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { WagmiConfig } from "wagmi";
+import { celo, mainnet } from "wagmi/chains";
 import App from "./controllers/AppController";
-import { isAppEnvDemo } from "./helpers";
-import { mockConnector } from "./helpers/mockConnector";
+import "./polyfills";
 
 // Increment with any schema change; e.g. adding support for a new content type
 const DB_VERSION = 5;
@@ -44,57 +34,38 @@ const contentTypeConfigs = [
   customConfig,
 ];
 
-const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [mainnet],
-  [
-    infuraProvider({ apiKey: import.meta.env.VITE_INFURA_ID ?? "" }),
-    publicProvider(),
-  ],
-);
-
 // Required field as of WalletConnect v2.
-// Replace with your project id: https://www.rainbowkit.com/docs/migration-guide#2-supply-a-walletconnect-cloud-projectid
-const projectId = import.meta.env.VITE_PROJECT_ID || "ADD_PROJECT_ID_HERE";
-const appName = "XMTP Inbox Web";
+const projectId = "2e0aa029f1ce655dfdbb0abe644ca24a"
+const metadata = {
+  name: 'Wallet DM',
+  description: 'A Chat App for Crypto Enthusiasts',
+  url: 'https://walletdm.com/',
+  icons: ['https://walletdm.com/favicon.ico']
+}
 
-const { wallets } = getDefaultWallets({
-  appName,
-  projectId,
+const chains = [celo, mainnet];
+const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata })
+
+createWeb3Modal({ 
+  wagmiConfig, 
+  projectId, 
   chains,
-});
-
-const connectors = connectorsForWallets([
-  ...wallets,
-  {
-    groupName: "Other",
-    wallets: [trustWallet({ projectId, chains })],
-  },
-]);
-
-const wagmiDemoConfig = createConfig({
-  autoConnect: true,
-  connectors: [mockConnector],
-  publicClient,
-  webSocketPublicClient,
-});
-
-const wagmiConfig = createConfig({
-  autoConnect: true,
-  connectors,
-  publicClient,
-  webSocketPublicClient,
-});
+  featuredWalletIds: [
+    // Valora Wallet ID https://walletconnect.com/explorer/valora
+    'd01c7758d741b363e637a817a09bcf579feae4db9f5bb16f599fdd1f66e2f974',
+    // Trust Wallet ID https://walletconnect.com/explorer/trust-wallet
+    '4622a2b2d6af1c9844944291e5e7351a6aa24cd7b23099efac1b2fd875da31a0',
+    // MetaMask Wallet ID https://walletconnect.com/explorer/metamask
+    'c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96',
+  ] 
+})
 
 createRoot(document.getElementById("root") as HTMLElement).render(
-  <WagmiConfig config={isAppEnvDemo() ? wagmiDemoConfig : wagmiConfig}>
-    <RainbowKitProvider chains={chains}>
-      <StrictMode>
-        <XMTPProvider
-          contentTypeConfigs={contentTypeConfigs}
-          dbVersion={DB_VERSION}>
-          <App />
-        </XMTPProvider>
-      </StrictMode>
-    </RainbowKitProvider>
-  </WagmiConfig>,
+  <WagmiConfig config={wagmiConfig}>
+    <XMTPProvider
+      contentTypeConfigs={contentTypeConfigs}
+      dbVersion={DB_VERSION}>
+      <App />
+    </XMTPProvider>
+  </WagmiConfig>
 );
