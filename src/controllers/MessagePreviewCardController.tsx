@@ -18,6 +18,7 @@ import { ContentTypeScreenEffect } from "@xmtp/experimental-content-type-screen-
 import { MessagePreviewCard } from "../component-library/components/MessagePreviewCard/MessagePreviewCard";
 import type { ETHAddress } from "../helpers";
 import { shortAddress } from "../helpers";
+import type { ActiveTab } from "../store/xmtp";
 import { useXmtpStore } from "../store/xmtp";
 import {
   getCachedPeerAddressAvatar,
@@ -26,10 +27,12 @@ import {
 
 interface MessagePreviewCardControllerProps {
   convo: CachedConversation;
+  tab: ActiveTab;
 }
 
 export const MessagePreviewCardController = ({
   convo,
+  tab,
 }: MessagePreviewCardControllerProps) => {
   const { t } = useTranslation();
   const lastMessage = useLastMessage(convo.topic);

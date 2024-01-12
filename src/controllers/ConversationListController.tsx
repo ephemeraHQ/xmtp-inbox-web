@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { useConsent, useDb } from "@xmtp/react-sdk";
+import type { ActiveTab } from "../store/xmtp";
 import { useXmtpStore } from "../store/xmtp";
 import useListConversations from "../hooks/useListConversations";
 import { ConversationList } from "../component-library/components/ConversationList/ConversationList";
@@ -12,7 +13,7 @@ type ConversationListControllerProps = {
 };
 
 type ConsentProps = {
-  tab: "denied" | "allowed";
+  tab: ActiveTab;
 };
 
 type NodeWithConsent = React.ReactElement<ConsentProps>;
@@ -27,11 +28,12 @@ export const ConversationListController = ({
   setStartedFirstMessage,
 }: ConversationListControllerProps) => {
   const { isLoaded, isLoading, conversations } = useListConversations();
+  const { isAllowed, isDenied } = useConsent();
+
   const { db } = useDb();
   useStreamAllMessages();
   const recipientInput = useXmtpStore((s) => s.recipientInput);
   const activeTab = useXmtpStore((s) => s.activeTab);
-  const { isAllowed, isDenied } = useConsent();
 
   // when the conversations are loaded, update their identities
   useEffect(() => {
@@ -49,17 +51,24 @@ export const ConversationListController = ({
       <MessagePreviewCardController
         key={conversation.topic}
         convo={conversation}
+        tab={
+          isAllowed(conversation.peerAddress)
+            ? "messages"
+            : isDenied(conversation.peerAddress)
+            ? "blocked"
+            : "requests"
+        }
       />
     ));
     return convos;
-  }, [conversations]);
+  }, [conversations, isAllowed, isDenied]);
 
   const { blocked, requested, allowed } =
     filteredConversations.reduce<ConsentLists>(
       (acc, item: NodeWithConsent) => {
-        if (item.props.tab === "denied") {
+        if (item.props.tab === "blocked") {
           acc.blocked.push(item);
-        } else if (item.props.tab === "allowed") {
+        } else if (item.props.tab === "messages") {
           acc.allowed.push(item);
         } else {
           acc.requested.push(item);
