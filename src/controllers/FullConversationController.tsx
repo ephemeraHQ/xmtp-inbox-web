@@ -26,6 +26,7 @@ type FullConversationControllerProps = {
 export const FullConversationController: React.FC<
   FullConversationControllerProps
 > = ({ conversation }) => {
+  const activeTab = useXmtpStore((s) => s.activeTab);
   const lastMessageDateRef = useRef<Date>();
   const renderedDatesRef = useRef<Date[]>([]);
   const [effect, setEffect] = useState<EffectType | undefined>(undefined);
@@ -112,7 +113,12 @@ export const FullConversationController: React.FC<
       ) : effect === "RAIN" ? (
         <RainEffect messageId={messageId} key={messageId} />
       ) : null}
-      <FullConversation isLoading={isLoading} messages={messagesWithDates} />
+      <FullConversation
+        isLoading={isLoading}
+        messages={messagesWithDates}
+        activeTab={activeTab}
+        address={conversation.peerAddress}
+      />
     </div>
   );
 };

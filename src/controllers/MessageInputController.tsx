@@ -22,6 +22,7 @@ export const MessageInputController = ({
 }: MessageInputControllerProps) => {
   // XMTP Hooks
   const conversation = useSelectedConversation();
+
   const recipientOnNetwork = useXmtpStore((s) => s.recipientOnNetwork);
   const recipientAddress = useXmtpStore((s) => s.recipientAddress);
   const activeMessage = useXmtpStore((s) => s.activeMessage);
