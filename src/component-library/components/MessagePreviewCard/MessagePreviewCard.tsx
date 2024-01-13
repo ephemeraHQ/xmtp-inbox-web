@@ -59,7 +59,7 @@ interface MessagePreviewCardProps {
   /**
    * Method to allow an address
    */
-  allow: (address: string[]) => void;
+  allow: (address: string[]) => Promise<void>;
 }
 
 export const MessagePreviewCard = ({
