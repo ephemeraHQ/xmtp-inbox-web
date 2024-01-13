@@ -26,7 +26,6 @@ type FullConversationControllerProps = {
 export const FullConversationController: React.FC<
   FullConversationControllerProps
 > = ({ conversation }) => {
-  const activeTab = useXmtpStore((s) => s.activeTab);
   const lastMessageDateRef = useRef<Date>();
   const renderedDatesRef = useRef<Date[]>([]);
   const [effect, setEffect] = useState<EffectType | undefined>(undefined);
@@ -116,7 +115,6 @@ export const FullConversationController: React.FC<
       <FullConversation
         isLoading={isLoading}
         messages={messagesWithDates}
-        activeTab={activeTab}
         address={conversation.peerAddress}
       />
     </div>

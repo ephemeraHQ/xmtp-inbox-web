@@ -3,6 +3,7 @@ import {
   type CachedConversation,
   ContentTypeId,
   ContentTypeText,
+  useConsent,
 } from "@xmtp/react-sdk";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -32,9 +33,11 @@ interface MessagePreviewCardControllerProps {
 
 export const MessagePreviewCardController = ({
   convo,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   tab,
 }: MessagePreviewCardControllerProps) => {
   const { t } = useTranslation();
+  const { allow } = useConsent();
   const lastMessage = useLastMessage(convo.topic);
   // XMTP State
   const recipientAddress = useXmtpStore((s) => s.recipientAddress);
@@ -48,6 +51,7 @@ export const MessagePreviewCardController = ({
   const setRecipientOnNetwork = useXmtpStore((s) => s.setRecipientOnNetwork);
   const setConversationTopic = useXmtpStore((s) => s.setConversationTopic);
   const setActiveMessage = useXmtpStore((s) => s.setActiveMessage);
+  const setActiveTab = useXmtpStore((s) => s.setActiveTab);
 
   const conversationTopic = useXmtpStore((state) => state.conversationTopic);
 
@@ -155,6 +159,8 @@ export const MessagePreviewCardController = ({
       conversationDomain={shortAddress(conversationDomain)}
       address={convo?.peerAddress}
       activeTab={activeTab}
+      setActiveTab={setActiveTab}
+      allow={allow}
     />
   );
 };

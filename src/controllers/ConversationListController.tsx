@@ -44,7 +44,7 @@ export const ConversationListController = ({
     };
     void runUpdate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoaded]);
+  }, [isLoaded, activeTab]);
 
   const filteredConversations = useMemo(() => {
     const convos = conversations.map((conversation) => (
