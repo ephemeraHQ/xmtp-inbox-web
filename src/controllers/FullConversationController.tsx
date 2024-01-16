@@ -106,7 +106,7 @@ export const FullConversationController: React.FC<
       id="scrollableDiv"
       // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
       tabIndex={0}
-      className="w-full h-full flex flex-col overflow-auto relative">
+      className="w-full h-full flex flex-col overflow-auto relative pb-4">
       {effect === "SNOW" ? (
         <SnowEffect messageId={messageId} key={messageId} />
       ) : effect === "RAIN" ? (
