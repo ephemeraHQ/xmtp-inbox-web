@@ -2,6 +2,7 @@ import type React from "react";
 import { Virtuoso } from "react-virtuoso";
 import { EmptyMessage } from "../EmptyMessage/EmptyMessage";
 import { MessagePreviewCard } from "../MessagePreviewCard/MessagePreviewCard";
+import type { ActiveTab } from "../../../store/xmtp";
 
 interface ConversationListProps {
   /**
@@ -20,6 +21,10 @@ interface ConversationListProps {
    * Has a value been entered for the recipient?
    */
   hasRecipientEnteredValue?: boolean;
+  /**
+   * Which tab are we on?
+   */
+  activeTab: ActiveTab;
 }
 
 export const ConversationList = ({
@@ -27,16 +32,19 @@ export const ConversationList = ({
   isLoading,
   setStartedFirstMessage,
   hasRecipientEnteredValue,
+  activeTab,
 }: ConversationListProps) =>
   !messages?.length && isLoading ? (
     <div className="w-full overflow-hidden h-full flex flex-col justify-start sm:w-full bg-gray-100">
       {Array.from({ length: 12 }).map((_, idx) => (
-        <MessagePreviewCard key={idx} isLoading />
+        <MessagePreviewCard key={idx} isLoading activeTab={activeTab} />
       ))}
     </div>
   ) : !messages.length && !isLoading && !hasRecipientEnteredValue ? (
     <div className="w-full overflow-hidden sm:w-full sm:p-4 md:p-8 border border-gray-100 h-full">
-      <EmptyMessage setStartedFirstMessage={setStartedFirstMessage} />
+      {activeTab === "messages" ? (
+        <EmptyMessage setStartedFirstMessage={setStartedFirstMessage} />
+      ) : null}
     </div>
   ) : (
     <Virtuoso

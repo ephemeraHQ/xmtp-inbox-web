@@ -112,7 +112,11 @@ export const FullConversationController: React.FC<
       ) : effect === "RAIN" ? (
         <RainEffect messageId={messageId} key={messageId} />
       ) : null}
-      <FullConversation isLoading={isLoading} messages={messagesWithDates} />
+      <FullConversation
+        isLoading={isLoading}
+        messages={messagesWithDates}
+        address={conversation.peerAddress}
+      />
     </div>
   );
 };

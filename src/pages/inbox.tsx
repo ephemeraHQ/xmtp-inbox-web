@@ -1,6 +1,11 @@
 import type React from "react";
 import { useEffect, useState } from "react";
-import { useClient, useConversations } from "@xmtp/react-sdk";
+import {
+  useConsent,
+  useClient,
+  useConversations,
+  useStreamConversations,
+} from "@xmtp/react-sdk";
 import { useDisconnect, useWalletClient } from "wagmi";
 import type { Attachment } from "@xmtp/content-type-remote-attachment";
 import { useNavigate } from "react-router-dom";
@@ -29,14 +34,20 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   const { conversations } = useConversations();
   const selectedConversation = useSelectedConversation();
   const { data: walletClient } = useWalletClient();
+  useStreamConversations();
+
+  const { loadConsentList } = useConsent();
 
   useEffect(() => {
     if (!client) {
       navigate("/");
     }
+    void loadConsentList();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [client]);
 
+  const activeTab = useXmtpStore((s) => s.activeTab);
   const recipientAddress = useXmtpStore((s) => s.recipientAddress);
   const setActiveMessage = useXmtpStore((s) => s.setActiveMessage);
 
@@ -175,13 +186,15 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
                   )}
 
                   {/* Drag event handling needing for content attachments */}
-                  <MessageInputController
-                    attachment={attachment}
-                    setAttachment={setAttachment}
-                    attachmentPreview={attachmentPreview}
-                    setAttachmentPreview={setAttachmentPreview}
-                    setIsDragActive={setIsDragActive}
-                  />
+                  {activeTab === "messages" ? (
+                    <MessageInputController
+                      attachment={attachment}
+                      setAttachment={setAttachment}
+                      attachmentPreview={attachmentPreview}
+                      setAttachmentPreview={setAttachmentPreview}
+                      setIsDragActive={setIsDragActive}
+                    />
+                  ) : null}
                 </div>
               </div>
             )}

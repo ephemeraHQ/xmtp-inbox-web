@@ -3,6 +3,7 @@ import {
   type CachedConversation,
   ContentTypeId,
   ContentTypeText,
+  useConsent,
 } from "@xmtp/react-sdk";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -18,6 +19,7 @@ import { ContentTypeScreenEffect } from "@xmtp/experimental-content-type-screen-
 import { MessagePreviewCard } from "../component-library/components/MessagePreviewCard/MessagePreviewCard";
 import type { ETHAddress } from "../helpers";
 import { shortAddress } from "../helpers";
+import type { ActiveTab } from "../store/xmtp";
 import { useXmtpStore } from "../store/xmtp";
 import {
   getCachedPeerAddressAvatar,
@@ -26,15 +28,21 @@ import {
 
 interface MessagePreviewCardControllerProps {
   convo: CachedConversation;
+  tab: ActiveTab;
 }
 
 export const MessagePreviewCardController = ({
   convo,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  tab,
 }: MessagePreviewCardControllerProps) => {
   const { t } = useTranslation();
+  const { allow } = useConsent();
   const lastMessage = useLastMessage(convo.topic);
   // XMTP State
   const recipientAddress = useXmtpStore((s) => s.recipientAddress);
+  const activeTab = useXmtpStore((s) => s.activeTab);
+
   const setRecipientInput = useXmtpStore((s) => s.setRecipientInput);
   const setRecipientAddress = useXmtpStore((s) => s.setRecipientAddress);
   const setRecipientName = useXmtpStore((s) => s.setRecipientName);
@@ -43,6 +51,7 @@ export const MessagePreviewCardController = ({
   const setRecipientOnNetwork = useXmtpStore((s) => s.setRecipientOnNetwork);
   const setConversationTopic = useXmtpStore((s) => s.setConversationTopic);
   const setActiveMessage = useXmtpStore((s) => s.setActiveMessage);
+  const setActiveTab = useXmtpStore((s) => s.setActiveTab);
 
   const conversationTopic = useXmtpStore((state) => state.conversationTopic);
 
@@ -149,6 +158,9 @@ export const MessagePreviewCardController = ({
       avatarUrl={getCachedPeerAddressAvatar(convo) || ""}
       conversationDomain={shortAddress(conversationDomain)}
       address={convo?.peerAddress}
+      activeTab={activeTab}
+      setActiveTab={setActiveTab}
+      allow={allow}
     />
   );
 };
