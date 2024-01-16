@@ -18,12 +18,6 @@ type ConsentProps = {
 
 type NodeWithConsent = React.ReactElement<ConsentProps>;
 
-type ConsentLists = {
-  blocked: NodeWithConsent[];
-  requested: NodeWithConsent[];
-  allowed: NodeWithConsent[];
-};
-
 export const ConversationListController = ({
   setStartedFirstMessage,
 }: ConversationListControllerProps) => {
@@ -63,28 +57,19 @@ export const ConversationListController = ({
     return convos;
   }, [conversations, isAllowed, isDenied]);
 
-  const { blocked, requested, allowed } =
-    filteredConversations.reduce<ConsentLists>(
-      (acc, item: NodeWithConsent) => {
-        if (item.props.tab === "blocked") {
-          acc.blocked.push(item);
-        } else if (item.props.tab === "messages") {
-          acc.allowed.push(item);
-        } else {
-          acc.requested.push(item);
+  const messagesToPass = useMemo(
+    () =>
+      filteredConversations.filter((item: NodeWithConsent) => {
+        if (!isLoading && activeTab === "messages") {
+          return item.props.tab === "messages";
         }
-        return acc;
-      },
-      { blocked: [], requested: [], allowed: [] },
-    );
-
-  const messagesToPass = !isLoading
-    ? activeTab === "messages"
-      ? allowed
-      : activeTab === "blocked"
-      ? blocked
-      : requested
-    : [];
+        if (!isLoading && activeTab === "blocked") {
+          return item.props.tab === "blocked";
+        }
+        return item.props.tab === "requests";
+      }),
+    [filteredConversations, isLoading, activeTab],
+  );
 
   return (
     <ConversationList

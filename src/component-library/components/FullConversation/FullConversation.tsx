@@ -39,14 +39,14 @@ const AcceptOrDeny = ({ address }: { address: string }) => {
 
   return activeTab === "requests" ? (
     <div
-      className="bg-gray-300 p-4 w-full flex flex-col justify-center items-center text-gray-500"
+      className="bg-gray-100 p-4 w-full flex flex-col justify-center items-center text-gray-500 border-2 border-gray-300"
       data-testid="accept_or_deny_container">
       <h3 className="font-bold">{t("consent.new_message_request")}</h3>
       <p>{t("consent.new_message_request_description")}</p>
       <div className="flex w-full justify-between p-3 gap-2">
         <button
           type="button"
-          className="text-blue-600 flex w-full justify-center border border-2 border-blue-600 rounded-md p-2 hover:bg-blue-600 hover:text-white"
+          className="text-indigo-600 flex w-full justify-center border border-2 border-indigo-600 rounded-md p-2 hover:bg-indigo-600 hover:text-white"
           onClick={() => {
             void allow([address]);
             setActiveTab("messages");
@@ -55,7 +55,7 @@ const AcceptOrDeny = ({ address }: { address: string }) => {
         </button>
         <button
           type="button"
-          className="text-indigo-600 flex w-full justify-center border border-2 border-indigo-600 rounded-md p-2 hover:bg-indigo-600 hover:text-white"
+          className="text-red-600 flex w-full justify-center border border-2 border-red-600 rounded-md p-2 hover:bg-red-600 hover:text-white"
           onClick={() => {
             void deny([address]);
             setActiveTab("blocked");
