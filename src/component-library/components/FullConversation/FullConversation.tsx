@@ -34,7 +34,6 @@ const BeginningMessage: React.FC = () => {
 const AcceptOrDeny = ({ address }: { address: string }) => {
   const { t } = useTranslation();
   const { allow, deny } = useConsent();
-  const setActiveTab = useXmtpStore((s) => s.setActiveTab);
   const activeTab = useXmtpStore((s) => s.activeTab);
   const [modalOpen, setModalOpen] = useState(true);
 
