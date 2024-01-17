@@ -4,7 +4,7 @@ import vitePreprocessor from "cypress-vite";
 
 export default defineConfig({
   env: {
-    server_url: "http://localhost:5177",
+    server_url: "http://localhost:5173",
   },
 
   e2e: {
