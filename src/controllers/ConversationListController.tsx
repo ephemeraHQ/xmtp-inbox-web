@@ -1,5 +1,12 @@
-import { useEffect, useMemo } from "react";
-import { useConsent, useDb } from "@xmtp/react-sdk";
+import { useEffect, useMemo, useState } from "react";
+import {
+  getLastMessage,
+  getMessageByXmtpID,
+  useClient,
+  useConsent,
+  useDb,
+  useMessages,
+} from "@xmtp/react-sdk";
 import type { ActiveTab } from "../store/xmtp";
 import { useXmtpStore } from "../store/xmtp";
 import useListConversations from "../hooks/useListConversations";
@@ -7,6 +14,7 @@ import { ConversationList } from "../component-library/components/ConversationLi
 import { MessagePreviewCardController } from "./MessagePreviewCardController";
 import useStreamAllMessages from "../hooks/useStreamAllMessages";
 import { updateConversationIdentities } from "../helpers/conversation";
+import { useWalletClient } from "wagmi";
 
 type ConversationListControllerProps = {
   setStartedFirstMessage: (startedFirstMessage: boolean) => void;
@@ -25,8 +33,13 @@ export const ConversationListController = ({
   const { isAllowed, isDenied } = useConsent();
 
   const { db } = useDb();
+  const [messages, setMessages] = useState([]);
+  const messagesDb = db.table("messages");
+
   useStreamAllMessages();
+  const { client: walletAddress } = useClient();
   const recipientInput = useXmtpStore((s) => s.recipientInput);
+
   const activeTab = useXmtpStore((s) => s.activeTab);
 
   // when the conversations are loaded, update their identities
@@ -57,25 +70,65 @@ export const ConversationListController = ({
     return convos;
   }, [conversations, isAllowed, isDenied]);
 
-  const messagesToPass = useMemo(
-    () =>
-      filteredConversations.filter((item: NodeWithConsent) => {
-        if (!isLoading && activeTab === "messages") {
-          return item.props.tab === "messages";
+  let isFilterLoading = false;
+
+  useEffect(() => {
+    // Fetch messages asynchronously
+    const fetchMessages = async () =>
+      messagesDb
+        .where("senderAddress")
+        .equals(walletAddress?.address)
+        .toArray()
+        .then((messages) => {
+          // Process your messages here
+          setMessages(messages);
+        })
+        .catch((error) => {
+          console.error("Error querying messages:", error);
+        });
+
+    void fetchMessages();
+  }, [filteredConversations, messagesDb, walletAddress?.address]);
+
+  const messagesToPass = useMemo(() => {
+    isFilterLoading = true;
+    const sortedConvos = filteredConversations.filter(
+      (item: NodeWithConsent) => {
+        console.log("MESSAGES", messages);
+        const hasSentMessages = messages.find(
+          (message) => message?.conversationTopic === item.props.convo.topic,
+        );
+        if (activeTab === "messages") {
+          // Still want to keep blocked in blocked, even if those still have messages
+          return (
+            item.props.tab === "messages" ||
+            (item.props.tab === "requests" && hasSentMessages)
+          );
         }
-        if (!isLoading && activeTab === "blocked") {
+        if (activeTab === "blocked") {
           return item.props.tab === "blocked";
         }
+        // Find the sent messages in this conversation
+
         return item.props.tab === "requests";
-      }),
-    [filteredConversations, isLoading, activeTab],
-  );
+      },
+    );
+    isFilterLoading = false;
+    return sortedConvos;
+  }, [
+    filteredConversations,
+    isLoading,
+    activeTab,
+    walletAddress,
+    db,
+    isFilterLoading,
+  ]);
 
   return (
     <ConversationList
       hasRecipientEnteredValue={!!recipientInput}
       setStartedFirstMessage={() => setStartedFirstMessage(true)}
-      isLoading={isLoading}
+      isLoading={isLoading || isFilterLoading}
       messages={messagesToPass}
       activeTab={activeTab}
     />
