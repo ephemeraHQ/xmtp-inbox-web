@@ -1,7 +1,4 @@
-import {
-  ChevronLeftIcon,
-  InformationCircleIcon,
-} from "@heroicons/react/outline";
+import { ChevronLeftIcon, XCircleIcon } from "@heroicons/react/outline";
 import { useTranslation } from "react-i18next";
 import { Avatar } from "../Avatar/Avatar";
 import { classNames } from "../../../helpers";
@@ -42,10 +39,6 @@ interface AddressInputProps {
    */
   isLoading?: boolean;
   /**
-   * Is there a tooltip click event that needs to be handled?
-   */
-  onTooltipClick?: () => void;
-  /**
    * Input Value
    */
   value?: string;
@@ -53,6 +46,10 @@ interface AddressInputProps {
    * Is there a left icon click event that needs to be handled?
    */
   onLeftIconClick?: () => void;
+  /**
+   * Is there a right icon click event that needs to be handled?
+   */
+  onRightIconClick?: () => void;
 }
 
 export const AddressInput = ({
@@ -61,9 +58,9 @@ export const AddressInput = ({
   avatarUrlProps,
   onChange,
   isError,
-  onTooltipClick,
   value,
   onLeftIconClick,
+  onRightIconClick,
 }: AddressInputProps) => {
   const { t } = useTranslation();
   const subtextColor = isError ? "text-red-600" : "text-gray-500";
@@ -127,8 +124,12 @@ export const AddressInput = ({
           </div>
         </div>
       </form>
-      {onTooltipClick && (
-        <InformationCircleIcon onClick={onTooltipClick} height="24" />
+      {onRightIconClick && (
+        <XCircleIcon
+          onClick={onRightIconClick}
+          height="24"
+          className="text-red-600 cursor-pointer"
+        />
       )}
     </div>
   );

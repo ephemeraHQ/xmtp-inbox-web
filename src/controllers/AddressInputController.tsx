@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useConversation } from "@xmtp/react-sdk";
+import { useConversation, useConsent } from "@xmtp/react-sdk";
 import { AddressInput } from "../component-library/components/AddressInput/AddressInput";
 import { getRecipientInputSubtext, shortAddress } from "../helpers";
 import useWindowSize from "../hooks/useWindowSize";
@@ -20,7 +20,11 @@ export const AddressInputController = () => {
   const setRecipientInput = useXmtpStore((s) => s.setRecipientInput);
   const setStartedFirstMessage = useXmtpStore((s) => s.setStartedFirstMessage);
   const setConversationTopic = useXmtpStore((s) => s.setConversationTopic);
+  const changedConsentCount = useXmtpStore((s) => s.changedConsentCount);
+  const setChangedConsentCount = useXmtpStore((s) => s.setChangedConsentCount);
+
   const { getCachedByPeerAddress, getCachedByTopic } = useConversation();
+  const { deny } = useConsent();
 
   // manage address input state
   useAddressInput();
@@ -99,6 +103,10 @@ export const AddressInputController = () => {
         resetRecipient();
         setStartedFirstMessage(false);
         setConversationTopic("");
+      }}
+      onRightIconClick={() => {
+        void deny([recipientAddress]);
+        setChangedConsentCount(changedConsentCount + 1);
       }}
     />
   );
