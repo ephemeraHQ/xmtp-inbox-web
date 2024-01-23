@@ -35,7 +35,8 @@ const AcceptOrDeny = ({ address }: { address: string }) => {
   const { t } = useTranslation();
   const { allow, deny } = useConsent();
   const activeTab = useXmtpStore((s) => s.activeTab);
-  const setActiveTab = useXmtpStore((s) => s.setActiveTab);
+  const changedConsentCount = useXmtpStore((s) => s.changedConsentCount);
+  const setChangedConsentCount = useXmtpStore((s) => s.setChangedConsentCount);
 
   const [modalOpen, setModalOpen] = useState(true);
 
@@ -51,8 +52,8 @@ const AcceptOrDeny = ({ address }: { address: string }) => {
           className="text-indigo-600 flex w-full justify-center border border-2 border-indigo-600 rounded-md p-2 hover:bg-indigo-600 hover:text-white"
           onClick={() => {
             void allow([address]);
-            setActiveTab("messages");
             setModalOpen(false);
+            setChangedConsentCount(changedConsentCount + 1);
           }}>
           {t("consent.accept")}
         </button>
@@ -61,8 +62,8 @@ const AcceptOrDeny = ({ address }: { address: string }) => {
           className="text-red-600 flex w-full justify-center border border-2 border-red-600 rounded-md p-2 hover:bg-red-600 hover:text-white"
           onClick={() => {
             void deny([address]);
-            setActiveTab("blocked");
             setModalOpen(false);
+            setChangedConsentCount(changedConsentCount + 1);
           }}>
           {t("consent.block")}
         </button>
