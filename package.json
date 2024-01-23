@@ -42,7 +42,7 @@
     "@xmtp/content-type-remote-attachment": "^1.1.4",
     "@xmtp/content-type-reply": "^1.1.5",
     "@xmtp/experimental-content-type-screen-effect": "^1.0.2",
-    "@xmtp/react-sdk": "^3.0.0",
+    "@xmtp/react-sdk": "^4.0.0",
     "buffer": "^6.0.3",
     "date-fns": "^2.29.3",
     "dexie": "^3.2.4",
