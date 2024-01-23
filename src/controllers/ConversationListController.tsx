@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { useClient, useConsent } from "@xmtp/react-sdk";
+import { useClient, useConsent, useDb } from "@xmtp/react-sdk";
 import type { CachedConversation } from "@xmtp/react-sdk";
 import type { ActiveTab } from "../store/xmtp";
 import { useXmtpStore } from "../store/xmtp";
@@ -26,7 +26,7 @@ export const ConversationListController = ({
   const { isLoaded, isLoading, conversations } = useListConversations();
   const { isAllowed, isDenied } = useConsent();
 
-  // const { db } = useDb();
+  const { db } = useDb();
   // const [messages, setMessages] = useState<CachedMessage[]>([]);
   // const messagesDb = db.table("messages");
 
