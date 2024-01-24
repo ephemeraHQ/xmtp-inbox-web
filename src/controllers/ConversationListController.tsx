@@ -48,23 +48,25 @@ export const ConversationListController = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded, activeTab, changedConsentCount]);
 
-  // To-do: remove if not needed after consent goes out
-  // useEffect(() => {
-  //   // This may make more sense to come from the React SDK, but we're pulling from here for now
-  //   const fetchMessages = async () =>
-  //     messagesDb
-  //       .where("senderAddress")
-  //       .equals(walletAddress?.address as string)
-  //       .toArray()
-  //       .then((dbMessages: CachedMessage[]) => {
-  //         setMessages(dbMessages);
-  //       })
-  //       .catch((error: Error) => {
-  //         console.error("Error querying messages:", error);
-  //       });
+  useEffect(() => {
+    console.log("Adding log for testing purposes");
+    // To-do: remove if not needed after consent goes out
+    //   // This may make more sense to come from the React SDK, but we're pulling from here for now
+    //   const fetchMessages = async () =>
+    //     messagesDb
+    //       .where("senderAddress")
+    //       .equals(walletAddress?.address as string)
+    //       .toArray()
+    //       .then((dbMessages: CachedMessage[]) => {
+    //         setMessages(dbMessages);
+    //       })
+    //       .catch((error: Error) => {
+    //         console.error("Error querying messages:", error);
+    //       });
 
-  //   void fetchMessages();
-  // }, [conversations.length, messagesDb, walletAddress?.address]);
+    //   void fetchMessages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [conversations.length, walletAddress?.address]);
 
   const messagesToPass = useMemo(() => {
     const conversationsWithTab = conversations.map(
