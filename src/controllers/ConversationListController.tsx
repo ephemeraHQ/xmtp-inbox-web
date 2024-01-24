@@ -111,7 +111,7 @@ export const ConversationListController = ({
     // messages,
     isLoading,
     walletAddress,
-    // db,
+    db,
     changedConsentCount,
     isAllowed,
     isDenied,
