@@ -27,7 +27,7 @@ import { isAppEnvDemo } from "./helpers";
 import { mockConnector } from "./helpers/mockConnector";
 
 // Increment with any schema change; e.g. adding support for a new content type
-const DB_VERSION = 5;
+const DB_VERSION = 6;
 
 export const ScreenEffectCodecInstance = new ScreenEffectCodec();
 
