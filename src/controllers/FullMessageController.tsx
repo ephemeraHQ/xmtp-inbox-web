@@ -38,14 +38,13 @@ export const FullMessageController = ({
   const [frameInfo, setFrameInfo] = useState<FrameInfo | undefined>(undefined);
   const [frameButtonUpdating, setFrameButtonUpdating] = useState<number>(0);
 
-  const handleFrameButtonClick = async (buttonNumber: number) => {
+  const handleFrameButtonClick = async (buttonIndex: number) => {
     if (!frameInfo) {
       return;
     }
-    const url = frameInfo.image;
-    const messageId = String(message.id);
+    const frameUrl = frameInfo.image;
 
-    setFrameButtonUpdating(buttonNumber);
+    setFrameButtonUpdating(buttonIndex);
 
     const xmtpClient = await Client.create(
       walletClient as WalletClient<
@@ -56,12 +55,16 @@ export const FullMessageController = ({
     );
     const framesClient = new FramesClient(xmtpClient);
 
-    const payload = await framesClient.signFrameAction(
-      url,
-      buttonNumber,
-      conversationTopic as string,
-      messageId,
-    );
+    const payload = await framesClient.signFrameAction({
+      frameUrl,
+      buttonIndex,
+      conversationTopic: conversationTopic as string,
+      participantAccountAddresses: [
+        client?.address as string,
+        conversation.peerAddress,
+      ],
+    });
+
     const updatedFrameMetadata = await FramesClient.postToFrame(
       frameInfo.postUrl,
       payload,
