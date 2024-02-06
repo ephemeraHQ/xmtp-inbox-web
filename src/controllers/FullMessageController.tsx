@@ -121,9 +121,11 @@ export const FullMessageController = ({
           isSelf={client?.address === message.senderAddress}
         />
       </FullMessage>
-      {frameInfo && (
+      {frameInfo?.image && (
         <Frame
-          info={frameInfo}
+          image={frameInfo.image}
+          title={frameInfo.title}
+          buttons={frameInfo.buttons}
           handleClick={handleFrameButtonClick}
           frameButtonUpdating={frameButtonUpdating}
         />
