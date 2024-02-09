@@ -5,6 +5,7 @@ import { IconSkeletonLoader } from "../Loaders/SkeletonLoaders/IconSkeletonLoade
 import { ShortCopySkeletonLoader } from "../Loaders/SkeletonLoaders/ShortCopySkeletonLoader";
 import { classNames } from "../../../helpers";
 import { Avatar } from "../Avatar/Avatar";
+import type { ActiveTab } from "../../../store/xmtp";
 
 interface MessagePreviewCardProps {
   /**
@@ -22,7 +23,7 @@ interface MessagePreviewCardProps {
   /**
    * What is the wallet address associated with the message?
    */
-  address?: string;
+  address: string;
   /**
    * What is the datetime of the message
    */
@@ -47,7 +48,18 @@ interface MessagePreviewCardProps {
    * Is this conversation pinned?
    */
   pinned?: boolean;
-  // To-do: Add error views once we have the designs
+  /**
+   * Which tab are we on?
+   */
+  activeTab: ActiveTab;
+  /**
+   * Method to reset tab
+   */
+  setActiveTab: (tab: ActiveTab) => void;
+  /**
+   * Method to allow an address
+   */
+  allow: (address: string[]) => Promise<void>;
 }
 
 export const MessagePreviewCard = ({
@@ -61,6 +73,9 @@ export const MessagePreviewCard = ({
   isSelected,
   conversationDomain,
   pinned,
+  activeTab,
+  setActiveTab,
+  allow,
 }: MessagePreviewCardProps) => {
   const { t } = useTranslation();
 
@@ -104,7 +119,7 @@ export const MessagePreviewCard = ({
           <span
             className="text-md text-gray-600 line-clamp-1 w-full break-all"
             data-testid="message-preview-text">
-            {text ?? t("messages.convos_empty_text_placeholder")}
+            {text}
           </span>
         )}
       </div>
@@ -121,7 +136,19 @@ export const MessagePreviewCard = ({
             "h-full",
             "flex flex-col items-end justify-between",
           )}>
-          {datetime && t("{{datetime, ago}}", { datetime })}
+          {activeTab === "blocked" ? (
+            <button
+              type="button"
+              className="text-indigo-600 font-bold text-md"
+              onClick={() => {
+                void allow([address]);
+                setActiveTab("messages");
+              }}>
+              {t("consent.unblock")}
+            </button>
+          ) : (
+            datetime && t("{{datetime, ago}}", { datetime })
+          )}
           {pinned && (
             <div>
               <StarIcon className="text-indigo-600 mt-2" width={16} />

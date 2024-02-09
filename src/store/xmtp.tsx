@@ -4,6 +4,8 @@ import type { ETHAddress } from "../helpers";
 
 export type RecipientState = "invalid" | "loading" | "error" | "valid";
 
+export type ActiveTab = "messages" | "requests" | "blocked";
+
 export type RecipientAddress = ETHAddress | null;
 
 interface XmtpState {
@@ -35,6 +37,10 @@ interface XmtpState {
   setAttachmentError: (attachmentError: string) => void;
   activeMessage?: CachedMessageWithId;
   setActiveMessage: (message?: CachedMessageWithId) => void;
+  activeTab: ActiveTab;
+  setActiveTab: (activeTab: ActiveTab) => void;
+  changedConsentCount: number;
+  setChangedConsentCount: (changedConsentCount: number) => void;
 }
 
 export const useXmtpStore = create<XmtpState>((set) => ({
@@ -87,4 +93,9 @@ export const useXmtpStore = create<XmtpState>((set) => ({
   setAttachmentError: (attachmentError) => set(() => ({ attachmentError })),
   activeMessage: undefined,
   setActiveMessage: (activeMessage) => set(() => ({ activeMessage })),
+  activeTab: "messages",
+  setActiveTab: (activeTab) => set(() => ({ activeTab })),
+  changedConsentCount: 0,
+  setChangedConsentCount: (changedConsentCount) =>
+    set(() => ({ changedConsentCount })),
 }));
