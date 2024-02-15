@@ -1,9 +1,7 @@
 import type { CachedConversation, CachedMessageWithId } from "@xmtp/react-sdk";
-import { Client, useClient } from "@xmtp/react-sdk";
+import { useClient } from "@xmtp/react-sdk";
 import { FramesClient } from "@xmtp/frames-client";
 import { useEffect, useState } from "react";
-import type { PrivateKeyAccount, Transport, WalletClient } from "viem";
-import type { mainnet } from "wagmi";
 import { useWalletClient } from "wagmi";
 import { FullMessage } from "../component-library/components/FullMessage/FullMessage";
 import { classNames, shortAddress } from "../helpers";
@@ -33,7 +31,6 @@ export const FullMessageController = ({
   isReply,
 }: FullMessageControllerProps) => {
   const { client } = useClient();
-  const { data: walletClient } = useWalletClient();
 
   const conversationTopic = useXmtpStore((state) => state.conversationTopic);
 
@@ -44,7 +41,7 @@ export const FullMessageController = ({
     buttonIndex: number,
     action: FrameButton["action"],
   ) => {
-    if (!frameInfo) {
+    if (!frameInfo || !client) {
       return;
     }
     const frameUrl = frameInfo.image;
@@ -52,23 +49,13 @@ export const FullMessageController = ({
 
     setFrameButtonUpdating(buttonIndex);
 
-    const xmtpClient = await Client.create(
-      walletClient as WalletClient<
-        Transport,
-        typeof mainnet,
-        PrivateKeyAccount
-      >,
-    );
-    const framesClient = new FramesClient(xmtpClient);
+    const framesClient = new FramesClient(client);
 
     const payload = await framesClient.signFrameAction({
       frameUrl,
       buttonIndex,
       conversationTopic: conversationTopic as string,
-      participantAccountAddresses: [
-        client?.address as string,
-        conversation.peerAddress,
-      ],
+      participantAccountAddresses: [client.address, conversation.peerAddress],
     });
     if (action === "post") {
       const updatedFrameMetadata = await framesClient.proxy.post(
