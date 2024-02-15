@@ -2,7 +2,6 @@ import type { CachedConversation, CachedMessageWithId } from "@xmtp/react-sdk";
 import { useClient } from "@xmtp/react-sdk";
 import { FramesClient } from "@xmtp/frames-client";
 import { useEffect, useState } from "react";
-import { useWalletClient } from "wagmi";
 import { FullMessage } from "../component-library/components/FullMessage/FullMessage";
 import { classNames, shortAddress } from "../helpers";
 import MessageContentController from "./MessageContentController";
