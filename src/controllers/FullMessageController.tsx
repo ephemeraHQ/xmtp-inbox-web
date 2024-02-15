@@ -10,6 +10,7 @@ import { classNames, shortAddress } from "../helpers";
 import MessageContentController from "./MessageContentController";
 import { useXmtpStore } from "../store/xmtp";
 import { Frame } from "../component-library/components/Frame/Frame";
+import type { FrameButton } from "../helpers/getFrameInfo";
 import { getFrameInfo } from "../helpers/getFrameInfo";
 import { readMetadata } from "../helpers/openFrames";
 
@@ -22,7 +23,7 @@ interface FullMessageControllerProps {
 export type FrameInfo = {
   image: string;
   title: string;
-  buttons: string[];
+  buttons: FrameButton[];
   postUrl: string;
 };
 
@@ -39,11 +40,15 @@ export const FullMessageController = ({
   const [frameInfo, setFrameInfo] = useState<FrameInfo | undefined>(undefined);
   const [frameButtonUpdating, setFrameButtonUpdating] = useState<number>(0);
 
-  const handleFrameButtonClick = async (buttonIndex: number) => {
+  const handleFrameButtonClick = async (
+    buttonIndex: number,
+    action: FrameButton["action"],
+  ) => {
     if (!frameInfo) {
       return;
     }
     const frameUrl = frameInfo.image;
+    const button = frameInfo.buttons[buttonIndex];
 
     setFrameButtonUpdating(buttonIndex);
 
@@ -65,15 +70,24 @@ export const FullMessageController = ({
         conversation.peerAddress,
       ],
     });
+    if (action === "post") {
+      const updatedFrameMetadata = await framesClient.proxy.post(
+        button?.target || frameInfo.postUrl,
+        payload,
+      );
+      const updatedFrameInfo = getFrameInfo(updatedFrameMetadata.extractedTags);
 
-    const updatedFrameMetadata = await framesClient.proxy.post(
-      frameInfo.postUrl,
-      payload,
-    );
-    const updatedFrameInfo = getFrameInfo(updatedFrameMetadata.extractedTags);
-
-    setFrameInfo(updatedFrameInfo);
-    setFrameButtonUpdating(0);
+      setFrameInfo(updatedFrameInfo);
+      setFrameButtonUpdating(0);
+    } else if (action === "post_redirect") {
+      const { redirectedTo } = await framesClient.proxy.postRedirect(
+        button?.target || frameInfo.postUrl,
+        payload,
+      );
+      window.open(redirectedTo, "_blank");
+    } else if (action === "link" && button?.target) {
+      window.open(button.target, "_blank");
+    }
   };
 
   useEffect(() => {
