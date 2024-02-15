@@ -11,6 +11,7 @@ import MessageContentController from "./MessageContentController";
 import { useXmtpStore } from "../store/xmtp";
 import { Frame } from "../component-library/components/Frame/Frame";
 import { getFrameInfo } from "../helpers/getFrameInfo";
+import { readMetadata } from "../helpers/openFrames";
 
 interface FullMessageControllerProps {
   message: CachedMessageWithId;
@@ -65,7 +66,7 @@ export const FullMessageController = ({
       ],
     });
 
-    const updatedFrameMetadata = await FramesClient.postToFrame(
+    const updatedFrameMetadata = await framesClient.proxy.post(
       frameInfo.postUrl,
       payload,
     );
@@ -86,7 +87,7 @@ export const FullMessageController = ({
           const isUrl = !!word.match(urlRegex)?.[0];
 
           if (isUrl) {
-            const metadata = await FramesClient.readMetadata(word);
+            const metadata = await readMetadata(word);
             if (metadata) {
               const info = getFrameInfo(metadata.extractedTags);
               setFrameInfo(info);
