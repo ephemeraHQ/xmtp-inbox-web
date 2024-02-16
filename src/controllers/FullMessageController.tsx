@@ -56,15 +56,13 @@ export const FullMessageController = ({
       conversationTopic: conversationTopic as string,
       participantAccountAddresses: [client.address, conversation.peerAddress],
     });
-    if (action === "post") {
+    if (action === "post" || !action) {
       const updatedFrameMetadata = await framesClient.proxy.post(
         button?.target || frameInfo.postUrl,
         payload,
       );
       const updatedFrameInfo = getFrameInfo(updatedFrameMetadata.extractedTags);
-
       setFrameInfo(updatedFrameInfo);
-      setFrameButtonUpdating(0);
     } else if (action === "post_redirect") {
       const { redirectedTo } = await framesClient.proxy.postRedirect(
         button?.target || frameInfo.postUrl,
@@ -74,6 +72,7 @@ export const FullMessageController = ({
     } else if (action === "link" && button?.target) {
       window.open(button.target, "_blank");
     }
+    setFrameButtonUpdating(0);
   };
 
   useEffect(() => {

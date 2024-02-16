@@ -61,7 +61,7 @@ export function getFrameInfo(extractedTags: Record<string, string>) {
     }
   }
   return {
-    buttons,
+    buttons: buttons.filter((b) => b),
     image,
     postUrl,
     title,
