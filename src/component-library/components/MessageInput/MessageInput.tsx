@@ -123,7 +123,7 @@ export const MessageInput = ({
     textAreaRef?.current?.scrollHeight <= 32
       ? "max-h-8"
       : "max-h-40"
-  } min-h-8 outline-none border-none focus:ring-0 resize-none mx-2 p-1 w-full max-md:text-[16px] md:text-md text-gray-900`;
+  } min-h-8 outline-none border-none focus:ring-0 resize-none mx-2 p-1 w-full text-md text-gray-900`;
 
   useLayoutEffect(() => {
     const MIN_TEXTAREA_HEIGHT = 32;

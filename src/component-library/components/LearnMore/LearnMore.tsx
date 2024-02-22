@@ -9,14 +9,11 @@ interface LearnMoreProps {
     description: string;
     tags: React.ReactNode;
   }>;
-  version: string;
   setStartedFirstMessage: () => void;
 }
 
 export const LearnMore = ({
   highlightedCompanies = [],
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  version,
   setStartedFirstMessage,
 }: LearnMoreProps) => {
   const { t } = useTranslation();

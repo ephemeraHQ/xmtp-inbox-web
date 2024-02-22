@@ -131,17 +131,13 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
       onDrop={onAttachmentChange}>
       <div className="w-full md:h-full overflow-auto flex flex-col md:flex-row">
         <div className="flex">
-          {!recipientAddress && !startedFirstMessage ? (
-            <>
-              <SideNavController />
-              <div className="flex flex-col w-full h-screen overflow-y-auto md:min-w-[350px]">
-                <HeaderDropdownController />
-                <ConversationListController
-                  setStartedFirstMessage={setStartedFirstMessage}
-                />
-              </div>
-            </>
-          ) : null}
+          <SideNavController />
+          <div className="flex flex-col w-full h-screen overflow-y-auto md:min-w-[350px]">
+            <HeaderDropdownController />
+            <ConversationListController
+              setStartedFirstMessage={setStartedFirstMessage}
+            />
+          </div>
         </div>
         {recipientAddress || startedFirstMessage ? (
           <div className="flex w-full flex-col h-screen overflow-hidden">
@@ -149,7 +145,6 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
             !loadingConversations &&
             !startedFirstMessage ? (
               <LearnMore
-                version="replace"
                 setStartedFirstMessage={() => setStartedFirstMessage(true)}
               />
             ) : (
