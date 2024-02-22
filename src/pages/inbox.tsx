@@ -139,7 +139,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
             />
           </div>
         </div>
-        {recipientAddress || startedFirstMessage ? (
+        {
           <div className="flex w-full flex-col h-screen overflow-hidden">
             {!conversations.length &&
             !loadingConversations &&
@@ -194,7 +194,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
               </div>
             )}
           </div>
-        ) : null}
+        }
       </div>
     </div>
   );
