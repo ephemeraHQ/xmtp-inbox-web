@@ -46,14 +46,12 @@ export const ConversationListController = ({
 
   const messagesToPass = useMemo(() => {
     const conversationsWithTab = conversations.map(
-      (conversation: CachedConversation) => {
-        return (
-          <MessagePreviewCardController
-            key={conversation.topic}
-            convo={conversation}
-          />
-        );
-      },
+      (conversation: CachedConversation) => (
+        <MessagePreviewCardController
+          key={conversation.topic}
+          convo={conversation}
+        />
+      ),
     );
     const sortedConvos = conversationsWithTab.filter(
       (item: NodeWithConsent) => {
