@@ -49,7 +49,6 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   }, [client]);
 
   const activeTab = useXmtpStore((s) => s.activeTab);
-  const recipientAddress = useXmtpStore((s) => s.recipientAddress);
   const setActiveMessage = useXmtpStore((s) => s.setActiveMessage);
 
   const size = useWindowSize();
