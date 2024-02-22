@@ -31,7 +31,7 @@ import { ContentTypeScreenEffect } from "@xmtp/experimental-content-type-screen-
 import { IconButton } from "../IconButton/IconButton";
 import { useAttachmentChange } from "../../../hooks/useAttachmentChange";
 import { typeLookup, type contentTypes } from "../../../helpers/attachments";
-import { TAILWIND_MD_BREAKPOINT, classNames } from "../../../helpers";
+import { classNames } from "../../../helpers";
 import type { RecipientAddress } from "../../../store/xmtp";
 import { useXmtpStore } from "../../../store/xmtp";
 import { useVoiceRecording } from "../../../hooks/useVoiceRecording";
@@ -39,7 +39,6 @@ import { useRecordingTimer } from "../../../hooks/useRecordingTimer";
 import "react-tooltip/dist/react-tooltip.css";
 import { useLongPress } from "../../../hooks/useLongPress";
 import { EffectDialog } from "../EffectDialog/EffectDialog";
-import useWindowSize from "../../../hooks/useWindowSize";
 
 type InputProps = {
   /**
@@ -96,8 +95,6 @@ export const MessageInput = ({
   setAttachmentPreview,
   setIsDragActive,
 }: InputProps) => {
-  const [width] = useWindowSize();
-
   const { getCachedByPeerAddress } = useConversation();
   // For effects
   const { sendMessage: _sendMessage } = _useSendMessage();
@@ -126,7 +123,7 @@ export const MessageInput = ({
     textAreaRef?.current?.scrollHeight <= 32
       ? "max-h-8"
       : "max-h-40"
-  } min-h-8 outline-none border-none focus:ring-0 resize-none mx-2 p-1 w-full max-md:text-[16px] md:text-md text-gray-900`;
+  } min-h-8 outline-none border-none focus:ring-0 resize-none mx-2 p-1 w-full text-md text-gray-900`;
 
   useLayoutEffect(() => {
     const MIN_TEXTAREA_HEIGHT = 32;
@@ -246,10 +243,7 @@ export const MessageInput = ({
   ]);
 
   const handleLongPress = () => {
-    // Don't run effect on mobile
-    if (width > TAILWIND_MD_BREAKPOINT) {
-      setOpenEffectDialog(true);
-    }
+    setOpenEffectDialog(true);
   };
 
   const handleSendEffect = (effectType: string) => {

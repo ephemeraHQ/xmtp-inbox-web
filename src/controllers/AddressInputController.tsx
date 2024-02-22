@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 import { useConversation, useConsent } from "@xmtp/react-sdk";
 import { AddressInput } from "../component-library/components/AddressInput/AddressInput";
-import { getRecipientInputSubtext, shortAddress } from "../helpers";
-import useWindowSize from "../hooks/useWindowSize";
+import { getRecipientInputSubtext } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
 import { useAddressInput } from "../hooks/useAddressInput";
 
@@ -28,8 +27,6 @@ export const AddressInputController = () => {
 
   // manage address input state
   useAddressInput();
-
-  const size = useWindowSize();
 
   useEffect(() => {
     const selectConversation = async () => {
@@ -80,13 +77,7 @@ export const AddressInputController = () => {
           : ""
       }
       resolvedAddress={{
-        displayAddress:
-          recipientName ??
-          (size[0] < 700
-            ? recipientAddress
-              ? shortAddress(recipientAddress)
-              : ""
-            : recipientAddress ?? ""),
+        displayAddress: recipientName ?? recipientAddress ?? "",
         walletAddress: recipientName
           ? recipientAddress ?? undefined
           : undefined,

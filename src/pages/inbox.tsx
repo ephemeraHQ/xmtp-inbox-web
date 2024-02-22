@@ -23,6 +23,7 @@ import { ConversationListController } from "../controllers/ConversationListContr
 import { useAttachmentChange } from "../hooks/useAttachmentChange";
 import useSelectedConversation from "../hooks/useSelectedConversation";
 import { ReplyThread } from "../component-library/components/ReplyThread/ReplyThread";
+import { Mobile } from "../component-library/components/Mobile/Mobile";
 
 const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   const navigate = useNavigate();
@@ -48,7 +49,6 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   }, [client]);
 
   const activeTab = useXmtpStore((s) => s.activeTab);
-  const recipientAddress = useXmtpStore((s) => s.recipientAddress);
   const setActiveMessage = useXmtpStore((s) => s.setActiveMessage);
 
   const size = useWindowSize();
@@ -118,7 +118,9 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
     }
   };
 
-  return (
+  return size[0] < TAILWIND_MD_BREAKPOINT ? (
+    <Mobile />
+  ) : (
     // Controller for drag-and-drop area
     <div
       className={isDragActive ? "bg-slate-100" : "bg-white"}
@@ -128,28 +130,20 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
       onDrop={onAttachmentChange}>
       <div className="w-full md:h-full overflow-auto flex flex-col md:flex-row">
         <div className="flex">
-          {size[0] > TAILWIND_MD_BREAKPOINT ||
-          (!recipientAddress && !startedFirstMessage) ? (
-            <>
-              <SideNavController />
-              <div className="flex flex-col w-full h-screen overflow-y-auto md:min-w-[350px]">
-                <HeaderDropdownController />
-                <ConversationListController
-                  setStartedFirstMessage={setStartedFirstMessage}
-                />
-              </div>
-            </>
-          ) : null}
+          <SideNavController />
+          <div className="flex flex-col w-full h-screen overflow-y-auto md:min-w-[350px]">
+            <HeaderDropdownController />
+            <ConversationListController
+              setStartedFirstMessage={setStartedFirstMessage}
+            />
+          </div>
         </div>
-        {size[0] > TAILWIND_MD_BREAKPOINT ||
-        recipientAddress ||
-        startedFirstMessage ? (
+        {
           <div className="flex w-full flex-col h-screen overflow-hidden">
             {!conversations.length &&
             !loadingConversations &&
             !startedFirstMessage ? (
               <LearnMore
-                version="replace"
                 setStartedFirstMessage={() => setStartedFirstMessage(true)}
               />
             ) : (
@@ -199,7 +193,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
               </div>
             )}
           </div>
-        ) : null}
+        }
       </div>
     </div>
   );
