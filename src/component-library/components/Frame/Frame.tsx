@@ -8,7 +8,7 @@ type FrameProps = {
   buttons: FrameButton[];
   handleClick: (
     buttonNumber: number,
-    action: FrameButton["action"] | undefined,
+    action?: FrameButton["action"],
   ) => Promise<void>;
   onTextInputChange: (value: string) => void;
   frameButtonUpdating: number;
