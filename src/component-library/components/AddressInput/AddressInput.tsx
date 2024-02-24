@@ -70,9 +70,9 @@ export const AddressInput = ({
         !resolvedAddress?.displayAddress
           ? "bg-indigo-50 border-b border-indigo-500"
           : "border-b border-gray-200",
-        "flex items-center px-2 md:px-4 py-3 border-l-0 z-10 max-md:h-fit md:max-h-sm w-full h-16",
+        "flex items-center px-2 md:px-4 py-3 border-l-0 z-10 max-h-sm w-full h-16",
       )}>
-      <div className="max-md:w-fit md:hidden flex w-24 p-0 justify-start">
+      <div className="hidden flex w-24 p-0 justify-start">
         <ChevronLeftIcon onClick={onLeftIconClick} width={24} />
       </div>
       <form
@@ -91,7 +91,7 @@ export const AddressInput = ({
             <input
               data-testid="message-to-input"
               tabIndex={0}
-              className="bg-transparent text-gray-900 px-0 h-4 m-1 ml-0 font-mono max-md:text-[16px] md:text-sm w-full leading-tight border border-2 border-transparent focus:border-transparent focus:ring-0 cursor-text"
+              className="bg-transparent text-gray-900 px-0 h-4 m-1 ml-0 font-mono text-sm w-full leading-tight border border-2 border-transparent focus:border-transparent focus:ring-0 cursor-text"
               id="address"
               type="search"
               spellCheck="false"
@@ -108,13 +108,7 @@ export const AddressInput = ({
             />
           )}
           <div
-            className={classNames(
-              "font-mono",
-              "text-sm",
-              "max-md:text-xs",
-              "h-5",
-              subtextColor,
-            )}
+            className={classNames("font-mono", "text-sm", "h-5", subtextColor)}
             data-testid="message-to-subtext">
             {subtext
               ? t(subtext)
