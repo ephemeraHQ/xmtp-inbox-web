@@ -18,7 +18,8 @@ type FrameProps = {
 };
 
 const FrameButtonContainer = ({
-  button,
+  label,
+  isExternalLink,
   isFullWidth,
   isLoading,
   isDisabled,
@@ -26,16 +27,16 @@ const FrameButtonContainer = ({
   clickHandler,
 }: {
   testId?: string;
-  button: FrameButton;
+  label: string;
+  isExternalLink: boolean;
   isFullWidth: boolean;
   isLoading: boolean;
   isDisabled: boolean;
   clickHandler: () => void;
 }) => {
   const columnWidth = isFullWidth ? "col-span-2" : "col-span-1";
-  const isExternal = ["post_redirect", "link"].includes(button.action || "");
 
-  const icon = isExternal ? <ArrowCircleRightIcon width={16} /> : null;
+  const icon = isExternalLink ? <ArrowCircleRightIcon width={16} /> : null;
   return (
     <button
       type="button"
@@ -67,9 +68,9 @@ const FrameButtonContainer = ({
         // Transition
         "transition duration-150 ease-in-out", // Quick transition for hover state
       )}
-      aria-label={button.label}>
+      aria-label={label}>
       <div className="flex justify-center items-center h-fit space-x-2">
-        <div>{button.label}</div>
+        <div>{label}</div>
         {isLoading ? <ButtonLoader color="primary" size="small" /> : icon}
       </div>
     </button>
@@ -97,7 +98,10 @@ const ButtonsContainer = ({
           <FrameButtonContainer
             key={button.label}
             isFullWidth={isFullWidth}
-            button={button}
+            label={button.label}
+            isExternalLink={["post_redirect", "link"].includes(
+              button.action || "",
+            )}
             isLoading={frameButtonUpdating === button.buttonIndex}
             isDisabled={frameButtonUpdating > 0}
             clickHandler={clickHandler}
