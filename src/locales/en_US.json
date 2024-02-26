@@ -62,11 +62,6 @@
     "collapse_header": "Collapse",
     "messages_header": "Messages"
   },
-  "mobile": {
-    "mobile_detected": "It looks like you may be on a mobile device!",
-    "group_chat_cta": "Download the Converse TestFlight to try group chat:",
-    "reference_app_cta": "In addition, please note that our React Native XMTP Reference Application is now live:"
-  },
   "status_messaging": {
     "error_1_header": "Sorry, the app encountered an error",
     "error_1_subheader": "Not to worry. Let’s try again. If the error persists, <0>we're here to help!</0>",
