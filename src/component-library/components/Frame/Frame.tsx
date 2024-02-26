@@ -1,5 +1,7 @@
-import { GhostButton } from "../GhostButton/GhostButton";
+import { ArrowCircleRightIcon } from "@heroicons/react/outline";
 import type { FrameButton } from "../../../helpers/frameInfo";
+import { classNames } from "../../../helpers";
+import { ButtonLoader } from "../Loaders/ButtonLoader";
 
 type FrameProps = {
   image: string;
@@ -15,6 +17,101 @@ type FrameProps = {
   interactionsEnabled: boolean;
 };
 
+const FrameButtonContainer = ({
+  label,
+  isExternalLink,
+  isFullWidth,
+  isLoading,
+  isDisabled,
+  testId = "",
+  clickHandler,
+}: {
+  testId?: string;
+  label: string;
+  isExternalLink: boolean;
+  isFullWidth: boolean;
+  isLoading: boolean;
+  isDisabled: boolean;
+  clickHandler: () => void;
+}) => {
+  const columnWidth = isFullWidth ? "col-span-2" : "col-span-1";
+
+  const icon = isExternalLink ? <ArrowCircleRightIcon width={16} /> : null;
+  return (
+    <button
+      type="button"
+      onClick={clickHandler}
+      data-testid={testId}
+      disabled={isDisabled}
+      className={classNames(
+        columnWidth,
+        // Font color
+        "text-indigo-600 hover:text-indigo-800 focus:outline-none focus-visible:ring focus-visible:ring-indigo-800",
+        // Font size
+        "text-sm p-0",
+        // "font-bold",
+        // Min width
+        `min-w-[20%]`,
+        // Background
+        "white",
+        // Border settings
+        "border",
+        "box-border",
+        "border-b-100 hover:border-b-300",
+        "rounded-lg",
+        // Layout
+        "flex",
+        "items-center",
+        "justify-center",
+        "h-fit",
+        "p-2",
+        // Transition
+        "transition duration-150 ease-in-out", // Quick transition for hover state
+      )}
+      aria-label={label}>
+      <div className="flex justify-center items-center h-fit space-x-2">
+        <div>{label}</div>
+        {isLoading ? <ButtonLoader color="primary" size="small" /> : icon}
+      </div>
+    </button>
+  );
+};
+
+const ButtonsContainer = ({
+  frameButtonUpdating,
+  buttons,
+  handleClick,
+}: Pick<FrameProps, "frameButtonUpdating" | "buttons" | "handleClick">) => {
+  if (buttons.length < 1 || buttons.length > 4) {
+    return null;
+  }
+  // If there is only one button make it full-width
+  const gridColumns = buttons.length === 1 ? "grid-cols-1" : "grid-cols-2";
+  return (
+    <div className={`grid ${gridColumns} gap-2 w-full pt-2`}>
+      {buttons.map((button, index) => {
+        const clickHandler = () => {
+          void handleClick(button.buttonIndex, button.action);
+        };
+        const isFullWidth = buttons.length === 3 && index === 2;
+        return (
+          <FrameButtonContainer
+            key={button.label}
+            isFullWidth={isFullWidth}
+            label={button.label}
+            isExternalLink={["post_redirect", "link"].includes(
+              button.action || "",
+            )}
+            isLoading={frameButtonUpdating === button.buttonIndex}
+            isDisabled={frameButtonUpdating > 0}
+            clickHandler={clickHandler}
+          />
+        );
+      })}
+    </div>
+  );
+};
+
 export const Frame = ({
   image,
   title,
@@ -25,7 +122,7 @@ export const Frame = ({
   frameButtonUpdating,
   interactionsEnabled,
 }: FrameProps) => (
-  <div className="px-4 md:px-8">
+  <div className="px-4 md:px-8 p-1">
     <img src={image} className="max-h-80 rounded-lg" alt={title} />
     {!!textInput && interactionsEnabled && (
       <input
@@ -42,24 +139,12 @@ export const Frame = ({
       />
     )}
     <div className="flex flex-col items-center">
-      {interactionsEnabled ? (
-        buttons.map((button) => {
-          if (!button) {
-            return null;
-          }
-          const handlePress = () => {
-            void handleClick(button.buttonIndex, button.action);
-          };
-          return (
-            <GhostButton
-              key={button.label}
-              label={button.label}
-              onClick={handlePress}
-              isLoading={frameButtonUpdating === button.buttonIndex}
-              isDisabled={frameButtonUpdating > 0}
-            />
-          );
-        })
+      {interactionsEnabled && buttons.length ? (
+        <ButtonsContainer
+          frameButtonUpdating={frameButtonUpdating}
+          handleClick={handleClick}
+          buttons={buttons}
+        />
       ) : (
         <span>Frame interactions not supported</span>
       )}
