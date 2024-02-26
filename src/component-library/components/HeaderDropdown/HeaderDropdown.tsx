@@ -14,16 +14,11 @@ interface HeaderDropdownProps {
    * What is the recipient input?
    */
   recipientInput: string;
-  /**
-   * Boolean to determine if screen width is mobile size
-   */
-  isMobileView?: boolean;
 }
 
 export const HeaderDropdown = ({
   onClick,
   recipientInput,
-  isMobileView,
 }: HeaderDropdownProps) => {
   const { t } = useTranslation();
 
@@ -61,7 +56,7 @@ export const HeaderDropdown = ({
             {t(`consent.${name}`)}
           </button>
         ))}
-        {(recipientInput || isMobileView) && (
+        {recipientInput && (
           <IconButton
             onClick={() => onClick?.()}
             label={<PlusIcon color="white" width="20" />}
