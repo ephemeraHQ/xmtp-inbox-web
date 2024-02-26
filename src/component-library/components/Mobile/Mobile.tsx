@@ -28,17 +28,16 @@ export const Mobile = () => (
         text="Android"
       />
       <li className="ml-1">
-        Try subscription notifications and 1:1 chats in Coinbase Wallet:
+        Try subscription notifications and 1:1 chats in
+        <LinkEle url="https://go.cb-w.com" text="Coinbase Wallet" />
       </li>
-      <LinkEle url="https://go.cb-w.com" text="iOS" />|
-      <LinkEle url="https://go.cb-w.com" text="Android" />
       <li className="ml-1">
-        Devs: Build on the open source reference implementation:
+        Devs: Build on the open source
+        <LinkEle
+          url="https://github.com/xmtp-labs/xmtp-inbox-mobile"
+          text="XMTP React Native Reference App"
+        />
       </li>
-      <LinkEle
-        url="https://github.com/xmtp-labs/xmtp-inbox-mobile"
-        text="XMTP React Native Reference App"
-      />
     </ul>
   </div>
 );
