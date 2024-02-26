@@ -2,27 +2,26 @@ import type { CachedConversation, CachedMessageWithId } from "@xmtp/react-sdk";
 import { useClient } from "@xmtp/react-sdk";
 import { FramesClient } from "@xmtp/frames-client";
 import { useEffect, useState } from "react";
+import type { GetMetadataResponse } from "@open-frames/proxy-client";
 import { FullMessage } from "../component-library/components/FullMessage/FullMessage";
 import { classNames, shortAddress } from "../helpers";
 import MessageContentController from "./MessageContentController";
 import { useXmtpStore } from "../store/xmtp";
 import { Frame } from "../component-library/components/Frame/Frame";
-import type { FrameButton } from "../helpers/getFrameInfo";
-import { getFrameInfo } from "../helpers/getFrameInfo";
 import { readMetadata } from "../helpers/openFrames";
+import type { FrameButton } from "../helpers/frameInfo";
+import {
+  getFrameTitle,
+  getOrderedButtons,
+  isValidFrame,
+  isXmtpFrame,
+} from "../helpers/frameInfo";
 
 interface FullMessageControllerProps {
   message: CachedMessageWithId;
   conversation: CachedConversation;
   isReply?: boolean;
 }
-
-export type FrameInfo = {
-  image: string;
-  title: string;
-  buttons: FrameButton[];
-  postUrl: string;
-};
 
 export const FullMessageController = ({
   message,
@@ -33,39 +32,46 @@ export const FullMessageController = ({
 
   const conversationTopic = useXmtpStore((state) => state.conversationTopic);
 
-  const [frameInfo, setFrameInfo] = useState<FrameInfo | undefined>(undefined);
+  const [frameMetadata, setFrameMetadata] = useState<
+    GetMetadataResponse | undefined
+  >(undefined);
   const [frameButtonUpdating, setFrameButtonUpdating] = useState<number>(0);
+  const [textInputValue, setTextInputValue] = useState<string>("");
 
   const handleFrameButtonClick = async (
     buttonIndex: number,
-    action: FrameButton["action"],
+    action: FrameButton["action"] = "post",
   ) => {
-    if (!frameInfo || !client) {
+    if (!frameMetadata || !client || !frameMetadata?.frameInfo?.buttons) {
       return;
     }
-    const frameUrl = frameInfo.image;
-    const button = frameInfo.buttons[buttonIndex];
+    const { frameInfo, url: frameUrl } = frameMetadata;
+    if (!frameInfo.buttons) {
+      return;
+    }
+    const button = frameInfo.buttons[`${buttonIndex}`];
 
     setFrameButtonUpdating(buttonIndex);
 
     const framesClient = new FramesClient(client);
-
+    const postUrl = button.target || frameInfo.postUrl || frameUrl;
     const payload = await framesClient.signFrameAction({
       frameUrl,
+      inputText: textInputValue || undefined,
       buttonIndex,
       conversationTopic: conversationTopic as string,
       participantAccountAddresses: [client.address, conversation.peerAddress],
     });
-    if (action === "post" || !action) {
+
+    if (action === "post") {
       const updatedFrameMetadata = await framesClient.proxy.post(
-        button?.target || frameInfo.postUrl,
+        postUrl,
         payload,
       );
-      const updatedFrameInfo = getFrameInfo(updatedFrameMetadata.extractedTags);
-      setFrameInfo(updatedFrameInfo);
+      setFrameMetadata(updatedFrameMetadata);
     } else if (action === "post_redirect") {
       const { redirectedTo } = await framesClient.proxy.postRedirect(
-        button?.target || frameInfo.postUrl,
+        postUrl,
         payload,
       );
       window.open(redirectedTo, "_blank");
@@ -88,8 +94,7 @@ export const FullMessageController = ({
           if (isUrl) {
             const metadata = await readMetadata(word);
             if (metadata) {
-              const info = getFrameInfo(metadata.extractedTags);
-              setFrameInfo(info);
+              setFrameMetadata(metadata);
             }
           }
         }),
@@ -102,6 +107,8 @@ export const FullMessageController = ({
     client?.address === message.senderAddress
       ? "items-end justify-end"
       : "items-start justify-start";
+
+  const showFrame = isValidFrame(frameMetadata);
 
   return (
     <div
@@ -124,13 +131,16 @@ export const FullMessageController = ({
           isSelf={client?.address === message.senderAddress}
         />
       </FullMessage>
-      {frameInfo?.image && (
+      {showFrame && (
         <Frame
-          image={frameInfo.image}
-          title={frameInfo.title}
-          buttons={frameInfo.buttons}
+          image={frameMetadata?.frameInfo?.image.content}
+          title={getFrameTitle(frameMetadata)}
+          buttons={getOrderedButtons(frameMetadata)}
           handleClick={handleFrameButtonClick}
           frameButtonUpdating={frameButtonUpdating}
+          interactionsEnabled={isXmtpFrame(frameMetadata)}
+          textInput={frameMetadata?.frameInfo?.textInput?.content}
+          onTextInputChange={setTextInputValue}
         />
       )}
     </div>
