@@ -4,9 +4,16 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useClient } from "@xmtp/react-sdk";
 import { useNavigate } from "react-router-dom";
 import { OnboardingStep } from "../component-library/components/OnboardingStep/OnboardingStep";
-import { classNames, isAppEnvDemo, wipeKeys } from "../helpers";
+import {
+  TAILWIND_MD_BREAKPOINT,
+  classNames,
+  isAppEnvDemo,
+  wipeKeys,
+} from "../helpers";
 import useInitXmtpClient from "../hooks/useInitXmtpClient";
 import { useXmtpStore } from "../store/xmtp";
+import { Mobile } from "../component-library/components/Mobile/Mobile";
+import useWindowSize from "../hooks/useWindowSize";
 
 const OnboardingPage = () => {
   const navigate = useNavigate();
@@ -47,7 +54,11 @@ const OnboardingPage = () => {
     }
   }, [status]);
 
-  return (
+  const size = useWindowSize();
+
+  return size[0] < TAILWIND_MD_BREAKPOINT ? (
+    <Mobile />
+  ) : (
     <div className={classNames("h-screen", "w-full", "overflow-auto")}>
       <OnboardingStep
         step={step}
