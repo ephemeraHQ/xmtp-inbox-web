@@ -2,7 +2,6 @@
   "ts-node": {
     "compilerOptions": {
       "lib": ["es2023"],
-      "module": "Node16",
       "target": "ES2015",
       "moduleResolution": "node"
     }

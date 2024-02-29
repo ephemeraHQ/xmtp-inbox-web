@@ -1,5 +1,6 @@
 {
   "name": "xmtp-inbox-web",
+  "type": "module",
   "version": "1.0.0",
   "description": "XMTP CHAT FIRST PARTY WEB APP",
   "private": true,
