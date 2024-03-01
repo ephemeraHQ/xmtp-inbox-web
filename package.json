@@ -1,33 +1,33 @@
 {
   "name": "xmtp-inbox-web",
-  "type": "module",
   "version": "1.0.0",
-  "description": "XMTP CHAT FIRST PARTY WEB APP",
   "private": true,
-  "scripts": {
-    "clean:build": "rm -rf dist",
-    "clean": "npm run clean:build && rm -rf node_modules",
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "lint": "eslint . --ignore-path .gitignore",
-    "typecheck": "tsc",
-    "cypress": "cypress run",
-    "fmt:check": "prettier -c --ignore-path .gitignore --ignore-path .prettierignore .",
-    "fmt:fix": "prettier -w --ignore-path .gitignore --ignore-path .prettierignore .",
-    "e2e:headless": "start-server-and-test dev http://localhost:5173 cypress",
-    "test": "vitest run",
-    "postinstall": "patch-package"
-  },
-  "author": "XMTP Labs <eng@xmtp.com>",
-  "license": "MIT",
+  "description": "XMTP CHAT FIRST PARTY WEB APP",
   "homepage": "https://github.com/xmtp-labs/xmtp-inbox-web",
+  "bugs": {
+    "url": "https://github.com/xmtp-labs/xmtp-inbox-web/issues"
+  },
   "repository": {
     "type": "git",
     "url": "https:git@github.com:xmtp-labs/xmtp-inbox-web.git"
   },
-  "bugs": {
-    "url": "https://github.com/xmtp-labs/xmtp-inbox-web/issues"
+  "license": "MIT",
+  "author": "XMTP Labs <eng@xmtp.com>",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "clean": "npm run clean:build && rm -rf node_modules",
+    "clean:build": "rm -rf dist",
+    "cypress": "cypress run",
+    "dev": "vite",
+    "e2e:headless": "start-server-and-test dev http://localhost:5173 cypress",
+    "fmt:check": "prettier -c --ignore-path .gitignore --ignore-path .prettierignore .",
+    "fmt:fix": "prettier -w --ignore-path .gitignore --ignore-path .prettierignore .",
+    "postinstall": "patch-package",
+    "lint": "eslint . --ignore-path .gitignore",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "typecheck": "tsc"
   },
   "dependencies": {
     "@datadog/browser-rum": "^4.38.0",
@@ -90,7 +90,8 @@
     "jsdom": "^22.1.0",
     "patch-package": "^7.0.0",
     "postcss": "^8.4.21",
-    "prettier": "2.8.3",
+    "prettier": "^3.2.5",
+    "prettier-plugin-packagejson": "^2.4.12",
     "start-server-and-test": "^1.15.2",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.0.4",

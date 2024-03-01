@@ -22,12 +22,12 @@ export const Tag = ({ text, icon, isLoading = false }: TagProps) => {
     mappedIcon = text.startsWith("0x")
       ? iconMapping[TagIcon.WALLET_ADDRESS]
       : isEnsName(text)
-      ? iconMapping[TagIcon.ENS_ADDRESS]
-      : text.endsWith(".lens")
-      ? iconMapping[TagIcon.LENS_ADDRESS]
-      : isUnsName(text)
-      ? iconMapping[TagIcon.UNS_ADDRESS]
-      : undefined;
+        ? iconMapping[TagIcon.ENS_ADDRESS]
+        : text.endsWith(".lens")
+          ? iconMapping[TagIcon.LENS_ADDRESS]
+          : isUnsName(text)
+            ? iconMapping[TagIcon.UNS_ADDRESS]
+            : undefined;
   }
 
   return (

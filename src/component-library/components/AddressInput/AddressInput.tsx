@@ -113,8 +113,8 @@ export const AddressInput = ({
             {subtext
               ? t(subtext)
               : resolvedAddress?.walletAddress
-              ? resolvedAddress?.walletAddress
-              : ""}
+                ? resolvedAddress?.walletAddress
+                : ""}
           </div>
         </div>
       </form>
