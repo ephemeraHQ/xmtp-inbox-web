@@ -19,6 +19,7 @@ jobs:
         with:
           build: npm run build
           start: npm run dev
+          install-command: npm install --force
         env:
           VITE_PROJECT_ID: ${{ secrets.PROJECT_ID }}
           VITE_INFURA_ID: ${{ secrets.VITE_INFURA_ID }}
