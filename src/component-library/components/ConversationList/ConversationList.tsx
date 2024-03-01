@@ -37,7 +37,14 @@ export const ConversationList = ({
   !messages?.length && isLoading ? (
     <div className="w-full overflow-hidden h-full flex flex-col justify-start sm:w-full bg-gray-100">
       {Array.from({ length: 12 }).map((_, idx) => (
-        <MessagePreviewCard key={idx} isLoading activeTab={activeTab} />
+        <MessagePreviewCard
+          key={idx}
+          isLoading
+          activeTab={activeTab}
+          address=""
+          setActiveTab={() => {}}
+          allow={() => Promise.resolve()}
+        />
       ))}
     </div>
   ) : !messages.length && !isLoading && !hasRecipientEnteredValue ? (
