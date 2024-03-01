@@ -96,7 +96,9 @@ export const AddressInputController = () => {
         setConversationTopic("");
       }}
       onRightIconClick={() => {
-        void deny([recipientAddress]);
+        if (recipientAddress) {
+          void deny([recipientAddress]);
+        }
         setChangedConsentCount(changedConsentCount + 1);
       }}
     />
