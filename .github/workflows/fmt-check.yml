@@ -13,5 +13,5 @@ jobs:
           cache: "npm"
       - name: Run Code Format Check
         run: |
-          npm install --force
+          npm install
           npm run fmt:check
