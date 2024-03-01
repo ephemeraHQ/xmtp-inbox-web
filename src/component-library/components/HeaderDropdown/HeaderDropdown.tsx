@@ -2,6 +2,7 @@ import { PlusIcon } from "@heroicons/react/solid";
 import { useTranslation } from "react-i18next";
 import { classNames } from "../../../helpers";
 import { IconButton } from "../IconButton/IconButton";
+import type { ActiveTab } from "../../../store/xmtp";
 import { useXmtpStore } from "../../../store/xmtp";
 
 // To-do: rename this throughout the app, as this is no longer a dropdown
@@ -27,7 +28,10 @@ export const HeaderDropdown = ({
   const resetRecipient = useXmtpStore((s) => s.resetRecipient);
   const setConversationTopic = useXmtpStore((s) => s.setConversationTopic);
 
-  const tabs = [
+  const tabs: {
+    name: ActiveTab;
+    testId: string;
+  }[] = [
     { name: "messages", testId: "messages-button" },
     { name: "requests", testId: "requests-button" },
     { name: "blocked", testId: "blocked-button" },

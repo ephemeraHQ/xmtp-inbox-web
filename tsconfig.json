@@ -11,7 +11,6 @@
     "useDefineForClassFields": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
-    "incremental": true,
     "skipLibCheck": true,
     "allowJs": true,
     "strict": true,
@@ -24,6 +23,15 @@
     "jsx": "react-jsx",
     "types": ["vite/client", "vitest", "vitest/globals"]
   },
-  "include": ["src", "index.html", "cypress/*", "cypress.config.ts"],
+  "include": [
+    "src",
+    "index.html",
+    "cypress",
+    "cypress.config.ts",
+    "postcss.config.cjs",
+    "tailwind.config.ts",
+    "vite.config.ts",
+    "vitest.config.ts"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

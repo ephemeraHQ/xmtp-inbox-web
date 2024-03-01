@@ -29,8 +29,8 @@ export const useAttachmentChange = ({
       const target = (e as ChangeEvent<HTMLInputElement>)?.target.files
         ? (e as ChangeEvent<HTMLInputElement>)?.target
         : (e as React.DragEvent<HTMLDivElement>)?.dataTransfer.files
-        ? (e as React.DragEvent<HTMLDivElement>).dataTransfer
-        : undefined;
+          ? (e as React.DragEvent<HTMLDivElement>).dataTransfer
+          : undefined;
 
       if (target?.files?.length && setAttachment) {
         const file = target.files[0];
