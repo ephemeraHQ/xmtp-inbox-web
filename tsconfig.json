@@ -24,12 +24,6 @@
     "jsx": "react-jsx",
     "types": ["vite/client", "vitest", "vitest/globals"]
   },
-  "include": [
-    "src",
-    "index.html",
-    "./storybook/*",
-    "cypress/*",
-    "cypress.config.ts"
-  ],
+  "include": ["src", "index.html", "cypress/*", "cypress.config.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
