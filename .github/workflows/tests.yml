@@ -13,5 +13,5 @@ jobs:
           cache: "npm"
       - name: Run Tests
         run: |
-          npm install 
+          npm install --force
           npm test

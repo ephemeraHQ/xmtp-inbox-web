@@ -1,5 +1,3 @@
-import xmtpIcon from "../../../../public/xmtp-icon.png";
-
 const LinkEle = ({ url, text }: { url: string; text: string }) => (
   <a
     href={url}
@@ -13,11 +11,7 @@ const LinkEle = ({ url, text }: { url: string; text: string }) => (
 export const Mobile = () => (
   <div className="flex flex-col items-center justify-center h-screen p-8 text-center">
     <div className="flex flex-col w-full items-center">
-      <img
-        src={xmtpIcon as string}
-        alt="XMTP logo"
-        className="h-24 w-24 mb-4"
-      />
+      <img src="/xmtp-icon.png" alt="XMTP logo" className="h-24 w-24 mb-4" />
       <h1 className="text-3xl font-bold">Looks like you&apos;re on mobile!</h1>
     </div>
     <p className="text-left mt-4 font-bold">For mobile-friendly chat:</p>
