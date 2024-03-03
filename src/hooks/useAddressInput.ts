@@ -12,6 +12,7 @@ import {
   throttledFetchUnsName,
 } from "../helpers";
 import { useXmtpStore } from "../store/xmtp";
+import { getWagmiConfig } from "../helpers/config";
 
 /**
  * Hook to manage the state of the recipient address input
@@ -50,7 +51,7 @@ export const useAddressInput = () => {
               setRecipientName(unsName);
             } else {
               // check for ENS name
-              const ensName = await throttledFetchEnsName({
+              const ensName = await throttledFetchEnsName(getWagmiConfig(), {
                 address: recipientAddress,
               });
               setRecipientName(ensName);
@@ -64,7 +65,7 @@ export const useAddressInput = () => {
           if (!recipientAvatar && recipientName) {
             setRecipientState("loading");
             // check for avatar
-            const avatar = await throttledFetchEnsAvatar({
+            const avatar = await throttledFetchEnsAvatar(getWagmiConfig(), {
               name: recipientName,
             });
             setRecipientAvatar(avatar);
@@ -117,7 +118,7 @@ export const useAddressInput = () => {
         } else if (isEnsName(recipientInput)) {
           setRecipientState("loading");
           // fetch ens address
-          const address = await throttledFetchEnsAddress({
+          const address = await throttledFetchEnsAddress(getWagmiConfig(), {
             name: recipientInput,
           });
           if (address) {
