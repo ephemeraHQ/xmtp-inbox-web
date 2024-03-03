@@ -18,6 +18,7 @@ import { updateConversationIdentity } from "../helpers/conversation";
 import SnowEffect from "../component-library/components/ScreenEffects/SnowEffect";
 import RainEffect from "../component-library/components/ScreenEffects/RainEffect";
 import { useXmtpStore } from "../store/xmtp";
+import { AcceptOrDeny } from "../component-library/components/FullConversation/AcceptOrDeny";
 
 type FullConversationControllerProps = {
   conversation: CachedConversation;
@@ -112,11 +113,8 @@ export const FullConversationController: React.FC<
       ) : effect === "RAIN" ? (
         <RainEffect messageId={messageId} key={messageId} />
       ) : null}
-      <FullConversation
-        isLoading={isLoading}
-        messages={messagesWithDates}
-        address={conversation.peerAddress}
-      />
+      <FullConversation isLoading={isLoading} messages={messagesWithDates} />
+      <AcceptOrDeny address={conversation.peerAddress} />
     </div>
   );
 };
