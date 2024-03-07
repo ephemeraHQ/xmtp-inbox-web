@@ -1,4 +1,4 @@
-import xmtpIconUrl from '../../../images/xmtp-icon.png'
+import xmtpIconUrl from "../../../images/xmtp-icon.png";
 
 const LinkEle = ({ url, text }: { url: string; text: string }) => (
   <a

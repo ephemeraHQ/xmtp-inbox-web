@@ -1,5 +1,5 @@
 import Blockies from "react-blockies";
-import xmtpIconUrl from '../../../images/xmtp-icon.png'
+import xmtpIconUrl from "../../../images/xmtp-icon.png";
 
 interface AvatarProps {
   /**
@@ -49,6 +49,6 @@ export const Avatar = ({ url, isLoading, address }: AvatarProps) => {
   );
 };
 
-export const Avatar_test = <Avatar url={xmtpIconUrl} />
-export const AvatarWithAddress_test = <Avatar address="1234" />
-export const AvatarLoading_test = <Avatar isLoading />
+export const Avatar_test = <Avatar url={xmtpIconUrl} />;
+export const AvatarWithAddress_test = <Avatar address="1234" />;
+export const AvatarLoading_test = <Avatar isLoading />;
