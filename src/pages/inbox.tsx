@@ -42,9 +42,10 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   useEffect(() => {
     if (!client) {
       navigate("/");
+    } else {
+      // make sure there's a client before loading the consent list
+      void loadConsentList();
     }
-    void loadConsentList();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [client]);
 

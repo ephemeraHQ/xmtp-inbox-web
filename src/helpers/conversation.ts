@@ -11,6 +11,7 @@ import {
   throttledFetchAddressName,
 } from "./string";
 import { chunkArray } from "./functions";
+import { getWagmiConfig } from "./config";
 
 export type PeerAddressAvatar = string | null;
 export type PeerAddressName = string | null;
@@ -92,7 +93,8 @@ export const fetchPeerAddressAvatar = async (
     // check for a cached name
     const name = getCachedPeerAddressName(conversation);
     if (name) {
-      avatar = (await throttledFetchEnsAvatar({ name })) ?? null;
+      avatar =
+        (await throttledFetchEnsAvatar(getWagmiConfig(), { name })) ?? null;
     }
   }
   return avatar;
@@ -196,7 +198,9 @@ export const updateConversationIdentities = async (
       // eslint-disable-next-line no-await-in-loop
       await Promise.all(
         chunk.map(async (address) => {
-          const name = await throttledFetchEnsName({ address });
+          const name = await throttledFetchEnsName(getWagmiConfig(), {
+            address,
+          });
           if (name) {
             resolvedAddresses[address] = name;
             const addressConversations = conversationsWithoutNameMap[address];
@@ -251,7 +255,9 @@ export const updateConversationIdentities = async (
       // eslint-disable-next-line no-await-in-loop
       await Promise.all(
         chunk.map(async (name) => {
-          const avatar = await throttledFetchEnsAvatar({ name });
+          const avatar = await throttledFetchEnsAvatar(getWagmiConfig(), {
+            name,
+          });
           const addressConversations = conversationsWithoutAvatarMap[name];
           await Promise.all(
             addressConversations.map((convo) =>

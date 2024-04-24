@@ -2,29 +2,21 @@ import "./polyfills";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "@rainbow-me/rainbowkit/styles.css";
-import {
-  connectorsForWallets,
-  getDefaultWallets,
-  RainbowKitProvider,
-} from "@rainbow-me/rainbowkit";
-import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import { trustWallet } from "@rainbow-me/rainbowkit/wallets";
-import { publicProvider } from "wagmi/providers/public";
+import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { WagmiProvider } from "wagmi";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   attachmentContentTypeConfig,
   reactionContentTypeConfig,
   replyContentTypeConfig,
   XMTPProvider,
 } from "@xmtp/react-sdk";
-import { mainnet } from "wagmi/chains";
-import { infuraProvider } from "wagmi/providers/infura";
 import {
   ContentTypeScreenEffect,
   ScreenEffectCodec,
 } from "@xmtp/experimental-content-type-screen-effect";
 import App from "./controllers/AppController";
-import { isAppEnvDemo } from "./helpers";
-import { mockConnector } from "./helpers/mockConnector";
+import { getWagmiConfig } from "./helpers/config";
 
 // Increment with any schema change; e.g. adding support for a new content type
 const DB_VERSION = 6;
@@ -44,57 +36,20 @@ const contentTypeConfigs = [
   customConfig,
 ];
 
-const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [mainnet],
-  [
-    infuraProvider({ apiKey: import.meta.env.VITE_INFURA_ID ?? "" }),
-    publicProvider(),
-  ],
-);
-
-// Required field as of WalletConnect v2.
-// Replace with your project id: https://www.rainbowkit.com/docs/migration-guide#2-supply-a-walletconnect-cloud-projectid
-const projectId = import.meta.env.VITE_PROJECT_ID || "ADD_PROJECT_ID_HERE";
-const appName = "XMTP Inbox Web";
-
-const { wallets } = getDefaultWallets({
-  appName,
-  projectId,
-  chains,
-});
-
-const connectors = connectorsForWallets([
-  ...wallets,
-  {
-    groupName: "Other",
-    wallets: [trustWallet({ projectId, chains })],
-  },
-]);
-
-const wagmiDemoConfig = createConfig({
-  autoConnect: true,
-  connectors: [mockConnector],
-  publicClient,
-  webSocketPublicClient,
-});
-
-const wagmiConfig = createConfig({
-  autoConnect: true,
-  connectors,
-  publicClient,
-  webSocketPublicClient,
-});
+const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root") as HTMLElement).render(
-  <WagmiConfig config={isAppEnvDemo() ? wagmiDemoConfig : wagmiConfig}>
-    <RainbowKitProvider chains={chains}>
-      <StrictMode>
-        <XMTPProvider
-          contentTypeConfigs={contentTypeConfigs}
-          dbVersion={DB_VERSION}>
-          <App />
-        </XMTPProvider>
-      </StrictMode>
-    </RainbowKitProvider>
-  </WagmiConfig>,
+  <WagmiProvider config={getWagmiConfig()}>
+    <QueryClientProvider client={queryClient}>
+      <RainbowKitProvider>
+        <StrictMode>
+          <XMTPProvider
+            contentTypeConfigs={contentTypeConfigs}
+            dbVersion={DB_VERSION}>
+            <App />
+          </XMTPProvider>
+        </StrictMode>
+      </RainbowKitProvider>
+    </QueryClientProvider>
+  </WagmiProvider>,
 );
