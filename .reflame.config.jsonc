@@ -116,6 +116,7 @@
     "@wagmi/core": {
       "entryPoints": [
         "/",
+        "/chains",
         "/connectors/mock"
       ]
     },
