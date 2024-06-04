@@ -13,9 +13,9 @@ import {
   throttledFetchAddressName,
   throttledFetchEnsAvatar,
 } from "../helpers";
-import { mockConnector } from "../helpers/mockConnector";
+import { demoConnector } from "../helpers/demoConnector";
 import { useXmtpStore } from "../store/xmtp";
-import "wagmi/window";
+import { getWagmiConfig } from "../helpers/config";
 
 type ClientStatus = "new" | "created" | "enabled";
 
@@ -127,7 +127,7 @@ const useInitXmtpClient = () => {
   // if this is an app demo, connect to the temporary wallet
   useEffect(() => {
     if (isAppEnvDemo()) {
-      connectWallet({ connector: mockConnector });
+      connectWallet({ connector: demoConnector });
     }
     if (!client) {
       setStatus(undefined);
@@ -182,7 +182,8 @@ const useInitXmtpClient = () => {
             }
           }
 
-          if (window.ethereum?.isMetaMask) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          if (!isAppEnvDemo() && window.ethereum?.isMetaMask) {
             // Snaps flow — TODO: move to SDK side after ironing out all edge cases.
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
             const browserSupportSnaps = await Client.isSnapsReady();
@@ -248,7 +249,7 @@ const useInitXmtpClient = () => {
             xmtpClient.address as ETHAddress,
           );
           if (name) {
-            const avatar = await throttledFetchEnsAvatar({
+            const avatar = await throttledFetchEnsAvatar(getWagmiConfig(), {
               name,
             });
             setClientAvatar(avatar);

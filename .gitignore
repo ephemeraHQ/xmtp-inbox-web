@@ -35,7 +35,9 @@ composer.lock
 *.swp
 *.swo
 .projectile
-.vscode
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
 .history
 *.vsix
 *.tmproj
@@ -58,5 +60,4 @@ dist
 
 # Environment
 .env*
-!docker/.env.default
 

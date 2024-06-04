@@ -2,7 +2,6 @@
   "ts-node": {
     "compilerOptions": {
       "lib": ["es2023"],
-      "module": "Node16",
       "target": "ES2015",
       "moduleResolution": "node"
     }
@@ -12,7 +11,6 @@
     "useDefineForClassFields": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
-    "incremental": true,
     "skipLibCheck": true,
     "allowJs": true,
     "strict": true,
@@ -28,9 +26,12 @@
   "include": [
     "src",
     "index.html",
-    "./storybook/*",
-    "cypress/*",
-    "cypress.config.ts"
+    "cypress",
+    "cypress.config.ts",
+    "postcss.config.cjs",
+    "tailwind.config.ts",
+    "vite.config.ts",
+    "vitest.config.ts"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

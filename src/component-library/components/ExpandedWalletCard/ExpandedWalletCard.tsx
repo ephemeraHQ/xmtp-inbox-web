@@ -45,9 +45,7 @@ export const ExpandedWalletCard = ({
           {avatar}
           <span className="font-bold py-4">{currentAddress}</span>
           <div className="flex w-full overflow-auto border-b border-gray-100 pb-4 mb-4">
-            {addresses?.map((address) => (
-              <Tag key={address} text={address} />
-            ))}
+            {addresses?.map((address) => <Tag key={address} text={address} />)}
           </div>
           <hr />
           <span className="font-bold text-sm text-gray-400 w-full flex justify-start mb-4">

@@ -1,7 +1,8 @@
-import { fetchEnsAvatar, fetchEnsName, fetchEnsAddress } from "@wagmi/core";
+import { getEnsAvatar, getEnsName, getEnsAddress } from "@wagmi/core";
 import { getAddress } from "viem";
 import { ALLOWED_UNS_SUFFIXES, API_FETCH_THROTTLE } from "./constants";
 import { memoizeThrottle } from "./functions";
+import { getWagmiConfig } from "./config";
 
 export type ETHAddress = `0x${string}`;
 
@@ -68,24 +69,24 @@ type UnstoppableDomainsDomainResponse = {
 };
 
 export const throttledFetchEnsAddress = memoizeThrottle(
-  fetchEnsAddress,
+  getEnsAddress,
   API_FETCH_THROTTLE,
   undefined,
-  ({ name }) => name,
+  (_, { name }) => name,
 );
 
 export const throttledFetchEnsName = memoizeThrottle(
-  fetchEnsName,
+  getEnsName,
   API_FETCH_THROTTLE,
   undefined,
-  ({ address }) => address,
+  (_, { address }) => address,
 );
 
 export const throttledFetchEnsAvatar = memoizeThrottle(
-  fetchEnsAvatar,
+  getEnsAvatar,
   API_FETCH_THROTTLE,
   undefined,
-  ({ name }) => name,
+  (_, { name }) => name,
 );
 
 const fetchUnsName = async (address: ETHAddress) => {
@@ -117,7 +118,7 @@ export const throttledFetchUnsName = memoizeThrottle(
 );
 
 const fetchAddressName = async (address: ETHAddress) => {
-  let name = await throttledFetchEnsName({ address });
+  let name = await throttledFetchEnsName(getWagmiConfig(), { address });
   if (!name) {
     name = await throttledFetchUnsName(address);
   }
