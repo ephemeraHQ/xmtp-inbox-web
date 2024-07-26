@@ -1,10 +1,9 @@
-import { OpenFramesProxy, type FramesApiResponse } from "@xmtp/frames-client";
+import { OpenFramesProxy } from "@xmtp/frames-client";
 
 const proxy = new OpenFramesProxy();
 const BUTTON_INDEX_REGEX = /fc:frame:button:(\d)(?:$|:).*/;
 
-export const readMetadata = async (url: string): Promise<FramesApiResponse> =>
-  proxy.readMetadata(url);
+export const readMetadata = async (url: string) => proxy.readMetadata(url);
 
 export const mediaUrl = (url: string): string => proxy.mediaUrl(url);
 
