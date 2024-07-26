@@ -1,32 +1,7 @@
-import type {
-  GetMetadataResponse,
-  OpenFrameButton,
-} from "@open-frames/proxy-client";
+import type { GetMetadataResponse } from "@open-frames/proxy-client";
 import { PROTOCOL_VERSION } from "@xmtp/frames-client";
 
 const OG_TITLE_TAG = "og:title";
-
-export type FrameButton = OpenFrameButton & { buttonIndex: number };
-
-export function getOrderedButtons(
-  metadata: GetMetadataResponse,
-): FrameButton[] {
-  const buttonMap = metadata?.frameInfo?.buttons;
-
-  if (!buttonMap) {
-    return [];
-  }
-
-  return Object.keys(buttonMap)
-    .sort()
-    .map((key) => {
-      const button = buttonMap[key];
-      return {
-        ...button,
-        buttonIndex: parseInt(key, 10),
-      };
-    });
-}
 
 export function isXmtpFrame(metadata: GetMetadataResponse): boolean {
   const minXmtpVersion = metadata.frameInfo?.acceptedClients?.xmtp;
