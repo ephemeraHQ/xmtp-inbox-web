@@ -2,20 +2,17 @@ import type { CachedConversation, CachedMessageWithId } from "@xmtp/react-sdk";
 import { useClient } from "@xmtp/react-sdk";
 import { FramesClient } from "@xmtp/frames-client";
 import { useEffect, useState } from "react";
-import type { GetMetadataResponse } from "@open-frames/proxy-client";
+import type {
+  GetMetadataResponse,
+  OpenFrameButton,
+} from "@open-frames/proxy-client";
 import { FullMessage } from "../component-library/components/FullMessage/FullMessage";
 import { classNames, shortAddress } from "../helpers";
 import MessageContentController from "./MessageContentController";
 import { useXmtpStore } from "../store/xmtp";
 import { Frame } from "../component-library/components/Frame/Frame";
 import { readMetadata } from "../helpers/openFrames";
-import type { FrameButton } from "../helpers/frameInfo";
-import {
-  getFrameTitle,
-  getOrderedButtons,
-  isValidFrame,
-  isXmtpFrame,
-} from "../helpers/frameInfo";
+import { getFrameTitle, isValidFrame, isXmtpFrame } from "../helpers/frameInfo";
 
 interface FullMessageControllerProps {
   message: CachedMessageWithId;
@@ -40,7 +37,7 @@ export const FullMessageController = ({
 
   const handleFrameButtonClick = async (
     buttonIndex: number,
-    action: FrameButton["action"] = "post",
+    action: OpenFrameButton["action"] = "post",
   ) => {
     if (!frameMetadata || !client || !frameMetadata?.frameInfo?.buttons) {
       return;
@@ -54,7 +51,8 @@ export const FullMessageController = ({
     setFrameButtonUpdating(buttonIndex);
 
     const framesClient = new FramesClient(client);
-    const postUrl = button.target || frameInfo.postUrl || frameUrl;
+    const postUrl =
+      button.target || button.postUrl || frameInfo.postUrl || frameUrl;
     const payload = await framesClient.signFrameAction({
       frameUrl,
       inputText: textInputValue || undefined,
@@ -135,7 +133,7 @@ export const FullMessageController = ({
         <Frame
           image={frameMetadata?.frameInfo?.image.content}
           title={getFrameTitle(frameMetadata)}
-          buttons={getOrderedButtons(frameMetadata)}
+          buttons={frameMetadata?.frameInfo?.buttons}
           handleClick={handleFrameButtonClick}
           frameButtonUpdating={frameButtonUpdating}
           interactionsEnabled={isXmtpFrame(frameMetadata)}

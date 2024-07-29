@@ -1,5 +1,8 @@
 import { ArrowCircleRightIcon } from "@heroicons/react/outline";
-import type { FrameButton } from "../../../helpers/frameInfo";
+import type {
+  OpenFrameButton,
+  OpenFrameResult,
+} from "@open-frames/proxy-client";
 import { classNames } from "../../../helpers";
 import { ButtonLoader } from "../Loaders/ButtonLoader";
 
@@ -7,10 +10,10 @@ type FrameProps = {
   image: string;
   title: string;
   textInput?: string;
-  buttons: FrameButton[];
+  buttons: OpenFrameResult["buttons"];
   handleClick: (
     buttonNumber: number,
-    action?: FrameButton["action"],
+    action?: OpenFrameButton["action"],
   ) => Promise<void>;
   onTextInputChange: (value: string) => void;
   frameButtonUpdating: number;
@@ -77,23 +80,33 @@ const FrameButtonContainer = ({
   );
 };
 
+type ButtonsContainerProps = Pick<
+  FrameProps,
+  "frameButtonUpdating" | "handleClick"
+> & {
+  buttons: NonNullable<OpenFrameResult["buttons"]>;
+};
+
 const ButtonsContainer = ({
   frameButtonUpdating,
   buttons,
   handleClick,
-}: Pick<FrameProps, "frameButtonUpdating" | "buttons" | "handleClick">) => {
-  if (buttons.length < 1 || buttons.length > 4) {
+}: ButtonsContainerProps) => {
+  if (Object.keys(buttons).length < 1 || Object.keys(buttons).length > 4) {
     return null;
   }
   // If there is only one button make it full-width
-  const gridColumns = buttons.length === 1 ? "grid-cols-1" : "grid-cols-2";
+  const gridColumns =
+    Object.keys(buttons).length === 1 ? "grid-cols-1" : "grid-cols-2";
   return (
     <div className={`grid ${gridColumns} gap-2 w-full pt-2`}>
-      {buttons.map((button, index) => {
+      {Object.keys(buttons).map((key, index) => {
+        const button = buttons[key];
+        const buttonIndex = parseInt(key, 10);
         const clickHandler = () => {
-          void handleClick(button.buttonIndex, button.action);
+          void handleClick(buttonIndex, button.action);
         };
-        const isFullWidth = buttons.length === 3 && index === 2;
+        const isFullWidth = Object.keys(buttons).length === 3 && index === 2;
         return (
           <FrameButtonContainer
             key={button.label}
@@ -102,7 +115,7 @@ const ButtonsContainer = ({
             isExternalLink={["post_redirect", "link"].includes(
               button.action || "",
             )}
-            isLoading={frameButtonUpdating === button.buttonIndex}
+            isLoading={frameButtonUpdating === buttonIndex}
             isDisabled={frameButtonUpdating > 0}
             clickHandler={clickHandler}
           />
@@ -139,7 +152,7 @@ export const Frame = ({
       />
     )}
     <div className="flex flex-col items-center">
-      {interactionsEnabled && buttons.length ? (
+      {interactionsEnabled && buttons ? (
         <ButtonsContainer
           frameButtonUpdating={frameButtonUpdating}
           handleClick={handleClick}
