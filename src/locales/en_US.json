@@ -1,8 +1,8 @@
 {
   "onboarding": {
     "demo_header": "Initializing demo mode…",
-    "intro_header": "An interoperable web3 inbox",
-    "intro_subheader": "Access all of your Aurora DMs—no matter where you started them.",
+    "intro_header": "aurorachat.eth 💎",
+    "intro_subheader": "Access all of your web3 DMs—no matter where you started them.",
     "intro_button": "Connect your wallet",
     "connect_header": "Connecting to your wallet...",
     "connect_subheader": "Select a wallet account to use to create your Aurora identity. Then allow this app to connect to the account.",
