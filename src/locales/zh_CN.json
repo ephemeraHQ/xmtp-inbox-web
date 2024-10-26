@@ -1,0 +1,103 @@
+{
+  "onboarding": {
+    "demo_header": "初始化演示模式…",
+    "intro_header": "一个可互操作的 web3 收件箱",
+    "intro_subheader": "访问所有你的 Aurora 私信——无论你在哪儿开始它们。",
+    "intro_button": "连接你的钱包",
+    "connect_header": "正在连接到你的钱包…",
+    "connect_subheader": "选择一个钱包账户来创建你的 Aurora 身份。然后允许这个应用连接到该账户。",
+    "create_header": "创建你的 Aurora 身份",
+    "create_subheader": "Aurora 身份就像一个消息账户。你将通过钱包签名创建你的 Aurora 身份。",
+    "create_button": "创建 Aurora 身份",
+    "creating_header": "正在创建你的 Aurora 身份…",
+    "creating_subheader": "点击 <strong>签名</strong> 来创建你的 Aurora 身份。你的签名证明你拥有并控制你的 Aurora 身份。",
+    "enable_header": "启用你的 Aurora 身份",
+    "enable_subheader": "启用你的 Aurora 身份就像为你的收件箱设置密码。",
+    "enable_button": "启用 Aurora 身份",
+    "enabling_header": "正在启用你的 Aurora 身份…",
+    "enabling_subheader": "点击 <strong>签名</strong> 来创建你的密码。每次你访问收件箱时，你将被提示点击 <strong>签名</strong> 来提供它。"
+  },
+  "messages": {
+    "attachment": "附件",
+    "attachment_cta": "点击加载",
+    "attachment_reload": "重新加载",
+    "filter_none": "所有消息",
+    "filter_requests": "消息请求",
+    "convos_empty_header": "没有消息？没问题。",
+    "convos_empty_subheader": "开始一段对话，获取你拥有和控制的私信。",
+    "convos_empty_button": "发送你的第一条消息",
+    "convos_empty_recipient_placeholder": "新收件人",
+    "convos_empty_text_placeholder": "新消息",
+    "messages_empty_header": "探索 Aurora 宇宙",
+    "messages_empty_subheader": "开始吧",
+    "messages_empty_cta_1_header": "发送一条消息",
+    "messages_empty_cta_1_subheader": "使用他们的 0x 钱包、ENS 或 UNS 地址给某人发消息",
+    "messages_empty_cta_2_header": "找到适合你的应用",
+    "messages_empty_cta_2_subheader": "探索一系列基于 Aurora 构建的应用——所有应用都让你访问你的可互操作收件箱",
+    "messages_empty_cta_3_header": "开发者文档",
+    "messages_empty_cta_3_subheader": "学习如何构建一个 Aurora 应用",
+    "address_field_prompt": "输入一个 0x 钱包、ENS 或 UNS 地址",
+    "address_field_loading": "正在检查地址…",
+    "address_field_invalid": "请输入有效的 0x 钱包、ENS 或 UNS 地址",
+    "address_field_not_on_network": "抱歉，我们无法给此地址发消息，因为其拥有者尚未在 Aurora 中使用它",
+    "message_field_prompt": "写一条消息",
+    "conversation_start": "这是对话的开始",
+    "conversation_loading": "正在加载消息…",
+    "message_not_delivered": "未送达",
+    "message_retry": "重试",
+    "message_cancel": "取消",
+    "no_preview": "没有可用的预览",
+    "reaction_preview": "对之前的消息 reacted {{REACTION}}",
+    "unreaction_preview": "取消对之前的消息 reacted {{REACTION}}",
+    "reply": "回复",
+    "view_replies": "查看回复"
+  },
+  "attachments": {
+    "unable_to_display": "无法显示附件",
+    "download_instead": "下载而不是。",
+    "video_messages_not_supported": "你的浏览器不支持视频标签。",
+    "recording": "正在录制…"
+  },
+  "menu": {
+    "collapse_header": "收起",
+    "messages_header": "消息"
+  },
+  "status_messaging": {
+    "error_1_header": "抱歉，应用遇到错误",
+    "error_1_subheader": "不用担心。我们再试一次。如果错误持续，<0>我们在这里帮忙！</0>",
+    "error_1_button": "再试一次",
+    "gateway_error": "无法加载附件",
+    "file_invalid_format": "文件必须为有效文件格式",
+    "file_too_large": "请选择小于 5 MB 的附件",
+    "file_unsupported": "[附件] 无法显示 \"{{FILENAME}}\"。此应用尚不支持附件。",
+    "loading": "加载中…",
+    "microphone_not_enabled": "确保你的麦克风已启用"
+  },
+  "common": {
+    "disconnect": "断开钱包连接",
+    "private_key_note": "不会共享任何私钥。",
+    "step_of_2": "第 {{NUM}} 步，共 2 步",
+    "disconnect_tip": "<strong>提示</strong>: 如果点击 <strong>断开钱包连接</strong> 没有断开你的钱包，请直接使用你的钱包扩展来断开与此应用的连接。",
+    "input_label": "收件人",
+    "share_code": "与朋友、家人和同事分享 Aurora 网络的力量",
+    "share_link": "复制你的分享链接",
+    "share_qr_code": "分享二维码",
+    "report_bug": "报告错误"
+  },
+  "consent": {
+    "accept": "接受",
+    "block": "阻止",
+    "unblock": "解除阻止",
+    "messages": "消息",
+    "requests": "请求",
+    "blocked": "已阻止",
+    "new_message_request": "新的消息请求",
+    "new_message_request_description": "你从未与此钱包地址互动过。你想怎么做？"
+  },
+  "aria_labels": {
+    "address_input": "地址输入",
+    "filepicker": "文件选择器",
+    "start_message": "开始新消息",
+    "submit_message": "提交消息"
+  }
+}
