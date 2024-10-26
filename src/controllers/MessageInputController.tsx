@@ -39,7 +39,6 @@ export const MessageInputController = ({
   const [inputValue, setInputValue] = useState('');
 
   const handlePrompt = async () => {
-    console.log("Prompt button clicked");
     setIsGenerating(true);
     try {
       let prompt = inputValue.trim();
@@ -49,7 +48,6 @@ export const MessageInputController = ({
         prompt = `Based on the following input, generate a relevant message for the conversation: "${prompt}"`;
       }
       const response = await generateResponse(prompt);
-      console.log("Generated response:", response);
       setInputValue(response);
     } catch (error) {
       console.error('Error generating prompt:', error);
@@ -59,12 +57,10 @@ export const MessageInputController = ({
   };
 
   const handleToneChange = async (tone: string) => {
-    console.log("Tone change requested:", tone);
     if (!inputValue) return;
     setIsGenerating(true);
     try {
       const newMessage = await changeTone(inputValue, tone);
-      console.log("New message with changed tone:", newMessage);
       setInputValue(newMessage);
     } catch (error) {
       console.error('Error changing tone:', error);

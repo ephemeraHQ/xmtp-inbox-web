@@ -42,6 +42,7 @@ import { EffectDialog } from "../EffectDialog/EffectDialog";
 import { generateResponse, changeTone } from '../../../services/aiService';
 import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/solid';
+import { Fragment } from 'react';
 
 type InputProps = {
   /**
@@ -276,6 +277,33 @@ export const MessageInput = ({
     await send();
   };
 
+  const [showToneOptions, setShowToneOptions] = useState(false);
+  const [dropdownPosition, setDropdownPosition] = useState<'top' | 'bottom'>('bottom');
+  const toneButtonRef = useRef<HTMLButtonElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const toneOptions = ['More professional', 'More fun', 'More excited', 'More depressed'];
+
+  useEffect(() => {
+    const positionDropdown = () => {
+      if (toneButtonRef.current && dropdownRef.current) {
+        const buttonRect = toneButtonRef.current.getBoundingClientRect();
+        const dropdownHeight = dropdownRef.current.offsetHeight;
+        const windowHeight = window.innerHeight;
+
+        if (buttonRect.bottom + dropdownHeight > windowHeight) {
+          setDropdownPosition('top');
+        } else {
+          setDropdownPosition('bottom');
+        }
+      }
+    };
+
+    if (showToneOptions) {
+      positionDropdown();
+    }
+  }, [showToneOptions]);
+
   return (
     <>
       {openEffectDialog ? (
@@ -451,38 +479,41 @@ export const MessageInput = ({
             >
               {isGenerating ? 'Generating...' : 'Prompt'}
             </button>
-            <Menu as="div" className="relative inline-block text-left">
-              <Menu.Button className="m-2 cursor-pointer text-gray-400 hover:text-black focus:outline-none focus-visible:ring">
-                Tone <ChevronDownIcon className="w-5 h-5 inline-block" />
-              </Menu.Button>
-              <Transition
-                enter="transition ease-out duration-100"
-                enterFrom="transform opacity-0 scale-95"
-                enterTo="transform opacity-100 scale-100"
-                leave="transition ease-in duration-75"
-                leaveFrom="transform opacity-100 scale-100"
-                leaveTo="transform opacity-0 scale-95"
+            <div className="relative">
+              <button
+                ref={toneButtonRef}
+                type="button"
+                onClick={() => setShowToneOptions(!showToneOptions)}
+                className="m-2 cursor-pointer text-gray-400 hover:text-black focus:outline-none focus-visible:ring flex items-center"
               >
-                <Menu.Items className="absolute right-0 w-56 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                  {['More professional', 'More fun', 'More excited', 'More depressed'].map((tone) => (
-                    <Menu.Item key={tone}>
-                      {({ active }) => (
-                        <button
-                          type="button"
-                          className={`${
-                            active ? 'bg-indigo-500 text-white' : 'text-gray-900'
-                          } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
-                          onClick={() => handleToneChange(tone)}
-                          disabled={isGenerating}
-                        >
-                          {tone}
-                        </button>
-                      )}
-                    </Menu.Item>
-                  ))}
-                </Menu.Items>
-              </Transition>
-            </Menu>
+                Tone
+                <ChevronDownIcon className="ml-1 h-5 w-5" />
+              </button>
+              {showToneOptions && (
+                <div
+                  ref={dropdownRef}
+                  className={`absolute z-10 ${
+                    dropdownPosition === 'top' ? 'bottom-full mb-1' : 'top-full mt-1'
+                  } right-0 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5`}
+                >
+                  <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                    {toneOptions.map((tone) => (
+                      <button
+                        key={tone}
+                        onClick={() => {
+                          handleToneChange(tone);
+                          setShowToneOptions(false);
+                        }}
+                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                        role="menuitem"
+                      >
+                        {tone}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
           <div className="flex items-center" {...longPressEvents}>
             <IconButton
