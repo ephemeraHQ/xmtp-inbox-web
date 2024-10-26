@@ -1,11 +1,6 @@
 # Aurora: Next-gen web3 and AI Messaging
 
-![Unit and Component Tests](https://github.com/AllStars101-sudo/Aurora/actions/workflows/tests.yml/badge.svg)
-![E2E Tests](https://github.com/AllStars101-sudo/Aurora/actions/workflows/cypress.yml/badge.svg)
-![Lint Checks](https://github.com/AllStars101-sudo/Aurora/actions/workflows/lint.yml/badge.svg)
-![Code Format Checks](https://github.com/AllStars101-sudo/Aurora/actions/workflows/fmt-check.yml/badge.svg)
-
-![x-red-sm](https://user-images.githubusercontent.com/510695/163488403-1fb37e86-c673-4b48-954e-8460ae4d4b05.png)
+![AuroraIcon](https://github.com/user-attachments/assets/dd38329d-23e7-4e90-81d6-9465177f1a0d)
 
 **Aurora is a web3-based messaging application with integrated AI capabilities, built on top of the XMTP protocol.**
 
