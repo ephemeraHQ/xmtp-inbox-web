@@ -11,13 +11,13 @@ const LinkEle = ({ url, text }: { url: string; text: string }) => (
 export const Mobile = () => (
   <div className="flex flex-col items-center justify-center inset-0 fixed p-8 text-center">
     <div className="flex flex-col w-full items-center">
-      <img src="/xmtp-icon.png" alt="XMTP logo" className="h-24 w-24 mb-4" />
+      <img src="/xmtp-icon.png" alt="Aurora Logo" className="h-24 w-24 mb-4" />
       <h1 className="text-3xl font-bold">Looks like you&apos;re on mobile!</h1>
     </div>
     <p className="text-left mt-4 font-bold">For mobile-friendly chat:</p>
     <ul>
       <li className="mt-4">
-        Try group chat on the dev network in Converse Preview:
+        Try group chat on the dev network in Aurora Preview:
       </li>
       <LinkEle url="https://testflight.apple.com/join/xEJOvzEx" text="iOS" />
       |

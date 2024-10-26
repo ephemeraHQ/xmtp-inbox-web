@@ -48,22 +48,6 @@ export const LearnMore = ({
           onClick={setStartedFirstMessage}
           testId="message"
         />
-        <InfoCard
-          header={t("messages.messages_empty_cta_2_header")}
-          subtext={t("messages.messages_empty_cta_2_subheader") || ""}
-          leftIcon={InfoCardIcon.GALLERY}
-          styles="border-t-0"
-          testId="community"
-          url="https://community.xmtp.org"
-        />
-        <InfoCard
-          header={t("messages.messages_empty_cta_3_header")}
-          subtext={t("messages.messages_empty_cta_3_subheader") || ""}
-          leftIcon={InfoCardIcon.DOCUMENTATION}
-          styles="border-t-0"
-          testId="docs"
-          url="https://docs.xmtp.org"
-        />
       </div>
     </div>
   );

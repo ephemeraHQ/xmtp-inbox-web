@@ -13,7 +13,7 @@ import { isAppEnvDemo } from "./env";
 // Required field as of WalletConnect v2.
 // Replace with your project id: https://www.rainbowkit.com/docs/migration-guide#2-supply-a-walletconnect-cloud-projectid
 const projectId = import.meta.env.VITE_PROJECT_ID || "ADD_PROJECT_ID_HERE";
-const appName = "XMTP Inbox Web";
+const appName = "Aurora";
 
 const { wallets } = getDefaultWallets({
   appName,

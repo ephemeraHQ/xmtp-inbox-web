@@ -31,7 +31,7 @@ export const ErrorPage = ({
             t={t}
             i18nKey="status_messaging.error_1_subheader"
             // eslint-disable-next-line jsx-a11y/control-has-associated-label, jsx-a11y/anchor-has-content
-            components={[<a key={0} href="mailto:hi@xmtp.com" />]}
+            components={[<a key={0} href="mailto:allstars101x@proton.me" />]}
           />
         </div>
       )}

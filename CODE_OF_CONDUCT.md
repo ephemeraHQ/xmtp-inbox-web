@@ -1,6 +1,6 @@
-# XMTP code of conduct
+# Aurora code of conduct
 
-This code of conduct applies within all XMTP community spaces, virtual and physical, and also applies when an individual is officially representing the XMTP community in public spaces. Examples of representing our community include using an official email address, posting via an official social media account, or acting as an appointed representative at an online or offline event.
+This code of conduct applies within all Aurora community spaces, virtual and physical, and also applies when an individual is officially representing the Aurora community in public spaces. Examples of representing our community include using an official email address, posting via an official social media account, or acting as an appointed representative at an online or offline event.
 
 ## Our pledge
 
@@ -17,7 +17,7 @@ Examples of behaviors that contribute to a positive environment for our communit
 - Being bold yet intentional when presenting ideas. We are here to help ensure the world has access to secure and private communication, while also acknowledging that building successful protocols and ecosystems requires the application of logic and evidence.
 - Giving and gracefully accepting constructive feedback
 - Accepting responsibility and apologizing to those affected by our mistakes, and learning from the experience
-- Focusing on what is best not just for us as individuals but for the overall community, and the people depending on XMTP for communication.
+- Focusing on what is best not just for us as individuals but for the overall community, and the people depending on Aurora for communication.
 
 Examples of unacceptable behavior include:
 
@@ -34,10 +34,10 @@ Community moderators have the right and responsibility to remove, edit, or rejec
 
 ## Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior can be reported to the community moderators responsible for enforcement at [conduct@xmtp.org](mailto:conduct@xmtp.org). All complaints will be reviewed and investigated and will result in a response that is deemed necessary and appropriate to the circumstances. All community moderators are obligated to respect the privacy and security of the reporter of any incident.
+Instances of abusive, harassing, or otherwise unacceptable behavior can be reported to the community moderators responsible for enforcement. All complaints will be reviewed and investigated and will result in a response that is deemed necessary and appropriate to the circumstances. All community moderators are obligated to respect the privacy and security of the reporter of any incident.
 
 Community moderators who do not follow or enforce the code of conduct in good faith may face temporary or permanent repercussions as determined by other community moderators.
 
 ## Attribution
 
-The XMTP code of conduct is adapted from the Contributor Covenant, [version 2.1](https://www.contributor-covenant.org/version/2/1/code_of_conduct.html) and [version 1.4](https://www.contributor-covenant.org/version/1/4/code-of-conduct.html).
+The Aurora code of conduct is adapted from the [XMTP Code of Conduct](https://github.com/ephemeraHQ/xmtp-inbox-web/blob/dev/CODE_OF_CONDUCT.md) which was further adapted from the Contributor Covenant, [version 2.1](https://www.contributor-covenant.org/version/2/1/code_of_conduct.html) and [version 1.4](https://www.contributor-covenant.org/version/1/4/code-of-conduct.html).
