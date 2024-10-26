@@ -39,6 +39,9 @@ import { useRecordingTimer } from "../../../hooks/useRecordingTimer";
 import "react-tooltip/dist/react-tooltip.css";
 import { useLongPress } from "../../../hooks/useLongPress";
 import { EffectDialog } from "../EffectDialog/EffectDialog";
+import { generateResponse, changeTone } from '../../../services/aiService';
+import { Menu, Transition } from '@headlessui/react';
+import { ChevronDownIcon } from '@heroicons/react/solid';
 
 type InputProps = {
   /**
@@ -81,6 +84,9 @@ type InputProps = {
    * Function to set whether content is being dragged over the draggable area, including the message input
    */
   setIsDragActive: (status: boolean) => void;
+  isGenerating: boolean;
+  handlePrompt: () => Promise<void>;
+  handleToneChange: (tone: string) => Promise<void>;
 };
 
 export const MessageInput = ({
@@ -94,6 +100,11 @@ export const MessageInput = ({
   attachmentPreview,
   setAttachmentPreview,
   setIsDragActive,
+  isGenerating,
+  handlePrompt,
+  handleToneChange,
+  value,
+  onChange,
 }: InputProps) => {
   const { getCachedByPeerAddress } = useConversation();
   // For effects
@@ -102,7 +113,6 @@ export const MessageInput = ({
 
   const { t } = useTranslation();
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  const [value, setValue] = useState("");
   const [acceptedTypes, setAcceptedTypes]: [
     string | string[] | undefined,
     Dispatch<SetStateAction<string | string[] | undefined>>,
@@ -114,9 +124,6 @@ export const MessageInput = ({
   const conversationTopic = useXmtpStore((state) => state.conversationTopic);
 
   const inputFile = useRef<HTMLInputElement | null>(null);
-
-  const onChange = (event: ChangeEvent<HTMLTextAreaElement>) =>
-    setValue(event.target.value);
 
   const textAreaStyles = `${
     textAreaRef?.current?.scrollHeight &&
@@ -142,7 +149,7 @@ export const MessageInput = ({
     if (conversationTopic) {
       textAreaRef.current?.focus();
     }
-    setValue("");
+    onChange({ target: { value: "" } } as React.ChangeEvent<HTMLTextAreaElement>);
     setAttachmentPreview(undefined);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [conversation]);
@@ -196,7 +203,7 @@ export const MessageInput = ({
       const val = value;
       const attach = attachment;
 
-      setValue("");
+      onChange({ target: { value: "" } } as React.ChangeEvent<HTMLTextAreaElement>);
       setAttachment(undefined);
       setAttachmentPreview(undefined);
 
@@ -240,6 +247,7 @@ export const MessageInput = ({
     setConversationTopic,
     startConversation,
     value,
+    onChange,
   ]);
 
   const handleLongPress = () => {
@@ -263,12 +271,17 @@ export const MessageInput = ({
 
   const extension = attachment?.mimeType.split("/")?.[1] || "";
 
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await send();
+  };
+
   return (
     <>
       {openEffectDialog ? (
         <EffectDialog handleSendEffect={handleSendEffect} />
       ) : null}
-      <form className="flex flex-col border border-gray-300 rounded-2xl m-4">
+      <form onSubmit={onSubmit} className="flex flex-col border border-gray-300 rounded-2xl m-4">
         <label htmlFor="chat" className="sr-only">
           {t("messages.message_field_prompt")}
         </label>
@@ -299,6 +312,7 @@ export const MessageInput = ({
                 id="chat"
                 data-testid="message-input"
                 onChange={onChange}
+                value={value}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && !e.shiftKey) {
                     e.preventDefault();
@@ -313,7 +327,6 @@ export const MessageInput = ({
                   recordingValue && "text-red-500",
                 )}
                 placeholder={t("messages.message_field_prompt") || ""}
-                value={recordingValue || value}
               />
             </div>
           )}
@@ -430,6 +443,46 @@ export const MessageInput = ({
                 }}
               />
             )}
+            <button
+              type="button"
+              onClick={handlePrompt}
+              disabled={isGenerating}
+              className="m-2 cursor-pointer text-gray-400 hover:text-black focus:outline-none focus-visible:ring"
+            >
+              {isGenerating ? 'Generating...' : 'Prompt'}
+            </button>
+            <Menu as="div" className="relative inline-block text-left">
+              <Menu.Button className="m-2 cursor-pointer text-gray-400 hover:text-black focus:outline-none focus-visible:ring">
+                Tone <ChevronDownIcon className="w-5 h-5 inline-block" />
+              </Menu.Button>
+              <Transition
+                enter="transition ease-out duration-100"
+                enterFrom="transform opacity-0 scale-95"
+                enterTo="transform opacity-100 scale-100"
+                leave="transition ease-in duration-75"
+                leaveFrom="transform opacity-100 scale-100"
+                leaveTo="transform opacity-0 scale-95"
+              >
+                <Menu.Items className="absolute right-0 w-56 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  {['More professional', 'More fun', 'More excited', 'More depressed'].map((tone) => (
+                    <Menu.Item key={tone}>
+                      {({ active }) => (
+                        <button
+                          type="button"
+                          className={`${
+                            active ? 'bg-indigo-500 text-white' : 'text-gray-900'
+                          } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                          onClick={() => handleToneChange(tone)}
+                          disabled={isGenerating}
+                        >
+                          {tone}
+                        </button>
+                      )}
+                    </Menu.Item>
+                  ))}
+                </Menu.Items>
+              </Transition>
+            </Menu>
           </div>
           <div className="flex items-center" {...longPressEvents}>
             <IconButton
