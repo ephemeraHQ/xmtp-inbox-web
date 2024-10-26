@@ -1,32 +1,30 @@
-# XMTP Inbox web chat app
+# Aurora: Next-gen web3 and AI Messaging
 
-![Unit and Component Tests](https://github.com/xmtp-labs/xmtp-inbox-web/actions/workflows/tests.yml/badge.svg)
-![E2E Tests](https://github.com/xmtp-labs/xmtp-inbox-web/actions/workflows/cypress.yml/badge.svg)
-![Lint Checks](https://github.com/xmtp-labs/xmtp-inbox-web/actions/workflows/lint.yml/badge.svg)
-![Code Format Checks](https://github.com/xmtp-labs/xmtp-inbox-web/actions/workflows/fmt-check.yml/badge.svg)
+![Unit and Component Tests](https://github.com/AllStars101-sudo/Aurora/actions/workflows/tests.yml/badge.svg)
+![E2E Tests](https://github.com/AllStars101-sudo/Aurora/actions/workflows/cypress.yml/badge.svg)
+![Lint Checks](https://github.com/AllStars101-sudo/Aurora/actions/workflows/lint.yml/badge.svg)
+![Code Format Checks](https://github.com/AllStars101-sudo/Aurora/actions/workflows/fmt-check.yml/badge.svg)
 
 ![x-red-sm](https://user-images.githubusercontent.com/510695/163488403-1fb37e86-c673-4b48-954e-8460ae4d4b05.png)
 
-**XMTP Inbox demonstrates core and advanced capabilities of the XMTP client SDK, aiming to showcase effective and innovative ways of building with XMTP.**
+**Aurora is a web3-based messaging application with integrated AI capabilities, built on top of the XMTP protocol.**
 
-The XMTP Inbox app is built with React and the [XMTP client SDK for JavaScript](https://github.com/xmtp/xmtp-js) (`xmtp-js`).
+Aurora is developed by FrostWire, a team of two undergraduate students participating in their first blockchain-based hackathon. The app is built with React and the [XMTP client SDK for JavaScript](https://github.com/xmtp/xmtp-js) (`xmtp-js`).
 
-This app is maintained by [XMTP Labs](https://xmtplabs.com) and distributed under [MIT License](./LICENSE) for learning about and developing apps built with XMTP (Extensible Message Transport Protocol), the open protocol and network for secure web3 messaging.
+This project is a fork of the XMTP Inbox web chat app, customized and enhanced to include AI features. It demonstrates both core and advanced capabilities of the XMTP client SDK while showcasing innovative ways of building with XMTP and AI.
 
-You are free to customize and deploy the app.
+## Quick Links
 
-This app has not undergone a formal security audit.
-
-> **Note**  
-> You might also be interested in the [XMTP React playground app](https://github.com/xmtp/xmtp-react-playground/) that you can use as a tool to start building an app with XMTP. This basic messaging app has an intentionally unopinionated UI to help make it easier for you to build with.
+- **Website**: [aurorawire.vercel.app](https://aurorawire.vercel.app)
+- **Ethereum Address**: aurorachat.eth
 
 ## Get started
 
 ### Configure Infura
 
-The XMTP Inbox app uses Infura to enable wallet apps to connect to the Ethereum blockchain.
+Aurora uses Infura to enable wallet apps to connect to the Ethereum blockchain.
 
-Add your Infura API key to `.env.local` at the root of `xmtp-inbox-web`.
+Add your Infura API key to `.env.local` at the root of the project:
 
 ```
 INFURA_ID={YOUR_INFURA_API_KEY}
@@ -50,6 +48,16 @@ Open [http://localhost:5173](http://localhost:5173) with your browser to see the
 
 ## Functionality
 
+Aurora combines the power of web3 messaging with AI capabilities:
+
+1. Secure, decentralized messaging using the XMTP protocol
+2. AI-assisted conversations
+3. Web3 wallet integration for user authentication
+
+### Generative AI. Now in your messages.
+
+You can now directly chat with the world's bleeding edge generative AI models, right in your messages. Want to appear more professional to your boss? Use the "Tone" setting to sound like a senior executive. Want to sound sad but can't care less? Use the "Tone" setting to sound like a depressed teenager. You can even use it to write your messages for you, if you're too lazy to do it yourself.
+
 ### Network environment
 
 By default, the app code in this repo is set to send and receive messages using the XMTP `dev` network environment. Use the `XMTP_ENVIRONMENT` variable to change the network the app uses. Other available network environments include `production` and `local`.
@@ -63,12 +71,12 @@ XMTP Labs hosts the following deployments of the XMTP Inbox chat app:
 
 ### Wallet connections
 
-The XMTP Inbox app uses [RainbowKit](https://www.rainbowkit.com/) to enable users to connect a Coinbase Wallet, MetaMask, Rainbow, Trust Wallet, or WalletConnect-compatible wallet app.
+Aurora uses [RainbowKit](https://www.rainbowkit.com/) to enable users to connect a Coinbase Wallet, MetaMask, Rainbow, Trust Wallet, or WalletConnect-compatible wallet app.
 
 > **Note**  
 > As of WalletConnect v2, a project id is required. This is currently hardcoded with a placeholder value, but if you'd like to use WalletConnect, you can [generate your own](https://www.rainbowkit.com/docs/migration-guide#2-supply-a-walletconnect-cloud-projectid) and edit the placeholder value in `main.tsx`.
 
-This app also uses a [viem Account](https://viem.sh/docs/accounts/privateKey.html) interface to sign transactions and messages with a given private key. The XMTP message API client needs this Account to enable and sign messages that create and enable their XMTP identity. This XMTP identity is what enables a user to send and receive messages.
+Aurora also uses a [viem Account](https://viem.sh/docs/accounts/privateKey.html) interface to sign transactions and messages with a given private key. The XMTP message API client needs this Account to enable and sign messages that create and enable their XMTP identity. This XMTP identity is what enables a user to send and receive messages.
 
 Specifically, the user must provide two signatures using their connected blockchain account:
 
@@ -77,17 +85,17 @@ Specifically, the user must provide two signatures using their connected blockch
 
 ### Chat conversations
 
-The XMTP Inbox app uses the `xmtp-js` [Conversations](https://github.com/xmtp/xmtp-js#conversations) abstraction to list the available conversations for a connected wallet and to listen for or create new conversations. For each conversation, the app gets existing messages and listens for or creates new messages. Conversations and messages are kept in a lightweight store and made available through `XmtpProvider`.
+Aurora uses the `xmtp-js` [Conversations](https://github.com/xmtp/xmtp-js#conversations) abstraction to list the available conversations for a connected wallet and to listen for or create new conversations. For each conversation, the app gets existing messages and listens for or creates new messages. Conversations and messages are kept in a lightweight store and made available through `XmtpProvider`.
 
 ### Accessibility
 
-XMTP Inbox is built with Web Content Accessibility Guidelines (WCAG) AA compliance guidelines in mind.
+Aurora is built with Web Content Accessibility Guidelines (WCAG) AA compliance guidelines in mind.
 
 To learn more about WCAG and building accessible web apps, see [WCAG 2 Overview](https://www.w3.org/WAI/standards-guidelines/wcag/).
 
 ### Localization
 
-XMTP Inbox supports localization. If you'd like to contribute a translation of XMTP Inbox UI text, use the existing JSON files in the [`locales` folder](locales) as a starting point. Then, add your translated JSON file to the `locales` folder.
+Aurora supports localization in English, Hindi and Chinese currently. If you'd like to contribute a translation of XMTP Inbox UI text, use the existing JSON files in the [`locales` folder](locales) as a starting point. Then, add your translated JSON file to the `locales` folder.
 
 ### Tests
 
@@ -113,4 +121,4 @@ npm run cypress:component
 
 ### Considerations
 
-You can't use an app built with XMTP to send a message to a blockchain account address that hasn't used XMTP. This app displays an error when it looks up an address that doesn't have an identity already registered on the XMTP network. Have questions or ideas about pre-registration messaging? Post to the [XMTP discussion forum](https://github.com/orgs/xmtp/discussions).
+You can't use an app built with XMTP to send a message to a blockchain account address that hasn't used XMTP. This app displays an error when it looks up an address that doesn't have an identity already registered on the XMTP network.
