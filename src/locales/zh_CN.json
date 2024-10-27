@@ -47,8 +47,8 @@
     "message_retry": "重试",
     "message_cancel": "取消",
     "no_preview": "没有可用的预览",
-    "reaction_preview": "对之前的消息 reacted {{REACTION}}",
-    "unreaction_preview": "取消对之前的消息 reacted {{REACTION}}",
+    "reaction_preview": "",
+    "unreaction_preview": "",
     "reply": "回复",
     "view_replies": "查看回复"
   },
