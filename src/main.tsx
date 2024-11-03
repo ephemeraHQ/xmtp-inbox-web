@@ -15,9 +15,9 @@ import {
   ContentTypeScreenEffect,
   ScreenEffectCodec,
 } from "@xmtp/experimental-content-type-screen-effect";
+import MiniKitProvider from "./minikit-provider";
 import App from "./controllers/AppController";
 import { getWagmiConfig } from "./helpers/config";
-
 // Increment with any schema change; e.g. adding support for a new content type
 const DB_VERSION = 6;
 
@@ -38,18 +38,21 @@ const contentTypeConfigs = [
 
 const queryClient = new QueryClient();
 
+// Start of Selection
 createRoot(document.getElementById("root") as HTMLElement).render(
-  <WagmiProvider config={getWagmiConfig()}>
-    <QueryClientProvider client={queryClient}>
-      <RainbowKitProvider>
-        <StrictMode>
-          <XMTPProvider
-            contentTypeConfigs={contentTypeConfigs}
-            dbVersion={DB_VERSION}>
-            <App />
-          </XMTPProvider>
-        </StrictMode>
-      </RainbowKitProvider>
-    </QueryClientProvider>
-  </WagmiProvider>,
+  <MiniKitProvider>
+    <WagmiProvider config={getWagmiConfig()}>
+      <QueryClientProvider client={queryClient}>
+        <RainbowKitProvider>
+          <StrictMode>
+            <XMTPProvider
+              contentTypeConfigs={contentTypeConfigs}
+              dbVersion={DB_VERSION}>
+              <App />
+            </XMTPProvider>
+          </StrictMode>
+        </RainbowKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
+  </MiniKitProvider>,
 );

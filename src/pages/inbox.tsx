@@ -52,8 +52,6 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   const activeTab = useXmtpStore((s) => s.activeTab);
   const setActiveMessage = useXmtpStore((s) => s.setActiveMessage);
 
-  const size = useWindowSize();
-
   const loadingConversations = useXmtpStore(
     (state) => state.loadingConversations,
   );
@@ -119,10 +117,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
     }
   };
 
-  return size[0] < TAILWIND_MD_BREAKPOINT ? (
-    <Mobile />
-  ) : (
-    // Controller for drag-and-drop area
+  return (
     <div
       className={isDragActive ? "bg-slate-100" : "bg-white"}
       onDragOver={handleDrag}
