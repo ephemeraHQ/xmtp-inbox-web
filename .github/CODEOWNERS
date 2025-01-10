@@ -1,2 +1,3 @@
-*     @xmtp-labs/web
-*.md  @fabriguespe
+# Global rule:
+*     @ephemeraHQ/engineering
+*.md  @ephemeraHQ/documentation
