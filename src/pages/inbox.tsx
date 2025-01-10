@@ -11,19 +11,17 @@ import type { Attachment } from "@xmtp/content-type-remote-attachment";
 import { useNavigate } from "react-router-dom";
 import { XIcon } from "@heroicons/react/outline";
 import { useXmtpStore } from "../store/xmtp";
-import { TAILWIND_MD_BREAKPOINT, wipeKeys } from "../helpers";
+import { wipeKeys } from "../helpers";
 import { FullConversationController } from "../controllers/FullConversationController";
 import { AddressInputController } from "../controllers/AddressInputController";
 import { HeaderDropdownController } from "../controllers/HeaderDropdownController";
 import { MessageInputController } from "../controllers/MessageInputController";
 import { SideNavController } from "../controllers/SideNavController";
 import { LearnMore } from "../component-library/components/LearnMore/LearnMore";
-import useWindowSize from "../hooks/useWindowSize";
 import { ConversationListController } from "../controllers/ConversationListController";
 import { useAttachmentChange } from "../hooks/useAttachmentChange";
 import useSelectedConversation from "../hooks/useSelectedConversation";
 import { ReplyThread } from "../component-library/components/ReplyThread/ReplyThread";
-import { Mobile } from "../component-library/components/Mobile/Mobile";
 
 const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
   const navigate = useNavigate();
@@ -51,8 +49,6 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
 
   const activeTab = useXmtpStore((s) => s.activeTab);
   const setActiveMessage = useXmtpStore((s) => s.setActiveMessage);
-
-  const size = useWindowSize();
 
   const loadingConversations = useXmtpStore(
     (state) => state.loadingConversations,
@@ -119,9 +115,7 @@ const Inbox: React.FC<{ children?: React.ReactNode }> = () => {
     }
   };
 
-  return size[0] < TAILWIND_MD_BREAKPOINT ? (
-    <Mobile />
-  ) : (
+  return (
     // Controller for drag-and-drop area
     <div
       className={isDragActive ? "bg-slate-100" : "bg-white"}
